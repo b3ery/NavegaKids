@@ -448,7 +448,7 @@
       aprendizado: "Bloquear é uma ferramenta de verdade: impede que a pessoa continue mandando mensagem.",
       atividades: [
         {
-          titulo: "Conheça o Escudo", papel: "Descoberta · explicativa", tipo: "explain",
+          titulo: "Conheça o Escudo", papel: "Descoberta · explicativa", tipo: "explain", video: "videos/fase9.mp4",
           slides: [
             { titulo: "O escudo existe nos aplicativos", img: "escudo", txt: "Nos jogos e aplicativos existe um ícone de bloqueio. Geralmente ele fica no perfil da pessoa ou nos três pontinhos." },
             { titulo: "O que ele faz?", img: "bloquearUsuario", txt: "Ao bloquear alguém, essa pessoa não consegue mais te mandar mensagem." },
@@ -638,7 +638,7 @@
       aprendizado: "Denunciar não é dedurar. É usar uma ferramenta de verdade, de preferência ao lado de um adulto de confiança.",
       atividades: [
         {
-          titulo: "A Bandeira de Alerta", papel: "Descoberta · explicativa", tipo: "explain",
+          titulo: "A Bandeira de Alerta", papel: "Descoberta · explicativa", tipo: "explain", video: "videos/fase13.mp4",
           slides: [
             { titulo: "O botão Denunciar", img: "botaoVermelho", txt: "Nos aplicativos e redes existe o botão Denunciar (ou Reportar). Ele avisa a plataforma sobre alguém que está agindo de forma errada." },
             { titulo: "Denunciar não é dedurar", img: "alerta", txt: "Denunciar é diferente de dedurar. É usar uma ferramenta de verdade para avisar que alguém passou dos limites e proteger você e outras crianças." },

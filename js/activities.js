@@ -183,14 +183,16 @@
   }
 
   /* ============================================================
-     EXPLAIN — slides explicativos
+     EXPLAIN — vídeo explicativo (campo "video" em data.js)
      ============================================================ */
   function rExplain(palco, a) {
     palco.innerHTML = `
-      <div class="video-placeholder">
+      ${a.video
+        ? `<video class="video-fase" src="${esc(a.video)}" controls playsinline preload="metadata"></video>`
+        : `<div class="video-placeholder">
         <div class="play-ic">▶</div>
         <b>Vídeo no futuro</b>
-      </div>
+      </div>`}
       <p class="video-legenda">${esc(a.slides?.[0]?.txt || '')}</p>
       <div class="rodape">
         <button class="btn btn-t" id="btProxSl">Concluir</button>
