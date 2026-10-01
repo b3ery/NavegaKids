@@ -151,6 +151,15 @@ button { font-family: inherit; cursor: pointer; }
 .popup p { margin: 6px 0 16px; font-size: 18px; font-weight: 800; line-height: 1.35; color: var(--navy); }
 .popup .estrela-mais { display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 900; font-size: 22px; color: var(--teal); margin: -4px 0 14px; }
 .popup .btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+/* fim de fase: estrelas ganhas (cheias) e perdidas (apagadas) */
+.popup .fase-estrelas { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 0 0 14px; font-weight: 900; font-size: 18px; color: var(--navy); }
+.popup .fase-estrelas .icones { display: flex; gap: 4px; }
+.popup .fase-estrelas .apagada { opacity: .25; filter: grayscale(1); }
+.popup .selo-ganho { display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--teal); }
+/* PopUP-Usuario: campo do nome */
+.popup .campo-nome { display: flex; flex-direction: column; gap: 6px; margin: 4px 0 18px; font-weight: 700; color: var(--navy); }
+.popup .campo-nome input { font: inherit; font-size: 18px; padding: 10px 14px; border: 3px solid var(--navy); border-radius: 6px; text-align: center; }
+.popup .campo-nome input:focus { outline: 3px solid var(--yellow); outline-offset: 2px; }
 .popup .btns .btn { min-width: 140px; }
 
 .toast {
@@ -185,7 +194,14 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
   padding: calc(4 * var(--u)) 0; border-bottom-width: max(2px, calc(3 * var(--u)));
 }
 .topbar .nav a.on { font-weight: 700; }
-.topbar .starbadge { margin-left: 0; justify-self: end; width: max(40px, calc(105 * var(--u))); height: max(40px, calc(105 * var(--u))); }
+.topbar .hud { justify-self: end; display: flex; align-items: center; gap: max(6px, calc(18 * var(--u))); }
+.topbar .starbadge { margin-left: 0; width: max(40px, calc(105 * var(--u))); height: max(40px, calc(105 * var(--u))); }
+/* pontos: moedas + número, ao lado da estrela */
+.pontosbadge { display: flex; align-items: center; gap: 4px; padding: 2px 14px 2px 4px; border-radius: 999px;
+  background: var(--cream); color: var(--navy); font-weight: 900; white-space: nowrap; }   /* fundo claro: o ícone de moedas é escuro */
+.pontosbadge .ico, .pontosbadge .emo { width: max(26px, calc(62 * var(--u))); height: max(26px, calc(62 * var(--u))); object-fit: contain; }
+.pontosbadge b { font-size: max(13px, calc(30 * var(--u))); }
+.pontosbadge.bump { animation: bump .6s ease; }
 .topbar .starbadge .ico, .topbar .starbadge .emo { width: 100%; height: 100%; }
 .topbar .starbadge b { font-size: max(13px, calc(30 * var(--u))); }
 
@@ -301,7 +317,9 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
   background: #FFF9E6; border: max(1px, calc(3 * var(--u))) solid #1E293B; box-sizing: border-box;
 }
 .mf-card > * { position: absolute; margin: 0; }
-.mf-card .mf-navio { left: calc(50 * var(--u)); top: calc(127 * var(--u)); width: calc(331 * var(--u)); height: calc(331 * var(--u)); }
+/* navio-pirata.png tem margem transparente (desenho em x 328–1312, y 544–1664 de 2000 px):
+   a caixa é maior para o DESENHO ocupar o mesmo lugar do navio antigo (x 72–358, y 127–453) */
+.mf-card .mf-navio { left: calc(-23 * var(--u)); top: calc(-31 * var(--u)); width: calc(582 * var(--u)); height: calc(582 * var(--u)); pointer-events: none; }
 .mf-card .mf-titulo {
   left: calc(451 * var(--u)); width: calc(600 * var(--u)); top: calc(30 * var(--u));
   text-align: center; font-size: calc(48 * var(--u)); font-weight: 700; color: #4EA8DE; line-height: 1.2;
@@ -408,7 +426,7 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .arvore .passo.trancada .cadeado-svg { color: #4a4a4a; }
 .detalhe { padding: 26px 26px 26px 34px; text-align: left; display: flex; flex-direction: column; gap: 10px; min-width: 0; overflow-wrap: anywhere; }  /* texto contido na página direita */
 .detalhe .fase-atual { display: flex; gap: 12px; align-items: center; }
-.detalhe .fase-atual .ico { width: 64px; height: 56px; }
+.detalhe .fase-atual .ico { width: 64px; height: 56px; object-fit: contain; }
 .detalhe .fase-atual .emo { font-size: 48px; }
 .detalhe .fase-atual b { display: block; font-size: 20px; }
 .detalhe .fase-atual small { font-weight: 800; color: var(--muted); }
@@ -730,14 +748,17 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
   background: linear-gradient(#1E293B, #1E293B) 48% 0 / calc(3 * var(--u)) 100% no-repeat, linear-gradient(#1E293B, #1E293B) 0 48% / 100% calc(3 * var(--u)) no-repeat; }
 .dr-trilho { left: calc(971 * var(--u)); top: calc(486 * var(--u)); width: calc(468 * var(--u)); height: calc(12 * var(--u)); background: #D9D9D9; overflow: hidden; }
 .dr-trilho i { display: block; height: 100%; background: #FFC83B; }
-.dr-cad { color: #000; width: calc(61 * var(--u)); height: calc(61 * var(--u)); z-index: 2; pointer-events: none; }
-.dr-cad svg { width: 100%; height: 100%; display: block; }
+/* ícone da ilha no Diário: a arte cabe inteira na caixa, apoiada embaixo */
+.diario-frame .dr-ilha { object-fit: contain; object-position: center bottom; }
 .dr-btn { border: 0; padding: 0; font-size: calc(22 * var(--u)); font-weight: 700; color: #1E293B; z-index: 2; }
 .dr-btn.go-y { background: #FFC83B; width: calc(138 * var(--u)); height: calc(34 * var(--u)); }
 .dr-btn.go-y:hover { background: #CC9408; }
 .dr-btn.go-grey { background: #D9D9D9; width: calc(106 * var(--u)); height: calc(30 * var(--u)); }
 .dr-btn.go-grey[aria-disabled="true"] { cursor: not-allowed; }
 .diario-frame .dr-inline { position: static; width: calc(24 * var(--u)); height: calc(24 * var(--u)); vertical-align: 0; }
+.dr-editar { background: none; border: 0; padding: 0 calc(4 * var(--u)); cursor: pointer; vertical-align: middle; }
+.diario-frame .dr-medalha { object-fit: contain; }   /* medalha é mais alta que larga: não distorcer */
+.dr-selo-nome { white-space: normal; text-align: center; font-size: calc(18 * var(--u)); font-weight: 700; }
 .diario-acoes { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; padding: 0 0 calc(40 * var(--u)); background: #FFF9E6; }
 .diario-acoes:empty { display: none; }
 
