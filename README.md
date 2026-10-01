@@ -68,11 +68,3 @@ Use nomes sem espaço e sem acento (ex.: `ilha-praia.png`).
 
 **Artes recebidas que ainda não foram usadas** (falta definir o lugar):
 as trilhas das ilhas (praia, montanhas, árvores) e o pergaminho "mapa para ilhas".
-
-## Testes
-
-Abra `testes/index.html` no navegador. Um robô joga as **45 atividades** pelas telas de verdade
-e confere pontos, estrelas, selos, level, o Diário e o cabeçalho. Leva cerca de 1 minuto.
-O resultado aparece no painel à esquerda (hoje: **42 testes passando**).
-
-Rode os testes sempre que mudar o `data.js`, as atividades ou as regras de pontuação.
