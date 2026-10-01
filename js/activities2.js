@@ -5,7 +5,7 @@
 (() => {
   'use strict';
   const NK = (window.NavegaKids ??= {});
-  const { NPC1, progresso, $, $$, esc, later, every, shuffle, I, concluirAtividade } = NK;
+  const { NPC1, progresso, $, $$, esc, later, every, shuffle, I, icone, comIcone, concluirAtividade } = NK;
 
   /* ============================================================
      CLASSIFY — arrastar (ou tocar) para o balde certo
@@ -15,7 +15,7 @@
     let selecionado = null;
 
     const itemHtml = it => `<button class="item" draggable="true" data-id="${it.id}">
-      ${it.e ? `<span class="e">${it.e}</span>` : ''}
+      ${it.img ? `<span class="e">${icone(it)}</span>` : ''}
       <span>${esc(it.t)}${it.sub ? `<small>${esc(it.sub)}</small>` : ''}</span>
     </button>`;
 
@@ -23,13 +23,13 @@
       const soltos = itens.filter(i => i.colocado === null);
       palco.innerHTML = `
         <p class="enunciado">${esc(a.pergunta)}</p>
-        ${a.dica ? `<p class="dica-flutua">💡 ${esc(a.dica)}</p>` : ''}
+        ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
         <div class="baldes">
           ${a.baldes.map(b => `
             <div class="balde alvo" data-b="${b.id}">
-              <h4><span>${b.e || ''}</span>${esc(b.t)}</h4>
+              <h4>${b.img ? `<span>${icone(b)}</span>` : ''}${esc(b.t)}</h4>
               ${b.sub ? `<small>${esc(b.sub)}</small>` : ''}
-              <div class="dentro">${itens.filter(i => i.colocado === b.id).map(i => `<span class="item no-balde">${esc(i.t)} ✓</span>`).join('')}</div>
+              <div class="dentro">${itens.filter(i => i.colocado === b.id).map(i => `<span class="item no-balde">${esc(i.t)} ${I('correto', { cls: 'ico-txt' })}</span>`).join('')}</div>
             </div>`).join('')}
         </div>
         <div class="itens" id="itensWrap">${soltos.length ? soltos.map(itemHtml).join('') : '<span style="font-weight:800;color:#1c9f8d">Tudo classificado!</span>'}</div>
@@ -65,13 +65,13 @@
         const fb = $('#fbClass');
         if (it.b === baldeId) {
           it.colocado = baldeId;
-          fb.className = 'dica-flutua boa'; fb.textContent = '✅ Isso mesmo!';
+          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Isso mesmo!');
           selecionado = null;
           draw();
           if (itens.every(i => i.colocado !== null)) later(() => concluirAtividade(a.fbOk), 500);
         } else {
           progresso.registrarErro();
-          fb.className = 'dica-flutua ruim'; fb.textContent = '❌ Ainda não... tente outro grupo!';
+          fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('falha', 'Ainda não... tente outro grupo!');
           const card = $(`.item[data-id="${id}"]`, palco);
           if (card) card.classList.add('shake');
         }
@@ -96,12 +96,12 @@
       if (a.skin === 'perfil') {
         palco.innerHTML = `
           <p class="enunciado">${esc(a.pergunta)}</p>
-          ${a.dica ? `<p class="dica-flutua">💡 ${esc(a.dica)}</p>` : ''}
+          ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
           <p class="prog-hunt">Pistas encontradas: <b id="cntHunt">0</b>/${alvo}</p>
           <div class="hunt-perfil">
             <div class="card-perfil">
               <div class="cabec">${I('anonimo', { size: 44 })}<span>${esc(NPC1)}</span></div>
-              ${round.itens.map((it, i) => `<button class="linha-pista" data-i="${i}"><span class="e">${it.e}</span><span>${esc(it.t)}</span></button>`).join('')}
+              ${round.itens.map((it, i) => `<button class="linha-pista" data-i="${i}"><span class="e">${icone(it)}</span><span>${esc(it.t)}</span></button>`).join('')}
             </div>
             <div class="lado-amigos"><h4>Amigos em comum</h4><ul><li>${I('usuario', { size: 22 })}Nenhum amigo em comum</li></ul></div>
           </div>
@@ -109,7 +109,7 @@
       } else if (a.skin === 'chat') {
         palco.innerHTML = `
           <p class="enunciado">${esc(a.pergunta)}</p>
-          ${a.dica ? `<p class="dica-flutua">💡 ${esc(a.dica)}</p>` : ''}
+          ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
           <p class="prog-hunt">Sinais encontrados: <b id="cntHunt">0</b>/${alvo}</p>
           <div class="chat">
             <div class="chat-head">${I('anonimo', { size: 34 })}<span>${esc(a.com)}</span><small>online</small></div>
@@ -119,21 +119,21 @@
       } else if (a.skin === 'app') {
         palco.innerHTML = `
           <p class="enunciado">${esc(a.pergunta)}</p>
-          ${a.dica ? `<p class="dica-flutua">💡 ${esc(a.dica)}</p>` : ''}
+          ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
           <p class="prog-hunt">Rodada ${rIdx + 1}/${a.rounds.length} — encontrados: <b id="cntHunt">0</b>/${alvo}</p>
           <div class="mock-app">
-            <div class="barra"><span>💬</span><span>${esc(round.titulo || 'Aplicativo')}</span></div>
-            <div class="corpo">${round.itens.map((it, i) => `<button class="bt-app" data-i="${i}" title="${esc(it.t)}">${it.img ? I(it.img) : it.e}</button>`).join('')}</div>
+            <div class="barra">${I('bubbleChat', { cls: 'ico-txt' })}<span>${esc(round.titulo || 'Aplicativo')}</span></div>
+            <div class="corpo">${round.itens.map((it, i) => `<button class="bt-app" data-i="${i}" title="${esc(it.t)}">${icone(it)}</button>`).join('')}</div>
           </div>
           <div class="dica-flutua" id="fbHunt"></div>`;
       } else {
         // skin "scene": cena livre com pontos posicionados
         palco.innerHTML = `
           <p class="enunciado">${esc(a.pergunta)}</p>
-          ${a.dica ? `<p class="dica-flutua">💡 ${esc(a.dica)}</p>` : ''}
+          ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
           <p class="prog-hunt">Encontrados: <b id="cntHunt">0</b>/${alvo}</p>
           <div class="cena-hunt mapa-perg">
-            ${round.itens.map((it, i) => `<button class="pista-btn" data-i="${i}" style="left:${it.x}%;top:${it.y}%" aria-label="${esc(it.t)}">${it.img ? I(it.img) : `<span class="emo">${it.e}</span>`}</button>`).join('')}
+            ${round.itens.map((it, i) => `<button class="pista-btn" data-i="${i}" style="left:${it.x}%;top:${it.y}%" aria-label="${esc(it.t)}">${icone(it)}</button>`).join('')}
           </div>
           <div class="dica-flutua" id="fbHunt"></div>`;
       }
@@ -148,7 +148,7 @@
           el.classList.add('achada');
           achadas.add(i);
           $('#cntHunt').textContent = achadas.size;
-          fb.className = 'dica-flutua boa'; fb.textContent = '✅ ' + it.why;
+          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', it.why);
           if (achadas.size === alvo) {
             later(() => {
               if (rIdx + 1 < a.rounds.length) { rIdx++; drawRound(); }
@@ -158,7 +158,7 @@
         } else {
           if (a.skin !== 'app') progresso.registrarErro();   // no "app" a criança está explorando a tela
           el.classList.add('errada'); el.classList.add('shake');
-          fb.className = 'dica-flutua ruim'; fb.textContent = '➖ ' + it.why;
+          fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('nao', it.why);
           later(() => el.classList.remove('errada', 'shake'), 700);
         }
       });
@@ -177,16 +177,16 @@
     const draw = () => {
       palco.innerHTML = `
         <p class="enunciado">${esc(a.pergunta)}</p>
-        ${a.dica ? `<p class="dica-flutua">💡 ${esc(a.dica)}</p>` : ''}
+        ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
         <div class="seq-slots">
           ${slots.map((s, i) => `<div class="slot ${s !== null ? 'cheio' : ''}" data-s="${i}">
             <span class="n">${i + 1}</span>
-            ${s !== null ? `<span class="e">${passos[s].e}</span><span>${esc(passos[s].t)}</span>` : '<span style="color:#999">toque para preencher</span>'}
+            ${s !== null ? `<span class="e">${icone(passos[s])}</span><span>${esc(passos[s].t)}</span>` : '<span style="color:#999">toque para preencher</span>'}
           </div>`).join('')}
         </div>
         <div class="cartoes">
           ${ordem.map(p => `<button class="cartao ${slots.includes(p.id) ? 'usado' : ''}" data-c="${p.id}">
-            <span class="e">${p.e}</span><span>${esc(p.t)}</span>
+            <span class="e">${icone(p)}</span><span>${esc(p.t)}</span>
           </button>`).join('')}
         </div>
         <div class="dica-flutua" id="fbSeq"></div>
@@ -210,12 +210,12 @@
         const certo = slots.every((id, i) => id === i);
         const fb = $('#fbSeq');
         if (certo) {
-          fb.className = 'dica-flutua boa'; fb.textContent = '✅ Sequência perfeita!';
+          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Sequência perfeita!');
           draw();
           later(() => concluirAtividade(a.fbOk), 700);
         } else {
           progresso.registrarErro();
-          fb.className = 'dica-flutua ruim'; fb.textContent = '❌ Ainda não é essa ordem... tente de novo!';
+          fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('falha', 'Ainda não é essa ordem... tente de novo!');
           draw();
           later(() => { slots.fill(null); draw(); }, 900);
         }
@@ -233,7 +233,7 @@
     const draw = () => {
       palco.innerHTML = `
         <p class="enunciado">${esc(a.pergunta)}</p>
-        ${a.dica ? `<p class="dica-flutua">💡 ${esc(a.dica)}</p>` : ''}
+        ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
         ${a.grupos.map((g, gi) => `
           <div class="grupo">
             <h4>${esc(g.label)}</h4>
@@ -264,11 +264,11 @@
         const okTudo = a.grupos.every((g, gi) => g.blocos[escolha[gi]].ok);
         const fb = $('#fbComp');
         if (okTudo) {
-          fb.className = 'dica-flutua boa'; fb.textContent = '✅ ' + (a.fbOk || 'Ótima mensagem!');
+          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', a.fbOk || 'Ótima mensagem!');
           later(() => concluirAtividade(a.fbOk), 700);
         } else {
           progresso.registrarErro();
-          fb.className = 'dica-flutua ruim'; fb.textContent = '❌ ' + (a.fbBad || 'Vamos tentar outra combinação.');
+          fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('falha', a.fbBad || 'Vamos tentar outra combinação.');
           escolha.fill(null);
           later(draw, 1100);
         }
@@ -329,7 +329,7 @@
         const fb = $('#fbQuiz');
         fb.style.display = 'block';
         fb.className = 'quiz-fb ' + (ok ? 'ok' : 'ruim');
-        fb.textContent = (i < 0 ? '⏱️ O tempo acabou! ' : (ok ? '✅ ' : '❌ ')) + (q.fb || '');
+        fb.innerHTML = i < 0 ? comIcone('cronometro', 'O tempo acabou! ' + (q.fb || '')) : comIcone(ok ? 'correto' : 'falha', q.fb || '');
         $('#rodQuiz').innerHTML = `<button class="btn btn-t" id="btProxQ">${qi + 1 < total ? 'Próxima pergunta' : 'Ver resultado'}</button>`;
         $('#btProxQ').onclick = () => { qi++; if (qi < total) drawQ(); else fimQuiz(); };
       }
@@ -351,7 +351,7 @@
     const draw = () => {
       palco.innerHTML = `
         <p class="enunciado">${esc(a.pergunta)}</p>
-        ${a.dica ? `<p class="dica-flutua">💡 ${esc(a.dica)}</p>` : ''}
+        ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
         <p class="prog-hunt">Ligados: <b>${pares.size}/${a.pares.length}</b></p>
         <div class="match">
           <div class="col">${as.map(x => `<button data-a="${x.id}" class="${pares.has(x.id) ? 'par' : (selA === x.id ? 'sel' : '')}" ${pares.has(x.id) ? 'disabled' : ''}>${esc(x.t)}</button>`).join('')}</div>
@@ -366,12 +366,12 @@
         const fb = $('#fbMatch');
         if (id === selA) {
           pares.add(id); selA = null;
-          fb.className = 'dica-flutua boa'; fb.textContent = '✅ Combinação certa!';
+          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Combinação certa!');
           draw();
           if (pares.size === a.pares.length) later(() => concluirAtividade(a.fbOk), 600);
         } else {
           progresso.registrarErro();
-          fb.className = 'dica-flutua ruim'; fb.textContent = '❌ Essa combinação não é bem essa... tente outra!';
+          fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('falha', 'Essa combinação não é bem essa... tente outra!');
           selA = null; draw();
         }
       });
@@ -389,17 +389,17 @@
         <p class="enunciado">${esc(a.titulo)}</p>
         <div class="bau-cena">
           <div class="bau-linha">
-            <span class="nav-c" style="transform:${fase === 0 ? 'translateY(6px)' : 'translateY(-4px)'}">🧒</span>
-            <span class="caixa" style="font-size:${fase === 0 ? '90px' : '46px'}">🧰</span>
+            <span class="nav-c" style="transform:${fase === 0 ? 'translateY(6px)' : 'translateY(-4px)'}">${I('usuario', { size: 90 })}</span>
+            <span class="caixa">${I('bau', { size: fase === 0 ? 110 : 56 })}</span>
             ${fase === 1 ? `<div class="cap">${I('pirata')}Capitã Bússola</div>` : ''}
           </div>
           <div class="peso">
-            <span>${fase === 0 ? 'Peso do segredo: pesado demais 😣' : 'Peso do segredo: mais leve! 🙂'}</span>
+            <span>${fase === 0 ? 'Peso do segredo: pesado demais' : 'Peso do segredo: mais leve!'}</span>
             <div class="trilho"><i style="width:${fase === 0 ? '95%' : '25%'}; background:${fase === 0 ? '#ff7b5a' : '#2ec4b0'}"></i></div>
           </div>
         </div>
         <p class="texto-cena">${esc(a.texto)}</p>
-        ${a.dica ? `<p class="dica-flutua">💡 ${esc(a.dica)}</p>` : ''}
+        ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
         <div class="rodape">
           ${fase === 0
             ? `<button class="btn btn-t" id="btContar">Ele conta o segredo pra Capitã Bússola</button>`

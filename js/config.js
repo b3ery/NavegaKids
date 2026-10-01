@@ -2,9 +2,8 @@
    NavegaKids — config.js
    Liga o código à pasta /img.
    Cada chave abaixo aponta para o NOME DO ARQUIVO (sem extensão)
-   que está na pasta img/. Se o arquivo não existir, o jogo usa
-   um emoji no lugar — então nada quebra enquanto você não copia
-   todas as imagens.
+   que está na pasta img/. Se o arquivo não existir, a imagem
+   simplesmente não aparece (o jogo não usa emojis).
    ============================================================ */
 (() => {
   'use strict';
@@ -14,7 +13,7 @@
   /* Extensões testadas, nessa ordem. Ajuste se as suas forem outras. */
   const EXTS = ['png', 'webp', 'jpg', 'jpeg', 'svg'];
 
-  /* chave : [nome-do-arquivo, emoji-reserva] */
+  /* chave : [nome-do-arquivo, reserva ('svg:nome' ou null)] */
   const IMG = {
     /* ---- cenários / fundos ---- */
     fundoHome:        ['Fundo_Home', null],
@@ -22,74 +21,74 @@
     fundoFases:       ['FundoFases', null],
     fundoCarregando:  ['fundo_carregando', null],
     fundo:            ['fundo', null],
-    mapaTesouro:      ['mapa-do-tesouro', '🗺️'],
-    mapa:             ['mapa', '🗺️'],
-    mapaHome:         ['Mapa_Home', '🗺️'],
+    mapaTesouro:      ['mapa-do-tesouro', null],
+    mapa:             ['mapa', null],
+    mapaHome:         ['Mapa_Home', null],
 
     /* ---- personagens e cenário ---- */
-    pirata:           ['pirata', '🏴‍☠️'],
-    barco:            ['Barco', '⛵'],
-    navio:            ['navio-mayflower', '🚢'],
-    navioPirata:      ['navio-pirata', '🏴‍☠️'],   // card "Fase atual" do mapa da ilha
+    pirata:           ['pirata', null],
+    barco:            ['Barco', null],
+    navio:            ['navio-mayflower', null],
+    navioPirata:      ['navio-pirata', null],   // card "Fase atual" do mapa da ilha
     volante:          ['Volante', 'svg:volante'],
-    ilha1:            ['ilha1', '🏝️'],
-    ilha2:            ['ilha2', '🏝️'],
-    ilha3:            ['ilha3', '🏝️'],
+    ilha1:            ['ilha1', null],
+    ilha2:            ['ilha2', null],
+    ilha3:            ['ilha3', null],
 
     /* ---- medalha: selos conquistados e "Fase atual" ---- */
-    medalha:          ['medalha', '🏅'],
+    medalha:          ['medalha', null],
 
     /* ---- ícones das ilhas no Diário do Capitão (liberada / bloqueada) ---- */
-    ilhaPraia:                ['ilha-praia', '🏝️'],
-    ilhaPraiaBloqueada:       ['ilha-praia-bloqueada', '🔒'],
-    ilhaArvores:              ['ilha-arvores', '🌳'],
-    ilhaArvoresBloqueada:     ['ilha-arvores-bloqueada', '🔒'],
-    ilhaMontanhas:            ['ilha-montanhas', '⛰️'],
-    ilhaMontanhasBloqueada:   ['ilha-montanhas-bloqueada', '🔒'],
-    bau:              ['treasure-chest', '🧰'],
-    policial:         ['policial', '👮'],
+    ilhaPraia:                ['ilha-praia', null],
+    ilhaPraiaBloqueada:       ['ilha-praia-bloqueada', null],
+    ilhaArvores:              ['ilha-arvores', null],
+    ilhaArvoresBloqueada:     ['ilha-arvores-bloqueada', null],
+    ilhaMontanhas:            ['ilha-montanhas', null],
+    ilhaMontanhasBloqueada:   ['ilha-montanhas-bloqueada', null],
+    bau:              ['treasure-chest', null],
+    policial:         ['policial', null],
 
     /* ---- interface / HUD ---- */
-    estrela:          ['estrela', '⭐'],
-    levelup:          ['levelup', '✦'],
-    moedas:           ['moedas', '🪙'],
-    diamond:          ['diamond', '💎'],
-    conquistas:       ['conquistas', '🏆'],
-    cronometro:       ['cronometro', '⏱️'],
-    config:           ['simbolo-de-interface-da-roda-dentada-de-configuracao', '⚙️'],
-    editar:           ['editar', '✏️'],
-    usuario:          ['usuario', '👤'],
-    utilizador:       ['do-utilizador', '👤'],
-    dadosPessoais:    ['dados-pessoais', '🪪'],
-    bloqueado:        ['bloqueado', '🔒'],
+    estrela:          ['estrela', null],
+    levelup:          ['levelup', null],
+    moedas:           ['moedas', null],
+    diamond:          ['diamond', null],
+    conquistas:       ['conquistas', null],
+    cronometro:       ['cronometro', null],
+    config:           ['simbolo-de-interface-da-roda-dentada-de-configuracao', null],
+    editar:           ['editar', null],
+    usuario:          ['usuario', null],
+    utilizador:       ['do-utilizador', null],
+    dadosPessoais:    ['dados-pessoais', null],
+    bloqueado:        ['bloqueado', null],
 
     /* ---- ícones de fases / feedback ---- */
-    luneta:           ['luneta', '🔍'],
-    anonimo:          ['anonimo', '🕵️'],
-    misterio:         ['misterio', '🤐'],
-    interrogacao:     ['ponto-de-interrogacao', '❓'],
-    interrogacao2:    ['ponto-de-interrogacao (1)', '❓'],
-    bubbleChat:       ['bubble-chat', '💬'],
-    comunicacao:      ['comunicacao', '💬'],
-    comunicacao2:     ['comunicacao (1)', '💬'],
-    falando:          ['falando', '🗣️'],
-    corre:            ['corre', '🏃'],
-    escudo:           ['escudo', '🛡️'],
-    bloquearUsuario:  ['bloquear-usuario', '🚫'],
-    pare:             ['pare-de-intimidar', '✋'],
-    exclamacao3:      ['3exclamacao', '❗'],
-    alerta:           ['alerta (1)', '⚠️'],
-    atencao:          ['atencao', '⚠️'],
-    critico:          ['critico', '❗'],
-    botaoVermelho:    ['botao-vermelho', '🔴'],
-    apoio:            ['apoio-suporte', '🤝'],
-    assistencia:      ['assistencia-social', '🫂'],
-    pedidoAmizade:    ['pedido-de-amizade', '🧑‍🤝‍🧑'],
-    correto:          ['correto', '✅'],
-    falha:            ['falha', '❌'],
-    nao:              ['nao', '✖️'],
-    naoGosto:         ['nao-gosto', '👎'],
-    martelo:          ['martelo', '🔨'],
+    luneta:           ['luneta', null],
+    anonimo:          ['anonimo', null],
+    misterio:         ['misterio', null],
+    interrogacao:     ['ponto-de-interrogacao', null],
+    interrogacao2:    ['ponto-de-interrogacao (1)', null],
+    bubbleChat:       ['bubble-chat', null],
+    comunicacao:      ['comunicacao', null],
+    comunicacao2:     ['comunicacao (1)', null],
+    falando:          ['falando', null],
+    corre:            ['corre', null],
+    escudo:           ['escudo', null],
+    bloquearUsuario:  ['bloquear-usuario', null],
+    pare:             ['pare-de-intimidar', null],
+    exclamacao3:      ['3exclamacao', null],
+    alerta:           ['alerta (1)', null],
+    atencao:          ['atencao', null],
+    critico:          ['critico', null],
+    botaoVermelho:    ['botao-vermelho', null],
+    apoio:            ['apoio-suporte', null],
+    assistencia:      ['assistencia-social', null],
+    pedidoAmizade:    ['pedido-de-amizade', null],
+    correto:          ['correto', null],
+    falha:            ['falha', null],
+    nao:              ['nao', null],
+    naoGosto:         ['nao-gosto', null],
+    martelo:          ['martelo', null],
 
     /* ---- certificados ---- */
     cert1:            ['certificado-final-1', null],

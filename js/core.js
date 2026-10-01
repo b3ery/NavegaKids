@@ -37,11 +37,11 @@
     _faltando.add(key);
     clearTimeout(anotaFalta.t);
     anotaFalta.t = setTimeout(() => console.info(
-      '[NavegaKids] Não achei estes arquivos em /img (usando emoji no lugar): ' +
+      '[NavegaKids] Não achei estes arquivos em /img: ' +
       [..._faltando].map(k => IMG[k][0]).join(', ')), 900);
   }
 
-  /* <img> com fallback automático: tenta as extensões e por fim vira emoji */
+  /* <img> com fallback automático: tenta as extensões e, se nada existir, some */
   function I(key, o = {}) {
     const d = IMG[key];
     if (!d) return '';
@@ -51,7 +51,7 @@
       (st ? ` style="${st}"` : '') + ' draggable="false" onerror="NavegaKids.imgFail(this)">';
   }
 
-  /* Chamado pelo onerror das imagens: tenta a próxima extensão e, por fim, troca pelo emoji. */
+  /* Chamado pelo onerror das imagens: tenta a próxima extensão e, por fim, usa a reserva SVG (se houver). */
   function imgFail(img) {
     const key = img.dataset.k;
     const i = (+img.dataset.i) + 1;
@@ -69,6 +69,13 @@
     else sp.textContent = em;
     img.replaceWith(sp);
   }
+
+  /* Ícone de um item do conteúdo (campo "img" em data.js). Sem img, usa o
+     símbolo de texto do campo "e" (ex.: ⋮ ☰ dos botões de menu). */
+  const icone = (it, o = {}) => it && it.img ? I(it.img, o) : esc(it && it.e || '');
+
+  /* Texto com um ícone pequeno na frente (dicas e mensagens de acerto/erro). */
+  const comIcone = (key, txt) => I(key, { cls: 'ico-txt' }) + ' ' + esc(txt);
 
   /* Ícone de cadeado desenhado em SVG — não existe asset de cadeado na pasta
      img/ (o arquivo "bloqueado" é um ícone de "usuário bloqueado", não serve
@@ -213,7 +220,7 @@
     // utilitários
     $, $$, esc, shuffle, go, later, every, clearTimers, onLeave,
     // imagens
-    I, imgFail, cadeadoIcon, posicionarSobreCover, setBg,
+    I, imgFail, icone, comIcone, cadeadoIcon, posicionarSobreCover, setBg,
     // popups e tela
     fecharPopups, popup, toast, destacarContadores, cabecalho, montar
   });

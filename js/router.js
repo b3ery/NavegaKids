@@ -311,7 +311,7 @@
       return `<button class="passo ${ft ? 'feita' : ''} ${!lib ? 'trancada' : ''}" data-i="${i}" ${lib ? '' : 'disabled'}
         style="left:${posArv.left};top:${posArv.top}">
         <span>${esc(a.titulo)}</span>
-        ${lib ? (ft ? '<span class="n ok">✓</span>' : '<span class="n go">Começar</span>') : `<span class="cad">${cadeadoIcon({ size: 20 })}</span>`}
+        ${lib ? (ft ? `<span class="n ok">${I('correto', { cls: 'ico-txt' })}</span>` : '<span class="n go">Começar</span>') : `<span class="cad">${cadeadoIcon({ size: 20 })}</span>`}
       </button>`;
     }).join('');
     const linhaArv = 'M 18 20 L 18 68 M 18 68 L 60 68';

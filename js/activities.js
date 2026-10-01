@@ -5,7 +5,7 @@
 (() => {
   'use strict';
   const NK = (window.NavegaKids ??= {});
-  const { NPC1, progresso, $, $$, esc, go, later, I, popup, montar, destacarContadores } = NK;
+  const { NPC1, progresso, $, $$, esc, go, later, I, icone, comIcone, popup, montar, destacarContadores } = NK;
   const { faseById, faseLiberada, feita, DEV } = progresso;
 
   let AC = null; // contexto da atividade atual: {f, idx, a}
@@ -115,7 +115,7 @@
       <div class="cap"><div class="pirata">${I('pirata')}</div>Capitã Bússola</div>
       <div class="cham">
         Um guardião é um adulto que você conhece de verdade, cuida de você e em quem você confia.
-        <ul><li>👩 Mãe / Pai / Responsável</li><li>👩‍🏫 Professora</li><li>👵 Avó / Avô</li><li>🧑‍🤝‍🧑 Outro adulto de confiança</li></ul>
+        <ul><li>${I('usuario', { cls: 'ico-txt' })} Mãe / Pai / Responsável</li><li>${I('usuario', { cls: 'ico-txt' })} Professora</li><li>${I('usuario', { cls: 'ico-txt' })} Avó / Avô</li><li>${I('pedidoAmizade', { cls: 'ico-txt' })} Outro adulto de confiança</li></ul>
       </div>
     </div>`;
   }
@@ -177,7 +177,7 @@
       <p class="enunciado">${esc(a.titulo)}</p>
       ${cenaSuporte(a)}
       ${a.texto ? `<p class="texto-cena">${esc(a.texto)}</p>` : ''}
-      ${a.dica ? `<p class="dica-flutua">💡 ${esc(a.dica)}</p>` : ''}
+      ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
       <div class="rodape"><button class="btn btn-t" id="btAvancarDisc">Avançar</button></div>`;
     $('#btAvancarDisc').onclick = () => concluirAtividade();
   }
@@ -219,7 +219,7 @@
       });
       $('#jgNotif').onclick = () => {
         popup({
-          cor: 'y', titulo: '🔎 ' + (AC.f?.titulo || 'Perfil Misterioso..?'),
+          cor: 'y', titulo: I('luneta', { cls: 'ico-txt' }) + ' ' + esc(AC.f?.titulo || 'Perfil Misterioso..?'),
           texto: a.dica,
           btns: [{ t: 'Avançar', cls: 'btn-t', fn: desenharPendentes }]
         });
@@ -233,7 +233,7 @@
         <div class="quiz-fb" id="fbChoice" style="display:none"></div>
         <div class="rodape" id="rodapeChoice"></div>`;
       $('#btInvestigar').onclick = () => popup({
-        cor: 'y', titulo: '🔎 Perfil Misterioso..?', texto: a.dica,
+        cor: 'y', titulo: I('luneta', { cls: 'ico-txt' }) + ' Perfil Misterioso..?', texto: a.dica,
         btns: [{ t: 'Entendi', cls: 'btn-t', fn() {} }]
       });
       $$('.pedido button', palco).forEach(b => b.onclick = () => {
@@ -266,11 +266,11 @@
     palco.innerHTML = `
       ${cenaSuporte(a)}
       <p class="enunciado" style="margin-top:14px">${esc(a.pergunta || '')}</p>
-      ${a.dica ? `<p class="dica-flutua">💡 ${esc(a.dica)}</p>` : ''}
+      ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
       <div class="opcoes ${cartas ? 'cartas' : ''}" id="opcoesWrap">
         ${a.opcoes.map((o, i) => `<button class="opcao" data-i="${i}">
           ${o.tag ? `<span class="tag">${esc(o.tag)}</span>` : ''}
-          ${o.e ? `<span class="e-big">${o.e}</span>` : ''}
+          ${o.img ? `<span class="e-big">${icone(o)}</span>` : ''}
           <span>${esc(o.t)}</span>
         </button>`).join('')}
       </div>
@@ -306,25 +306,25 @@
     const draw = () => {
       palco.innerHTML = `
         <p class="enunciado">${esc(a.pergunta)}</p>
-        ${a.dica ? `<p class="dica-flutua">💡 ${esc(a.dica)}</p>` : ''}
+        ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
         <p class="prog-hunt">Portas abertas: <b>${acertos.size}/${a.portas.length}</b></p>
         <div class="opcoes" id="portasWrap">
           ${a.portas.map((p, i) => `<button class="opcao" data-i="${i}" ${acertos.has(i) ? 'disabled' : ''}>
-            <span class="e">${p.e}</span><span>${esc(p.t)}</span>
+            <span class="e">${icone(p)}</span><span>${esc(p.t)}</span>
           </button>`).join('')}
         </div>
         <div class="dica-flutua" id="fbPorta"></div>`;
       $$('.opcao', palco).forEach(b => b.onclick = () => {
         const i = +b.dataset.i, p = a.portas[i];
         const fb = $('#fbPorta');
-        fb.textContent = (p.seguro ? '✅ Segura! ' : '⚠️ Arriscada! ') + p.why;
+        fb.innerHTML = p.seguro ? comIcone('correto', 'Segura! ' + p.why) : comIcone('atencao', 'Arriscada! ' + p.why);
         fb.className = 'dica-flutua ' + (p.seguro ? 'boa' : 'ruim');
         acertos.add(i);
         if (acertos.size === a.portas.length) {
           later(() => concluirAtividade(a.fbOk), 700);
         }
         draw();
-        $('#fbPorta').textContent = (p.seguro ? '✅ Segura! ' : '⚠️ Arriscada! ') + p.why;
+        $('#fbPorta').innerHTML = p.seguro ? comIcone('correto', 'Segura! ' + p.why) : comIcone('atencao', 'Arriscada! ' + p.why);
         $('#fbPorta').className = 'dica-flutua ' + (p.seguro ? 'boa' : 'ruim');
       });
     };
@@ -341,7 +341,7 @@
         <button class="btn btn-c escudo-btn" id="btBloquear">${I('escudo', { size: 26 })} ${esc(a.botao)}</button>
       </div>`;
     $('#btBloquear').onclick = () => {
-      $('#palco').innerHTML = `<div class="bloqueado-selo">${I('escudo', { size: 80 })}<p>Escudo ativado! 🛡️</p></div>`;
+      $('#palco').innerHTML = `<div class="bloqueado-selo">${I('escudo', { size: 80 })}<p>Escudo ativado!</p></div>`;
       later(() => concluirAtividade(a.fbOk), 900);
     };
   }

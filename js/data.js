@@ -79,11 +79,11 @@
           pergunta: "Toque nas pistas que mostram que esse perfil pode não ser confiável.",
           rounds: [{
             itens: [
-              { e: "👤", t: "Foto: só um ícone genérico, sem foto de verdade", ok: true,  why: "Pista encontrada! Sem foto de verdade, fica difícil saber quem está do outro lado." },
-              { e: "🤝", t: "Nenhum amigo em comum com a sua lista", ok: true, why: "Boa! Ninguém da sua lista de amigos conhece esse perfil." },
-              { e: "📅", t: "Só 3 amigos · conta criada há 2 dias", ok: true, why: "Isso mesmo! Poucos amigos e conta muito nova merecem atenção." },
-              { e: "🎮", t: "Diz que também gosta de jogos de pirata", ok: false, why: "Gostar do mesmo jogo não prova que a pessoa é quem diz ser." },
-              { e: "👋", t: "Escreveu “Olá” de um jeito educado", ok: false, why: "Ser educado não quer dizer que a pessoa é confiável." }
+              { img: "usuario", t: "Foto: só um ícone genérico, sem foto de verdade", ok: true,  why: "Pista encontrada! Sem foto de verdade, fica difícil saber quem está do outro lado." },
+              { img: "apoio", t: "Nenhum amigo em comum com a sua lista", ok: true, why: "Boa! Ninguém da sua lista de amigos conhece esse perfil." },
+              { img: "cronometro", t: "Só 3 amigos · conta criada há 2 dias", ok: true, why: "Isso mesmo! Poucos amigos e conta muito nova merecem atenção." },
+              { img: "pirata", t: "Diz que também gosta de jogos de pirata", ok: false, why: "Gostar do mesmo jogo não prova que a pessoa é quem diz ser." },
+              { img: "comunicacao", t: "Escreveu “Olá” de um jeito educado", ok: false, why: "Ser educado não quer dizer que a pessoa é confiável." }
             ]
           }],
           fbOk: "Muito bem, detetive! Foto genérica, nenhum amigo em comum e conta nova: quando aparecem tantas pistas juntas, é melhor não aceitar."
@@ -92,14 +92,14 @@
           titulo: "O Caminho Seguro", papel: "Escolha final da fase", tipo: "choice",
           cena: { tipo: "chat", com: NPC1, msgs: [
             { de: "npc", t: "Ei! Por que você não me aceitou? Aceita logo!" },
-            { de: "npc", t: "Vou continuar te chamando até você aceitar. 😠" }
+            { de: "npc", t: "Vou continuar te chamando até você aceitar." }
           ]},
           pergunta: "Mesmo depois do seu “não”, ele insiste. O que você faz?",
           dica: "Quem insiste depois de um “não” não está respeitando você.",
           opcoes: [
-            { t: "Ignorar e seguir jogando", e: "🎮", ok: true, fb: "Isso aí! Quando alguém insiste demais depois de um “não”, o caminho mais seguro é não responder e, se possível, bloquear." },
-            { t: "Bloquear", e: "🚫", ok: true, fb: "Isso aí! Quando alguém insiste demais depois de um “não”, o caminho mais seguro é não responder e, se possível, bloquear." },
-            { t: "Responder pra ele parar de insistir", e: "✍️", ok: false, fb: "Vamos pensar de novo: não é preciso explicar nada pra quem você nem conhece. Bloquear também é uma opção segura!" }
+            { t: "Ignorar e seguir jogando", img: "nao", ok: true, fb: "Isso aí! Quando alguém insiste demais depois de um “não”, o caminho mais seguro é não responder e, se possível, bloquear." },
+            { t: "Bloquear", img: "bloquearUsuario", ok: true, fb: "Isso aí! Quando alguém insiste demais depois de um “não”, o caminho mais seguro é não responder e, se possível, bloquear." },
+            { t: "Responder pra ele parar de insistir", img: "editar", ok: false, fb: "Vamos pensar de novo: não é preciso explicar nada pra quem você nem conhece. Bloquear também é uma opção segura!" }
           ]
         }
       ]
@@ -124,8 +124,8 @@
           pergunta: "Arraste (ou toque) cada avatar para o grupo certo.",
           dica: "Pense: você já encontrou essa pessoa pessoalmente e ela faz parte da sua vida real?",
           baldes: [
-            { id: "real", t: "Conheço de verdade", e: "🏠", sub: "colegas, família" },
-            { id: "tela", t: "Só conheço pela tela", e: "📱", sub: "só jogamos online" }
+            { id: "real", t: "Conheço de verdade", img: "pedidoAmizade", sub: "colegas, família" },
+            { id: "tela", t: "Só conheço pela tela", img: "anonimo", sub: "só jogamos online" }
           ],
           itens: [
             { t: "Pirata2020", sub: "colega da minha turma", b: "real" },
@@ -140,7 +140,7 @@
           titulo: "Embarque Seguro", papel: "Escolha", tipo: "choice",
           cena: { tipo: "chat", com: NPC1, msgs: [
             { de: "npc", t: "Ei, vem pra minha cabine reservada!" },
-            { de: "npc", t: "É um chat de voz privado, só nós dois. 🎧" }
+            { de: "npc", t: "É um chat de voz privado, só nós dois." }
           ]},
           pergunta: "O convite é para um chat de voz privado. Você aceita?",
           dica: "Um espaço privado com alguém que só conhecemos pela tela… vale pensar duas vezes.",
@@ -160,7 +160,7 @@
         {
           titulo: "Mensagens à Deriva", papel: "Descoberta · leitura de chat", tipo: "discover",
           cena: { tipo: "chat", com: NPC1, msgs: [
-            { de: "npc", t: "Uau, você joga MUITO bem! Nunca vi ninguém tão incrível! 🤩" },
+            { de: "npc", t: "Uau, você joga MUITO bem! Nunca vi ninguém tão incrível!" },
             { de: "npc", t: "Você é super especial, sabia? Bem diferente dos outros." },
             { de: "npc", t: "Quantos anos você tem? E onde você estuda?" }
           ]},
@@ -175,7 +175,7 @@
           rounds: [{
             itens: [
               { t: "Oi! Vi que você também joga esse jogo.", ok: false, why: "Essa é só uma conversa normal de quem joga junto." },
-              { t: "Você é a criança mais incrível do mundo, ninguém joga como você! 😍", ok: true, why: "Elogio exagerado! Quem quer te agradar demais pode estar tentando ganhar sua confiança." },
+              { t: "Você é a criança mais incrível do mundo, ninguém joga como você!", ok: true, why: "Elogio exagerado! Quem quer te agradar demais pode estar tentando ganhar sua confiança." },
               { t: "Qual é o seu jogo favorito?", ok: false, why: "Falar de jogo favorito é tranquilo." },
               { t: "Me conta onde você mora e qual é o seu sobrenome?", ok: true, why: "Pergunta pessoal demais! Endereço e sobrenome não são para estranhos." },
               { t: "Não conta pra ninguém que a gente conversa, tá?", ok: true, why: "Pedido de segredo! Isso é um sinal de alerta importante." }
@@ -191,8 +191,8 @@
           pergunta: "O que você faz agora?",
           dica: "Você manda em você: não precisa responder só porque alguém perguntou.",
           opcoes: [
-            { t: "Responder", e: "✍️", ok: false, fb: "Vamos pensar de novo: perguntas pessoais não precisam de resposta só porque alguém insiste." },
-            { t: "Sair da conversa", e: "🚪", ok: true, fb: "Isso aí! Você não precisa responder a tudo. Sair da conversa e contar pra um adulto é sempre uma opção válida." }
+            { t: "Responder", img: "editar", ok: false, fb: "Vamos pensar de novo: perguntas pessoais não precisam de resposta só porque alguém insiste." },
+            { t: "Sair da conversa", img: "corre", ok: true, fb: "Isso aí! Você não precisa responder a tudo. Sair da conversa e contar pra um adulto é sempre uma opção válida." }
           ]
         }
       ]
@@ -216,16 +216,16 @@
           pergunta: "Arraste (ou toque) cada informação para o lugar certo.",
           dica: "Bora separar o que é seguro contar do que é melhor guardar com você e sua família.",
           baldes: [
-            { id: "pode", t: "Pode compartilhar", e: "✅" },
-            { id: "meu", t: "É só meu / da minha família", e: "🔐" }
+            { id: "pode", t: "Pode compartilhar", img: "correto" },
+            { id: "meu", t: "É só meu / da minha família", img: "escudo" }
           ],
           itens: [
-            { t: "Jogo favorito", e: "🎮", b: "pode" },
-            { t: "Cor preferida", e: "🎨", b: "pode" },
-            { t: "Endereço", e: "🏠", b: "meu" },
-            { t: "Escola", e: "🏫", b: "meu" },
-            { t: "Senha", e: "🔑", b: "meu" },
-            { t: "Fotos", e: "📸", b: "meu" }
+            { t: "Jogo favorito", b: "pode" },
+            { t: "Cor preferida", b: "pode" },
+            { t: "Endereço", b: "meu" },
+            { t: "Escola", b: "meu" },
+            { t: "Senha", b: "meu" },
+            { t: "Fotos", b: "meu" }
           ],
           fbOk: "Isso! Gostos como jogo e cor podem ser conversados. Endereço, escola, senha e fotos ficam com você e sua família."
         },
@@ -237,8 +237,8 @@
           pergunta: "O que você faz com esse segredo?",
           dica: "Segredo bom é festa surpresa. Segredo que pede silêncio… é outra história.",
           opcoes: [
-            { t: "Guardar segredo", e: "🤐", ok: false, fb: "Segredo bom é tipo festa surpresa — deixa todo mundo feliz depois. Segredo que pede silêncio merece ser contado, viu?" },
-            { t: "Contar pra um adulto", e: "🧑‍🏫", ok: true, fb: "Você quebrou o segredo certo! Quando alguém pede pra esconder algo dos adultos, é hora de contar pra alguém de confiança." }
+            { t: "Guardar segredo", img: "misterio", ok: false, fb: "Segredo bom é tipo festa surpresa — deixa todo mundo feliz depois. Segredo que pede silêncio merece ser contado, viu?" },
+            { t: "Contar pra um adulto", img: "apoio", ok: true, fb: "Você quebrou o segredo certo! Quando alguém pede pra esconder algo dos adultos, é hora de contar pra alguém de confiança." }
           ]
         }
       ]
@@ -255,14 +255,14 @@
           pergunta: "Toque nos 4 sinais de alerta escondidos na cena.",
           rounds: [{
             itens: [
-              { img: "anonimo",  e: "🕵️", t: "Perfil suspeito", ok: true, x: 14, y: 30, why: "Perfil suspeito encontrado!" },
-              { img: "pare",     e: "✋", t: "Sinal de STOP", ok: true, x: 72, y: 24, why: "Sinal de STOP! Mensagem estranha à vista." },
-              { img: "misterio", e: "🤐", t: "Pedido de segredo", ok: true, x: 45, y: 62, why: "Boca fechada: pedido de segredo." },
-              { img: "dadosPessoais", e: "🪪", t: "Pedido de dados pessoais", ok: true, x: 84, y: 66, why: "Quem pede dados pessoais merece desconfiança." },
-              { e: "🐚", t: "Concha", ok: false, x: 28, y: 72, why: "Só uma concha bonita." },
-              { e: "⚓", t: "Âncora", ok: false, x: 58, y: 18, why: "Uma âncora de navio, sem perigo." },
-              { e: "🦜", t: "Papagaio", ok: false, x: 8, y: 62, why: "Esse papagaio é inofensivo." },
-              { e: "🌴", t: "Palmeira", ok: false, x: 92, y: 36, why: "Palmeira tranquila." }
+              { img: "anonimo",  t: "Perfil suspeito", ok: true, x: 14, y: 30, why: "Perfil suspeito encontrado!" },
+              { img: "pare",     t: "Sinal de STOP", ok: true, x: 72, y: 24, why: "Sinal de STOP! Mensagem estranha à vista." },
+              { img: "misterio", t: "Pedido de segredo", ok: true, x: 45, y: 62, why: "Boca fechada: pedido de segredo." },
+              { img: "dadosPessoais", t: "Pedido de dados pessoais", ok: true, x: 84, y: 66, why: "Quem pede dados pessoais merece desconfiança." },
+              { img: "diamond", t: "Diamante", ok: false, x: 28, y: 72, why: "Só um diamante brilhante." },
+              { img: "navio", t: "Navio", ok: false, x: 58, y: 18, why: "Só um navio passando, sem perigo." },
+              { img: "bau", t: "Baú do tesouro", ok: false, x: 8, y: 62, why: "Esse baú de tesouro é inofensivo." },
+              { img: "luneta", t: "Luneta", ok: false, x: 92, y: 36, why: "Uma luneta de pirata, tranquila." }
             ]
           }],
           fbOk: "Você achou todos os sinais escondidos! Olho de águia, pirata!"
@@ -290,9 +290,9 @@
           pergunta: "Monte a sequência certa, tocando nos cartões na ordem.",
           dica: "Primeiro a gente desconfia, depois se protege e, por fim, pede ajuda.",
           passos: [
-            { t: "Desconfiar do perfil", e: "🕵️" },
-            { t: "Não compartilhar dados", e: "🔐" },
-            { t: "Contar pra um adulto", e: "🧑‍🏫" }
+            { t: "Desconfiar do perfil", img: "anonimo" },
+            { t: "Não compartilhar dados", img: "dadosPessoais" },
+            { t: "Contar pra um adulto", img: "apoio" }
           ],
           fbOk: "Sequência perfeita: desconfiar do perfil, não compartilhar dados e contar pra um adulto!"
         }
@@ -309,7 +309,7 @@
         {
           titulo: "A Conversa Mudou", papel: "Descoberta", tipo: "discover",
           cena: { tipo: "chat", com: NPC2, msgs: [
-            { de: "npc", t: "Oi! Vi que você joga muito bem! 😄" },
+            { de: "npc", t: "Oi! Vi que você joga muito bem!" },
             { de: "eu", t: "Oi! Valeu!" },
             { de: "npc", t: "Vamos conversar por outro aplicativo? Lá é mais tranquilo, só nós dois." }
           ]},
@@ -321,18 +321,18 @@
           dica: "Nem toda porta que parece convidativa leva a um lugar seguro. Vamos abrir com cuidado?",
           pergunta: "Toque em cada porta e diga se ela é segura ou arriscada.",
           portas: [
-            { e: "👨‍👩‍👧", t: "Grupo da família", seguro: true, why: "Seus familiares estão lá e podem acompanhar a conversa." },
-            { e: "🎮", t: "Chat do jogo com moderação", seguro: true, why: "Tem regras, moderadores e um jeito de pedir ajuda." },
-            { e: "🕵️", t: "Chat privado sugerido por alguém pouco conhecido", seguro: false, why: "Longe dos olhares de outras pessoas. Isso é um risco!" },
-            { e: "📲", t: "Aplicativo desconhecido que um perfil novo pediu pra você baixar", seguro: false, why: "Se alguém que você mal conhece quer te levar para outro app, desconfie." },
-            { e: "🏫", t: "Grupo da turma criado pela sua professora", seguro: true, why: "Um adulto de confiança está por perto." }
+            { img: "assistencia", t: "Grupo da família", seguro: true, why: "Seus familiares estão lá e podem acompanhar a conversa." },
+            { img: "escudo", t: "Chat do jogo com moderação", seguro: true, why: "Tem regras, moderadores e um jeito de pedir ajuda." },
+            { img: "anonimo", t: "Chat privado sugerido por alguém pouco conhecido", seguro: false, why: "Longe dos olhares de outras pessoas. Isso é um risco!" },
+            { img: "comunicacao", t: "Aplicativo desconhecido que um perfil novo pediu pra você baixar", seguro: false, why: "Se alguém que você mal conhece quer te levar para outro app, desconfie." },
+            { img: "apoio", t: "Grupo da turma criado pela sua professora", seguro: true, why: "Um adulto de confiança está por perto." }
           ],
           fbOk: "Você abriu todas as portas com cuidado! Espaços com pessoas de confiança são seguros; convites reservados de desconhecidos, não."
         },
         {
           titulo: "Pare por Aqui", papel: "Escolha", tipo: "choice",
           cena: { tipo: "chat", com: NPC2, msgs: [
-            { de: "npc", t: "Vamos, vai! Prometo que lá é mais legal. 😉" },
+            { de: "npc", t: "Vamos, vai! Prometo que lá é mais legal." },
             { de: "npc", t: "Só me passa seu contato e a gente conversa lá." }
           ]},
           pergunta: "Ele insiste no convite. O que você responde?",
@@ -352,7 +352,7 @@
         {
           titulo: "Qual Resposta Você Mandaria", papel: "Descoberta · múltipla escolha", tipo: "choice",
           cena: { tipo: "chat", com: NPC2, msgs: [
-            { de: "npc", t: "Você pode me mandar uma foto sua? Só pra eu saber como você é! 📸" }
+            { de: "npc", t: "Você pode me mandar uma foto sua? Só pra eu saber como você é!" }
           ]},
           pergunta: "Qual resposta você mandaria?",
           dica: "Não existe só uma forma de responder — mas algumas são bem mais seguras que outras.",
@@ -384,13 +384,13 @@
         {
           titulo: "Duelo de Respostas", papel: "Escolha · duelo de cartas", tipo: "choice", skin: "cartas",
           cena: { tipo: "chat", com: NPC2, msgs: [
-            { de: "npc", t: "Me fala em qual escola você estuda! Eu passo aí pra te ver. 😃" }
+            { de: "npc", t: "Me fala em qual escola você estuda! Eu passo aí pra te ver." }
           ]},
           pergunta: "Escolha a carta que você jogaria no duelo!",
           dica: "Uma carta protege, a outra deixa uma brecha. Qual vai vencer o duelo?",
           opcoes: [
-            { t: "Não vou falar disso. Vou contar pro meu responsável.", tag: "Segura", e: "🛡️", ok: true, fb: "Vitória! Uma resposta educada e firme é uma arma e tanto contra pedidos estranhos." },
-            { t: "Estudo na Escola Central, no turno da manhã!", tag: "Arriscada", e: "⚡", ok: false, fb: "Essa resposta deixou uma brecha... Bora escolher a carta mais segura dessa vez?" }
+            { t: "Não vou falar disso. Vou contar pro meu responsável.", tag: "Segura", img: "escudo", ok: true, fb: "Vitória! Uma resposta educada e firme é uma arma e tanto contra pedidos estranhos." },
+            { t: "Estudo na Escola Central, no turno da manhã!", tag: "Arriscada", img: "atencao", ok: false, fb: "Essa resposta deixou uma brecha... Bora escolher a carta mais segura dessa vez?" }
           ]
         }
       ]
@@ -404,7 +404,7 @@
         {
           titulo: "Isso Está Estranho", papel: "Descoberta", tipo: "discover",
           cena: { tipo: "chat", com: NPC2, msgs: [
-            { de: "npc", t: "Por que você demora tanto pra responder? 😒" },
+            { de: "npc", t: "Por que você demora tanto pra responder?" },
             { de: "npc", t: "Ei! Muda de assunto: você tá sozinho em casa agora?" },
             { de: "npc", t: "Se você sair, eu vou ficar muito bravo." }
           ]},
@@ -418,12 +418,12 @@
           rounds: [{
             titulo: "Joguinho · chat",
             itens: [
-              { e: "⚙️", t: "Configurações", ok: false, why: "Esse é o botão de configurações, não o de sair." },
-              { e: "🔔", t: "Notificações", ok: false, why: "Esse mostra avisos, não sai da conversa." },
-              { e: "🎵", t: "Som", ok: false, why: "Esse liga e desliga o som." },
-              { img: "bloquearUsuario", e: "🚫", t: "Bloquear / sair da conversa", ok: true, why: "Achou! Esse botão encerra a conversa e bloqueia o contato." },
-              { e: "🛒", t: "Loja", ok: false, why: "Esse leva para a loja do jogo." },
-              { e: "🖼️", t: "Tema", ok: false, why: "Esse muda o visual do jogo." }
+              { img: "config", t: "Configurações", ok: false, why: "Esse é o botão de configurações, não o de sair." },
+              { img: "exclamacao3", t: "Notificações", ok: false, why: "Esse mostra avisos, não sai da conversa." },
+              { img: "falando", t: "Som", ok: false, why: "Esse liga e desliga o som." },
+              { img: "bloquearUsuario", t: "Bloquear / sair da conversa", ok: true, why: "Achou! Esse botão encerra a conversa e bloqueia o contato." },
+              { img: "moedas", t: "Loja", ok: false, why: "Esse leva para a loja do jogo." },
+              { img: "editar", t: "Tema", ok: false, why: "Esse muda o visual do jogo." }
             ]
           }],
           fbOk: "Você achou o botão! Saber onde ele fica ajuda a agir rápido quando a conversa incomoda."
@@ -435,8 +435,8 @@
           ]},
           pergunta: "Você está desconfortável. O que faz?",
           opcoes: [
-            { t: "Sair da conversa e contar pra um adulto", e: "🚪", ok: true, fb: "Isso mesmo! Sair de uma conversa que incomoda não é falta de educação — é se cuidar." },
-            { t: "Continuar tentando resolver sozinho", e: "😬", ok: false, fb: "Vamos pensar de novo: você não precisa resolver isso sozinho. Sair e contar pra alguém de confiança também é uma ótima escolha." }
+            { t: "Sair da conversa e contar pra um adulto", img: "corre", ok: true, fb: "Isso mesmo! Sair de uma conversa que incomoda não é falta de educação — é se cuidar." },
+            { t: "Continuar tentando resolver sozinho", img: "interrogacao", ok: false, fb: "Vamos pensar de novo: você não precisa resolver isso sozinho. Sair e contar pra alguém de confiança também é uma ótima escolha." }
           ]
         }
       ]
@@ -450,9 +450,9 @@
         {
           titulo: "Conheça o Escudo", papel: "Descoberta · explicativa", tipo: "explain",
           slides: [
-            { titulo: "O escudo existe nos aplicativos", img: "escudo", e: "🛡️", txt: "Nos jogos e aplicativos existe um ícone de bloqueio. Geralmente ele fica no perfil da pessoa ou nos três pontinhos." },
-            { titulo: "O que ele faz?", img: "bloquearUsuario", e: "🚫", txt: "Ao bloquear alguém, essa pessoa não consegue mais te mandar mensagem." },
-            { titulo: "Você pode usar sempre", img: "escudo", e: "🛡️", txt: "O escudo não é feitiço mágico, é uma ferramenta de verdade que existe nos aplicativos — e você pode usar sempre que precisar." }
+            { titulo: "O escudo existe nos aplicativos", img: "escudo", txt: "Nos jogos e aplicativos existe um ícone de bloqueio. Geralmente ele fica no perfil da pessoa ou nos três pontinhos." },
+            { titulo: "O que ele faz?", img: "bloquearUsuario", txt: "Ao bloquear alguém, essa pessoa não consegue mais te mandar mensagem." },
+            { titulo: "Você pode usar sempre", img: "escudo", txt: "O escudo não é feitiço mágico, é uma ferramenta de verdade que existe nos aplicativos — e você pode usar sempre que precisar." }
           ]
         },
         {
@@ -460,15 +460,15 @@
           pergunta: "Arraste (ou toque) cada situação para o grupo certo.",
           dica: "O escudo é para quem te deixa desconfortável e não para quando é só uma discussão do dia a dia.",
           baldes: [
-            { id: "sim", t: "Merece o escudo", e: "🛡️" },
-            { id: "nao", t: "Não precisa bloquear", e: "🤝" }
+            { id: "sim", t: "Merece o escudo", img: "escudo" },
+            { id: "nao", t: "Não precisa bloquear", img: "apoio" }
           ],
           itens: [
-            { t: "Desconhecido que insiste em mandar mensagens", e: "😠", b: "sim" },
-            { t: "Perfil que pede seu endereço e não para de te chamar", e: "🕵️", b: "sim" },
-            { t: "Amigo da escola com quem você teve um desentendimento bobo", e: "🧒", b: "nao" },
-            { t: "Colega que discordou de você durante o jogo", e: "🎮", b: "nao" },
-            { t: "Alguém que continua te chamando mesmo depois do seu “não”", e: "🔔", b: "sim" }
+            { t: "Desconhecido que insiste em mandar mensagens", img: "bubbleChat", b: "sim" },
+            { t: "Perfil que pede seu endereço e não para de te chamar", img: "anonimo", b: "sim" },
+            { t: "Amigo da escola com quem você teve um desentendimento bobo", img: "pedidoAmizade", b: "nao" },
+            { t: "Colega que discordou de você durante o jogo", img: "comunicacao", b: "nao" },
+            { t: "Alguém que continua te chamando mesmo depois do seu “não”", img: "exclamacao3", b: "sim" }
           ],
           fbOk: "Boa! O escudo é para quem insiste em te deixar desconfortável — não pra qualquer discussão do dia a dia."
         },
@@ -495,13 +495,13 @@
           pergunta: "Toque em cada sinal: convite para sair da plataforma, mensagem estranha, desconforto e o botão de escudo.",
           rounds: [{
             itens: [
-              { e: "📲", t: "Convite para conversar em outro aplicativo", ok: true, x: 16, y: 28, why: "Convite para sair da plataforma! Sinal de alerta." },
-              { img: "bubbleChat", e: "💬", t: "Mensagem estranha pedindo foto", ok: true, x: 68, y: 22, why: "Mensagem estranha: pedir foto é sinal de alerta." },
-              { e: "😟", t: "Sinal de desconforto", ok: true, x: 40, y: 66, why: "Se você ficou desconfortável, confie nesse alarme interno." },
-              { img: "escudo", e: "🛡️", t: "Botão de escudo (bloquear)", ok: true, x: 84, y: 64, why: "O escudo! A ferramenta para se proteger." },
-              { e: "🐠", t: "Peixinho", ok: false, x: 10, y: 66, why: "Só um peixinho passeando." },
-              { e: "🌊", t: "Onda", ok: false, x: 56, y: 40, why: "Só uma onda." },
-              { e: "🦀", t: "Caranguejo", ok: false, x: 90, y: 30, why: "Caranguejo amigável." }
+              { img: "comunicacao", t: "Convite para conversar em outro aplicativo", ok: true, x: 16, y: 28, why: "Convite para sair da plataforma! Sinal de alerta." },
+              { img: "bubbleChat", t: "Mensagem estranha pedindo foto", ok: true, x: 68, y: 22, why: "Mensagem estranha: pedir foto é sinal de alerta." },
+              { img: "alerta", t: "Sinal de desconforto", ok: true, x: 40, y: 66, why: "Se você ficou desconfortável, confie nesse alarme interno." },
+              { img: "escudo", t: "Botão de escudo (bloquear)", ok: true, x: 84, y: 64, why: "O escudo! A ferramenta para se proteger." },
+              { img: "estrela", t: "Estrela", ok: false, x: 10, y: 66, why: "Só uma estrela brilhando." },
+              { img: "moedas", t: "Moedas", ok: false, x: 56, y: 40, why: "Só algumas moedas de ouro." },
+              { img: "medalha", t: "Medalha", ok: false, x: 90, y: 30, why: "Só uma medalha de pirata." }
             ]
           }],
           fbOk: "Você identificou todos os sinais das fases 6 a 9. Pirata esperto!"
@@ -532,10 +532,10 @@
           pergunta: "Monte a sequência final de decisões, tocando nos cartões na ordem.",
           dica: "Reconhecer → responder → sair → proteger.",
           passos: [
-            { t: "Reconhecer o sinal", e: "🚩" },
-            { t: "Escolher a resposta certa", e: "💬" },
-            { t: "Sair da conversa, se precisar", e: "🚪" },
-            { t: "Ativar o escudo", e: "🛡️" }
+            { t: "Reconhecer o sinal", img: "exclamacao3" },
+            { t: "Escolher a resposta certa", img: "bubbleChat" },
+            { t: "Sair da conversa, se precisar", img: "corre" },
+            { t: "Ativar o escudo", img: "escudo" }
           ],
           fbOk: "Sequência de mestre: reconhecer o sinal, responder com firmeza, sair e ativar o escudo!"
         }
@@ -560,17 +560,17 @@
           pergunta: "Arraste (ou toque) as cartas para o convés do navio: quem entra no Time de Confiança?",
           dica: "O seu time de confiança é feito de gente que você conhece na vida real e que cuida de você. Quanto mais guardiões, mais forte fica o seu navio!",
           baldes: [
-            { id: "time", t: "Time de Confiança", e: "⚓", sub: "convés do navio" },
-            { id: "fora", t: "Fora da tripulação", e: "🌊", sub: "só conheço pela tela" }
+            { id: "time", t: "Time de Confiança", img: "navio", sub: "convés do navio" },
+            { id: "fora", t: "Fora da tripulação", img: "anonimo", sub: "só conheço pela tela" }
           ],
           itens: [
-            { t: "Mãe", e: "👩", b: "time" },
-            { t: "Pai", e: "👨", b: "time" },
-            { t: "Responsável", e: "🧑", b: "time" },
-            { t: "Professora", e: "👩‍🏫", b: "time" },
-            { t: "Avó", e: "👵", b: "time" },
-            { t: NPC1, sub: "só conheço pela tela", e: "🕵️", b: "fora" },
-            { t: "Perfil anônimo", sub: "nunca vi pessoalmente", e: "👤", b: "fora" }
+            { t: "Mãe", img: "usuario", b: "time" },
+            { t: "Pai", img: "usuario", b: "time" },
+            { t: "Responsável", img: "usuario", b: "time" },
+            { t: "Professora", img: "usuario", b: "time" },
+            { t: "Avó", img: "usuario", b: "time" },
+            { t: NPC1, sub: "só conheço pela tela", img: "anonimo", b: "fora" },
+            { t: "Perfil anônimo", sub: "nunca vi pessoalmente", img: "anonimo", b: "fora" }
           ],
           fbOk: "Tripulação formada! Seu time de confiança tem gente que você conhece de verdade e que cuida de você."
         },
@@ -581,8 +581,8 @@
           ]},
           pergunta: "Algo estranho aconteceu no chat de um jogo. O que você faz?",
           opcoes: [
-            { t: "Tentar resolver sozinho e não contar", e: "🤫", ok: false, fb: "Vamos repensar: nenhum pirata de verdade encara a tempestade sem chamar a tripulação. Contar para um guardião deixa tudo mais seguro." },
-            { t: "Chamar um guardião do meu time", e: "📣", ok: true, fb: "Isso aí! Chamar um adulto de confiança é uma das atitudes mais corajosas e espertas de um navegador. Você nunca precisa enfrentar o mar sozinho." }
+            { t: "Tentar resolver sozinho e não contar", img: "misterio", ok: false, fb: "Vamos repensar: nenhum pirata de verdade encara a tempestade sem chamar a tripulação. Contar para um guardião deixa tudo mais seguro." },
+            { t: "Chamar um guardião do meu time", img: "falando", ok: true, fb: "Isso aí! Chamar um adulto de confiança é uma das atitudes mais corajosas e espertas de um navegador. Você nunca precisa enfrentar o mar sozinho." }
           ]
         }
       ]
@@ -640,9 +640,9 @@
         {
           titulo: "A Bandeira de Alerta", papel: "Descoberta · explicativa", tipo: "explain",
           slides: [
-            { titulo: "O botão Denunciar", img: "botaoVermelho", e: "🚩", txt: "Nos aplicativos e redes existe o botão Denunciar (ou Reportar). Ele avisa a plataforma sobre alguém que está agindo de forma errada." },
-            { titulo: "Denunciar não é dedurar", img: "alerta", e: "⚠️", txt: "Denunciar é diferente de dedurar. É usar uma ferramenta de verdade para avisar que alguém passou dos limites e proteger você e outras crianças." },
-            { titulo: "Canais oficiais", img: "policial", e: "📞", txt: "Além dos aplicativos, existem canais oficiais de ajuda, como o Disque 100, que adultos de confiança também podem acionar." }
+            { titulo: "O botão Denunciar", img: "botaoVermelho", txt: "Nos aplicativos e redes existe o botão Denunciar (ou Reportar). Ele avisa a plataforma sobre alguém que está agindo de forma errada." },
+            { titulo: "Denunciar não é dedurar", img: "alerta", txt: "Denunciar é diferente de dedurar. É usar uma ferramenta de verdade para avisar que alguém passou dos limites e proteger você e outras crianças." },
+            { titulo: "Canais oficiais", img: "policial", txt: "Além dos aplicativos, existem canais oficiais de ajuda, como o Disque 100, que adultos de confiança também podem acionar." }
           ]
         },
         {
@@ -651,21 +651,21 @@
           pergunta: "Em cada aplicativo, toque no lugar onde fica o menu com a opção Denunciar.",
           rounds: [
             { titulo: "Chat de um jogo", itens: [
-              { e: "🔔", t: "Notificações", ok: false, why: "Esse mostra avisos." },
-              { e: "⚙️", t: "Configurações", ok: false, why: "Esse ajusta o app, mas não é onde se denuncia." },
+              { img: "exclamacao3", t: "Notificações", ok: false, why: "Esse mostra avisos." },
+              { img: "config", t: "Configurações", ok: false, why: "Esse ajusta o app, mas não é onde se denuncia." },
               { e: "⋮", t: "Três pontinhos", ok: true, why: "Achou! Nos três pontinhos aparece a opção Denunciar." },
-              { e: "🔍", t: "Busca", ok: false, why: "Esse serve para procurar coisas." }
+              { img: "luneta", t: "Busca", ok: false, why: "Esse serve para procurar coisas." }
             ]},
             { titulo: "Perfil de uma rede social", itens: [
-              { e: "❤️", t: "Curtir", ok: false, why: "Esse serve para curtir." },
-              { e: "📤", t: "Compartilhar", ok: false, why: "Esse compartilha o perfil." },
+              { img: "estrela", t: "Curtir", ok: false, why: "Esse serve para curtir." },
+              { img: "comunicacao2", t: "Compartilhar", ok: false, why: "Esse compartilha o perfil." },
               { e: "☰", t: "Menu", ok: true, why: "Achou! No menu você encontra Denunciar ou Reportar." },
-              { e: "💬", t: "Comentários", ok: false, why: "Esse abre os comentários." }
+              { img: "bubbleChat", t: "Comentários", ok: false, why: "Esse abre os comentários." }
             ]},
             { titulo: "Mensagens diretas", itens: [
-              { e: "📞", t: "Ligar", ok: false, why: "Esse liga para a pessoa." },
-              { e: "📎", t: "Anexar", ok: false, why: "Esse anexa arquivos." },
-              { e: "😀", t: "Emojis", ok: false, why: "Esse abre os emojis." },
+              { img: "falando", t: "Ligar", ok: false, why: "Esse liga para a pessoa." },
+              { img: "editar", t: "Anexar", ok: false, why: "Esse anexa arquivos." },
+              { img: "naoGosto", t: "Emojis", ok: false, why: "Esse abre os emojis." },
               { e: "⋯", t: "Mais opções", ok: true, why: "Achou! Em “mais opções” você pode denunciar ou bloquear." }
             ]}
           ],
@@ -678,8 +678,8 @@
           ]},
           pergunta: "O que você faz?",
           opcoes: [
-            { t: "Denunciar junto com um adulto de confiança", e: "🧑‍🏫", ok: true, fb: "Isso mesmo! Denunciar já é ótimo, e fazer isso ao lado de um guardião é ainda mais forte. Adultos de confiança também podem acionar canais oficiais, como o Disque 100." },
-            { t: "Denunciar escondido e não contar para ninguém", e: "🤫", ok: false, fb: "Vamos repensar: a denúncia é importante, e você não precisa dar esse passo sozinho. Um guardião pode te acompanhar em cada etapa." }
+            { t: "Denunciar junto com um adulto de confiança", img: "apoio", ok: true, fb: "Isso mesmo! Denunciar já é ótimo, e fazer isso ao lado de um guardião é ainda mais forte. Adultos de confiança também podem acionar canais oficiais, como o Disque 100." },
+            { t: "Denunciar escondido e não contar para ninguém", img: "misterio", ok: false, fb: "Vamos repensar: a denúncia é importante, e você não precisa dar esse passo sozinho. Um guardião pode te acompanhar em cada etapa." }
           ]
         }
       ]
@@ -695,7 +695,7 @@
           cena: { tipo: "chat", com: "Leo (seu amigo)", msgs: [
             { de: "npc", t: "Posso te contar uma coisa? Fico meio sem graça...", nome: "Leo" },
             { de: "npc", t: "Um perfil desconhecido anda mandando mensagens estranhas pra mim.", nome: "Leo" },
-            { de: "npc", t: "Eu não sei o que fazer. 😟", nome: "Leo" }
+            { de: "npc", t: "Eu não sei o que fazer.", nome: "Leo" }
           ]},
           texto: "O seu amigo confiou em você para contar isso.",
           dica: "Quando um amigo confia em você para contar uma coisa dessas, ele já está sendo corajoso. Como será que dá para ajudar?"
@@ -716,12 +716,12 @@
         {
           titulo: "Juntos Somos Mais Fortes", papel: "Escolha", tipo: "choice",
           cena: { tipo: "chat", com: "Leo (seu amigo)", msgs: [
-            { de: "npc", t: "Será que eu conto pra alguém? Tenho medo... 😔", nome: "Leo" }
+            { de: "npc", t: "Será que eu conto pra alguém? Tenho medo...", nome: "Leo" }
           ]},
           pergunta: "O que você faz?",
           opcoes: [
-            { t: "Ir com o amigo falar com um adulto de confiança", e: "🤝", ok: true, fb: "Isso aí! Acompanhar um amigo até um adulto de confiança é coisa de guardião de verdade. Ninguém precisa enfrentar isso sozinho." },
-            { t: "Dizer para o amigo resolver sozinho", e: "🙅", ok: false, fb: "Vamos pensar de novo: o seu amigo vai se sentir bem mais seguro se você estiver ao lado dele nessa hora." }
+            { t: "Ir com o amigo falar com um adulto de confiança", img: "apoio", ok: true, fb: "Isso aí! Acompanhar um amigo até um adulto de confiança é coisa de guardião de verdade. Ninguém precisa enfrentar isso sozinho." },
+            { t: "Dizer para o amigo resolver sozinho", img: "nao", ok: false, fb: "Vamos pensar de novo: o seu amigo vai se sentir bem mais seguro se você estiver ao lado dele nessa hora." }
           ]
         }
       ]
@@ -761,10 +761,10 @@
           pergunta: "Monte a rota completa de um guardião, tocando nos cartões na ordem.",
           dica: "Primeiro reconhecemos, depois escolhemos com segurança, contamos e, se preciso, denunciamos.",
           passos: [
-            { t: "Reconhecer o perigo", e: "🚩" },
-            { t: "Fazer a escolha segura", e: "🛡️" },
-            { t: "Contar para um adulto de confiança", e: "🧑‍🏫" },
-            { t: "Denunciar quando for preciso", e: "📢" }
+            { t: "Reconhecer o perigo", img: "exclamacao3" },
+            { t: "Fazer a escolha segura", img: "escudo" },
+            { t: "Contar para um adulto de confiança", img: "apoio" },
+            { t: "Denunciar quando for preciso", img: "botaoVermelho" }
           ],
           fbOk: "Rota completa de guardião: reconhecer, escolher com segurança, contar e denunciar!"
         }
