@@ -869,8 +869,49 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .dr-txt { font-size: calc(27 * var(--u)); line-height: 1.2; white-space: nowrap; }
 .dr-txt b { font-weight: 700; }
 .dr-txt span { font-weight: 400; }
-.dr-slot { width: calc(114 * var(--u)); height: calc(111 * var(--u)); border: calc(4 * var(--u)) solid #1E293B; box-sizing: border-box;
+.dr-slot { width: calc(114 * var(--u)); height: calc(111 * var(--u)); border: calc(4 * var(--u)) solid var(--cor, #1E293B); box-sizing: border-box;
   background: linear-gradient(#1E293B, #1E293B) 48% 0 / calc(3 * var(--u)) 100% no-repeat, linear-gradient(#1E293B, #1E293B) 0 48% / 100% calc(3 * var(--u)) no-repeat; }
+/* cores das ilhas (bandeiras 1 azul · 2 laranja · 3 verde) nos detalhes do Diário */
+.dr-num { width: calc(34 * var(--u)); height: calc(34 * var(--u)); border-radius: 50%; background: var(--cor); color: #fff;
+  border: calc(3 * var(--u)) solid #1E293B; box-sizing: border-box; display: grid; place-items: center;
+  font-size: calc(18 * var(--u)); font-weight: 900; line-height: 1; z-index: 1; }
+.dr-selo-fundo { border-radius: 50%; background: color-mix(in srgb, var(--cor) 22%, #fff); border: calc(5 * var(--u)) solid var(--cor); box-sizing: border-box; }
+.diario-frame .dr-cq { background: none; border: 0; padding: 0; cursor: pointer; z-index: 2; border-radius: calc(10 * var(--u)); }
+.diario-frame .dr-cq:hover, .diario-frame .dr-cq:focus-visible { outline: calc(3 * var(--u)) dashed #1E293B; outline-offset: calc(2 * var(--u)); }
+.diario-frame .dr-cq-link { background: none; border: 0; padding: 0; color: inherit; cursor: pointer; text-decoration: underline dotted; text-underline-offset: .2em; }
+.diario-frame .dr-medalha { cursor: pointer; }
+.diario-frame .dr-bandeira { z-index: 1; pointer-events: none; }
+.dr-bandeira svg { width: 100%; height: 100%; display: block; }
+.dr-ilha-prog { height: calc(10 * var(--u)); background: color-mix(in srgb, var(--cor) 25%, #fff); border: calc(2 * var(--u)) solid #1E293B; overflow: hidden; }
+.dr-ilha-prog i { display: block; height: 100%; background: var(--cor); }
+.dr-ilha-n { text-align: center; font-size: calc(17 * var(--u)); font-weight: 700; }
+
+/* popup "Minhas Conquistas" */
+.popup.popup-cq { width: min(640px, 100%); text-align: left; }
+.popup-cq h3 { text-align: center; }
+.cq-resumo { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 8px 0 10px; }
+.cq-resumo > div { display: flex; flex-direction: column; align-items: center; gap: 2px; background: #fff; border: 3px solid var(--navy); padding: 8px 4px; color: var(--navy); }
+.cq-resumo .ico-txt { width: 30px; height: 30px; margin: 0; }
+.cq-resumo b { font-size: 20px; font-weight: 900; }
+.cq-resumo small { font-size: 13px; font-weight: 700; }
+.popup .cq-cert { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 0 0 12px; font-size: 15px; text-align: center; }
+.popup .cq-cert.ok { color: var(--teal); }
+.cq-ilha { background: #fff; border: 3px solid var(--navy); border-left: 10px solid var(--cor); padding: 10px 12px; margin: 0 0 10px; color: var(--navy); }
+.cq-ilha.bloq { opacity: .6; filter: grayscale(.6); }
+.cq-ilha h4 { display: flex; align-items: center; gap: 8px; margin: 0 0 4px; font-size: 18px; font-weight: 900; }
+.cq-band { width: 28px; height: 33px; flex-shrink: 0; }
+.cq-band svg { width: 100%; height: 100%; display: block; }
+.popup .cq-selo { display: flex; align-items: center; gap: 6px; margin: 0 0 6px; font-size: 14px; font-weight: 700; }
+.cq-selo > span { flex: 1; min-width: 0; }
+.cq-ilha ul { list-style: none; margin: 0; padding: 0; }
+.cq-ilha li { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-top: 1px dashed #cbd5e1; font-size: 14px; font-weight: 700; }
+.cq-ilha li > span { flex: 1; min-width: 0; }
+.cq-ilha li.feita > span { color: color-mix(in srgb, var(--cor) 70%, #1E293B); }
+.cq-est { display: inline-flex; align-items: center; gap: 1px; white-space: nowrap; }
+.cq-est .cq-ico { width: 16px; height: 16px; }
+.cq-est .apagada { opacity: .25; filter: grayscale(1); }
+.cq-est em { display: inline-flex; align-items: center; gap: 4px; font-style: normal; font-size: 12px; color: #64748b; }
+@media (max-width: 520px) { .cq-resumo { grid-template-columns: repeat(2, 1fr); } }
 .dr-trilho { left: calc(971 * var(--u)); top: calc(486 * var(--u)); width: calc(468 * var(--u)); height: calc(12 * var(--u)); background: #D9D9D9; overflow: hidden; }
 .dr-trilho i { display: block; height: 100%; background: #FFC83B; }
 /* ícone da ilha no Diário: a arte cabe inteira na caixa, apoiada embaixo */

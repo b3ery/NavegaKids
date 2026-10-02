@@ -27,7 +27,7 @@
 
   const ILHAS = [
     {
-      id: 1, nome: "Ilha dos Mistérios", img: "ilha1",
+      id: 1, nome: "Ilha dos Mistérios", img: "ilha1", cor: "#42A6DB",   // cor da bandeira da ilha (Fundo_Ilhas)
       icone: "ilhaPraia", iconeBloqueado: "ilhaPraiaBloqueada",
       carregando: "Navegando até a ilha dos Mistérios",
       selo: "Observador Atento", seloImg: "luneta",
@@ -35,7 +35,7 @@
       conclusaoBtn: "Descubra a Próxima ilha"
     },
     {
-      id: 2, nome: "Ilha das Escolhas", img: "ilha2",
+      id: 2, nome: "Ilha das Escolhas", img: "ilha2", cor: "#F47044",
       icone: "ilhaArvores", iconeBloqueado: "ilhaArvoresBloqueada",
       carregando: "Navegando até a ilha das Escolhas",
       selo: "Guardião das Escolhas Seguras", seloImg: "escudo",
@@ -43,7 +43,7 @@
       conclusaoBtn: "Descubra a Próxima ilha"
     },
     {
-      id: 3, nome: "Ilha dos Guardiões", img: "ilha3",
+      id: 3, nome: "Ilha dos Guardiões", img: "ilha3", cor: "#22C19F",
       icone: "ilhaMontanhas", iconeBloqueado: "ilhaMontanhasBloqueada",
       carregando: "Navegando até a ilha dos Guardiões",
       selo: "Guardião dos Mares", seloImg: "navio",

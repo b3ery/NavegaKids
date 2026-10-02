@@ -151,12 +151,12 @@
      ============================================================ */
   function fecharPopups() { $$('.popup-wrap').forEach(p => p.remove()); }
 
-  /* opts: cor('' | t | c | b) · avatar{nome} · titulo · texto · extra(html) · btns[{t,cls,fn}] · dim · x */
+  /* opts: cor('' | t | c | b) · cls · avatar{nome} · titulo · texto · extra(html) · btns[{t,cls,fn}] · dim · x */
   function popup(o) {
     const w = document.createElement('div');
     w.className = 'popup-wrap' + (o.dim === false ? ' nodim' : '');
     w.setAttribute('role', 'dialog');
-    w.innerHTML = `<div class="popup ${o.cor ? 'cor-' + o.cor : ''}">
+    w.innerHTML = `<div class="popup ${o.cor ? 'cor-' + o.cor : ''} ${o.cls || ''}">
       ${o.x ? '<button class="x" aria-label="Fechar">X</button>' : ''}
       ${o.avatar ? `<div class="who">${I('usuario', { cls: 'av' })}<span>${esc(o.avatar.nome)}</span></div>` : ''}
       ${o.titulo ? `<h3>${o.titulo}</h3>` : ''}

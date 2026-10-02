@@ -452,6 +452,54 @@
   /* ============================================================
      DIÁRIO DO CAPITÃO
      ============================================================ */
+  /* bandeirinha numerada na cor da ilha, igual às do mapa de Ilhas */
+  const bandeira = il => `<svg viewBox="0 0 60 70" aria-hidden="true" focusable="false">
+    <rect x="4" y="6" width="5" height="62" rx="2.5" fill="#E2A92E"/><circle cx="6.5" cy="6" r="4.5" fill="#F6C945"/>
+    <path d="M9 9 H56 L46 24 L56 39 H9 Z" fill="${il.cor}" stroke="#1E293B" stroke-width="2" stroke-linejoin="round"/>
+    <text x="29" y="32" text-anchor="middle" font-size="22" font-weight="900" fill="#fff" font-family="inherit">${il.id}</text></svg>`;
+
+  /* "Minhas Conquistas": resumo geral + cada ilha (cor, selo e estrelas por fase).
+     Com `foco`, mostra só a ilha escolhida. */
+  function popupConquistas(foco) {
+    const estrelasMax = progresso.estrelasMax();
+    const estrelas = estrelasTotal();
+    const selos = progresso.selos();
+    const jornada = jornadaCompleta();
+    const resumo = foco ? '' : `<div class="cq-resumo">
+      <div>${I('estrela', { cls: 'ico-txt' })}<b>${estrelas}/${estrelasMax}</b><small>estrelas</small></div>
+      <div>${I('moedas', { cls: 'ico-txt' })}<b>${progresso.pontosTotal()}</b><small>pontos</small></div>
+      <div>${I('mapaTesouro', { cls: 'ico-txt' })}<b>${progresso.fasesConcluidas()}/${FASES.length}</b><small>fases</small></div>
+      <div>${I('medalha', { cls: 'ico-txt' })}<b>${selos.length}/${ILHAS.length}</b><small>selos</small></div>
+    </div>
+    <p class="cq-cert ${jornada ? 'ok' : ''}">${jornada ? `${I('conquistas', { cls: 'ico-txt' })} Certificado de Navegador Seguro desbloqueado!` : `${cadeadoIcon({ size: 18 })} Certificado: complete as 3 ilhas para desbloquear.`}</p>`;
+
+    const ilhaHtml = il => {
+      const lib = ilhaLiberada(il.id);
+      const tem = selos.includes(il);
+      const fases = fasesDaIlha(il.id).map(f => {
+        const r = progresso.resultadoDaFase(f.id);
+        const estado = r ? I('estrela', { cls: 'cq-ico' }).repeat(r.estrelas) + I('estrela', { cls: 'cq-ico apagada' }).repeat(r.maxEstrelas - r.estrelas)
+          : faseLiberada(f.id) ? `<em>${nFeitas(f.id)}/${f.atividades.length} atividades</em>`
+          : `<em>${cadeadoIcon({ size: 14 })} bloqueada</em>`;
+        return `<li class="${r ? 'feita' : ''}">${I(iconeFase(f), { cls: 'ico-txt' })}<span>${esc(f.titulo)}</span><b class="cq-est">${estado}</b></li>`;
+      }).join('');
+      return `<section class="cq-ilha ${lib ? '' : 'bloq'}" style="--cor:${il.cor}">
+        <h4><span class="cq-band">${bandeira(il)}</span>${esc(il.nome)}</h4>
+        <p class="cq-selo">${I(il.seloImg, { cls: 'ico-txt' })}<span>Selo <b>${esc(il.selo)}</b>: ${tem ? 'conquistado!' : lib ? 'termine as 5 fases para ganhar' : 'ilha ainda bloqueada'}</span></p>
+        <ul>${fases}</ul>
+      </section>`;
+    };
+
+    const w = popup({
+      cls: 'popup-cq', x: true,
+      titulo: foco ? `Conquistas da ${esc(ilhaById(foco).nome)}` : `${I('conquistas', { cls: 'ico-txt' })} Minhas Conquistas`,
+      extra: resumo + (foco ? [ilhaById(foco)] : ILHAS).map(ilhaHtml).join(''),
+      btns: foco ? [{ t: 'Ver todas', cls: 'btn-ghost', fn: () => { later(() => popupConquistas(), 0); } }, { t: 'Fechar', cls: 'btn-t' }]
+        : [{ t: 'Fechar', cls: 'btn-t' }]
+    });
+    $('.popup', w).scrollTop = 0;   // o foco no botão rola até o fim; a lista começa do topo
+  }
+
   function telaDiario() {
     /* Diário do Capitão — geometria medida no print do Figma (frame 1728 px). */
     const nome = progresso.nome() || '—';   // sem nome: o lápis ao lado permite editar
@@ -464,15 +512,21 @@
     const box = (l, t, w, h) => `style="left:${U(l)};top:${U(t)};width:${U(w)};height:${U(h ?? w)}"`;
     const img = (k, l, t, w, h, o = {}) => I(k, { alt: '', ...o }).replace('<img ', `<img ${box(l, t, w, h)} `);
 
-    // Principais Conquistas: um espaço por ilha; o selo aparece quando a ilha é concluída
+    // Principais Conquistas: um espaço por ilha, com a cor e o número da bandeira dela;
+    // o selo aparece quando a ilha é concluída. Cada espaço abre os detalhes da ilha.
     const selos = progresso.selos();
     const CONQUISTA_X = [350, 529, 709];   // centro de cada espaço (px do frame)
     const conquistas = ILHAS.map((il, i) => {
       const cx = CONQUISTA_X[i];
-      return selos.includes(il)
-        ? img(il.seloImg, cx - 57, 685, 114, 111, { alt: `Selo ${il.selo}` })
-          + `<p class="dr-txt dr-selo-nome" style="left:${U(cx - 90)};width:${U(180)};top:${U(804)}">${esc(il.selo)}</p>`
-        : `<span class="dr-slot" ${at(cx - 57, 690)} role="img" aria-label="Selo da ${esc(il.nome)} ainda não conquistado"></span>`;
+      const tem = selos.includes(il);
+      return (tem
+        ? `<span class="dr-selo-fundo" style="--cor:${il.cor};left:${U(cx - 61)};top:${U(683)};width:${U(122)};height:${U(122)}"></span>`
+          + img(il.seloImg, cx - 45, 696, 90, 90, { alt: `Selo ${il.selo}` })
+          + `<p class="dr-txt dr-selo-nome" style="left:${U(cx - 90)};width:${U(180)};top:${U(812)}">${esc(il.selo)}</p>`
+        : `<span class="dr-slot" style="--cor:${il.cor};left:${U(cx - 57)};top:${U(690)}"></span>`)
+        + `<span class="dr-num" style="--cor:${il.cor};left:${U(cx - 72)};top:${U(674)}" aria-hidden="true">${il.id}</span>`
+        + `<button class="dr-cq" data-cq="${il.id}" ${box(cx - 64, 676, 128, 132)}
+            aria-label="${tem ? `Selo ${esc(il.selo)} — ver conquistas da ${esc(il.nome)}` : `Selo da ${esc(il.nome)} ainda não conquistado — ver o que falta`}"></button>`;
     }).join('');
     const iconeConquistas = img('medalha', 302, 621, 64, 64, { cls: 'dr-medalha' });
 
@@ -485,10 +539,18 @@
     const mini = ILHAS.map((il, i) => {
       const lib = ilhaLiberada(il.id);
       const ehProx = proxIlha && il.id === proxIlha.id;
-      return img(lib ? il.icone : il.iconeBloqueado, ILHA_CENTRO_X[i] - ILHA_L / 2, ILHA_BASE_Y - ILHA_A, ILHA_L, ILHA_A,
+      const fs = fasesDaIlha(il.id);
+      const feitas = fs.filter(f => faseCompleta(f.id)).length;
+      const cx = ILHA_CENTRO_X[i];
+      return img(lib ? il.icone : il.iconeBloqueado, cx - ILHA_L / 2, ILHA_BASE_Y - ILHA_A, ILHA_L, ILHA_A,
           { cls: 'dr-ilha', alt: lib ? il.nome : `${il.nome} — bloqueada` })
+        + `<span class="dr-bandeira" ${box(cx - 92, ILHA_BASE_Y - ILHA_A - 22, 46, 54)}>${bandeira(il)}</span>`
         + `<button class="dr-btn ${ehProx ? 'go-y' : 'go-grey'}" data-ir="${il.id}" ${at(BTX[i], ehProx ? 753 : 759)}
-            ${lib ? '' : 'aria-disabled="true"'} aria-label="${esc(il.nome)}${lib ? '' : ' — bloqueada'}">${ehProx ? 'Começar' : 'VER'}</button>`;
+            ${lib ? '' : 'aria-disabled="true"'} aria-label="${esc(il.nome)}${lib ? '' : ' — bloqueada'}">${ehProx ? 'Começar' : 'VER'}</button>`
+        + `<div class="dr-ilha-prog" style="--cor:${il.cor};left:${U(cx - 66)};top:${U(806)};width:${U(132)}"
+            role="progressbar" aria-label="${esc(il.nome)}: ${feitas} de ${fs.length} fases" aria-valuenow="${feitas}" aria-valuemin="0" aria-valuemax="${fs.length}">
+            <i style="width:${(feitas / fs.length) * 100}%"></i></div>
+          <p class="dr-txt dr-ilha-n" style="left:${U(cx - 66)};width:${U(132)};top:${U(822)}">${feitas}/${fs.length} fases</p>`;
     }).join('');
 
     montar(`
@@ -511,7 +573,7 @@
         ${img('levelup', 625, 522, 34)}
         <p class="dr-txt" ${at(660, 524)}><b>Level:</b> <span>${String(progresso.level()).padStart(2, '0')}</span></p>
         ${selos.length ? iconeConquistas : iconeConquistas.replace('style="', 'style="opacity:.35;')}
-        <p class="dr-txt" ${at(369, 630)}><b>Principais Conquistas:</b></p>
+        <button class="dr-txt dr-cq-link" id="btConquistasTit" ${at(369, 630)}><b>Principais Conquistas:</b></button>
         ${conquistas}
 
         ${img('luneta', 958, 230, 110)}
@@ -521,7 +583,7 @@
         <p class="dr-txt" style="left:${U(971)};width:${U(468)};top:${U(550)};text-align:center"><b>ILHAS:</b></p>
         ${mini}
       </div>
-      <div class="diario-acoes">${jornada ? `<button class="btn btn-t" id="btVerCert">Ver Certificado</button>` : ''}${DEV ? `<button class="btn btn-c" id="btReset">Reiniciar progresso (dev)</button>` : ''}</div>
+      <div class="diario-acoes"><button class="btn btn-t" id="btConquistas">${I('conquistas', { cls: 'ico-txt' })} Minhas Conquistas</button>${jornada ? `<button class="btn btn-t" id="btVerCert">Ver Certificado</button>` : ''}${DEV ? `<button class="btn btn-c" id="btReset">Reiniciar progresso (dev)</button>` : ''}</div>
     </div>`, 'diario');
     document.body.classList.add('tela-figma');
     window.scrollTo(0, 0);
@@ -529,6 +591,8 @@
     const cert = $('#btVerCert'); if (cert) cert.onclick = () => go('#/certificado');
     const rst = $('#btReset'); if (rst) rst.onclick = () => { progresso.resetar(); go('#/home'); };
     $('#btEditarNome').onclick = () => pedirNome(telaDiario);
+    $('#btConquistas').onclick = $('#btConquistasTit').onclick = $('.dr-medalha').onclick = () => popupConquistas();
+    $$('.dr-cq').forEach(b => b.onclick = () => popupConquistas(+b.dataset.cq));
     $$('.dr-btn').forEach(b => b.onclick = () => {
       const id = +b.dataset.ir;
       if (!ilhaLiberada(id)) { toast('Complete a ilha anterior para desbloquear esta.'); return; }
