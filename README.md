@@ -38,7 +38,7 @@
   <tr>
     <td align="center" width="20%">
       <a href="https://github.com/and0994">
-        <img src="https://github.com/and0994.png" width="90px;" alt="Andressa"/><br>
+        <img src="https://ui-avatars.com/api/?name=Andressa+Costa&background=1E293B&color=fff&size=180&rounded=true&bold=true" width="90px;" alt="Andressa"/><br>
         <sub><b>Andressa de Oliveira Costa</b></sub>
       </a>
     </td>
@@ -52,7 +52,7 @@
     </td>
     <td align="center" width="20%">
       <a href="https://github.com/b3ery">
-        <img src="https://github.com/b3ery.png" width="90px;" alt="Mylena"/><br>
+        <img src="https://ui-avatars.com/api/?name=Mylena+Rocha&background=CC9408&color=fff&size=180&rounded=true&bold=true" width="90px;" alt="Mylena"/><br>
         <sub><b>Mylena Soares Rocha</b></sub>
       </a>
     </td>
