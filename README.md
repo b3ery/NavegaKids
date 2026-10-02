@@ -30,35 +30,6 @@
 
 ---
 
-## 👥 Nossa Equipe
-
-<div align="center">
-
-<table>
-  <tr>
-    <td align="center" width="25%">
-      <a href="https://github.com/b3ery">
-        <img src="https://github.com/b3ery.png" width="90px;" alt="Mylena"/><br>
-        <sub><b>Mylena Rocha</b></sub>
-      </a>
-    </td>
-    <td align="center" width="25%">
-      <a href="https://github.com/and0994">
-        <img src="https://github.com/and0994.png" width="90px;" alt="Andressa"/><br>
-        <sub><b>Andressa Costa</b></sub>
-      </a>
-    </td>
-  </tr>
-</table>
-
-<!-- Para adicionar alguém: copie um bloco <td>…</td> acima e troque o usuário do GitHub e o nome. -->
-
-</div>
-
-<br>
-
----
-
 ## 🌊 Sobre o Projeto
 
 > **NavegaKids** é um jogo educativo para crianças sobre **segurança na internet e prevenção ao grooming digital**. Ao lado da **Capitã Bússola**, o pequeno navegador atravessa **3 ilhas, 15 fases e 45 atividades** para aprender a reconhecer perfis suspeitos, proteger seus dados, sair de conversas que incomodam, bloquear, denunciar e — principalmente — **pedir ajuda a um adulto de confiança**. Tudo em HTML + CSS + JavaScript puro, sem dependências. 🏴‍☠️
