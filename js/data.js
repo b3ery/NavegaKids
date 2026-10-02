@@ -633,7 +633,7 @@
     },
 
     {
-      id: 13, ilha: 3, titulo: "Sinal de Socorro", icone: "alerta", npc: NPC3,
+      id: 13, ilha: 3, titulo: "Sinal de Socorro", icone: "botaoVermelho", npc: NPC3,
       abertura: { texto: "Todo bom navio tem uma bandeira de socorro para pedir ajuda de longe. Na internet também existe um jeito de sinalizar quando algo está errado. Vamos aprender?", btn: "Continuar" },
       aprendizado: "Denunciar não é dedurar. É usar uma ferramenta de verdade, de preferência ao lado de um adulto de confiança.",
       atividades: [
@@ -686,7 +686,7 @@
     },
 
     {
-      id: 14, ilha: 3, titulo: "Guardião de um Amigo", icone: "assistencia", npc: NPC3,
+      id: 14, ilha: 3, titulo: "Guardião de um Amigo", icone: "pirata", npc: NPC3,
       abertura: { texto: "Um guardião de verdade também cuida da tripulação. E se fosse um amigo seu vivendo uma situação estranha na internet? Vamos aprender a ajudar?", btn: "Continuar" },
       aprendizado: "Um bom amigo não guarda esse tipo de segredo. Ele fica ao lado e ajuda a procurar um guardião.",
       atividades: [
@@ -728,7 +728,7 @@
     },
 
     {
-      id: 15, ilha: 3, titulo: "Missão: Guardião dos Mares", icone: "conquistas", npc: NPC3, dobro: true,
+      id: 15, ilha: 3, titulo: "Missão: Guardião dos Mares", icone: "bau", npc: NPC3, dobro: true,
       abertura: { texto: "Última missão da sua grande aventura, navegador! Chegou a hora de mostrar que você virou um verdadeiro Guardião dos Mares.", btn: "Continuar" },
       aprendizado: "Reconhecer o perigo, fazer a escolha segura, contar para um adulto de confiança e denunciar quando for preciso.",
       atividades: [

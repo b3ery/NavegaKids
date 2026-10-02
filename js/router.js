@@ -166,6 +166,7 @@
     const fs = fasesDaIlha(il.id);
     const atual = fs.find(f => faseLiberada(f.id) && !faseCompleta(f.id)) || fs[fs.length - 1];
     const ilhaFeita = ilhaCompleta(il.id);
+    const jogoVencido = ilhaFeita && il.id === ILHAS.at(-1).id;   // última ilha concluída: card de parabéns
 
     // centro (x, y) e rotação de cada card de fase — todos na região de areia
     const NOS = [
@@ -196,6 +197,15 @@
         ['escudo',     918, 1233, 168, 0],
         ['bloqueado',   45, 1752, 246, 0],
       ],
+      // Ilha 3 — export do Figma "ilha-3" (coordenadas do card-fases, + 883 no y)
+      3: [
+        ['policial',    -10, 1238, 229, 0],
+        ['alerta',      661, 1115, 189, 0],
+        ['pare',        944, 1231, 191, 0],
+        ['diamond',    1091, 1712, 187, 0],
+        ['apoio',       133, 1774, 150, 0],
+        ['mapaTesouro',1579, 1242, 130, 0],
+      ],
     };
     const DECOR = DECOR_POR_ILHA[il.id] || DECOR_POR_ILHA[1];
     const U = v => `calc(${v} * var(--u))`;
@@ -212,7 +222,7 @@
         ? `<span class="mf-cad">${CADEADO_FILL}</span>`
         : (f.id === 1
             ? `${I('misterio', { cls: 'mf-ic-m' })}${I('anonimo', { cls: 'mf-ic-a' })}`   // composição do Figma
-            : I(f.icone, { cls: 'mf-ic' })) + `<span class="mf-tit">${esc(f.titulo)}</span>`;
+            : I(f.icone, { cls: f.titulo.length > 24 ? 'mf-ic mf-ic-menor' : 'mf-ic' })) + `<span class="mf-tit">${esc(f.titulo)}</span>`;   // título longo (3 linhas): ícone menor
       return `
       <span class="mf-num" style="--i:${i};left:${U(p.n.x)};top:${U(p.n.y)}" aria-hidden="true">${i + 1}</span>
       <button class="mf-no ${comp ? 'feita' : ''} ${!lib ? 'trancada' : ''} ${f.id === atual.id && !comp ? 'atual' : ''}"
@@ -239,9 +249,12 @@
         <div class="mf-card">
           ${I('navioPirata', { cls: 'mf-navio', alt: '' })}
           <h2 class="mf-titulo">${esc(il.nome.toUpperCase())}</h2>
-          <p class="mf-label">FASE ATUAL:</p>
+          ${jogoVencido
+            ? `<p class="mf-parabens">Parabéns, Pirata! Você venceu o Grande Desafio!</p>
+          <button class="mf-prosseguir mf-tesouro" id="btProsseguir">Descubra<br>seu tesouro</button>`
+            : `<p class="mf-label">FASE ATUAL:</p>
           <p class="mf-fase">${esc(atual.titulo)}</p>
-          <button class="mf-prosseguir" id="btProsseguir">${ilhaFeita ? 'Voltar às Ilhas' : 'Prosseguir'}</button>
+          <button class="mf-prosseguir" id="btProsseguir">${ilhaFeita ? 'Voltar às Ilhas' : 'Prosseguir'}</button>`}
           <span class="mf-estrela" aria-label="Estrelas: ${estrelasTotal()}">${I('estrela')}<b>${estrelasTotal()}</b></span>
           ${stepper}
         </div>
@@ -254,7 +267,7 @@
     window.scrollTo(0, 0);
 
     const abrir = fid => { progresso.definirFaseVista(fid); go(progresso.introVista(fid) ? `#/missoes` : `#/abertura/${fid}`); };
-    $('#btProsseguir').onclick = () => ilhaFeita ? go('#/ilhas') : abrir(atual.id);
+    $('#btProsseguir').onclick = () => jogoVencido ? go('#/certificado') : ilhaFeita ? go('#/ilhas') : abrir(atual.id);
     $$('[data-f]', $('#stage')).forEach(b => b.onclick = () => {
       const fid = +b.dataset.f;
       if (!faseLiberada(fid)) {
