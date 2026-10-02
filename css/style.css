@@ -328,7 +328,6 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
    a caixa é maior para o DESENHO ocupar o mesmo lugar do navio antigo (x 72–358, y 127–453) */
 .mf-card .mf-navio { left: calc(-23 * var(--u)); top: calc(-31 * var(--u)); width: calc(582 * var(--u)); height: calc(582 * var(--u)); pointer-events: none; }
 .mapa-frame.ilha2 .mf-titulo { color: var(--coral); }   /* Ilha 2: título coral (Figma) */
-.mf-card .mf-navio-mayflower { left: calc(50 * var(--u)); top: calc(129 * var(--u)); width: calc(331 * var(--u)); height: auto; }
 .mf-card .mf-titulo {
   left: calc(451 * var(--u)); width: calc(600 * var(--u)); top: calc(30 * var(--u));
   text-align: center; font-size: calc(48 * var(--u)); font-weight: 700; color: #4EA8DE; line-height: 1.2;

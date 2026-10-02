@@ -198,8 +198,6 @@
       ],
     };
     const DECOR = DECOR_POR_ILHA[il.id] || DECOR_POR_ILHA[1];
-    // navio do card "Fase atual": a Ilha 2 usa o Mayflower
-    const NAVIO = il.id === 2 ? ['navio', 'mf-navio mf-navio-mayflower'] : ['navioPirata', 'mf-navio'];
     const U = v => `calc(${v} * var(--u))`;
 
     const linhas = `<svg class="mf-linhas" viewBox="0 0 1728 2034" preserveAspectRatio="none" aria-hidden="true">
@@ -239,7 +237,7 @@
         ${I('fundoFases', { cls: 'mf-fundo2', alt: '' })}
         ${I('fundoFases', { cls: 'mf-fundo', alt: '' })}
         <div class="mf-card">
-          ${I(NAVIO[0], { cls: NAVIO[1], alt: '' })}
+          ${I('navioPirata', { cls: 'mf-navio', alt: '' })}
           <h2 class="mf-titulo">${esc(il.nome.toUpperCase())}</h2>
           <p class="mf-label">FASE ATUAL:</p>
           <p class="mf-fase">${esc(atual.titulo)}</p>
