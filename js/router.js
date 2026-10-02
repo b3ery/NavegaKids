@@ -179,15 +179,27 @@
     const LINHAS = [
       [238, 1251, 355, 1584], [525, 1657, 712, 1473], [1027, 1397, 1320, 1584], [1501, 1654, 1571, 1263],
     ];
-    // decorações do Figma: [asset, left, top, tamanho, rotação]
-    const DECOR = [
-      ['atencao',       229, 1011,  42,   0],
-      ['interrogacao',  304,  987, 156,   0],
-      ['interrogacao2', 435, 1400, 176,   0],
-      ['critico',       634, 1278, 126,   0],
-      ['exclamacao3',   939, 1268, 156, -12],
-      ['bubbleChat',   1373, 1417, 142,   0],
-    ];
+    // decorações do Figma por ilha: [asset, left, top, tamanho, rotação]
+    const DECOR_POR_ILHA = {
+      1: [
+        ['atencao',       229, 1011,  42,   0],
+        ['interrogacao',  304,  987, 156,   0],
+        ['interrogacao2', 435, 1400, 176,   0],
+        ['critico',       634, 1278, 126,   0],
+        ['exclamacao3',   939, 1268, 156, -12],
+        ['bubbleChat',   1373, 1417, 142,   0],
+      ],
+      // Ilha 2 — export do Figma "ilha-2" (coordenadas do card-fases + 3, + 883)
+      2: [
+        ['nao',        117, 1252, 188, 0],
+        ['corre',      658, 1135, 194, 0],
+        ['escudo',     918, 1233, 168, 0],
+        ['bloqueado',   45, 1752, 246, 0],
+      ],
+    };
+    const DECOR = DECOR_POR_ILHA[il.id] || DECOR_POR_ILHA[1];
+    // navio do card "Fase atual": a Ilha 2 usa o Mayflower
+    const NAVIO = il.id === 2 ? ['navio', 'mf-navio mf-navio-mayflower'] : ['navioPirata', 'mf-navio'];
     const U = v => `calc(${v} * var(--u))`;
 
     const linhas = `<svg class="mf-linhas" viewBox="0 0 1728 2034" preserveAspectRatio="none" aria-hidden="true">
@@ -223,11 +235,11 @@
 
     montar(`
     <div class="scene ilha-mapa">
-      <div class="mapa-frame" id="mapaVertical">
+      <div class="mapa-frame ilha${il.id}" id="mapaVertical">
         ${I('fundoFases', { cls: 'mf-fundo2', alt: '' })}
         ${I('fundoFases', { cls: 'mf-fundo', alt: '' })}
         <div class="mf-card">
-          ${I('navioPirata', { cls: 'mf-navio', alt: '' })}
+          ${I(NAVIO[0], { cls: NAVIO[1], alt: '' })}
           <h2 class="mf-titulo">${esc(il.nome.toUpperCase())}</h2>
           <p class="mf-label">FASE ATUAL:</p>
           <p class="mf-fase">${esc(atual.titulo)}</p>
