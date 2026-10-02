@@ -196,10 +196,13 @@
       <a class="logo" href="#/home">NavegaKids</a>
       <nav class="nav" aria-label="Menu principal">${it('#/home', 'home', 'Início')}${it('#/ilhas', 'ilhas', 'Ilhas')}${it('#/missoes', 'missoes', 'Missões')}${it('#/diario', 'diario', 'Diário do Capitão')}</nav>
       <div class="hud">
+        ${NK.musica ? NK.musica.botaoHtml() : ''}
         <span class="pontosbadge ${_destacar ? 'bump' : ''}" aria-label="Seus pontos: ${pontos}">${I('moedas')}<b>${pontos}</b></span>
         <button class="starbadge ${_destacar ? 'bump' : ''}" id="starBtn" aria-label="Suas estrelas: ${estrelas}">${I('estrela')}<b>${estrelas}</b></button>
       </div>`;
     _destacar = false;
+    const mb = $('#musicaBtn');
+    if (mb) mb.onclick = () => NK.musica.alternar();
     $('#starBtn').onclick = () => popup({
       cor: 'b', titulo: 'Suas estrelas',
       extra: `<p>Você tem ${estrelas} de ${progresso.estrelasMax()} estrelas e ${pontos} pontos. Complete as fases sem errar para ganhar mais!</p>`,
