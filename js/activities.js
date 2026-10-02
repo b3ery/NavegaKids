@@ -99,10 +99,12 @@
      ============================================================ */
   function chatHtml(cena) {
     if (!cena || cena.tipo !== 'chat') return '';
+    // bolha da criança leva o nome dela (ou "Você"); nunca o nick do contato
+    const quem = m => m.nome || (m.de === 'eu' ? progresso.nome() || 'Você' : cena.com);
     const msgs = cena.msgs.map(m => `
       <div class="bolha ${m.de === 'eu' ? 'eu' : ''}">
         <span class="av">${m.de === 'eu' ? I('usuario') : I('anonimo')}</span>
-        <span class="msg">${m.nome || cena.com ? `<small>${esc(m.nome || cena.com)}</small>` : ''}${esc(m.t)}</span>
+        <span class="msg">${quem(m) ? `<small>${esc(quem(m))}</small>` : ''}${esc(m.t)}</span>
       </div>`).join('');
     return `<div class="chat">
       <div class="chat-head">${I('anonimo', { size: 34, cls: 'ico' })}<span>${esc(cena.com)}</span><small>online</small></div>
