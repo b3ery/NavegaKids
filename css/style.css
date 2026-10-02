@@ -454,6 +454,30 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .mf-no.nega { animation: mfNega .45s ease; }
 .mf-no .mf-ok { animation: mfSurge .4s cubic-bezier(.2, .9, .3, 1.6) both; animation-delay: calc(.8s + var(--i, 0) * .12s); }
 .mf-no .mf-dobro { animation: mfGira 6s linear infinite; }
+.mf-no .mf-x2 {
+  position: absolute; right: calc(-14 * var(--u)); top: calc(54 * var(--u)); z-index: 1;
+  background: #ff7a59; color: #fff; font-size: calc(24 * var(--u)); font-weight: 900; line-height: 1;
+  padding: calc(4 * var(--u)) calc(8 * var(--u)); border-radius: 999px; border: max(1px, calc(2 * var(--u))) solid #fff;
+  animation: chama 2s ease-in-out infinite;
+}
+
+/* ---- estrelas em dobro ---- */
+.selo-dobro {
+  display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px 4px 8px; border-radius: 999px;
+  background: linear-gradient(90deg, #FFC83B, #ffdf7e, #FFC83B); background-size: 200% 100%;
+  color: #1E293B; font-weight: 800; font-size: 14px; box-shadow: 0 2px 0 #CC9408;
+  animation: dobroBrilho 2.4s linear infinite;
+}
+.selo-dobro b { flex-shrink: 0; white-space: nowrap; background: #ff7a59; color: #fff; border-radius: 999px; padding: 1px 7px; font-size: 13px; }
+.selo-dobro .ico-txt { animation: brilhaLeve 2s ease-in-out infinite; }
+@keyframes dobroBrilho { to { background-position: -200% 0; } }
+.missoes .detalhe .selo-dobro { margin: 6px 0 2px; }
+.intro-frame .it-dobro { position: absolute; z-index: 4; left: calc(682 * var(--u)); top: calc(375 * var(--u)); }
+.intro-frame .it-dobro .selo-dobro { font-size: max(12px, calc(28 * var(--u))); padding: calc(8 * var(--u)) calc(22 * var(--u)) calc(8 * var(--u)) calc(14 * var(--u)); animation: surge .5s .5s cubic-bezier(.2, 1.6, .4, 1) both, dobroBrilho 2.4s linear infinite; }
+.intro-frame .it-dobro .selo-dobro b { font-size: max(12px, calc(26 * var(--u))); }
+.x2-pontos { background: #ff7a59; color: #fff; border-radius: 999px; padding: 1px 8px; font-size: 15px; }
+.popup .fase-estrelas .conta-dobro { font-size: 17px; color: #CC5A3D; animation: surge .4s .6s cubic-bezier(.2, 1.6, .4, 1) both; }
+.popup .fase-estrelas .conta-dobro b { color: var(--teal-d); }
 
 @keyframes mfDesce { from { opacity: 0; translate: 0 calc(-40 * var(--u)); } to { opacity: 1; translate: 0 0; } }
 @keyframes mfSurge { from { opacity: 0; scale: .4; } to { opacity: 1; scale: 1; } }

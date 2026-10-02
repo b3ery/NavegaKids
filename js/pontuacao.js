@@ -56,5 +56,5 @@
     };
   };
 
-  NK.pontuacao = { REGRAS, calcular, pontosDaAtividade, maxEstrelasDaFase };
+  NK.pontuacao = { REGRAS, calcular, pontosDaAtividade, maxEstrelasDaFase, multiplicador };
 })();

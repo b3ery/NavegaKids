@@ -251,10 +251,10 @@
       <span class="mf-num" style="--i:${i};left:${U(p.n.x)};top:${U(p.n.y)}" aria-hidden="true">${i + 1}</span>
       <button class="mf-no ${comp ? 'feita' : ''} ${!lib ? 'trancada' : ''} ${f.id === atual.id && !comp ? 'atual' : ''}"
         style="--i:${i};left:${U(p.x)};top:${U(p.y)};--ang:${p.ang}deg" data-f="${f.id}" ${lib ? '' : 'aria-disabled="true"'}
-        aria-label="Fase ${i + 1}: ${esc(f.titulo)}${comp ? ' — concluída' : lib ? '' : ' — bloqueada'}">
+        aria-label="Fase ${i + 1}: ${esc(f.titulo)}${f.dobro ? ' — estrelas em dobro' : ''}${comp ? ' — concluída' : lib ? '' : ' — bloqueada'}">
         ${conteudo}
         ${comp ? I('correto', { cls: 'mf-ok' }) : ''}
-        ${f.dobro ? I('estrela', { cls: 'mf-dobro' }) : ''}
+        ${f.dobro ? `${I('estrela', { cls: 'mf-dobro' })}<b class="mf-x2" aria-hidden="true">x2</b>` : ''}
       </button>`;
     }).join('');
 
@@ -324,6 +324,7 @@
         ${I('interrogacao', { cls: 'it-interrog', alt: '' })}
         ${I(iconeFase(f), { cls: 'it-icone', alt: '' })}
         <h1 class="it-titulo">${esc(f.titulo)}</h1>
+        ${f.dobro ? `<div class="it-dobro">${NK.seloDobro('Nesta missão as estrelas e os pontos valem em dobro!')}</div>` : ''}
         <p class="it-texto">${esc(f.abertura.texto)}</p>
         <button class="btn-figma it-comecar" id="btComecar">${esc(f.abertura.btn)}</button>
         ${FILTRO_ASPERO}
@@ -380,6 +381,7 @@
           </div>
           <div class="detalhe">
             <div class="fase-atual">${I('medalha', { size: 56 })}<div><b>FASE ATUAL</b><small>${esc(f.titulo)}</small></div></div>
+            ${f.dobro ? NK.seloDobro('Estrelas e pontos em dobro nesta missão!') : ''}
             <p>${esc(f.missao || f.abertura.texto)}</p>
             <div class="progresso">
               <span>Seu progresso</span>

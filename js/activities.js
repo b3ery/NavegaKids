@@ -30,6 +30,7 @@
           <h2>${esc(a.titulo)}</h2>
         </div>
         <div class="acoes">
+          ${f.dobro ? NK.seloDobro('') : ''}
           <span class="chip-papel">${esc(a.papel)}</span>
           <button class="btn btn-sm btn-ghost" id="btSairAtv">Sair</button>
         </div>
@@ -52,11 +53,14 @@
   }
 
   /* Estrelas da fase (cheias + apagadas), mostradas quando a fase acaba de ser completada */
-  function estrelasDaFaseHtml({ estrelas, maxEstrelas }) {
-    const icones = Array.from({ length: maxEstrelas }, (_, i) =>
-      I('estrela', { size: 34, cls: i < estrelas ? '' : 'apagada' })).join('');
-    return `<div class="fase-estrelas" role="img" aria-label="Fase concluída com ${estrelas} de ${maxEstrelas} estrelas">
+  function estrelasDaFaseHtml({ estrelas, maxEstrelas }, fase) {
+    const mult = NK.pontuacao.multiplicador(fase);
+    const base = estrelas / mult, maxBase = maxEstrelas / mult;   // estrelas antes do dobro
+    const icones = Array.from({ length: maxBase }, (_, i) =>
+      I('estrela', { size: 34, cls: i < base ? '' : 'apagada' })).join('');
+    return `<div class="fase-estrelas ${mult > 1 ? 'dobro' : ''}" role="img" aria-label="Fase concluída com ${estrelas} de ${maxEstrelas} estrelas${mult > 1 ? ' (estrelas em dobro)' : ''}">
       <span>Fase concluída!</span><span class="icones">${icones}</span>
+      ${mult > 1 ? `<span class="conta-dobro">${base} × ${mult} = <b>${estrelas} estrelas!</b></span>` : ''}
     </div>`;
   }
 
@@ -74,8 +78,8 @@
       texto: (mensagemExtra ? mensagemExtra + ' ' : '') + (r.jaFeita
         ? 'Você já tinha concluído esta atividade.'
         : 'Você desbloqueou mais uma atividade, continue navegando pirata!'),
-      extra: `<div class="estrela-mais">${I('moedas', { size: 26 })} +${r.pontos} PONTOS</div>`
-        + (r.completouFase ? estrelasDaFaseHtml(r.resultadoFase) : '')
+      extra: `<div class="estrela-mais">${I('moedas', { size: 26 })} +${r.pontos} PONTOS${f.dobro ? ' <span class="x2-pontos">x2</span>' : ''}</div>`
+        + (r.completouFase ? estrelasDaFaseHtml(r.resultadoFase, f) : '')
         + (r.ilhaDoSelo ? `<p class="selo-ganho">${I(r.ilhaDoSelo.seloImg, { size: 34 })} Selo conquistado: ${esc(r.ilhaDoSelo.selo)}!</p>` : ''),
       btns: [{
         t: faseAgoraCompleta ? 'Ver conquista da fase' : (idx + 1 < total ? 'Próxima atividade' : 'Voltar às missões'),

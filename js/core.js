@@ -74,6 +74,10 @@
      símbolo de texto do campo "e" (ex.: ⋮ ☰ dos botões de menu). */
   const icone = (it, o = {}) => it && it.img ? I(it.img, o) : esc(it && it.e || '');
 
+  /* Selo das fases de estrelas em dobro (fases com `dobro: true` em data.js) */
+  const seloDobro = (txt = 'Estrelas em dobro!') =>
+    `<span class="selo-dobro">${I('estrela', { cls: 'ico-txt' })}<b>x2</b>${txt ? `<span>${esc(txt)}</span>` : ''}</span>`;
+
   /* Texto com um ícone pequeno na frente (dicas e mensagens de acerto/erro). */
   const comIcone = (key, txt) => I(key, { cls: 'ico-txt' }) + ' ' + esc(txt);
 
@@ -223,7 +227,7 @@
     // utilitários
     $, $$, esc, shuffle, go, later, every, clearTimers, onLeave,
     // imagens
-    I, imgFail, icone, comIcone, cadeadoIcon, posicionarSobreCover, setBg,
+    I, imgFail, icone, comIcone, seloDobro, cadeadoIcon, posicionarSobreCover, setBg,
     // popups e tela
     fecharPopups, popup, toast, destacarContadores, cabecalho, montar
   });
