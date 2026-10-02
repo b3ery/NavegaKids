@@ -386,32 +386,44 @@
      BAU — animação "O Peso do Segredo"
      ============================================================ */
   function rBau(palco, a) {
-    let fase = 0; // 0 = carregando sozinho, 1 = contou pra Capitã Bússola
-    const draw = () => {
-      palco.innerHTML = `
-        <p class="enunciado">${esc(a.titulo)}</p>
-        <div class="bau-cena">
-          <div class="bau-linha">
-            <span class="nav-c" style="transform:${fase === 0 ? 'translateY(6px)' : 'translateY(-4px)'}">${I('usuario', { size: 90 })}</span>
-            <span class="caixa">${I('bau', { size: fase === 0 ? 110 : 56 })}</span>
-            ${fase === 1 ? `<div class="cap">${I('pirata')}Capitã Bússola</div>` : ''}
-          </div>
-          <div class="peso">
-            <span>${fase === 0 ? 'Peso do segredo: pesado demais' : 'Peso do segredo: mais leve!'}</span>
-            <div class="trilho"><i style="width:${fase === 0 ? '95%' : '25%'}; background:${fase === 0 ? '#ff7b5a' : '#2ec4b0'}"></i></div>
-          </div>
+    /* Cena montada uma vez; ao contar o segredo só troca a classe "contou",
+       e o CSS anima: a Capitã chega, o baú encolhe e o peso cai. */
+    palco.innerHTML = `
+      <p class="enunciado">${esc(a.titulo)}</p>
+      <div class="bau-cena">
+        <div class="bau-palco">
+          <figure class="bau-perso bau-nav">
+            <span class="bau-balao bau-pensa">Ninguém pode saber disso...</span>
+            ${I('usuario', { cls: 'bau-img' })}
+            <figcaption>Navegador</figcaption>
+          </figure>
+          <span class="bau-bau">${I('bau', { cls: 'bau-img' })}</span>
+          <figure class="bau-perso bau-cap" aria-hidden="true">
+            <span class="bau-balao bau-fala">Obrigada por me contar! Agora a gente cuida disso juntos.</span>
+            ${I('pirata', { cls: 'bau-img' })}
+            <figcaption>Capitã Bússola</figcaption>
+          </figure>
+          <i class="bau-mar" aria-hidden="true"></i>
         </div>
-        <p class="texto-cena">${esc(a.texto)}</p>
-        ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
-        <div class="rodape">
-          ${fase === 0
-            ? `<button class="btn btn-t" id="btContar">Ele conta o segredo pra Capitã Bússola</button>`
-            : `<button class="btn btn-t" id="btOkBau">Continuar</button>`}
-        </div>`;
-      const bc = $('#btContar'); if (bc) bc.onclick = () => { fase = 1; draw(); };
-      const bo = $('#btOkBau'); if (bo) bo.onclick = () => concluirAtividade();
+        <div class="peso">
+          <div class="peso-topo">${I('bau', { cls: 'ico-txt' })}<b>Peso do segredo</b><span class="peso-tag" id="pesoTag">Pesado demais</span></div>
+          <div class="trilho" role="progressbar" aria-label="Peso do segredo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="95"><i></i></div>
+        </div>
+      </div>
+      <p class="texto-cena" id="bauTexto">${esc(a.texto)}</p>
+      ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
+      <div class="rodape"><button class="btn btn-t" id="btBau">Ele conta o segredo pra Capitã Bússola</button></div>`;
+
+    const bt = $('#btBau', palco);
+    bt.onclick = () => {
+      if (palco.querySelector('.bau-cena.contou')) { concluirAtividade(); return; }
+      $('.bau-cena', palco).classList.add('contou');
+      $('.bau-cap', palco).removeAttribute('aria-hidden');
+      $('.trilho', palco).setAttribute('aria-valuenow', '25');
+      $('#pesoTag', palco).textContent = 'Bem mais leve!';
+      $('#bauTexto', palco).textContent = 'Ele contou! Dividir o segredo com uma guardiã de confiança deixou o baú bem mais leve.';
+      bt.textContent = 'Continuar';
     };
-    draw();
   }
 
   Object.assign(NK.atividades, {

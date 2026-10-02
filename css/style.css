@@ -822,18 +822,52 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .match button.par { background: #dff7f1; border-color: var(--teal); pointer-events: none; }
 
 /* --- baú / segredo --- */
-.bau-cena { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-.bau-linha { display: flex; align-items: flex-end; gap: 30px; justify-content: center; }
-.bau-linha .nav-c { font-size: 90px; line-height: 1; transition: transform .8s; }
-.bau-linha .caixa { transition: transform .9s ease, font-size .9s ease; }
-.bau-linha .caixa .ico { transition: width .9s, height .9s; }
-.bau-linha .cap .pirata { height: 120px; }
-.bau-linha .cap .pirata .ico { height: 100%; width: auto; }
-.bau-linha .cap .pirata .emo { font-size: 90px; }
-.peso { width: min(320px, 90%); }
-.peso .trilho { height: 16px; background: #e4e4e4; border-radius: 99px; overflow: hidden; }
-.peso .trilho i { display: block; height: 100%; width: 100%; background: var(--coral); transition: width 1.4s ease, background .6s; }
-.peso span { font-weight: 900; font-size: 13px; }
+/* ---- O Peso do Segredo: palco com céu e mar, navegador + baú, Capitã chega ao contar ---- */
+.bau-cena { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.bau-palco {
+  position: relative; width: min(620px, 100%); height: 290px; overflow: hidden;
+  display: flex; align-items: flex-end; justify-content: center; gap: 18px; padding: 0 20px 34px;
+  background: linear-gradient(#dff3fd, #f4fbff 70%); border: 3px solid var(--navy); border-radius: 20px;
+}
+.bau-mar { position: absolute; left: 0; right: 0; bottom: 0; height: 34px; background: var(--sea-1);
+  border-top: 3px solid var(--navy); border-radius: 50% 50% 0 0 / 14px 14px 0 0; }
+.bau-perso { position: relative; z-index: 1; margin: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.bau-perso .bau-img { width: auto; height: 120px; }
+.bau-perso figcaption { background: #fff; border: 2px solid var(--navy); border-radius: 99px; padding: 1px 10px; font-weight: 900; font-size: 13px; color: var(--navy); white-space: nowrap; }
+.bau-bau { position: relative; z-index: 1; align-self: flex-end; margin-bottom: 26px; transition: transform .9s cubic-bezier(.3, 1.4, .5, 1); transform-origin: 50% 100%; }
+.bau-bau .bau-img { width: 120px; height: 120px; transition: width .9s ease, height .9s ease; }
+.bau-balao { position: absolute; bottom: calc(100% + 8px); width: 210px; background: #fff; border: 2px solid var(--navy); border-radius: 14px;
+  padding: 7px 10px; font-weight: 800; font-size: 13px; line-height: 1.25; color: var(--navy); text-align: center; }
+.bau-balao::after { content: ""; position: absolute; top: 100%; left: 50%; translate: -50% -1px; border: 8px solid transparent; border-top-color: var(--navy); }
+.bau-nav .bau-img { transform: translateY(6px) rotate(-4deg); transition: transform .8s; }
+.bau-pensa { transition: opacity .4s, scale .4s; }
+/* pesado: o baú balança e o navegador se curva */
+.bau-cena:not(.contou) .bau-bau { animation: bauPesa 1.6s ease-in-out infinite; }
+/* contou: a Capitã chega pela direita */
+.bau-cap { width: 0; opacity: 0; translate: 80px 0; transition: width .6s ease, opacity .6s ease .2s, translate .7s cubic-bezier(.2, 1.3, .4, 1) .2s; }
+.bau-cap .bau-balao { opacity: 0; scale: .3; transition: opacity .4s 1s, scale .4s cubic-bezier(.2, 1.4, .4, 1) 1s; }
+.contou .bau-cap { width: 130px; opacity: 1; translate: 0 0; }
+.contou .bau-cap .bau-balao { opacity: 1; scale: 1; }
+.contou .bau-pensa { opacity: 0; scale: .3; }
+.contou .bau-nav .bau-img { transform: translateY(-4px); }
+.contou .bau-bau .bau-img { width: 64px; height: 64px; }
+.contou .bau-bau { transform: translateY(-30px); }
+.peso { width: min(360px, 92%); }
+.peso-topo { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; font-size: 14px; color: var(--navy); }
+.peso-tag { margin-left: auto; padding: 1px 10px; border-radius: 99px; background: var(--coral); color: #fff; font-weight: 900; font-size: 12px; transition: background .6s; }
+.contou .peso-tag { background: var(--teal-d); }
+.peso .trilho { height: 18px; background: #fff; border: 2px solid var(--navy); border-radius: 99px; overflow: hidden; }
+.peso .trilho i { display: block; height: 100%; width: 95%; background: var(--coral); transition: width 1.4s ease .3s, background .6s .3s; }
+.contou .peso .trilho i { width: 25%; background: var(--teal); }
+@keyframes bauPesa { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg) translateY(2px); } }
+@media (max-width: 560px) {
+  .bau-palco { height: 250px; gap: 8px; padding: 0 8px 30px; }
+  .bau-perso .bau-img { height: 88px; }
+  .bau-bau .bau-img { width: 86px; height: 86px; }
+  .contou .bau-bau .bau-img { width: 48px; height: 48px; }
+  .contou .bau-cap { width: 100px; }
+  .bau-balao { width: 128px; font-size: 12px; }
+}
 
 /* --- bloqueio --- */
 .escudo-btn { display: inline-flex; gap: 10px; align-items: center; }
@@ -1062,7 +1096,7 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 :is(.opcoes, .itens, .cartoes, .seq-slots, .card-perfil, .chat-body, .mock-app .corpo, .baldes, .av-lista, .match .col, .blocos, .cena-hunt, .guardioes ul) > :nth-child(7) { --i: 6; }
 :is(.opcoes, .itens, .cartoes, .seq-slots, .card-perfil, .chat-body, .mock-app .corpo, .baldes, .av-lista, .match .col, .blocos, .cena-hunt, .guardioes ul) > :nth-child(n+8) { --i: 7; }
 .cena-hunt .pista-btn:not(.achada) { animation: flutua 3s ease-in-out infinite; animation-delay: calc(var(--i, 0) * -.4s); }
-.jg .pirata .ico, .guardioes .pirata .ico, .bau-linha .cap .pirata .ico { animation: flutua 3.2s ease-in-out infinite; }
+.jg .pirata .ico, .guardioes .pirata .ico, .contou .bau-cap .bau-img { animation: flutua 3.2s ease-in-out infinite; }
 .jg-notif .badge { display: inline-block; animation: chama 1.6s ease-in-out infinite; }
 .opcao.certa, .linha-pista.achada, .bolha.achada, .bt-app.achada, .slot.cheio, .item.no-balde, .match .par { animation: acerta .45s cubic-bezier(.2, 1.6, .4, 1); }
 .pista-btn.achada { animation: acerta .45s cubic-bezier(.2, 1.6, .4, 1); }
