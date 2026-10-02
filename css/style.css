@@ -777,6 +777,7 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .conclusao .selo { font-size: 64px; display: block; margin-bottom: 4px; }
 .conclusao .selo .ico { width: 82px; height: 82px; }
 .conclusao .selo .emo { font-size: 64px; }
+.conclusao p.extra { font-size: 17px; color: var(--teal-d); animation: entraCima .5s 1s ease-out both; }
 .conclusao p { font-size: 20px; font-weight: 900; line-height: 1.35; margin: 8px 0; color: var(--navy); }
 .conclusao .btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
 .conclusao .selo-tag { display: inline-block; background: var(--yellow); color: var(--navy); font-weight: 900; padding: 6px 16px; border-radius: 99px; margin: 4px 0; }
@@ -860,9 +861,6 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
   .topbar { gap: 12px; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-}
 
 /* ---------- impressão do certificado ---------- */
 @media print {
@@ -875,4 +873,140 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
   .certificado-inner { transform: none !important; height: auto; }
   .certificado-frente, .certificado-verso { position: static; transform: none; backface-visibility: visible; break-after: page; }
   .certificado .dica-flip { display: none; }
+}
+
+/* ============================================================
+   ANIMAÇÕES DAS TELAS
+   Usam as propriedades independentes translate / scale / rotate,
+   que se somam ao "transform" já usado para posicionar os elementos.
+   Quem ativa "reduzir movimento" no aparelho fica sem elas (regra acima).
+   ============================================================ */
+
+/* ---- toda tela entra suavemente ---- */
+#stage > .scene { animation: telaEntra .35s ease-out both; }
+.btn { transition: translate .15s, filter .15s, box-shadow .15s; }
+.btn:not([disabled]):hover { translate: 0 -2px; }
+.popup { animation: popupEntra .4s cubic-bezier(.2, 1.4, .4, 1) both; }
+.popup .fase-estrelas .icones .ico { animation: estrelaGanha .5s cubic-bezier(.2, 1.6, .4, 1) both; }
+.popup .fase-estrelas .icones .ico:nth-child(2) { animation-delay: .15s; }
+.popup .fase-estrelas .icones .ico:nth-child(3) { animation-delay: .3s; }
+.toast { animation: toastSobe .35s cubic-bezier(.2, 1.3, .4, 1) both; }
+.topbar .starbadge, .topbar .pontosbadge .ico { animation: brilhaLeve 4s ease-in-out infinite; }
+.topbar .starbadge.bump, .topbar .pontosbadge.bump { animation: bump .6s ease; }
+
+/* ---- Início ---- */
+.home-frame .hm-pirata  { animation: flutua 3.2s ease-in-out infinite; }
+.home-frame .hm-volante { animation: volanteGira 6s ease-in-out infinite; }
+.home-frame .hm-mapa    { animation: entraDireita .8s .2s cubic-bezier(.2, .9, .3, 1.1) both, flutuaLento 6s 1s ease-in-out infinite; }
+.home-frame .hm-texto   { animation: entraCima .7s .1s ease-out both; }
+.home-frame .hm-navegar { animation: surge .5s .5s cubic-bezier(.2, 1.4, .4, 1) both, chama 2.4s 1.5s ease-in-out infinite; }
+
+/* ---- Ilhas ---- */
+.ilhas-frame .il-ilha  { animation: flutuaLento 5s ease-in-out infinite; }
+.ilhas-frame .il-ilha2 { animation-delay: -1.6s; }
+.ilhas-frame .il-ilha3 { animation-delay: -3.2s; }
+.ilhas-frame .il-explorar { animation: surge .5s .3s cubic-bezier(.2, 1.4, .4, 1) both, chama 2.4s 1.2s ease-in-out infinite; }
+.ilhas-frame .il-lock { animation: cadeadoBalanca 3s ease-in-out infinite; transform-origin: 50% 20%; }
+
+/* ---- Carregando ---- */
+.carregando-img .fundo-full { animation: aproxima 3s ease-out both; }
+.carregando .txt { animation: flutua 2.4s ease-in-out infinite; }
+
+/* ---- Abertura da fase ---- */
+.intro-frame .it-pirata  { animation: flutua 3.2s ease-in-out infinite; }
+.intro-frame .it-volante { animation: volanteGira 6s ease-in-out infinite; }
+.intro-frame .it-interrog { animation: balanca 2.6s ease-in-out infinite; }
+.intro-frame .it-icone   { animation: surge .5s .2s cubic-bezier(.2, 1.6, .4, 1) both, flutua 3s 1s ease-in-out infinite; }
+.intro-frame .it-titulo  { animation: entraCima .6s .1s ease-out both; }
+.intro-frame .it-texto   { animation: entraCima .6s .3s ease-out both; }
+.intro-frame .it-comecar { animation: surge .5s .6s cubic-bezier(.2, 1.4, .4, 1) both, chama 2.4s 1.6s ease-in-out infinite; }
+
+/* ---- Missões ---- */
+.missoes h1, .missoes .sub { animation: entraCima .5s ease-out both; }
+.missoes .sub { animation-delay: .08s; }
+.painel-missao { animation: surge .5s .15s cubic-bezier(.2, 1.2, .4, 1) both; }
+.painel-missao .fita { animation: fitaBalanca 3s 1s ease-in-out infinite; transform-origin: 50% 0; }
+.arvore .passo { animation: surge .4s cubic-bezier(.2, 1.4, .4, 1) both; }
+.arvore .passo:nth-of-type(1) { animation-delay: .35s; }
+.arvore .passo:nth-of-type(2) { animation-delay: .5s; }
+.arvore .passo:nth-of-type(3) { animation-delay: .65s; }
+.arvore .passo .n.go { display: inline-block; animation: chama 2s 1.2s ease-in-out infinite; }
+.missoes .fase-atual .ico { animation: brilhaLeve 3s ease-in-out infinite; }
+.missoes .progresso .trilho i { animation: enche 1s .5s ease-out both; }
+
+/* ---- Atividades ---- */
+.scene.atv .topo { animation: entraCima .45s ease-out both; }
+.scene.atv .palco { animation: surge .45s .1s ease-out both; }
+/* os itens surgem em cascata só quando a atividade abre (classe "entrando" sai depois de 1,2 s) */
+.palco.entrando :is(.opcoes, .itens, .cartoes, .seq-slots, .card-perfil, .chat-body, .mock-app .corpo, .baldes, .av-lista, .match .col, .blocos, .guardioes ul) > * {
+  animation: surge .4s cubic-bezier(.2, 1.3, .4, 1) both; animation-delay: calc(.2s + var(--i, 0) * 70ms);
+}
+.palco.entrando .cena-hunt > .pista-btn { animation: surge .45s cubic-bezier(.2, 1.4, .4, 1) both; animation-delay: calc(.2s + var(--i, 0) * 70ms); }
+:is(.opcoes, .itens, .cartoes, .seq-slots, .card-perfil, .chat-body, .mock-app .corpo, .baldes, .av-lista, .match .col, .blocos, .cena-hunt, .guardioes ul) > :nth-child(2) { --i: 1; }
+:is(.opcoes, .itens, .cartoes, .seq-slots, .card-perfil, .chat-body, .mock-app .corpo, .baldes, .av-lista, .match .col, .blocos, .cena-hunt, .guardioes ul) > :nth-child(3) { --i: 2; }
+:is(.opcoes, .itens, .cartoes, .seq-slots, .card-perfil, .chat-body, .mock-app .corpo, .baldes, .av-lista, .match .col, .blocos, .cena-hunt, .guardioes ul) > :nth-child(4) { --i: 3; }
+:is(.opcoes, .itens, .cartoes, .seq-slots, .card-perfil, .chat-body, .mock-app .corpo, .baldes, .av-lista, .match .col, .blocos, .cena-hunt, .guardioes ul) > :nth-child(5) { --i: 4; }
+:is(.opcoes, .itens, .cartoes, .seq-slots, .card-perfil, .chat-body, .mock-app .corpo, .baldes, .av-lista, .match .col, .blocos, .cena-hunt, .guardioes ul) > :nth-child(6) { --i: 5; }
+:is(.opcoes, .itens, .cartoes, .seq-slots, .card-perfil, .chat-body, .mock-app .corpo, .baldes, .av-lista, .match .col, .blocos, .cena-hunt, .guardioes ul) > :nth-child(7) { --i: 6; }
+:is(.opcoes, .itens, .cartoes, .seq-slots, .card-perfil, .chat-body, .mock-app .corpo, .baldes, .av-lista, .match .col, .blocos, .cena-hunt, .guardioes ul) > :nth-child(n+8) { --i: 7; }
+.cena-hunt .pista-btn:not(.achada) { animation: flutua 3s ease-in-out infinite; animation-delay: calc(var(--i, 0) * -.4s); }
+.jg .pirata .ico, .guardioes .pirata .ico, .bau-linha .cap .pirata .ico { animation: flutua 3.2s ease-in-out infinite; }
+.jg-notif .badge { display: inline-block; animation: chama 1.6s ease-in-out infinite; }
+.opcao.certa, .linha-pista.achada, .bolha.achada, .bt-app.achada, .slot.cheio, .item.no-balde, .match .par { animation: acerta .45s cubic-bezier(.2, 1.6, .4, 1); }
+.pista-btn.achada { animation: acerta .45s cubic-bezier(.2, 1.6, .4, 1); }
+.pista-btn.achada::after { animation: surge .3s .1s cubic-bezier(.2, 1.6, .4, 1) both; }
+.bolha .stop { animation: surge .35s cubic-bezier(.2, 1.6, .4, 1) both; }
+.quiz-fb, .dica-flutua.boa, .dica-flutua.ruim { animation: surge .3s cubic-bezier(.2, 1.4, .4, 1) both; }
+.bloqueado-selo p { animation: entraCima .4s .3s ease-out both; }
+.video-fase { animation: surge .5s ease-out both; }
+
+/* ---- Conclusão da ilha ---- */
+.conclusao .cx { animation: popupEntra .6s cubic-bezier(.2, 1.3, .4, 1) both; }
+.conclusao .selo { animation: seloGira .9s .3s cubic-bezier(.2, 1.3, .4, 1) both; }
+.conclusao .selo .ico { animation: flutua 3s 1.2s ease-in-out infinite; }
+.conclusao .selo-tag { animation: surge .4s .8s cubic-bezier(.2, 1.6, .4, 1) both, brilhaLeve 3s 1.4s ease-in-out infinite; }
+.conclusao .confetes { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+.conclusao .confetes i {
+  position: absolute; top: -20px; width: 12px; height: 18px; border-radius: 3px;
+  animation: confete linear infinite; opacity: .9;
+}
+.conclusao .cx { position: relative; z-index: 2; }
+
+/* ---- Diário do Capitão ---- */
+.diario-frame .dr-titulo { animation: entraCima .5s ease-out both; }
+.diario-frame .dr-azul, .diario-frame .dr-branco { animation: surge .5s .1s ease-out both; }
+.diario-frame .dr-ilha { animation: flutuaLento 4s ease-in-out infinite; }
+.diario-frame .dr-ilha:nth-of-type(2n) { animation-delay: -1.3s; }
+.diario-frame .dr-btn.go-y { animation: chama 2.2s 1s ease-in-out infinite; }
+.diario-frame .dr-medalha { animation: brilhaLeve 3s ease-in-out infinite; }
+
+/* ---- Certificado ---- */
+.certificado-card { animation: certEntra .8s cubic-bezier(.2, 1.1, .4, 1) both; }
+.certificado .dica-flip { animation: piscaLeve 2s 1s ease-in-out infinite; }
+
+@keyframes telaEntra { from { opacity: 0; } to { opacity: 1; } }
+@keyframes popupEntra { from { opacity: 0; scale: .7; translate: 0 30px; } to { opacity: 1; scale: 1; translate: 0 0; } }
+@keyframes toastSobe { from { opacity: 0; translate: 0 30px; } to { opacity: 1; translate: 0 0; } }
+@keyframes surge { from { opacity: 0; scale: .6; } to { opacity: 1; scale: 1; } }
+@keyframes entraCima { from { opacity: 0; translate: 0 -24px; } to { opacity: 1; translate: 0 0; } }
+@keyframes entraDireita { from { opacity: 0; translate: 60px 0; } to { opacity: 1; translate: 0 0; } }
+@keyframes flutua { 0%, 100% { translate: 0 0; } 50% { translate: 0 -10px; } }
+@keyframes flutuaLento { 0%, 100% { translate: 0 0; } 50% { translate: 0 -6px; } }
+@keyframes balanca { 0%, 100% { rotate: -8deg; } 50% { rotate: 8deg; } }
+@keyframes volanteGira { 0%, 100% { rotate: -14deg; } 50% { rotate: 14deg; } }
+@keyframes cadeadoBalanca { 0%, 80%, 100% { rotate: 0deg; } 85% { rotate: -9deg; } 90% { rotate: 7deg; } 95% { rotate: -4deg; } }
+@keyframes fitaBalanca { 0%, 100% { rotate: -3deg; } 50% { rotate: 3deg; } }
+@keyframes chama { 0%, 70%, 100% { scale: 1; } 80% { scale: 1.08; } 90% { scale: .97; } }
+@keyframes brilhaLeve { 0%, 100% { scale: 1; rotate: 0deg; } 50% { scale: 1.08; rotate: 6deg; } }
+@keyframes estrelaGanha { from { opacity: 0; scale: 0; rotate: -90deg; } to { opacity: 1; scale: 1; rotate: 0deg; } }
+@keyframes acerta { 0% { scale: 1; } 40% { scale: 1.1; } 100% { scale: 1; } }
+@keyframes aproxima { from { scale: 1.08; } to { scale: 1; } }
+@keyframes enche { from { width: 0; } }
+@keyframes seloGira { from { opacity: 0; scale: 0; rotate: -200deg; } to { opacity: 1; scale: 1; rotate: 0deg; } }
+@keyframes confete { from { translate: 0 0; rotate: 0deg; } to { translate: var(--dx, 0) 110vh; rotate: 720deg; } }
+@keyframes certEntra { from { opacity: 0; scale: .8; rotate: -4deg; } to { opacity: 1; scale: 1; rotate: 0deg; } }
+@keyframes piscaLeve { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }

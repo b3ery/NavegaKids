@@ -47,8 +47,9 @@
       icone: "ilhaMontanhas", iconeBloqueado: "ilhaMontanhasBloqueada",
       carregando: "Navegando até a ilha dos Guardiões",
       selo: "Guardião dos Mares", seloImg: "navio",
-      conclusao: "Parabéns, Pirata! Você venceu a Ilha dos Guardiões e concluiu toda a sua jornada pelos mares digitais.",
-      conclusaoBtn: "Ver meu certificado"
+      conclusao: "Parabéns, Pirata! Você venceu a Ilha dos Guardiões e concluiu toda a sua jornada pelos mares digitais. Você conquistou o selo de Guardião dos Mares!",
+      conclusaoExtra: "E tem mais: você desbloqueou o seu Certificado de Navegador Seguro.",
+      conclusaoBtn: "Imprimir meu certificado"
     }
   ];
 
@@ -673,7 +674,7 @@
         },
         {
           titulo: "Denuncio com um Guardião", papel: "Escolha", tipo: "choice",
-          cena: { tipo: "chat", com: "Conversa suspeita", msgs: [
+          cena: { tipo: "chat", com: "Capitã Bússola", msgs: [
             { de: "npc", t: "Você achou o botão de denúncia no perfil que te deixou desconfortável.", nome: "Capitã Bússola" }
           ]},
           pergunta: "O que você faz?",

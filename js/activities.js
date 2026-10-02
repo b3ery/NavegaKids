@@ -44,6 +44,9 @@
   function renderAtividade() {
     const { a } = AC;
     const palco = $('#palco');
+    // animação de entrada em cascata só na abertura (os redesenhos depois de um clique não piscam)
+    palco.classList.add('entrando');
+    later(() => palco.classList.remove('entrando'), 1200);
     // os tipos se registram em NavegaKids.atividades (aqui e em activities2.js)
     (NK.atividades[a.tipo] || NK.atividades.discover)(palco, a);
   }
@@ -115,7 +118,7 @@
       <div class="cap"><div class="pirata">${I('pirata')}</div>Capitã Bússola</div>
       <div class="cham">
         Um guardião é um adulto que você conhece de verdade, cuida de você e em quem você confia.
-        <ul><li>${I('usuario', { cls: 'ico-txt' })} Mãe / Pai / Responsável</li><li>${I('usuario', { cls: 'ico-txt' })} Professora</li><li>${I('usuario', { cls: 'ico-txt' })} Avó / Avô</li><li>${I('pedidoAmizade', { cls: 'ico-txt' })} Outro adulto de confiança</li></ul>
+        <ul><li>${I('usuario', { cls: 'ico-txt' })} Mãe / Pai / Responsável</li><li>${I('usuario', { cls: 'ico-txt' })} Professora</li><li>${I('usuario', { cls: 'ico-txt' })} Avó / Avô</li><li>${I('usuario', { cls: 'ico-txt' })} Tio / Tia</li><li>${I('pedidoAmizade', { cls: 'ico-txt' })} Outro adulto de confiança</li></ul>
       </div>
     </div>`;
   }

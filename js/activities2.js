@@ -146,6 +146,7 @@
         const fb = $('#fbHunt');
         if (it.ok) {
           el.classList.add('achada');
+          if (a.skin === 'chat') el.insertAdjacentHTML('beforeend', `<span class="stop">${I('pare')}</span>`);   // roteiro: aparece o STOP ao acertar
           achadas.add(i);
           $('#cntHunt').textContent = achadas.size;
           fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', it.why);
