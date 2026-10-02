@@ -68,6 +68,7 @@
   function concluirAtividade(mensagemExtra) {
     const { f, idx } = AC;
     const r = progresso.concluirAtividade();
+    NK.som?.vitoria(r.completouFase);
     destacarContadores();
     const total = f.atividades.length;
     const faseAgoraCompleta = progresso.faseCompleta(f.id);
@@ -251,6 +252,7 @@
         const fb = $('#fbChoice');
         fb.style.display = 'block';
         fb.className = 'quiz-fb ' + (o.ok ? 'ok' : 'ruim');
+        NK.som?.[o.ok ? 'acerto' : 'erro']();
         fb.textContent = o.fb;
         if (o.ok) {
           $('#rodapeChoice').innerHTML = `<button class="btn btn-t" id="btOkChoice">Continuar</button>`;
@@ -293,6 +295,7 @@
       const fb = $('#fbChoice');
       fb.style.display = 'block';
       fb.className = 'quiz-fb ' + (o.ok ? 'ok' : 'ruim');
+        NK.som?.[o.ok ? 'acerto' : 'erro']();
       fb.textContent = o.fb;
       if (o.ok) {
         b.classList.add('certa');
@@ -327,6 +330,7 @@
         const i = +b.dataset.i, p = a.portas[i];
         const fb = $('#fbPorta');
         fb.innerHTML = p.seguro ? comIcone('correto', 'Segura! ' + p.why) : comIcone('atencao', 'Arriscada! ' + p.why);
+        NK.som?.acerto();   // abrir a porta é descoberta, não erro
         fb.className = 'dica-flutua ' + (p.seguro ? 'boa' : 'ruim');
         acertos.add(i);
         if (acertos.size === a.portas.length) {
@@ -350,6 +354,7 @@
         <button class="btn btn-c escudo-btn" id="btBloquear">${I('escudo', { size: 26 })} ${esc(a.botao)}</button>
       </div>`;
     $('#btBloquear').onclick = () => {
+      NK.som?.acerto();
       $('#palco').innerHTML = `<div class="bloqueado-selo">${I('escudo', { size: 80 })}<p>Escudo ativado!</p></div>`;
       later(() => concluirAtividade(a.fbOk), 900);
     };

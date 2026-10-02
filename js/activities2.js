@@ -65,12 +65,12 @@
         const fb = $('#fbClass');
         if (it.b === baldeId) {
           it.colocado = baldeId;
-          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Isso mesmo!');
+          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Isso mesmo!'); NK.som?.acerto();
           selecionado = null;
           draw();
           if (itens.every(i => i.colocado !== null)) later(() => concluirAtividade(a.fbOk), 500);
         } else {
-          progresso.registrarErro();
+          progresso.registrarErro(); NK.som?.erro();
           fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('falha', 'Ainda não... tente outro grupo!');
           const card = $(`.item[data-id="${id}"]`, palco);
           if (card) card.classList.add('shake');
@@ -149,7 +149,7 @@
           if (a.skin === 'chat') el.insertAdjacentHTML('beforeend', `<span class="stop">${I('pare')}</span>`);   // roteiro: aparece o STOP ao acertar
           achadas.add(i);
           $('#cntHunt').textContent = achadas.size;
-          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', it.why);
+          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', it.why); NK.som?.acerto();
           if (achadas.size === alvo) {
             later(() => {
               if (rIdx + 1 < a.rounds.length) { rIdx++; drawRound(); }
@@ -158,6 +158,7 @@
           }
         } else {
           if (a.skin !== 'app') progresso.registrarErro();   // no "app" a criança está explorando a tela
+          NK.som?.erro();
           el.classList.add('errada'); el.classList.add('shake');
           fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('nao', it.why);
           later(() => el.classList.remove('errada', 'shake'), 700);
@@ -211,11 +212,11 @@
         const certo = slots.every((id, i) => id === i);
         const fb = $('#fbSeq');
         if (certo) {
-          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Sequência perfeita!');
+          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Sequência perfeita!'); NK.som?.acerto();
           draw();
           later(() => concluirAtividade(a.fbOk), 700);
         } else {
-          progresso.registrarErro();
+          progresso.registrarErro(); NK.som?.erro();
           fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('falha', 'Ainda não é essa ordem... tente de novo!');
           draw();
           later(() => { slots.fill(null); draw(); }, 900);
@@ -265,10 +266,10 @@
         const okTudo = a.grupos.every((g, gi) => g.blocos[escolha[gi]].ok);
         const fb = $('#fbComp');
         if (okTudo) {
-          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', a.fbOk || 'Ótima mensagem!');
+          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', a.fbOk || 'Ótima mensagem!'); NK.som?.acerto();
           later(() => concluirAtividade(a.fbOk), 700);
         } else {
-          progresso.registrarErro();
+          progresso.registrarErro(); NK.som?.erro();
           fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('falha', a.fbBad || 'Vamos tentar outra combinação.');
           escolha.fill(null);
           later(draw, 1100);
@@ -327,6 +328,7 @@
         });
         const ok = o ? o.ok : false;
         if (!ok) progresso.registrarErro();
+        NK.som?.[ok ? 'acerto' : 'erro']();
         const fb = $('#fbQuiz');
         fb.style.display = 'block';
         fb.className = 'quiz-fb ' + (ok ? 'ok' : 'ruim');
@@ -367,11 +369,11 @@
         const fb = $('#fbMatch');
         if (id === selA) {
           pares.add(id); selA = null;
-          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Combinação certa!');
+          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Combinação certa!'); NK.som?.acerto();
           draw();
           if (pares.size === a.pares.length) later(() => concluirAtividade(a.fbOk), 600);
         } else {
-          progresso.registrarErro();
+          progresso.registrarErro(); NK.som?.erro();
           fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('falha', 'Essa combinação não é bem essa... tente outra!');
           selA = null; draw();
         }

@@ -170,4 +170,59 @@
   }, true));
 
   NK.musica = { alternar, tocar, parar, botaoHtml, atualizaBotao, ligada: () => ligada };
+
+  /* ============================================================
+     EFEITOS SONOROS: acerto, erro e vitória.
+     Saem por um volume próprio, então tocam mesmo com a música desligada.
+     ============================================================ */
+  let efeitos = null;
+  function saidaEfeitos() {
+    if (!prepara()) return null;
+    ctx.resume();
+    if (!efeitos) { efeitos = ctx.createGain(); efeitos.gain.value = 0.32; efeitos.connect(ctx.destination); }
+    return efeitos;
+  }
+
+  /* um "bip" com envelope e, opcionalmente, deslize de altura */
+  function tom(saida, { de, ate = de, t = 0, dur = 0.15, tipo = 'sine', vol = 1 }) {
+    const t0 = ctx.currentTime + t;
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = tipo;
+    o.frequency.setValueAtTime(de, t0);
+    if (ate !== de) o.frequency.exponentialRampToValueAtTime(ate, t0 + dur);
+    g.gain.setValueAtTime(0, t0);
+    g.gain.linearRampToValueAtTime(vol, t0 + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0008, t0 + dur);
+    o.connect(g); g.connect(saida);
+    o.start(t0); o.stop(t0 + dur + 0.05);
+  }
+
+  /** "Plim!" — duas notas subindo, brilhantes. */
+  function acerto() {
+    const s = saidaEfeitos(); if (!s) return;
+    tom(s, { de: freq(84), t: 0, dur: 0.12, tipo: 'triangle', vol: 0.7 });          // Dó
+    tom(s, { de: freq(91), t: 0.09, dur: 0.28, tipo: 'triangle', vol: 0.7 });       // Sol
+    tom(s, { de: freq(103), t: 0.09, dur: 0.22, tipo: 'sine', vol: 0.18 });         // brilho
+  }
+
+  /** "Buóm" — som grave descendo, curto e sem susto. */
+  function erro() {
+    const s = saidaEfeitos(); if (!s) return;
+    tom(s, { de: 260, ate: 150, t: 0, dur: 0.18, tipo: 'square', vol: 0.22 });
+    tom(s, { de: 200, ate: 105, t: 0.16, dur: 0.3, tipo: 'square', vol: 0.22 });
+  }
+
+  /** Fanfarra ao concluir a atividade (maior quando fecha a fase). */
+  function vitoria(grande) {
+    const s = saidaEfeitos(); if (!s) return;
+    const notas = grande ? [72, 76, 79, 84, 79, 84] : [72, 76, 79, 84];
+    const passo = grande ? 0.11 : 0.09;
+    notas.forEach((m, i) => {
+      const ultima = i === notas.length - 1;
+      tom(s, { de: freq(m), t: i * passo, dur: ultima ? 0.5 : 0.14, tipo: 'triangle', vol: 0.6 });
+      tom(s, { de: freq(m + 12), t: i * passo, dur: ultima ? 0.4 : 0.1, tipo: 'sine', vol: 0.12 });
+    });
+  }
+
+  NK.som = { acerto, erro, vitoria };
 })();
