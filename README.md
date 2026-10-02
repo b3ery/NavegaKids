@@ -30,6 +30,45 @@
 
 ---
 
+## 👥 Nossa Equipe
+
+<div align="center">
+
+<table>
+  <tr>
+    <td align="center" width="20%">
+      <a href="https://github.com/and0994">
+        <img src="https://github.com/and0994.png" width="90px;" alt="Andressa"/><br>
+        <sub><b>Andressa de Oliveira Costa</b></sub>
+      </a>
+    </td>
+    <td align="center" width="20%">
+      <img src="https://ui-avatars.com/api/?name=Isabella+Rustice&background=2ec4b0&color=fff&size=180&rounded=true&bold=true" width="90px;" alt="Isabella"/><br>
+        <sub><b>Isabella Rodrigues Rustice</b></sub>
+    </td>
+    <td align="center" width="20%">
+      <img src="https://ui-avatars.com/api/?name=Lucas+Marques&background=4EA8DE&color=fff&size=180&rounded=true&bold=true" width="90px;" alt="Lucas"/><br>
+        <sub><b>Lucas Pinheiro Marques</b></sub>
+    </td>
+    <td align="center" width="20%">
+      <a href="https://github.com/b3ery">
+        <img src="https://github.com/b3ery.png" width="90px;" alt="Mylena"/><br>
+        <sub><b>Mylena Soares Rocha</b></sub>
+      </a>
+    </td>
+    <td align="center" width="20%">
+      <img src="https://ui-avatars.com/api/?name=Thais+Quelca&background=ff7a59&color=fff&size=180&rounded=true&bold=true" width="90px;" alt="Thais"/><br>
+        <sub><b>Thais Luana Flores Quelca</b></sub>
+    </td>
+  </tr>
+</table>
+
+</div>
+
+<br>
+
+---
+
 ## 🌊 Sobre o Projeto
 
 > **NavegaKids** é um jogo educativo para crianças sobre **segurança na internet e prevenção ao grooming digital**. Ao lado da **Capitã Bússola**, o pequeno navegador atravessa **3 ilhas, 15 fases e 45 atividades** para aprender a reconhecer perfis suspeitos, proteger seus dados, sair de conversas que incomodam, bloquear, denunciar e — principalmente — **pedir ajuda a um adulto de confiança**. Tudo em HTML + CSS + JavaScript puro, sem dependências. 🏴‍☠️
