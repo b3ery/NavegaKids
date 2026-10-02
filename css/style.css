@@ -81,7 +81,8 @@ button { font-family: inherit; cursor: pointer; }
 }
 .starbadge .ico, .starbadge .emo { position: absolute; inset: 0; margin: auto; width: 32px; height: 32px; object-fit: contain; }
 .starbadge b {
-  position: relative; z-index: 1; font-size: 14px; font-weight: 900; color: var(--navy);
+  position: absolute; z-index: 1; left: 48.7%; top: 45.1%; transform: translate(-50%, -50%); line-height: 1;
+  font-size: 14px; font-weight: 900; color: var(--navy);
   text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
 }
 .starbadge.bump { animation: bump .6s ease; }
@@ -341,7 +342,7 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .mf-card .mf-prosseguir:hover { background: #CC9408; }
 .mf-card .mf-estrela { left: calc(1097 * var(--u)); top: calc(19 * var(--u)); width: calc(105 * var(--u)); height: calc(105 * var(--u)); }
 .mf-card .mf-estrela .ico { left: 0; top: 0; width: 100%; height: 100%; }
-.mf-card .mf-estrela b { position: absolute; inset: 0; display: grid; place-items: center; padding-top: calc(8 * var(--u)); font-size: calc(30 * var(--u)); font-weight: 500; }
+.mf-card .mf-estrela b { position: absolute; left: 48.7%; top: 45.1%; transform: translate(-50%, -50%); line-height: 1; font-size: calc(30 * var(--u)); font-weight: 700; }  /* centro visual do estrela.png */
 /* stepper 1–5 */
 .mf-card .mf-trilho { left: calc(500 * var(--u)); top: calc(465 * var(--u)); width: calc(625 * var(--u)); height: calc(4 * var(--u)); background: #E6ECF1; }
 .mf-card .mf-passo { width: calc(34 * var(--u)); height: calc(30 * var(--u)); border-radius: 50%; background: #D5D8DD; transform: translate(-50%, -50%); top: calc(467 * var(--u)); }
@@ -364,8 +365,6 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
   background: #FFF9E6; border: max(1px, calc(2 * var(--u))) solid #1E293B; padding: 0; box-sizing: border-box;
   color: #000; transition: transform .15s;
 }
-.mf-no:not(:disabled):hover { transform: translate(-50%, -50%) rotate(var(--ang)) scale(1.05); }
-.mf-no:disabled { cursor: not-allowed; }
 .mf-no > * { position: absolute; }
 .mf-no .ico { max-width: none; }
 .mf-no .mf-cad { left: calc(8 * var(--u)); top: calc(6 * var(--u)); width: calc(218 * var(--u)); height: calc(218 * var(--u)); }
@@ -379,6 +378,47 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 }
 .mf-no .mf-ok { right: calc(-18 * var(--u)); top: calc(-18 * var(--u)); width: calc(52 * var(--u)); height: calc(52 * var(--u)); }
 .mf-no .mf-dobro { right: calc(-3 * var(--u)); top: calc(-4 * var(--u)); width: calc(78 * var(--u)); height: calc(78 * var(--u)); }
+
+/* ---- animações do mapa da ilha ----
+   Os cards já usam "transform" para posição/rotação; as animações usam as
+   propriedades independentes translate/scale/rotate para não brigar com ele. */
+.mf-card { animation: mfDesce .6s cubic-bezier(.2, .9, .3, 1.2) both; }
+.mf-card .mf-navio { animation: mfBalanca 4s ease-in-out infinite; transform-origin: 50% 75%; }
+.mf-card .mf-estrela { animation: mfBrilha 3s ease-in-out infinite; }
+.mf-card .mf-prosseguir { transition: background .15s, translate .15s, box-shadow .15s; box-shadow: 0 calc(6 * var(--u)) 0 #CC9408; animation: mfChama 2.2s ease-in-out 1s infinite; }
+.mf-card .mf-prosseguir:hover { translate: 0 calc(-3 * var(--u)); box-shadow: 0 calc(9 * var(--u)) 0 #a87905; animation-play-state: paused; }
+.mf-card .mf-prosseguir:active { translate: 0 calc(4 * var(--u)); box-shadow: 0 calc(2 * var(--u)) 0 #a87905; }
+.mf-card .mf-passo.agora { animation: mfPulsoPasso 1.6s ease-in-out infinite; }
+.mf-linhas line { stroke-dasharray: 10 8; animation: mfCaminho 1.4s linear infinite; }
+.mapa-frame .mf-decor { animation: mfFlutua 5s ease-in-out infinite; animation-delay: calc(var(--i, 0) * -.9s); }
+.mf-num { animation: mfSurge .4s ease-out both; animation-delay: calc(.35s + var(--i, 0) * .12s); }
+.mf-no {
+  animation: mfSurge .5s cubic-bezier(.2, .9, .3, 1.3) both, mfFlutua 4.5s ease-in-out infinite;
+  animation-delay: calc(.35s + var(--i, 0) * .12s), calc(var(--i, 0) * -.8s);
+  transition: scale .2s, box-shadow .2s, filter .2s;
+  box-shadow: 0 calc(8 * var(--u)) calc(14 * var(--u)) rgba(30, 41, 59, .18);
+}
+.mf-no:not(.trancada):hover { scale: 1.08; box-shadow: 0 calc(16 * var(--u)) calc(24 * var(--u)) rgba(30, 41, 59, .3); }
+.mf-no.atual { animation: mfSurge .5s cubic-bezier(.2, .9, .3, 1.3) both, mfAtual 1.8s ease-in-out infinite; animation-delay: calc(.35s + var(--i, 0) * .12s), 1s; z-index: 5; }
+.mf-no.trancada { filter: saturate(.6) brightness(.96); cursor: not-allowed; }
+.mf-no.nega { animation: mfNega .45s ease; }
+.mf-no .mf-ok { animation: mfSurge .4s cubic-bezier(.2, .9, .3, 1.6) both; animation-delay: calc(.8s + var(--i, 0) * .12s); }
+.mf-no .mf-dobro { animation: mfGira 6s linear infinite; }
+
+@keyframes mfDesce { from { opacity: 0; translate: 0 calc(-40 * var(--u)); } to { opacity: 1; translate: 0 0; } }
+@keyframes mfSurge { from { opacity: 0; scale: .4; } to { opacity: 1; scale: 1; } }
+@keyframes mfFlutua { 0%, 100% { translate: 0 0; } 50% { translate: 0 calc(-10 * var(--u)); } }
+@keyframes mfBalanca { 0%, 100% { rotate: -3deg; translate: 0 0; } 50% { rotate: 3deg; translate: 0 calc(-6 * var(--u)); } }
+@keyframes mfBrilha { 0%, 100% { scale: 1; rotate: 0deg; } 50% { scale: 1.1; rotate: 8deg; } }
+@keyframes mfChama { 0%, 70%, 100% { scale: 1; } 80% { scale: 1.07; } 90% { scale: .98; } }
+@keyframes mfPulsoPasso { 0%, 100% { box-shadow: 0 0 0 0 rgba(78, 168, 222, .6); } 50% { box-shadow: 0 0 0 calc(10 * var(--u)) rgba(78, 168, 222, 0); } }
+@keyframes mfCaminho { to { stroke-dashoffset: -18; } }
+@keyframes mfAtual {
+  0%, 100% { scale: 1; box-shadow: 0 0 0 0 rgba(255, 200, 59, .9), 0 calc(8 * var(--u)) calc(14 * var(--u)) rgba(30, 41, 59, .18); }
+  50% { scale: 1.06; box-shadow: 0 0 0 calc(14 * var(--u)) rgba(255, 200, 59, 0), 0 calc(14 * var(--u)) calc(22 * var(--u)) rgba(30, 41, 59, .28); }
+}
+@keyframes mfNega { 0%, 100% { translate: 0 0; } 20% { translate: calc(-10 * var(--u)) 0; } 40% { translate: calc(10 * var(--u)) 0; } 60% { translate: calc(-6 * var(--u)) 0; } 80% { translate: calc(6 * var(--u)) 0; } }
+@keyframes mfGira { 0%, 100% { rotate: -12deg; scale: 1; } 50% { rotate: 12deg; scale: 1.12; } }
 
 /* ============ ABERTURA DE FASE (template de introdução) ============ */
 /* Frame do Figma: 1728 × 1683 (navbar 182 + 1501), com scroll, como a Home.

@@ -202,8 +202,8 @@
 
     const linhas = `<svg class="mf-linhas" viewBox="0 0 1728 2034" preserveAspectRatio="none" aria-hidden="true">
       ${LINHAS.map(([x1, y1, x2, y2]) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`).join('')}</svg>`;
-    const decor = DECOR.map(([k, l, t, sz, r]) =>
-      I(k, { cls: k === 'atencao' ? 'mf-decor mf-decor-topo' : 'mf-decor', alt: '' }).replace('<img ', `<img style="left:${U(l)};top:${U(t)};width:${U(sz)};height:${U(sz)};${r ? `transform:rotate(${r}deg);` : ''}" `)).join('');
+    const decor = DECOR.map(([k, l, t, sz, r], i) =>
+      I(k, { cls: k === 'atencao' ? 'mf-decor mf-decor-topo' : 'mf-decor', alt: '' }).replace('<img ', `<img style="--i:${i};left:${U(l)};top:${U(t)};width:${U(sz)};height:${U(sz)};${r ? `transform:rotate(${r}deg);` : ''}" `)).join('');
 
     const nos = fs.map((f, i) => {
       const p = NOS[i] || NOS[NOS.length - 1];
@@ -214,9 +214,9 @@
             ? `${I('misterio', { cls: 'mf-ic-m' })}${I('anonimo', { cls: 'mf-ic-a' })}`   // composição do Figma
             : I(f.icone, { cls: 'mf-ic' })) + `<span class="mf-tit">${esc(f.titulo)}</span>`;
       return `
-      <span class="mf-num" style="left:${U(p.n.x)};top:${U(p.n.y)}" aria-hidden="true">${i + 1}</span>
+      <span class="mf-num" style="--i:${i};left:${U(p.n.x)};top:${U(p.n.y)}" aria-hidden="true">${i + 1}</span>
       <button class="mf-no ${comp ? 'feita' : ''} ${!lib ? 'trancada' : ''} ${f.id === atual.id && !comp ? 'atual' : ''}"
-        style="left:${U(p.x)};top:${U(p.y)};--ang:${p.ang}deg" data-f="${f.id}" ${lib ? '' : 'disabled'}
+        style="--i:${i};left:${U(p.x)};top:${U(p.y)};--ang:${p.ang}deg" data-f="${f.id}" ${lib ? '' : 'aria-disabled="true"'}
         aria-label="Fase ${i + 1}: ${esc(f.titulo)}${comp ? ' — concluída' : lib ? '' : ' — bloqueada'}">
         ${conteudo}
         ${comp ? I('correto', { cls: 'mf-ok' }) : ''}
@@ -228,7 +228,7 @@
     const stepper = `<i class="mf-trilho"></i>` + fs.map((f, i) => {
       const on = faseCompleta(f.id) || f.id === atual.id;
       return `<b class="mf-pnum ${on ? 'on' : ''}" style="left:${U(PASSOS_X[i])}">${i + 1}</b>
-              <i class="mf-passo ${on ? 'on' : ''}" style="left:${U(PASSOS_X[i])}"></i>`;
+              <i class="mf-passo ${on ? 'on' : ''} ${f.id === atual.id && !faseCompleta(f.id) ? 'agora' : ''}" style="left:${U(PASSOS_X[i])}"></i>`;
     }).join('');
 
     montar(`
@@ -257,7 +257,11 @@
     $('#btProsseguir').onclick = () => ilhaFeita ? go('#/ilhas') : abrir(atual.id);
     $$('[data-f]', $('#stage')).forEach(b => b.onclick = () => {
       const fid = +b.dataset.f;
-      if (!faseLiberada(fid)) { toast('Complete a fase anterior para desbloquear esta.'); return; }
+      if (!faseLiberada(fid)) {
+        b.classList.remove('nega'); void b.offsetWidth; b.classList.add('nega');   // reinicia a animação
+        toast('Complete a fase anterior para desbloquear esta.');
+        return;
+      }
       abrir(fid);
     });
   }
