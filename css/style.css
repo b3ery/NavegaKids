@@ -1274,3 +1274,7 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .voz-op small { font-size: 12px; font-weight: 700; color: var(--muted); }
 .voz-op input { accent-color: var(--blue); width: 18px; height: 18px; }
 .popup .voz-dica { font-size: 14px; background: var(--cream-2); border: 2px dashed var(--yellow-d); border-radius: 12px; padding: 8px 12px; text-align: center; }
+/* Missões: "Ouvir" e "Voz" (escolher a voz) lado a lado */
+.detalhe .voz-botoes { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.bt-ouvir.bt-voz { background: #fff; }
+.bt-ouvir.bt-voz .ico-txt { width: 18px; height: 18px; margin: 0; }

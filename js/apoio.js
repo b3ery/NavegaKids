@@ -211,7 +211,7 @@
   }
 
   document.addEventListener('click', e => {
-    const bt = e.target.closest('.bt-ouvir');
+    const bt = e.target.closest('.bt-ouvir:not(.bt-voz)');   // "Voz" (Missões) só abre a escolha da voz
     if (!bt) return;
     e.preventDefault(); e.stopPropagation();
     const texto = bt.dataset.ouvirTxt ?? textoDe(document.querySelector(bt.dataset.ouvir));

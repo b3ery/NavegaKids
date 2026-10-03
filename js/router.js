@@ -114,29 +114,31 @@
   /* PopUP-Usuario do Figma: pede o nome (ou apelido) do navegador e o modo por idade
      (Marujo, 8 anos · Capitão, 9 e 10 anos — relato de testes).
      Fica só na memória da sessão, como o resto do progresso. */
-  function pedirNome(depois) {
-    const modoAtual = progresso.modo();
-    const cartao = m => `<label class="modo-op">
-        <input type="radio" name="modo" value="${m.id}" ${m.id === modoAtual ? 'checked' : ''}>
-        <span class="modo-card modo-${m.id}">
-          ${I(m.id === 'marujo' ? 'usuario' : 'pirata', { cls: 'modo-ico' })}
-          <b>${m.nome}</b><small>${m.idade}</small>
-          <em>${m.id === 'marujo' ? 'Mais tempo para responder e dicas guardadas no botão' : 'Desafio com tempo de 15 segundos'}</em>
-        </span>
-      </label>`;
+  const cartaoModo = (m, atual) => `<label class="modo-op">
+      <input type="radio" name="modo" value="${m.id}" ${m.id === atual ? 'checked' : ''}>
+      <span class="modo-card modo-${m.id}">
+        ${I(m.id === 'marujo' ? 'usuario' : 'pirata', { cls: 'modo-ico' })}
+        <b>${m.nome}</b><small>${m.idade}</small>
+        <em>${m.id === 'marujo' ? 'Mais tempo para responder e dicas guardadas no botão' : 'Desafio com tempo de 15 segundos'}</em>
+      </span>
+    </label>`;
+  const escolhaModoHtml = legenda => `<fieldset class="campo-modo"><legend>${legenda}</legend>
+      <div class="modo-ops">${Object.values(progresso.MODOS).map(m => cartaoModo(m, progresso.modo())).join('')}</div>
+    </fieldset>`;
+
+  /** Na primeira vez (Navegar!) pede nome + nível; o lápis do Diário pede só o nome. */
+  function pedirNome(depois, { comModo = true } = {}) {
     const w = popup({
       cor: 'b', titulo: 'Qual é o seu nome de navegador?',
       extra: `<label class="campo-nome"><span>Pode ser um apelido!</span>
         <input id="inNome" type="text" maxlength="20" autocomplete="off"
           value="${esc(progresso.nome())}" placeholder="Ex.: Pirata Corajoso"></label>
-        <fieldset class="campo-modo"><legend>Como você quer navegar?</legend>
-          <div class="modo-ops">${Object.values(progresso.MODOS).map(cartao).join('')}</div>
-        </fieldset>`,
+        ${comModo ? escolhaModoHtml('Como você quer navegar?') : ''}`,
       btns: [
         { t: 'Agora não', cls: 'btn-ghost', fn: () => depois?.() },
         { t: 'Confirmar', cls: 'btn-t', fn: janela => {
           progresso.definirNome($('#inNome', janela).value);
-          progresso.definirModo($('input[name="modo"]:checked', janela)?.value);
+          if (comModo) progresso.definirModo($('input[name="modo"]:checked', janela)?.value);
           depois?.();
         } }
       ]
@@ -144,6 +146,18 @@
     const campo = $('#inNome', w);
     campo.focus();
     campo.onkeydown = e => { if (e.key === 'Enter') $('[data-b="1"]', w).click(); };
+  }
+
+  /** Diário: troca só o nível (8 anos ou 9 e 10 anos). */
+  function pedirModo(depois) {
+    popup({
+      cor: 'b', titulo: 'Trocar o nível',
+      extra: escolhaModoHtml('Escolha a idade de quem está jogando'),
+      btns: [
+        { t: 'Cancelar', cls: 'btn-ghost' },
+        { t: 'Confirmar', cls: 'btn-t', fn: janela => { progresso.definirModo($('input[name="modo"]:checked', janela)?.value); depois?.(); } }
+      ]
+    });
   }
 
   /* ============================================================
@@ -415,7 +429,10 @@
             <div class="fase-atual">${I('medalha', { size: 56 })}<div><b>FASE ATUAL</b><small>${esc(f.titulo)}</small></div></div>
             ${f.dobro ? NK.seloDobro('Estrelas e pontos em dobro nesta missão!') : ''}
             <p id="txtMissao">${esc(f.missao || f.abertura.texto)}</p>
-            ${NK.botaoOuvir('#txtMissao', { cls: 'ouvir-missao' })}
+            <div class="voz-botoes">
+              ${NK.botaoOuvir('#txtMissao', { cls: 'ouvir-missao' })}
+              ${NK.voz.temVoz ? `<button type="button" class="bt-ouvir bt-voz" id="btVoz" aria-label="Escolher a voz do Ouvir">${I('config', { cls: 'ico-txt' })}<span>Voz</span></button>` : ''}
+            </div>
             <div class="progresso">
               <span>Seu progresso</span>
               <div class="trilho"><i style="width:${pct}%"></i></div>
@@ -431,6 +448,7 @@
     </div>`, 'missoes');
 
     $('#btIlhas').onclick = () => go('#/ilhas');
+    const bv = $('#btVoz'); if (bv) bv.onclick = popupVoz;
     // sem ter passado pela introdução, “Começar” leva primeiro à introdução da fase
     $$('[data-i]', $('.arvore')).forEach(b => b.onclick = () => go(progresso.introVista(fid) || DEV ? `#/atividade/${fid}/${b.dataset.i}` : `#/abertura/${fid}`));
     const av = $('#btAvancarFase');
@@ -533,7 +551,7 @@
     $('.popup', w).scrollTop = 0;   // o foco no botão rola até o fim; a lista começa do topo
   }
 
-  /* Escolha da voz do botão "Ouvir" (fica salva neste aparelho). As vozes dependem do
+  /* Escolha da voz do botão "Ouvir" (fica salva neste aparelho; botão "Voz" em Missões). As vozes dependem do
      navegador: no Edge as "Natural" (ex.: Thalita) e no Chrome as do Google soam melhor. */
   function popupVoz() {
     const FRASE = 'Oi, pirata! Eu vou ler os textos do jogo para você. Vamos navegar com segurança?';
@@ -650,15 +668,15 @@
         <p class="dr-txt" style="left:${U(971)};width:${U(468)};top:${U(550)};text-align:center"><b>ILHAS:</b></p>
         ${mini}
       </div>
-      <div class="diario-acoes"><button class="btn btn-t" id="btConquistas">${I('conquistas', { cls: 'ico-txt' })} Minhas Conquistas</button><button class="btn btn-ghost" id="btModo">Modo ${progresso.modoInfo().nome} (${progresso.modoInfo().idade}) · trocar</button>${NK.voz.temVoz ? '<button class="btn btn-ghost" id="btVoz">Voz do Ouvir</button>' : ''}${jornada ? `<button class="btn btn-t" id="btVerCert">Ver Certificado</button>` : ''}${DEV ? `<button class="btn btn-c" id="btReset">Reiniciar progresso (dev)</button>` : ''}</div>
+      <div class="diario-acoes"><button class="btn btn-t" id="btConquistas">${I('conquistas', { cls: 'ico-txt' })} Minhas Conquistas</button><button class="btn btn-ghost" id="btModo">Nível: ${progresso.modoInfo().nome} (${progresso.modoInfo().idade}) · trocar</button>${jornada ? `<button class="btn btn-t" id="btVerCert">Ver Certificado</button>` : ''}${DEV ? `<button class="btn btn-c" id="btReset">Reiniciar progresso (dev)</button>` : ''}</div>
     </div>`, 'diario');
     document.body.classList.add('tela-figma');
     window.scrollTo(0, 0);
 
     const cert = $('#btVerCert'); if (cert) cert.onclick = () => go('#/certificado');
     const rst = $('#btReset'); if (rst) rst.onclick = () => { progresso.resetar(); go('#/home'); };
-    $('#btEditarNome').onclick = $('#btModo').onclick = () => pedirNome(telaDiario);
-    const bv = $('#btVoz'); if (bv) bv.onclick = popupVoz;
+    $('#btEditarNome').onclick = () => pedirNome(telaDiario, { comModo: false });
+    $('#btModo').onclick = () => pedirModo(telaDiario);
     $('#btConquistas').onclick = $('#btConquistasTit').onclick = $('.dr-medalha').onclick = () => popupConquistas();
     $$('.dr-cq').forEach(b => b.onclick = () => popupConquistas(+b.dataset.cq));
     $$('.dr-btn').forEach(b => b.onclick = () => {

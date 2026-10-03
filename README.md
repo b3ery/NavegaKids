@@ -228,8 +228,8 @@ flowchart LR
 | 👋 **Home personalizada** | ✅ | Balão do pirata com o nome, as estrelas e a próxima ilha |
 | ♿ **Acessibilidade** | ✅ | Respeita "reduzir movimento", textos alternativos e navegação por teclado |
 | 🧪 **Modo de teste** | ✅ | `?dev=1` libera todas as fases |
-| **Modos por idade** | ✅ | Marujo (8 anos): 45 s no quiz cronometrado e dicas no botão "Ver dica"; Capitão (9 e 10 anos): desafio de 15 s. Escolha ao digitar o nome ou no Diário |
-| **Ouvir em voz alta** | ✅ | Botão "Ouvir" nas atividades, aberturas e Missões (voz do próprio navegador, em português) |
+| **Modos por idade** | ✅ | Marujo (8 anos): 45 s no quiz cronometrado e dicas no botão "Ver dica"; Capitão (9 e 10 anos): desafio de 15 s. Escolha ao digitar o nome; no Diário, o botão "Nível" troca |
+| **Ouvir em voz alta** | ✅ | Botão "Ouvir" nas atividades, aberturas e Missões; em Missões, o botão "Voz" escolhe a voz. Toca a voz neural gravada (pasta audios/) ou, sem ela, a voz do navegador |
 | **Incentivo** | ✅ | Comemoração de acertos seguidos, "Fase perfeita" e recado de que errar faz parte, com botão para refazer a fase |
 | **Minhas Conquistas** | ✅ | Painel no Diário com estrelas por fase, selos e certificado |
 
