@@ -98,13 +98,10 @@
           <p class="enunciado">${esc(a.pergunta)}</p>
           ${NK.dicaHtml(a.dica)}
           <p class="prog-hunt">Pistas encontradas: <b id="cntHunt">0</b>/${alvo}</p>
-          <div class="hunt-perfil">
-            <div class="card-perfil">
-              <div class="cabec">${I('anonimo', { size: 44 })}<span>${esc(NPC1)}</span></div>
+          ${NK.jogoDetetiveHtml(`<div class="card-perfil">
+              <div class="cabec">${I('anonimo', { size: 44 })}<span>${esc(NPC1)}</span><small>pedido pendente</small></div>
               ${round.itens.map((it, i) => `<button class="linha-pista" data-i="${i}"><span class="e">${icone(it)}</span><span>${esc(it.t)}</span></button>`).join('')}
-            </div>
-            <div class="lado-amigos"><h4>Amigos em comum</h4><ul><li>${I('usuario', { size: 22 })}Nenhum amigo em comum</li></ul></div>
-          </div>
+            </div>`)}
           <div class="dica-flutua" id="fbHunt"></div>`;
       } else if (a.skin === 'chat') {
         palco.innerHTML = `
@@ -271,14 +268,18 @@
       if (btEnv) btEnv.onclick = () => {
         const okTudo = a.grupos.every((g, gi) => g.blocos[escolha[gi]].ok);
         const fb = $('#fbComp');
+        // roteiro: feedback com [Avançar] no acerto e [Voltar] para tentar de novo
+        $$('.bloco', palco).forEach(b => b.disabled = true);
+        const rod = $('.rodape', palco);
         if (okTudo) {
           fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', a.fbOk || 'Ótima mensagem!'); NK.feedback.acerto();
-          later(() => concluirAtividade(a.fbOk), 700);
+          rod.innerHTML = `<button class="btn btn-t" id="btAvancarFrase">Avançar</button>`;
+          $('#btAvancarFrase').onclick = () => concluirAtividade();
         } else {
           progresso.registrarErro(); NK.feedback.erro();
           fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('falha', a.fbBad || 'Vamos tentar outra combinação.');
-          escolha.fill(null);
-          later(draw, 1100);
+          rod.innerHTML = `<button class="btn btn-c" id="btVoltarFrase">Voltar</button>`;
+          $('#btVoltarFrase').onclick = () => { escolha.fill(null); draw(); };
         }
       };
     };
@@ -299,13 +300,16 @@
       const ops = ehVM ? [{ t: 'Verdade', ok: q.vm === true }, { t: 'Mito', ok: q.vm === false }] : q.ops;
 
       palco.innerHTML = `
+        ${a.decisoes ? `<ol class="trilha-decisoes">${a.perguntas.map((x, i) =>
+          `<li class="${i < qi ? 'feito' : i === qi ? 'atual' : ''}"><b>${i + 1}</b>${esc(x.passo)}</li>`).join('')}</ol>` : ''}
         <div class="quiz-top">
-          <span>Pergunta ${qi + 1}/${total}</span>
+          <span>${q.passo ? `Decisão ${qi + 1}/${total} · ${esc(q.passo)}` : `Pergunta ${qi + 1}/${total}`}</span>
           ${tempo ? `<span class="tempo">${I('cronometro', { size: 24 })}<b id="tempoTxt">${tempo}s</b></span>` : ''}
         </div>
         ${tempo ? `<div class="barra-tempo"><i id="barraTempo"></i></div>` : ''}
         ${q.cena ? `<div class="quiz-cena">${esc(q.cena)}</div>` : ''}
         <p class="enunciado">${esc(q.q)}</p>
+        ${NK.dicaHtml(a.dica)}
         <div class="opcoes" id="opsQuiz">
           ${ops.map((o, i) => `<button class="opcao" data-i="${i}"><span>${esc(o.t)}</span></button>`).join('')}
         </div>
@@ -340,7 +344,7 @@
         fb.style.display = 'block';
         fb.className = 'quiz-fb ' + (ok ? 'ok' : 'ruim');
         fb.innerHTML = i < 0 ? comIcone('cronometro', 'O tempo acabou! ' + (q.fb || '')) : comIcone(ok ? 'correto' : 'falha', q.fb || '');
-        $('#rodQuiz').innerHTML = `<button class="btn btn-t" id="btProxQ">${qi + 1 < total ? 'Próxima pergunta' : 'Ver resultado'}</button>`;
+        $('#rodQuiz').innerHTML = `<button class="btn btn-t" id="btProxQ">${qi + 1 < total ? (a.decisoes ? 'Próxima decisão' : 'Próxima pergunta') : 'Ver resultado'}</button>`;
         $('#btProxQ').onclick = () => { qi++; if (qi < total) drawQ(); else fimQuiz(); };
       }
       $$('.opcao', palco).forEach(b => b.onclick = () => responder(+b.dataset.i));

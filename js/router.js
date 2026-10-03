@@ -60,6 +60,8 @@
      (Fase 1: o Figma usa o anônimo; data.js indica a luneta). */
   const ICONE_FIGMA = { 1: 'anonimo' };
   const iconeFase = f => ICONE_FIGMA[f.id] || f.icone;
+  /* ícones compostos no mapa da ilha (roteiro): Fase 1 "lupa + silhueta de perfil", Fase 5 "lupa + estrela" */
+  const ICONE_DUPLO = { 1: ['misterio', 'anonimo'], 5: ['misterio', 'estrela'] };
 
   // centro de cada ilha no desenho do Mapa_Home (px do frame) — brilhos/estrelas por cima
   const HOME_ILHAS = [[1296, 548], [1540, 668], [1300, 768]];
@@ -261,8 +263,8 @@
       const lib = faseLiberada(f.id), comp = faseCompleta(f.id);
       const conteudo = !lib
         ? `<span class="mf-cad">${CADEADO_FILL}</span>`
-        : (f.id === 1
-            ? `${I('misterio', { cls: 'mf-ic-m' })}${I('anonimo', { cls: 'mf-ic-a' })}`   // composição do Figma
+        : (ICONE_DUPLO[f.id]
+            ? `${I(ICONE_DUPLO[f.id][0], { cls: 'mf-ic-m' })}${I(ICONE_DUPLO[f.id][1], { cls: 'mf-ic-a' })}`   // composição do Figma / roteiro
             : I(f.icone, { cls: f.titulo.length > 24 ? 'mf-ic mf-ic-menor' : 'mf-ic' })) + `<span class="mf-tit">${esc(f.titulo)}</span>`;   // título longo (3 linhas): ícone menor
       return `
       <span class="mf-num" style="--i:${i};left:${U(p.n.x)};top:${U(p.n.y)}" aria-hidden="true">${i + 1}</span>
@@ -470,13 +472,13 @@
         <span class="selo-tag">${esc(il.selo)}</span>
         <div class="btns">
           <button class="btn btn-t" id="btProx">${esc(il.conclusaoBtn)}</button>
-          <button class="btn btn-ghost" id="btDiario2">Ver o Diário do Capitão</button>
+          ${ultimaIlha ? '<button class="btn btn-ghost" id="btDiario2">Ver o Diário do Capitão</button>' : ''}
         </div>
       </div>
     </div>`, 'ilhas');
     // última ilha: o botão principal leva ao certificado (roteiro: "Imprimir meu certificado")
     $('#btProx').onclick = () => go(ultimaIlha ? '#/certificado' : '#/ilhas');
-    $('#btDiario2').onclick = () => go('#/diario');
+    const bd = $('#btDiario2'); if (bd) bd.onclick = () => go('#/diario');   // roteiro: só na conclusão da jornada
   }
 
   /* ============================================================

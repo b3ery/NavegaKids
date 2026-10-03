@@ -49,6 +49,19 @@
       .trim();
   }
 
+  /* O navegador não tem voz de criança de verdade: a mais próxima é uma voz feminina em
+     português com o tom lá em cima (pitch vai de 0 a 2; 1 é o normal). */
+  const VOZ_INFANTIL = { tom: 1.75, ritmo: 1.05, ritmoMarujo: 0.92 };
+  const VOZES_FEMININAS = /francisca|luciana|vit[oó]ria|thalita|maria|fernanda|camila|helo[ií]sa|raquel|leila|brenda|female|feminin|google portugu[eê]s do brasil/i;
+  const VOZES_MASCULINAS = /daniel|ant[oô]nio|felipe|male\b|masculin/i;
+  function escolherVoz() {
+    const pt = window.speechSynthesis.getVoices().filter(v => /^pt/i.test(v.lang));
+    const br = pt.filter(v => /BR/i.test(v.lang));
+    const lista = br.length ? br : pt;
+    return lista.find(v => VOZES_FEMININAS.test(v.name)) || lista.find(v => !VOZES_MASCULINAS.test(v.name)) || lista[0] || null;
+  }
+  if (temVoz) window.speechSynthesis.getVoices();   // alguns navegadores só carregam a lista depois do 1º pedido
+
   let botaoFalando = null;
   function marcar(bt) {
     $$('.bt-ouvir.on').forEach(b => { b.classList.remove('on'); b.querySelector('span').textContent = 'Ouvir'; });
@@ -69,8 +82,10 @@
     if (mesmo) return;   // segundo toque no mesmo botão: só para
     const u = new SpeechSynthesisUtterance(texto);
     u.lang = 'pt-BR';
-    u.rate = progresso.modo() === 'marujo' ? 0.85 : 0.95;
-    const voz = synth.getVoices().find(v => /^pt(-|_)?BR/i.test(v.lang)) || synth.getVoices().find(v => /^pt/i.test(v.lang));
+    // voz infantil: tom bem mais agudo e ritmo animado (um pouco mais calmo no Marujo)
+    u.pitch = VOZ_INFANTIL.tom;
+    u.rate = progresso.modo() === 'marujo' ? VOZ_INFANTIL.ritmoMarujo : VOZ_INFANTIL.ritmo;
+    const voz = escolherVoz();
     if (voz) u.voice = voz;
     u.onend = u.onerror = () => { if (botaoFalando === bt) marcar(null); };
     marcar(bt);

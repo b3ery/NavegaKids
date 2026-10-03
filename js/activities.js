@@ -152,6 +152,32 @@
     return '';
   }
 
+  const AMIGOS_JOGO = [
+    { nome: 'Pirata2020', online: true },
+    { nome: 'Pirata2130', online: true },
+    { nome: 'Sereia0101', online: false },
+    { nome: 'Peixinho01', online: false },
+  ];
+  const listaAmigosHtml = () => `<ul class="lista-amigos">${AMIGOS_JOGO.map(a => `
+    <li>${I('utilizador', { size: 26 })}${a.online ? '<i class="online-dot"></i>' : ''}<span>${esc(a.nome)}</span></li>`).join('')}</ul>`;
+
+  /* Fase 1 · Atividade 2 (roteiro): "mesma tela do Joguinho, agora com uma lupa ativa",
+     com o perfil suspeito à esquerda e o painel Amigos à direita para comparar. */
+  function jogoDetetiveHtml(perfilHtml) {
+    return `<div class="jg jg-detetive">
+      <div class="jg-top">
+        <span class="jg-chip">${I('utilizador', { size: 26 })}<span>Pirata0101</span></span>
+        <span class="jg-chip">${I('levelup', { size: 22 })}<span>LEVEL 58</span></span>
+        <span class="jg-chip">${I('moedas', { size: 22 })}<span>520</span></span>
+        <div class="dir"><span class="lupa-ativa">${I('misterio', { size: 24 })} Lupa ativa</span></div>
+      </div>
+      <div class="jg-body">
+        <div class="jg-left jg-perfil">${perfilHtml}</div>
+        <div class="jg-side"><h4>Amigos</h4>${listaAmigosHtml()}</div>
+      </div>
+    </div>`;
+  }
+
   function jogoHtml(pendente) {
     const AMIGOS = [
       { nome: 'Pirata2020', online: true },
@@ -205,7 +231,8 @@
   }
 
   /* ============================================================
-     EXPLAIN — vídeo explicativo (campo "video" em data.js)
+     EXPLAIN — vídeo explicativo (campo "video" em data.js) + cartões com
+     os textos; o "Texto de apoio" do roteiro vem destacado (apoio: true)
      ============================================================ */
   function rExplain(palco, a) {
     palco.innerHTML = `
@@ -215,7 +242,12 @@
         <div class="play-ic">▶</div>
         <b>Vídeo no futuro</b>
       </div>`}
-      <p class="video-legenda">${esc(a.slides?.[0]?.txt || '')}</p>
+      <div class="explica-cards">
+        ${(a.slides || []).map((sl, i) => `<div class="explica-card ${sl.apoio ? 'apoio' : ''}" style="--i:${i}">
+          <span class="explica-ico">${I(sl.img)}</span>
+          <div><b>${esc(sl.titulo)}</b><p>${esc(sl.txt)}</p></div>
+        </div>`).join('')}
+      </div>
       <div class="rodape">
         <button class="btn btn-t" id="btProxSl">Concluir</button>
       </div>`;
@@ -376,5 +408,5 @@
   }
 
   NK.atividades = { discover: rDiscover, explain: rExplain, choice: rChoice, doors: rDoors, block: rBlock };
-  Object.assign(NK, { telaAtividade, concluirAtividade });
+  Object.assign(NK, { telaAtividade, concluirAtividade, jogoDetetiveHtml });
 })();

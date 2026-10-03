@@ -1231,3 +1231,31 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .opcoes .opcao:nth-child(4n+4):not(.certa):not(.errada), .cartoes .cartao:nth-child(4n+4), .itens .item[draggable]:nth-child(4n+4) { border-color: var(--yellow-d); background: var(--cream-2); }
 .opcoes .opcao:not(.certa):not(.errada):hover { filter: brightness(1.04); }
 .itens .item[draggable].sel { background: var(--yellow); border-color: var(--navy); }
+
+/* Fases 9 e 13: cartões com os textos da explicação; o "Texto de apoio" do roteiro em destaque */
+.explica-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; width: min(820px, 100%); margin: 16px auto 0; }
+.explica-card { display: flex; gap: 10px; align-items: flex-start; text-align: left; background: #fff; border: 3px solid var(--navy); border-bottom-width: 6px; border-radius: 14px; padding: 12px; color: var(--navy); animation: surge .4s calc(var(--i) * .12s + .2s) cubic-bezier(.2, 1.4, .4, 1) both; }
+.explica-card b { display: block; font-size: 15px; font-weight: 900; margin-bottom: 4px; }
+.explica-card p { margin: 0; font-size: 14px; font-weight: 700; line-height: 1.35; }
+.explica-ico { flex-shrink: 0; width: 46px; height: 46px; border-radius: 50%; background: #e6f3fc; border: 2px solid var(--navy); display: grid; place-items: center; }
+.explica-ico .ico { width: 30px; height: 30px; object-fit: contain; }
+.explica-card.apoio { grid-column: 1 / -1; background: var(--cream-2); border-color: var(--yellow-d); }
+.explica-card.apoio b { font-size: 17px; }
+.explica-card.apoio p { font-size: 16px; }
+.explica-card.apoio .explica-ico { background: var(--yellow); }
+
+/* Fase 1 · Detetive do Perfil dentro da tela do Joguinho */
+.jg-detetive .jg-perfil { justify-content: flex-start; align-items: stretch; }
+.jg-detetive .card-perfil { border: 3px dashed var(--navy); cursor: zoom-in; }
+.jg-detetive .card-perfil .cabec small { margin-left: auto; font-size: 11px; font-weight: 800; color: var(--coral-d); }
+.lupa-ativa { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 99px; background: var(--yellow); border: 2px solid var(--navy); font-weight: 900; font-size: 12px; animation: pulse 1.6s ease-in-out infinite; }
+.lupa-ativa .ico { width: 22px; height: 22px; }
+@media (max-width: 640px) { .jg-detetive .jg-body { grid-template-columns: 1fr; } .jg-detetive .jg-side { border-left: 0; border-top: 2px solid var(--navy); min-height: 0; } }
+
+/* Fase 10 · Proteja-se: trilha das 4 decisões */
+.trilha-decisoes { list-style: none; display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin: 0 0 12px; padding: 0; }
+.trilha-decisoes li { display: flex; align-items: center; gap: 6px; padding: 4px 10px 4px 4px; border-radius: 99px; background: #e2e2e2; border: 2px solid #999; font-weight: 800; font-size: 12px; color: #6b6b6b; }
+.trilha-decisoes li b { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: #fff; border: 2px solid currentColor; font-size: 12px; }
+.trilha-decisoes li.atual { background: var(--yellow); border-color: var(--navy); color: var(--navy); }
+.trilha-decisoes li.feito { background: var(--teal); border-color: var(--navy); color: #fff; }
+.trilha-decisoes li.feito b { color: var(--teal-d); }
