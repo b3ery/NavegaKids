@@ -542,13 +542,15 @@
       const atual = NK.voz.escolherVoz()?.name;
       return vozes.length
         ? vozes.map((v, i) => `<label class="voz-op"><input type="radio" name="voz" value="${esc(v.name)}" ${v.name === atual ? 'checked' : ''}>
-            <span><b>${esc(v.name.replace(/^Microsoft\s+|\s*-\s*Portuguese.*$/gi, ''))}</b><small>${i === 0 ? 'recomendada · ' : ''}${esc(v.lang)}</small></span>
+            <span><b>${esc(v.name.replace(/^Microsoft\s+|\s*-\s*Portuguese.*$/gi, ''))}</b><small>${i === 0 ? 'recomendada · ' : ''}${NK.voz.ehNatural(v) ? 'voz natural · ' : 'voz robótica · '}${esc(v.lang)}</small></span>
             <button type="button" class="btn btn-sm btn-ghost voz-testar" data-v="${esc(v.name)}">Testar</button></label>`).join('')
         : '<p>Nenhuma voz em português foi encontrada neste aparelho. No computador, o navegador Edge ou o Chrome costumam ter vozes melhores.</p>';
     };
     const w = popup({
       cor: 'b', cls: 'popup-voz', x: true, titulo: 'Voz do Ouvir',
-      extra: `<p class="voz-aviso">Escolha a voz que soa melhor. Ela fica salva neste aparelho.</p><div class="voz-lista">${montarOpcoes()}</div>`,
+      extra: `<p class="voz-aviso">Escolha a voz que soa melhor. Ela fica salva neste aparelho.</p>
+        ${NK.voz.temVozNatural() ? '' : `<p class="voz-dica">Este navegador só tem vozes robóticas em português. Para uma voz bem mais natural, abra o jogo no <b>Microsoft Edge</b> (vozes Thalita e Francisca) ou no <b>Google Chrome</b> (voz do Google).</p>`}
+        <div class="voz-lista">${montarOpcoes()}</div>`,
       btns: [
         { t: 'Usar a recomendada', cls: 'btn-ghost', fn: () => { NK.voz.salvarVoz(''); NK.pararVoz(); } },
         { t: 'Salvar', cls: 'btn-t', fn: janela => { const v = $('input[name="voz"]:checked', janela); if (v) NK.voz.salvarVoz(v.value); NK.pararVoz(); } }

@@ -60,12 +60,14 @@
   /* ---------- escolha da voz ----------
      O navegador não tem voz de criança. Forçar o tom muito agudo (pitch alto) deixa a voz
      robótica e distorcida, então o tom sobe só um pouco e o que faz diferença é escolher a
-     MELHOR voz do aparelho: as "Natural/Online" do Edge (Thalita, Francisca…), as do Google
+     MELHOR voz do aparelho, sem mexer no tom: as "Natural/Online" do Edge (Thalita, Francisca…), as do Google
      no Chrome e as "Aprimoradas/Premium" da Apple soam bem mais humanas. A criança (ou o
      professor) também pode escolher a voz no Diário; a escolha fica salva neste aparelho. */
   const CHAVE_VOZ = 'navegakids-voz';
-  const TOM = { natural: 1.12, comum: 1.05 };          // 1 = normal; acima de ~1.2 começa a distorcer
-  const RITMO = { capitao: 1.0, marujo: 0.9 };
+  // tom 1 = voz original: qualquer mudança de tom é feita por processamento e deixa a voz
+  // mais robótica; um ritmo um pouco mais lento soa mais natural (e ajuda quem lê devagar)
+  const TOM = { natural: 1, comum: 1 };
+  const RITMO = { capitao: 0.95, marujo: 0.88 };
   const VOZES_JOVENS = /thalita|francisca|vit[oó]ria|luciana|leila|brenda|elza|manuela|yara|giovanna|leticia|let[ií]cia|camila|fernanda|maria|helo[ií]sa|raquel/i;
   const VOZES_MASCULINAS = /daniel|ant[oô]nio|felipe|donato|fabio|f[aá]bio|humberto|julio|j[uú]lio|nicolau|valerio|val[eé]rio|male\b|masculin/i;
 
@@ -95,6 +97,8 @@
   }
   /** Vozes em português, da melhor para a pior (para o seletor do Diário). */
   const listaVozes = () => vozesPt().sort((x, y) => notaVoz(y) - notaVoz(x));
+  /** O aparelho tem alguma voz natural/neural em português? (senão, sugerimos o Edge) */
+  const temVozNatural = () => vozesPt().some(ehNatural);
 
   if (temVoz) {
     window.speechSynthesis.getVoices();   // alguns navegadores só carregam a lista depois do 1º pedido
@@ -102,6 +106,7 @@
   }
 
   let botaoFalando = null;
+  let avisouRobotica = false;
   function marcar(bt) {
     $$('.bt-ouvir.on').forEach(b => { b.classList.remove('on'); b.querySelector('span').textContent = b.dataset.rotulo || 'Ouvir'; });
     botaoFalando = bt;
@@ -131,6 +136,10 @@
     parar();
     if (mesmo) return;   // segundo toque no mesmo botão: só para
     const voz = vozForcada || escolherVoz();
+    if (!vozForcada && !avisouRobotica && vozesPt().length && !vozesPt().some(ehNatural)) {
+      avisouRobotica = true;
+      toast('Dica: no Microsoft Edge ou no Chrome a voz fica bem mais natural.');
+    }
     const blocos = emFrases(texto);
     marcar(bt);
     blocos.forEach((bloco, i) => {
@@ -177,5 +186,5 @@
     }
   };
 
-  Object.assign(NK, { dicaHtml, botaoOuvir, pararVoz: parar, feedback, voz: { temVoz, listaVozes, escolherVoz, vozSalva, salvarVoz, falar } });
+  Object.assign(NK, { dicaHtml, botaoOuvir, pararVoz: parar, feedback, voz: { temVoz, listaVozes, temVozNatural, ehNatural, escolherVoz, vozSalva, salvarVoz, falar } });
 })();
