@@ -548,8 +548,9 @@
     };
     const w = popup({
       cor: 'b', cls: 'popup-voz', x: true, titulo: 'Voz do Ouvir',
-      extra: `<p class="voz-aviso">Escolha a voz que soa melhor. Ela fica salva neste aparelho.</p>
-        ${NK.voz.temVozNatural() ? '' : `<p class="voz-dica">Este navegador só tem vozes robóticas em português. Para uma voz bem mais natural, abra o jogo no <b>Microsoft Edge</b> (vozes Thalita e Francisca) ou no <b>Google Chrome</b> (voz do Google).</p>`}
+      extra: `${NK.voz.temGravacao() ? `<p class="voz-dica">Os textos do jogo usam a <b>voz gravada</b> (${esc(NK.voz.vozGravada().replace(/^pt-BR-|Neural$/g, ''))}). A voz escolhida aqui só lê o que não tem gravação, como o seu nome.</p>` : ''}
+        <p class="voz-aviso">Escolha a voz que soa melhor. Ela fica salva neste aparelho.</p>
+        ${NK.voz.temVozNatural() || NK.voz.temGravacao() ? '' : `<p class="voz-dica">Este navegador só tem vozes robóticas em português. Para uma voz bem mais natural, abra o jogo no <b>Microsoft Edge</b> (vozes Thalita e Francisca) ou no <b>Google Chrome</b> (voz do Google).</p>`}
         <div class="voz-lista">${montarOpcoes()}</div>`,
       btns: [
         { t: 'Usar a recomendada', cls: 'btn-ghost', fn: () => { NK.voz.salvarVoz(''); NK.pararVoz(); } },
