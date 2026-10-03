@@ -282,7 +282,7 @@ NavegaKids/
 ├── img/                # Artes e ícones do jogo
 ├── videos/             # Vídeos das fases 9 e 13
 ├── audios/             # Voz gravada do botão "Ouvir" (frases.json, manifest.json e os .mp3)
-├── ferramentas/        # extrair_frases.mjs e gerar_audios.py (geram a voz gravada)
+├── ferramentas/        # extrair_frases.mjs e gerar_audios.mjs (geram a voz gravada, em JavaScript)
 └── README.md           # Este arquivo
 ```
 
@@ -320,10 +320,10 @@ Para trocar uma arte, coloque o PNG em `img/` e ajuste o nome em `js/config.js`.
 Sem áudios, o botão "Ouvir" usa a voz do navegador (no Edge e no Chrome ela é bem melhor). Para uma voz natural em qualquer aparelho, grave as frases com uma API de voz neural. A chave da API fica só no computador de quem gera; o site publica apenas os `.mp3`.
 
 1. Se os textos mudaram, atualize a lista de frases: `node ferramentas/extrair_frases.mjs`
-2. Grave os áudios (escolha uma API):
-   - **Grátis, sem chave** (vozes do Edge, padrão Thalita): `pip install edge-tts` e depois `python ferramentas/gerar_audios.py`
-   - **Google Cloud Text-to-Speech** (oficial): defina `GOOGLE_TTS_KEY` e rode `python ferramentas/gerar_audios.py --api google`
-   - **Azure AI Speech** (oficial): defina `AZURE_SPEECH_KEY` e `AZURE_SPEECH_REGION` e rode `python ferramentas/gerar_audios.py --api azure`
+2. Grave os áudios (escolha uma API). Tudo em JavaScript, com o Node.js:
+   - **Grátis, sem chave** (vozes do Edge, padrão Thalita): `npm install --no-save msedge-tts` e depois `node ferramentas/gerar_audios.mjs`
+   - **Google Cloud Text-to-Speech** (oficial): defina `GOOGLE_TTS_KEY` e rode `node ferramentas/gerar_audios.mjs --api google`
+   - **Azure AI Speech** (oficial): defina `AZURE_SPEECH_KEY` e `AZURE_SPEECH_REGION` e rode `node ferramentas/gerar_audios.mjs --api azure`
 3. Publique a pasta `audios/` (commit e push). O jogo passa a tocar as gravações sozinho.
 
 Opções: `--voz` troca a voz, `--refazer` regrava tudo e `--limite 5` grava só 5 frases para testar.

@@ -6,7 +6,7 @@
    então as chaves batem com as que o jogo procura.
 
    Uso (na pasta do projeto):   node ferramentas/extrair_frases.mjs
-   Depois:                      python ferramentas/gerar_audios.py
+   Depois:                      node ferramentas/gerar_audios.mjs
    ============================================================ */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -49,7 +49,19 @@ textos.push(
   'Segura!', 'Arriscada!', 'toque para preencher', 'Escudo ativado!',
   'Um guardião é um adulto que você conhece de verdade, cuida de você e em quem você confia.',
   'Mãe / Pai / Responsável', 'Professora', 'Avó / Avô', 'Tio / Tia', 'Outro adulto de confiança',
-  'Lobby da equipe', 'Chat do jogo', 'Leo (seu amigo)', 'jogador estranho'
+  'Lobby da equipe', 'Chat do jogo', 'Leo (seu amigo)', 'jogador estranho',
+  // popups (core.js, activities.js, router.js)
+  'Parabéns, Pirata!', 'Muito bem de novo!', 'Você desbloqueou mais uma atividade, continue navegando pirata!',
+  'Você já tinha concluído esta atividade.', 'Fase concluída!', 'Fase perfeita: nenhum erro!',
+  'Errar faz parte de aprender! Cada erro te ensinou algo novo. Se quiser, refaça a fase para conquistar todas as estrelas: vale sempre a sua melhor tentativa.',
+  'Este é o seu usuário', 'Aqui aparece seu nome de navegador dentro do jogo.', 'Aqui é seu level', 'Mostra o quanto você já avançou nas aventuras.',
+  'Aqui são suas moedas', 'Você troca moedas por itens especiais no jogo.',
+  'Qual é o seu nome de navegador?', 'Pode ser um apelido!', 'Como você quer navegar?', 'Trocar o nível', 'Escolha a idade de quem está jogando',
+  'Marujo', 'Capitão', '8 anos', '9 e 10 anos', 'Mais tempo para responder e dicas guardadas no botão', 'Desafio com tempo de 15 segundos',
+  'Suas estrelas', 'Minhas Conquistas', 'Três acertos seguidos! Você está pegando o jeito!', 'Cinco seguidos! Navegador de olho vivo!',
+  'Oito seguidos! Ninguém engana você!', 'Doze seguidos! Você é uma lenda dos mares!',
+  ...NK.ILHAS.flatMap(il => [`Selo conquistado: ${il.selo}!`]),
+  ...Array.from({ length: 13 }, (_, i) => `+${4 + i} PONTOS`), ...[20, 24, 28, 32, 36, 40].map(n => `+${n} PONTOS`)
 );
 
 const frases = {};

@@ -62,7 +62,7 @@
 
   /* partes que só atrapalham na leitura: o nome do contato em cada balão (já foi lido no
      topo do chat), "online", os botões do rodapé (Avançar, Voltar…), contadores e o "Ouvir" */
-  const NAO_LER = '.bolha .msg small, .chat-head small, .rodape, .bt-ouvir, .dica-recolhida summary, .prog-hunt, .quiz-top';
+  const NAO_LER = '.bolha .msg small, .chat-head small, .rodape, .bt-ouvir, .dica-recolhida summary, .prog-hunt, .quiz-top, .popup .btns, .popup .x';
 
   /** Texto visível do elemento + as dicas recolhidas (que o innerText não inclui). */
   function textoDe(el) {
@@ -77,7 +77,7 @@
   }
 
   /* ---------- áudios gravados (voz neural) ----------
-     ferramentas/gerar_audios.py grava cada frase do jogo com uma voz neural (API de voz) em
+     ferramentas/gerar_audios.mjs grava cada frase do jogo com uma voz neural (API de voz) em
      audios/<chave>.mp3 e lista as gravadas em audios/manifest.json. Se o pacote existir, o
      "Ouvir" toca as gravações; o que não tiver gravação (nome da criança, por exemplo) sai
      na voz do navegador. Sem pacote, tudo sai na voz do navegador, como antes. */
@@ -210,13 +210,53 @@
     proximo();
   }
 
+  /* Leitura automática: depois que a criança toca em "Ouvir" uma vez, os popups e os
+     feedbacks (certo / repensar) que aparecerem passam a ser lidos sozinhos. */
+  let leituraAuto = false;
+
   document.addEventListener('click', e => {
     const bt = e.target.closest('.bt-ouvir:not(.bt-voz)');   // "Voz" (Missões) só abre a escolha da voz
     if (!bt) return;
     e.preventDefault(); e.stopPropagation();
+    leituraAuto = true;
     const texto = bt.dataset.ouvirTxt ?? textoDe(document.querySelector(bt.dataset.ouvir));
     falar(texto, bt);
   });
+
+  /* ---------- popups e feedbacks também têm "Ouvir" ----------
+     Os popups (core.js) e os feedbacks das atividades são criados em vários lugares; em vez
+     de mexer em cada um, um observador põe o botão neles assim que aparecem na tela. */
+  const FEEDBACK = '.quiz-fb, .dica-flutua.boa, .dica-flutua.ruim';
+  let nPopup = 0;
+
+  function prepararPopup(wrap) {
+    const caixa = wrap.querySelector('.popup');
+    if (!caixa || caixa.querySelector('.bt-ouvir-pop')) return;
+    caixa.id ||= `popup-nk-${++nPopup}`;
+    caixa.insertAdjacentHTML('afterbegin', botaoOuvir(`#${caixa.id}`, { cls: 'bt-ouvir-pop' }));
+    if (leituraAuto) setTimeout(() => { if (document.body.contains(caixa)) falar(textoDe(caixa), caixa.querySelector('.bt-ouvir-pop')); }, 350);
+  }
+
+  function prepararFeedback(fb) {
+    if (fb.closest('.popup') || getComputedStyle(fb).display === 'none') return;
+    const texto = prepararFala(fb.innerText.replace(/\b(Ouvir|Parar)\b/g, ''));
+    if (!texto || fb.dataset.lido === texto) return;
+    fb.dataset.lido = texto;
+    if (!fb.querySelector('.bt-ouvir-fb')) fb.insertAdjacentHTML('beforeend', botaoOuvir('', { texto, rotulo: 'Ouvir', cls: 'bt-ouvir-fb' }));
+    else fb.querySelector('.bt-ouvir-fb').dataset.ouvirTxt = texto;
+    if (leituraAuto) falar(texto, fb.querySelector('.bt-ouvir-fb'));
+  }
+
+  if (typeof MutationObserver !== 'undefined') {
+    let pendente = false;
+    const varrer = () => {
+      pendente = false;
+      $$('.popup-wrap').forEach(prepararPopup);
+      $$(FEEDBACK).forEach(prepararFeedback);
+    };
+    new MutationObserver(() => { if (!pendente) { pendente = true; requestAnimationFrame(varrer); } })
+      .observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['class', 'style'] });
+  }
   window.addEventListener('hashchange', parar);   // trocou de tela: para de falar
 
   /* ---------- incentivo ---------- */
