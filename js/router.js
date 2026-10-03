@@ -533,6 +533,37 @@
     $('.popup', w).scrollTop = 0;   // o foco no botão rola até o fim; a lista começa do topo
   }
 
+  /* Escolha da voz do botão "Ouvir" (fica salva neste aparelho). As vozes dependem do
+     navegador: no Edge as "Natural" (ex.: Thalita) e no Chrome as do Google soam melhor. */
+  function popupVoz() {
+    const FRASE = 'Oi, pirata! Eu vou ler os textos do jogo para você. Vamos navegar com segurança?';
+    const montarOpcoes = () => {
+      const vozes = NK.voz.listaVozes();
+      const atual = NK.voz.escolherVoz()?.name;
+      return vozes.length
+        ? vozes.map((v, i) => `<label class="voz-op"><input type="radio" name="voz" value="${esc(v.name)}" ${v.name === atual ? 'checked' : ''}>
+            <span><b>${esc(v.name.replace(/^Microsoft\s+|\s*-\s*Portuguese.*$/gi, ''))}</b><small>${i === 0 ? 'recomendada · ' : ''}${esc(v.lang)}</small></span>
+            <button type="button" class="btn btn-sm btn-ghost voz-testar" data-v="${esc(v.name)}">Testar</button></label>`).join('')
+        : '<p>Nenhuma voz em português foi encontrada neste aparelho. No computador, o navegador Edge ou o Chrome costumam ter vozes melhores.</p>';
+    };
+    const w = popup({
+      cor: 'b', cls: 'popup-voz', x: true, titulo: 'Voz do Ouvir',
+      extra: `<p class="voz-aviso">Escolha a voz que soa melhor. Ela fica salva neste aparelho.</p><div class="voz-lista">${montarOpcoes()}</div>`,
+      btns: [
+        { t: 'Usar a recomendada', cls: 'btn-ghost', fn: () => { NK.voz.salvarVoz(''); NK.pararVoz(); } },
+        { t: 'Salvar', cls: 'btn-t', fn: janela => { const v = $('input[name="voz"]:checked', janela); if (v) NK.voz.salvarVoz(v.value); NK.pararVoz(); } }
+      ]
+    });
+    const ligar = () => $$('.voz-testar', w).forEach(b => b.onclick = e => {
+      e.preventDefault();
+      const voz = NK.voz.listaVozes().find(v => v.name === b.dataset.v);
+      NK.voz.falar(FRASE, null, { voz });
+    });
+    ligar();
+    // a lista de vozes pode chegar um pouco depois (Chrome): redesenha quando chegar
+    document.addEventListener('nk-vozes', () => { const l = $('.voz-lista', w); if (l && document.body.contains(w)) { l.innerHTML = montarOpcoes(); ligar(); } }, { once: true });
+  }
+
   function telaDiario() {
     /* Diário do Capitão — geometria medida no print do Figma (frame 1728 px). */
     const nome = progresso.nome() || '—';   // sem nome: o lápis ao lado permite editar
@@ -616,7 +647,7 @@
         <p class="dr-txt" style="left:${U(971)};width:${U(468)};top:${U(550)};text-align:center"><b>ILHAS:</b></p>
         ${mini}
       </div>
-      <div class="diario-acoes"><button class="btn btn-t" id="btConquistas">${I('conquistas', { cls: 'ico-txt' })} Minhas Conquistas</button><button class="btn btn-ghost" id="btModo">Modo ${progresso.modoInfo().nome} (${progresso.modoInfo().idade}) · trocar</button>${jornada ? `<button class="btn btn-t" id="btVerCert">Ver Certificado</button>` : ''}${DEV ? `<button class="btn btn-c" id="btReset">Reiniciar progresso (dev)</button>` : ''}</div>
+      <div class="diario-acoes"><button class="btn btn-t" id="btConquistas">${I('conquistas', { cls: 'ico-txt' })} Minhas Conquistas</button><button class="btn btn-ghost" id="btModo">Modo ${progresso.modoInfo().nome} (${progresso.modoInfo().idade}) · trocar</button>${NK.voz.temVoz ? '<button class="btn btn-ghost" id="btVoz">Voz do Ouvir</button>' : ''}${jornada ? `<button class="btn btn-t" id="btVerCert">Ver Certificado</button>` : ''}${DEV ? `<button class="btn btn-c" id="btReset">Reiniciar progresso (dev)</button>` : ''}</div>
     </div>`, 'diario');
     document.body.classList.add('tela-figma');
     window.scrollTo(0, 0);
@@ -624,6 +655,7 @@
     const cert = $('#btVerCert'); if (cert) cert.onclick = () => go('#/certificado');
     const rst = $('#btReset'); if (rst) rst.onclick = () => { progresso.resetar(); go('#/home'); };
     $('#btEditarNome').onclick = $('#btModo').onclick = () => pedirNome(telaDiario);
+    const bv = $('#btVoz'); if (bv) bv.onclick = popupVoz;
     $('#btConquistas').onclick = $('#btConquistasTit').onclick = $('.dr-medalha').onclick = () => popupConquistas();
     $$('.dr-cq').forEach(b => b.onclick = () => popupConquistas(+b.dataset.cq));
     $$('.dr-btn').forEach(b => b.onclick = () => {
