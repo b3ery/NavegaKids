@@ -23,7 +23,7 @@
       const soltos = itens.filter(i => i.colocado === null);
       palco.innerHTML = `
         <p class="enunciado">${esc(a.pergunta)}</p>
-        ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
+        ${NK.dicaHtml(a.dica)}
         <div class="baldes">
           ${a.baldes.map(b => `
             <div class="balde alvo" data-b="${b.id}">
@@ -65,12 +65,12 @@
         const fb = $('#fbClass');
         if (it.b === baldeId) {
           it.colocado = baldeId;
-          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Isso mesmo!'); NK.som?.acerto();
+          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Isso mesmo!'); NK.feedback.acerto();
           selecionado = null;
           draw();
           if (itens.every(i => i.colocado !== null)) later(() => concluirAtividade(a.fbOk), 500);
         } else {
-          progresso.registrarErro(); NK.som?.erro();
+          progresso.registrarErro(); NK.feedback.erro();
           fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('falha', 'Ainda não... tente outro grupo!');
           const card = $(`.item[data-id="${id}"]`, palco);
           if (card) card.classList.add('shake');
@@ -96,7 +96,7 @@
       if (a.skin === 'perfil') {
         palco.innerHTML = `
           <p class="enunciado">${esc(a.pergunta)}</p>
-          ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
+          ${NK.dicaHtml(a.dica)}
           <p class="prog-hunt">Pistas encontradas: <b id="cntHunt">0</b>/${alvo}</p>
           <div class="hunt-perfil">
             <div class="card-perfil">
@@ -109,7 +109,7 @@
       } else if (a.skin === 'chat') {
         palco.innerHTML = `
           <p class="enunciado">${esc(a.pergunta)}</p>
-          ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
+          ${NK.dicaHtml(a.dica)}
           <p class="prog-hunt">Sinais encontrados: <b id="cntHunt">0</b>/${alvo}</p>
           <div class="chat">
             <div class="chat-head">${I('anonimo', { size: 34 })}<span>${esc(a.com)}</span><small>online</small></div>
@@ -119,7 +119,7 @@
       } else if (a.skin === 'app') {
         palco.innerHTML = `
           <p class="enunciado">${esc(a.pergunta)}</p>
-          ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
+          ${NK.dicaHtml(a.dica)}
           <p class="prog-hunt">Rodada ${rIdx + 1}/${a.rounds.length} — encontrados: <b id="cntHunt">0</b>/${alvo}</p>
           <div class="mock-app">
             <div class="barra">${I('bubbleChat', { cls: 'ico-txt' })}<span>${esc(round.titulo || 'Aplicativo')}</span></div>
@@ -130,7 +130,7 @@
         // skin "scene": cena livre com pontos posicionados
         palco.innerHTML = `
           <p class="enunciado">${esc(a.pergunta)}</p>
-          ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
+          ${NK.dicaHtml(a.dica)}
           <p class="prog-hunt">Encontrados: <b id="cntHunt">0</b>/${alvo}</p>
           <div class="cena-hunt mapa-perg">
             ${round.itens.map((it, i) => `<button class="pista-btn" data-i="${i}" style="left:${it.x}%;top:${it.y}%" aria-label="${esc(it.t)}">${icone(it)}</button>`).join('')}
@@ -149,7 +149,7 @@
           if (a.skin === 'chat') el.insertAdjacentHTML('beforeend', `<span class="stop">${I('pare')}</span>`);   // roteiro: aparece o STOP ao acertar
           achadas.add(i);
           $('#cntHunt').textContent = achadas.size;
-          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', it.why); NK.som?.acerto();
+          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', it.why); NK.feedback.acerto();
           if (achadas.size === alvo) {
             later(() => {
               if (rIdx + 1 < a.rounds.length) { rIdx++; drawRound(); }
@@ -158,7 +158,7 @@
           }
         } else {
           if (a.skin !== 'app') progresso.registrarErro();   // no "app" a criança está explorando a tela
-          NK.som?.erro();
+          NK.feedback.erro();
           el.classList.add('errada'); el.classList.add('shake');
           fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('nao', it.why);
           later(() => el.classList.remove('errada', 'shake'), 700);
@@ -179,11 +179,11 @@
     const draw = () => {
       palco.innerHTML = `
         <p class="enunciado">${esc(a.pergunta)}</p>
-        ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
+        ${NK.dicaHtml(a.dica)}
         <div class="seq-slots">
-          ${slots.map((s, i) => `<div class="slot ${s !== null ? 'cheio' : ''}" data-s="${i}">
+          ${slots.map((s, i) => `<div class="slot ${s !== null ? 'cheio' : ''}" data-s="${i}" ${s !== null ? 'role="button" tabindex="0" aria-label="Tirar este cartão"' : ''}>
             <span class="n">${i + 1}</span>
-            ${s !== null ? `<span class="e">${icone(passos[s])}</span><span>${esc(passos[s].t)}</span>` : '<span style="color:#999">toque para preencher</span>'}
+            ${s !== null ? `<span class="e">${icone(passos[s])}</span><span>${esc(passos[s].t)}</span><span class="tirar" aria-hidden="true">×</span>` : '<span style="color:#999">toque para preencher</span>'}
           </div>`).join('')}
         </div>
         <div class="cartoes">
@@ -205,6 +205,7 @@
         const i = +s.dataset.s;
         if (slots[i] !== null) { slots[i] = null; draw(); }
       });
+      $$('.slot.cheio', palco).forEach(s => s.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); s.click(); } });
       $('#btLimparSeq').onclick = () => { slots.fill(null); draw(); };
 
       function checar() {
@@ -212,11 +213,11 @@
         const certo = slots.every((id, i) => id === i);
         const fb = $('#fbSeq');
         if (certo) {
-          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Sequência perfeita!'); NK.som?.acerto();
+          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Sequência perfeita!'); NK.feedback.acerto();
           draw();
           later(() => concluirAtividade(a.fbOk), 700);
         } else {
-          progresso.registrarErro(); NK.som?.erro();
+          progresso.registrarErro(); NK.feedback.erro();
           fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('falha', 'Ainda não é essa ordem... tente de novo!');
           draw();
           later(() => { slots.fill(null); draw(); }, 900);
@@ -235,7 +236,7 @@
     const draw = () => {
       palco.innerHTML = `
         <p class="enunciado">${esc(a.pergunta)}</p>
-        ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
+        ${NK.dicaHtml(a.dica)}
         ${a.grupos.map((g, gi) => `
           <div class="grupo">
             <h4>${esc(g.label)}</h4>
@@ -259,17 +260,22 @@
           <button class="btn btn-t" id="btEnviarFrase" ${escolha.some(e => e === null) ? 'disabled' : ''}>Enviar mensagem</button>
         </div>`;
 
-      $$('.bloco', palco).forEach(b => b.onclick = () => { escolha[+b.dataset.g] = +b.dataset.b; draw(); });
+      // tocar de novo no bloco escolhido desmarca (relato de teste: não dava para desmarcar)
+      $$('.bloco', palco).forEach(b => b.onclick = () => {
+        const g = +b.dataset.g, bi = +b.dataset.b;
+        escolha[g] = escolha[g] === bi ? null : bi;
+        draw();
+      });
 
       const btEnv = $('#btEnviarFrase');
       if (btEnv) btEnv.onclick = () => {
         const okTudo = a.grupos.every((g, gi) => g.blocos[escolha[gi]].ok);
         const fb = $('#fbComp');
         if (okTudo) {
-          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', a.fbOk || 'Ótima mensagem!'); NK.som?.acerto();
+          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', a.fbOk || 'Ótima mensagem!'); NK.feedback.acerto();
           later(() => concluirAtividade(a.fbOk), 700);
         } else {
-          progresso.registrarErro(); NK.som?.erro();
+          progresso.registrarErro(); NK.feedback.erro();
           fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('falha', a.fbBad || 'Vamos tentar outra combinação.');
           escolha.fill(null);
           later(draw, 1100);
@@ -288,15 +294,16 @@
 
     const drawQ = () => {
       const q = a.perguntas[qi];
+      const tempo = a.tempo ? progresso.tempoDoQuiz(a.tempo) : 0;   // 15 s no modo Capitão, 45 s no Marujo
       const ehVM = !!a.vm;
       const ops = ehVM ? [{ t: 'Verdade', ok: q.vm === true }, { t: 'Mito', ok: q.vm === false }] : q.ops;
 
       palco.innerHTML = `
         <div class="quiz-top">
           <span>Pergunta ${qi + 1}/${total}</span>
-          ${a.tempo ? `<span class="tempo">${I('cronometro', { size: 24 })}<b id="tempoTxt">${a.tempo}s</b></span>` : ''}
+          ${tempo ? `<span class="tempo">${I('cronometro', { size: 24 })}<b id="tempoTxt">${tempo}s</b></span>` : ''}
         </div>
-        ${a.tempo ? `<div class="barra-tempo"><i id="barraTempo"></i></div>` : ''}
+        ${tempo ? `<div class="barra-tempo"><i id="barraTempo"></i></div>` : ''}
         ${q.cena ? `<div class="quiz-cena">${esc(q.cena)}</div>` : ''}
         <p class="enunciado">${esc(q.q)}</p>
         <div class="opcoes" id="opsQuiz">
@@ -306,8 +313,8 @@
         <div class="rodape" id="rodQuiz"></div>`;
 
       let travado = false, timerId = null;
-      if (a.tempo) {
-        const t0 = Date.now(), limite = a.tempo * 1000;
+      if (tempo) {
+        const t0 = Date.now(), limite = tempo * 1000;
         timerId = every(() => {
           const rest = Math.max(0, limite - (Date.now() - t0));
           $('#tempoTxt') && ($('#tempoTxt').textContent = Math.ceil(rest / 1000) + 's');
@@ -328,7 +335,7 @@
         });
         const ok = o ? o.ok : false;
         if (!ok) progresso.registrarErro();
-        NK.som?.[ok ? 'acerto' : 'erro']();
+        NK.feedback[ok ? 'acerto' : 'erro']();
         const fb = $('#fbQuiz');
         fb.style.display = 'block';
         fb.className = 'quiz-fb ' + (ok ? 'ok' : 'ruim');
@@ -354,7 +361,7 @@
     const draw = () => {
       palco.innerHTML = `
         <p class="enunciado">${esc(a.pergunta)}</p>
-        ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
+        ${NK.dicaHtml(a.dica)}
         <p class="prog-hunt">Ligados: <b>${pares.size}/${a.pares.length}</b></p>
         <div class="match">
           <div class="col">${as.map(x => `<button data-a="${x.id}" class="${pares.has(x.id) ? 'par' : (selA === x.id ? 'sel' : '')}" ${pares.has(x.id) ? 'disabled' : ''}>${esc(x.t)}</button>`).join('')}</div>
@@ -362,18 +369,18 @@
         </div>
         <div class="dica-flutua" id="fbMatch"></div>`;
 
-      $$('[data-a]', palco).forEach(b => b.onclick = () => { selA = +b.dataset.a; draw(); });
+      $$('[data-a]', palco).forEach(b => b.onclick = () => { selA = selA === +b.dataset.a ? null : +b.dataset.a; draw(); });   // tocar de novo desmarca
       $$('[data-b]', palco).forEach(b => b.onclick = () => {
         if (selA === null) return;
         const id = +b.dataset.b;
         const fb = $('#fbMatch');
         if (id === selA) {
           pares.add(id); selA = null;
-          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Combinação certa!'); NK.som?.acerto();
+          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Combinação certa!'); NK.feedback.acerto();
           draw();
           if (pares.size === a.pares.length) later(() => concluirAtividade(a.fbOk), 600);
         } else {
-          progresso.registrarErro(); NK.som?.erro();
+          progresso.registrarErro(); NK.feedback.erro();
           fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('falha', 'Essa combinação não é bem essa... tente outra!');
           selA = null; draw();
         }
@@ -411,7 +418,7 @@
         </div>
       </div>
       <p class="texto-cena" id="bauTexto">${esc(a.texto)}</p>
-      ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
+      ${NK.dicaHtml(a.dica)}
       <div class="rodape"><button class="btn btn-t" id="btBau">Ele conta o segredo pra Capitã Bússola</button></div>`;
 
     const bt = $('#btBau', palco);

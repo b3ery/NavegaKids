@@ -209,7 +209,7 @@
     if (mb) mb.onclick = () => NK.musica.alternar();
     $('#starBtn').onclick = () => popup({
       cor: 'b', titulo: 'Suas estrelas',
-      extra: `<p>Você tem ${estrelas} de ${progresso.estrelasMax()} estrelas e ${pontos} pontos. Complete as fases sem errar para ganhar mais!</p>`,
+      extra: `<p>Você tem ${estrelas} de ${progresso.estrelasMax()} estrelas e ${pontos} pontos. Errar faz parte de aprender: você pode refazer qualquer fase e vale sempre a sua melhor tentativa!</p>`,
       btns: [{ t: 'Fechar', cls: 'btn-b' }]
     });
   }

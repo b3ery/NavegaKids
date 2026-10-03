@@ -228,6 +228,10 @@ flowchart LR
 | 👋 **Home personalizada** | ✅ | Balão do pirata com o nome, as estrelas e a próxima ilha |
 | ♿ **Acessibilidade** | ✅ | Respeita "reduzir movimento", textos alternativos e navegação por teclado |
 | 🧪 **Modo de teste** | ✅ | `?dev=1` libera todas as fases |
+| **Modos por idade** | ✅ | Marujo (8 anos): 45 s no quiz cronometrado e dicas no botão "Ver dica"; Capitão (9 e 10 anos): desafio de 15 s. Escolha ao digitar o nome ou no Diário |
+| **Ouvir em voz alta** | ✅ | Botão "Ouvir" nas atividades, aberturas e Missões (voz do próprio navegador, em português) |
+| **Incentivo** | ✅ | Comemoração de acertos seguidos, "Fase perfeita" e recado de que errar faz parte, com botão para refazer a fase |
+| **Minhas Conquistas** | ✅ | Painel no Diário com estrelas por fase, selos e certificado |
 
 </div>
 
@@ -270,6 +274,7 @@ NavegaKids/
 │   ├── pontuacao.js    # Regras de pontos e estrelas (objeto REGRAS)
 │   ├── progresso.js    # Progresso da sessão: atividades, erros, pontos, estrelas, selos, nome
 │   ├── core.js         # Utilitários, imagens, popups e cabeçalho
+│   ├── apoio.js        # Modos por idade (dicas), ouvir em voz alta e incentivo
 │   ├── activities.js   # Tela de atividade + discover, explain, choice, doors, block
 │   ├── activities2.js  # classify, hunt, sequence, compose, quiz, match, bau
 │   ├── musica.js       # Música de fundo e efeitos sonoros (Web Audio)
@@ -290,7 +295,8 @@ Todo o código fica dentro de **uma única variável global**, `NavegaKids`, par
 ### Conteúdo
 - Textos, fases e atividades ficam em `js/data.js`.
 - Para contar um erro numa atividade nova, chame `progresso.registrarErro()` quando a criança errar.
-- Para tocar os sons, use `NavegaKids.som.acerto()`, `.erro()` ou `.vitoria()`.
+- Quando a criança acertar ou errar, chame `NavegaKids.feedback.acerto()` / `.erro()` (toca o som e conta a sequência de acertos). Para a vitória, `NavegaKids.som.vitoria()`.
+- Para a dica de uma atividade nova, use `NavegaKids.dicaHtml(a.dica)`: ela aparece aberta no modo Capitão e recolhida no Marujo.
 - Uma fase com `dobro: true` vale estrelas e pontos em dobro e ganha o selo "x2" automaticamente.
 
 ### Artes

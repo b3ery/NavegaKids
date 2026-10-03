@@ -532,7 +532,7 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 }
 .painel-missao .fechar { position: absolute; top: 10px; left: 14px; color: #fff; background: none; border: 0; font-weight: 900; font-size: 22px; z-index: 2; }
 .painel-missao .in { background: #fff; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 300px; }
-.arvore { position: relative; padding: 20px; min-height: 260px; }
+.arvore { position: relative; padding: 20px; min-height: 310px; }
 .arvore-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .arvore-svg path { fill: none; stroke: var(--navy); stroke-width: 1.5; }
 .arvore .passo {
@@ -776,6 +776,8 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .blocos { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 .bloco { background: #fff; border: 3px solid var(--navy); padding: 9px 14px; font-weight: 800; font-size: 15px; color: var(--navy); }
 .bloco.on { background: var(--yellow); }
+.slot.cheio { cursor: pointer; position: relative; }
+.slot .tirar { position: absolute; top: -10px; right: -10px; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--navy); background: var(--coral); color: #fff; font-weight: 900; display: grid; place-items: center; line-height: 1; flex-shrink: 0; }
 .preview-msg { margin: 14px auto 0; max-width: 560px; }
 
 /* --- quiz --- */
@@ -1008,16 +1010,19 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 
 
 /* ---------- impressão do certificado ---------- */
+/* Uma face por folha A4: cada face ocupa a altura útil da folha e o verso sempre começa
+   numa folha nova (antes, o verso era cortado no meio). */
+@page { size: A4 portrait; margin: 10mm; }
 @media print {
-  body { background: #fff; display: block; }
-  .topbar, .certificado .acoes, .toast { display: none !important; }
-  #stage { overflow: visible; background: #fff; }
-  .certificado { background: #fff; padding: 0; }
-  body { container-type: normal; }
-  .certificado-card { width: 100%; max-width: 640px; aspect-ratio: auto; height: auto; perspective: none; }
-  .certificado-inner { transform: none !important; height: auto; }
-  .certificado-frente, .certificado-verso { position: static; transform: none; backface-visibility: visible; break-after: page; }
-  .certificado .dica-flip { display: none; }
+  html, body { height: auto; background: #fff; display: block; container-type: normal; }
+  .topbar, .certificado .acoes, .certificado .dica-flip, .toast, .popup-wrap { display: none !important; }
+  #stage, .scene.certificado { display: block; height: auto; min-height: 0; overflow: visible; background: #fff; padding: 0; animation: none; }
+  .certificado-card { display: block; width: 100%; max-width: none; min-width: 0; height: auto; aspect-ratio: auto; perspective: none; animation: none; }
+  .certificado-inner { display: block; height: auto; transform: none !important; transition: none; }
+  .certificado-frente, .certificado-verso { display: block; position: static; transform: none; backface-visibility: visible;
+    height: 270mm; break-inside: avoid; page-break-inside: avoid; }
+  .certificado-verso { break-before: page; page-break-before: always; }
+  .certificado-frente .ico, .certificado-verso .ico { width: 100%; height: 100%; object-fit: contain; }
 }
 
 /* ============================================================
@@ -1156,3 +1161,73 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* ============================================================
+   APOIO (relato de testes): ouvir, dicas recolhidas, modos por idade,
+   Missões colorida e recado de aprendizado nas fases
+   ============================================================ */
+.bt-ouvir {
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 99px; cursor: pointer;
+  background: var(--yellow); color: var(--navy); border: 2px solid var(--navy); font: inherit; font-weight: 800; font-size: 13px;
+  box-shadow: 0 3px 0 var(--navy);
+}
+.bt-ouvir:hover { filter: brightness(1.05); }
+.bt-ouvir:active { translate: 0 2px; box-shadow: 0 1px 0 var(--navy); }
+.bt-ouvir.on { background: var(--teal); color: #fff; }
+.bt-ouvir.on svg { animation: pulse 1s ease-in-out infinite; }
+.intro-frame .it-ouvir { position: absolute; z-index: 5; left: calc(309 * var(--u)); top: calc(300 * var(--u)); font-size: max(13px, calc(26 * var(--u))); padding: max(6px, calc(10 * var(--u))) max(12px, calc(22 * var(--u))); }
+.intro-frame .it-ouvir svg { width: max(18px, calc(34 * var(--u))); height: max(18px, calc(34 * var(--u))); }
+.detalhe .ouvir-missao { align-self: flex-start; }
+
+.dica-recolhida { margin: 8px auto 0; text-align: center; }
+.dica-recolhida summary {
+  display: inline-flex; align-items: center; gap: 6px; cursor: pointer; list-style: none; padding: 6px 14px; border-radius: 99px;
+  background: #fff; border: 2px dashed var(--navy); font-weight: 800; color: var(--navy);
+}
+.dica-recolhida summary::-webkit-details-marker { display: none; }
+.dica-recolhida[open] summary { background: var(--cream-2); border-style: solid; }
+.dica-recolhida .dica-flutua { margin-top: 8px; }
+
+.campo-modo { border: 0; padding: 0; margin: 0 0 18px; }
+.campo-modo legend { font-weight: 800; color: var(--navy); margin: 0 auto 8px; padding: 0; }
+.modo-ops { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.modo-op input { position: absolute; opacity: 0; pointer-events: none; }
+.modo-card {
+  display: flex; flex-direction: column; align-items: center; gap: 2px; height: 100%; padding: 10px 8px; cursor: pointer;
+  background: #fff; border: 3px solid #cbd5e1; border-radius: 14px; color: var(--navy); transition: border-color .2s, background .2s, translate .15s;
+}
+.modo-card .modo-ico { width: 54px; height: 54px; object-fit: contain; }
+.modo-card b { font-size: 18px; font-weight: 900; }
+.modo-card small { font-weight: 800; color: var(--muted); }
+.modo-card em { font-style: normal; font-size: 12px; font-weight: 700; line-height: 1.25; margin-top: 4px; }
+.modo-op input:checked + .modo-marujo { border-color: var(--blue); background: #e3f2fc; translate: 0 -2px; }
+.modo-op input:checked + .modo-capitao { border-color: var(--coral); background: #ffece6; translate: 0 -2px; }
+.modo-op input:focus-visible + .modo-card { outline: 3px dashed var(--navy); outline-offset: 2px; }
+@media (max-width: 420px) { .modo-ops { grid-template-columns: 1fr; } }
+
+/* Missões: um quadrado de cor forte por atividade */
+.arvore .passo { width: 124px; background: var(--cor); color: var(--navy); border-width: 3px; box-shadow: 0 4px 0 var(--navy); }
+.arvore .passo:not([disabled]):hover { translate: 0 -2px; }
+.arvore .passo .passo-ico { width: 34px; height: 34px; object-fit: contain; background: #fff; border-radius: 50%; padding: 4px; border: 2px solid var(--navy); }
+.arvore .passo .passo-num {
+  position: absolute; top: -12px; left: -12px; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--yellow); border: 2px solid var(--navy); font-size: 13px; font-weight: 900;
+}
+.arvore .passo .n.go { background: var(--navy); color: var(--yellow); }
+.arvore .passo.feita { background: var(--cor); border-color: var(--navy); }
+.arvore .passo.feita .n.ok { background: #fff; color: var(--teal-d); border: 2px solid var(--navy); }
+.arvore .passo.trancada { background: #e2e2e2; border-top: 8px solid var(--cor); box-shadow: none; }
+.arvore .passo.trancada .passo-ico { filter: grayscale(1); opacity: .6; }
+
+.popup .fase-msg { margin: 0 0 14px; font-size: 16px; font-weight: 800; color: var(--navy); background: #fff; border: 2px dashed var(--teal); border-radius: 12px; padding: 8px 12px; }
+.popup .fase-msg.perfeita { display: flex; align-items: center; justify-content: center; gap: 8px; border-style: solid; border-color: var(--yellow); background: var(--cream-2); }
+
+/* Mais estímulo visual (profa. Camila): botões de resposta e cartões com cores fortes,
+   cada um de uma cor, sem mudar o certo/errado (verde/coral) depois da resposta */
+.opcoes .opcao:not(.certa):not(.errada), .cartoes .cartao, .itens .item[draggable] { border-bottom-width: 7px; }
+.opcoes .opcao:nth-child(4n+1):not(.certa):not(.errada), .cartoes .cartao:nth-child(4n+1), .itens .item[draggable]:nth-child(4n+1) { border-color: var(--blue-d); background: #e6f3fc; }
+.opcoes .opcao:nth-child(4n+2):not(.certa):not(.errada), .cartoes .cartao:nth-child(4n+2), .itens .item[draggable]:nth-child(4n+2) { border-color: var(--coral-d); background: #ffeee8; }
+.opcoes .opcao:nth-child(4n+3):not(.certa):not(.errada), .cartoes .cartao:nth-child(4n+3), .itens .item[draggable]:nth-child(4n+3) { border-color: var(--teal-d); background: #e2f8f4; }
+.opcoes .opcao:nth-child(4n+4):not(.certa):not(.errada), .cartoes .cartao:nth-child(4n+4), .itens .item[draggable]:nth-child(4n+4) { border-color: var(--yellow-d); background: var(--cream-2); }
+.opcoes .opcao:not(.certa):not(.errada):hover { filter: brightness(1.04); }
+.itens .item[draggable].sel { background: var(--yellow); border-color: var(--navy); }

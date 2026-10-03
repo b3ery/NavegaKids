@@ -21,8 +21,18 @@
   const DEV = /[?&]dev=1/.test(location.search);   // ?dev=1 libera tudo (teste)
   const TAMANHO_MAX_NOME = 20;
 
+  /* Modos por idade (relato de testes): o Marujo (8 anos) tem mais tempo no quiz
+     cronometrado e menos texto na tela (dicas recolhidas); o Capitão (9 e 10 anos)
+     mantém o desafio de 15 segundos. */
+  const MODOS = Object.freeze({
+    marujo:  Object.freeze({ id: 'marujo',  nome: 'Marujo',  idade: '8 anos',       tempoQuiz: 45,   dicaRecolhida: true }),
+    capitao: Object.freeze({ id: 'capitao', nome: 'Capitão', idade: '9 e 10 anos',  tempoQuiz: null, dicaRecolhida: false })
+  });
+
   const estadoInicial = () => ({
     nome: '',
+    modo: 'capitao',     // 'marujo' | 'capitao' (ver MODOS)
+    modoEscolhido: false,
     inicio: Date.now(),
     atividades: {},      // 'fase-indice' → { erros } da melhor tentativa
     selos: [],           // ids das ilhas com selo conquistado
@@ -84,6 +94,13 @@
   const nome = () => estado.nome;
   const definirNome = (novoNome) => { estado.nome = String(novoNome ?? '').trim().slice(0, TAMANHO_MAX_NOME); };
 
+  const modo = () => estado.modo;
+  const modoInfo = () => MODOS[estado.modo];
+  const modoEscolhido = () => estado.modoEscolhido;
+  const definirModo = (m) => { if (MODOS[m]) { estado.modo = m; estado.modoEscolhido = true; } };
+  /** Segundos do quiz cronometrado: o do roteiro (15 s) ou o do modo, se maior. */
+  const tempoDoQuiz = (base) => Math.max(base, modoInfo().tempoQuiz ?? 0);
+
   const introVista = (fid) => Boolean(estado.introVista[fid]);
   const marcarIntroVista = (fid) => { estado.introVista[fid] = true; };
 
@@ -144,7 +161,7 @@
     // pontos, estrelas, selos
     resultadoDaFase, estrelasTotal, estrelasMax, pontosTotal, selos, level, tempoJogadoMs,
     // sessão
-    nome, definirNome, introVista, marcarIntroVista, faseVista, definirFaseVista,
+    nome, definirNome, MODOS, modo, modoInfo, modoEscolhido, definirModo, tempoDoQuiz, introVista, marcarIntroVista, faseVista, definirFaseVista,
     // atividade em andamento
     iniciarAtividade, registrarErro, concluirAtividade,
     resetar

@@ -109,17 +109,34 @@
     $('#hmMapa').onclick = navegar;
   }
 
-  /* PopUP-Usuario do Figma: pede o nome (ou apelido) do navegador.
+  /* PopUP-Usuario do Figma: pede o nome (ou apelido) do navegador e o modo por idade
+     (Marujo, 8 anos · Capitão, 9 e 10 anos — relato de testes).
      Fica só na memória da sessão, como o resto do progresso. */
   function pedirNome(depois) {
+    const modoAtual = progresso.modo();
+    const cartao = m => `<label class="modo-op">
+        <input type="radio" name="modo" value="${m.id}" ${m.id === modoAtual ? 'checked' : ''}>
+        <span class="modo-card modo-${m.id}">
+          ${I(m.id === 'marujo' ? 'usuario' : 'pirata', { cls: 'modo-ico' })}
+          <b>${m.nome}</b><small>${m.idade}</small>
+          <em>${m.id === 'marujo' ? 'Mais tempo para responder e dicas guardadas no botão' : 'Desafio com tempo de 15 segundos'}</em>
+        </span>
+      </label>`;
     const w = popup({
       cor: 'b', titulo: 'Qual é o seu nome de navegador?',
       extra: `<label class="campo-nome"><span>Pode ser um apelido!</span>
         <input id="inNome" type="text" maxlength="20" autocomplete="off"
-          value="${esc(progresso.nome())}" placeholder="Ex.: Pirata Corajoso"></label>`,
+          value="${esc(progresso.nome())}" placeholder="Ex.: Pirata Corajoso"></label>
+        <fieldset class="campo-modo"><legend>Como você quer navegar?</legend>
+          <div class="modo-ops">${Object.values(progresso.MODOS).map(cartao).join('')}</div>
+        </fieldset>`,
       btns: [
         { t: 'Agora não', cls: 'btn-ghost', fn: () => depois?.() },
-        { t: 'Confirmar', cls: 'btn-t', fn: janela => { progresso.definirNome($('#inNome', janela).value); depois?.(); } }
+        { t: 'Confirmar', cls: 'btn-t', fn: janela => {
+          progresso.definirNome($('#inNome', janela).value);
+          progresso.definirModo($('input[name="modo"]:checked', janela)?.value);
+          depois?.();
+        } }
       ]
     });
     const campo = $('#inNome', w);
@@ -326,6 +343,7 @@
         <h1 class="it-titulo">${esc(f.titulo)}</h1>
         ${f.dobro ? `<div class="it-dobro">${NK.seloDobro('Nesta missão as estrelas e os pontos valem em dobro!')}</div>` : ''}
         <p class="it-texto">${esc(f.abertura.texto)}</p>
+        ${NK.botaoOuvir('', { texto: f.titulo + '. ' + f.abertura.texto, cls: 'it-ouvir' })}
         <button class="btn-figma it-comecar" id="btComecar">${esc(f.abertura.btn)}</button>
         ${FILTRO_ASPERO}
       </div>
@@ -346,6 +364,15 @@
     renderMissoesFase(f.id);
   }
 
+  /* Relato de testes (profa. Camila): cada quadrado de atividade com uma cor forte e
+     um ícone do tipo de atividade, para a tela ficar com mais cara de jogo infantil. */
+  const CORES_PASSO = ['#4EA8DE', '#FF7A59', '#2EC4B6'];
+  const ICONE_TIPO = {
+    discover: 'luneta', explain: 'luneta', choice: 'interrogacao', classify: 'bau', hunt: 'luneta',
+    quiz: 'cronometro', sequence: 'mapaTesouro', compose: 'bubbleChat', doors: 'misterio',
+    match: 'pedidoAmizade', bau: 'bau', block: 'escudo'
+  };
+
   function renderMissoesFase(fid) {
     const f = faseById(fid);
     const total = f.atividades.length;
@@ -361,7 +388,9 @@
         { left: '52%', top: '62%' },
       ][i] || { left: '8%', top: '8%' };
       return `<button class="passo ${ft ? 'feita' : ''} ${!lib ? 'trancada' : ''}" data-i="${i}" ${lib ? '' : 'disabled'}
-        style="left:${posArv.left};top:${posArv.top}">
+        style="left:${posArv.left};top:${posArv.top};--cor:${CORES_PASSO[i % CORES_PASSO.length]}">
+        <span class="passo-num">${i + 1}</span>
+        ${I(ICONE_TIPO[a.tipo] || 'estrela', { cls: 'passo-ico' })}
         <span>${esc(a.titulo)}</span>
         ${lib ? (ft ? `<span class="n ok">${I('correto', { cls: 'ico-txt' })}</span>` : '<span class="n go">Começar</span>') : `<span class="cad">${cadeadoIcon({ size: 20 })}</span>`}
       </button>`;
@@ -382,7 +411,8 @@
           <div class="detalhe">
             <div class="fase-atual">${I('medalha', { size: 56 })}<div><b>FASE ATUAL</b><small>${esc(f.titulo)}</small></div></div>
             ${f.dobro ? NK.seloDobro('Estrelas e pontos em dobro nesta missão!') : ''}
-            <p>${esc(f.missao || f.abertura.texto)}</p>
+            <p id="txtMissao">${esc(f.missao || f.abertura.texto)}</p>
+            ${NK.botaoOuvir('#txtMissao', { cls: 'ouvir-missao' })}
             <div class="progresso">
               <span>Seu progresso</span>
               <div class="trilho"><i style="width:${pct}%"></i></div>
@@ -440,7 +470,7 @@
         <span class="selo-tag">${esc(il.selo)}</span>
         <div class="btns">
           <button class="btn btn-t" id="btProx">${esc(il.conclusaoBtn)}</button>
-          <button class="btn btn-ghost" id="btDiario2">Ver Diário do Capitão</button>
+          <button class="btn btn-ghost" id="btDiario2">Ver o Diário do Capitão</button>
         </div>
       </div>
     </div>`, 'ilhas');
@@ -583,14 +613,14 @@
         <p class="dr-txt" style="left:${U(971)};width:${U(468)};top:${U(550)};text-align:center"><b>ILHAS:</b></p>
         ${mini}
       </div>
-      <div class="diario-acoes"><button class="btn btn-t" id="btConquistas">${I('conquistas', { cls: 'ico-txt' })} Minhas Conquistas</button>${jornada ? `<button class="btn btn-t" id="btVerCert">Ver Certificado</button>` : ''}${DEV ? `<button class="btn btn-c" id="btReset">Reiniciar progresso (dev)</button>` : ''}</div>
+      <div class="diario-acoes"><button class="btn btn-t" id="btConquistas">${I('conquistas', { cls: 'ico-txt' })} Minhas Conquistas</button><button class="btn btn-ghost" id="btModo">Modo ${progresso.modoInfo().nome} (${progresso.modoInfo().idade}) · trocar</button>${jornada ? `<button class="btn btn-t" id="btVerCert">Ver Certificado</button>` : ''}${DEV ? `<button class="btn btn-c" id="btReset">Reiniciar progresso (dev)</button>` : ''}</div>
     </div>`, 'diario');
     document.body.classList.add('tela-figma');
     window.scrollTo(0, 0);
 
     const cert = $('#btVerCert'); if (cert) cert.onclick = () => go('#/certificado');
     const rst = $('#btReset'); if (rst) rst.onclick = () => { progresso.resetar(); go('#/home'); };
-    $('#btEditarNome').onclick = () => pedirNome(telaDiario);
+    $('#btEditarNome').onclick = $('#btModo').onclick = () => pedirNome(telaDiario);
     $('#btConquistas').onclick = $('#btConquistasTit').onclick = $('.dr-medalha').onclick = () => popupConquistas();
     $$('.dr-cq').forEach(b => b.onclick = () => popupConquistas(+b.dataset.cq));
     $$('.dr-btn').forEach(b => b.onclick = () => {
@@ -616,12 +646,12 @@
     if (!jornadaCompleta()) { go('#/diario'); return; }
     montar(`
     <div class="scene certificado">
-      <button class="certificado-card" id="certCard" aria-label="Certificado — clique para virar" aria-pressed="false">
+      <div class="certificado-card" id="certCard" role="button" tabindex="0" aria-label="Certificado — clique para virar" aria-pressed="false">
         <span class="certificado-inner">
           <span class="certificado-frente">${I('cert1', { alt: 'Certificado Guardião da Internet — frente' })}</span>
           <span class="certificado-verso">${I('cert2', { alt: 'Certificado — verso: Guardião dos Mares Digitais' })}</span>
         </span>
-      </button>
+      </div>
       <p class="dica-flip">Clique no certificado para virar</p>
       <div class="acoes">
         <button class="btn btn-t" id="btImprimir">Imprimir / Salvar PDF</button>
@@ -630,10 +660,12 @@
     </div>`, 'diario');
 
     const card = $('#certCard');
+    // div (não <button>): dentro de um botão o navegador não quebra página na impressão
     card.onclick = () => {
       const v = card.classList.toggle('virado');
       card.setAttribute('aria-pressed', v);
     };
+    card.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); } };
     $('#btImprimir').onclick = () => window.print();
     $('#btVoltarDiario').onclick = () => go('#/diario');
   }

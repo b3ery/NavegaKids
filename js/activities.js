@@ -31,6 +31,7 @@
         </div>
         <div class="acoes">
           ${f.dobro ? NK.seloDobro('') : ''}
+          ${NK.botaoOuvir('#palco')}
           <span class="chip-papel">${esc(a.papel)}</span>
           <button class="btn btn-sm btn-ghost" id="btSairAtv">Sair</button>
         </div>
@@ -64,6 +65,14 @@
     </div>`;
   }
 
+  /* Relato de testes: perder estrelas frustrava. A fase sem erros é comemorada; com erros,
+     o recado é que errar faz parte de aprender e que dá para refazer (vale a melhor tentativa). */
+  function mensagemDaFase({ erros, estrelas, maxEstrelas }) {
+    if (erros === 0) return `<p class="fase-msg perfeita">${I('conquistas', { cls: 'ico-txt' })} Fase perfeita: nenhum erro!</p>`;
+    if (estrelas < maxEstrelas) return `<p class="fase-msg">Errar faz parte de aprender! Cada erro te ensinou algo novo. Se quiser, refaça a fase para conquistar todas as estrelas: vale sempre a sua melhor tentativa.</p>`;
+    return '';
+  }
+
   /* chamado quando o jogador concluiu a atividade com sucesso */
   function concluirAtividade(mensagemExtra) {
     const { f, idx } = AC;
@@ -73,7 +82,7 @@
     const total = f.atividades.length;
     const faseAgoraCompleta = progresso.faseCompleta(f.id);
 
-    popup({
+    const janela = popup({
       cor: 't', dim: true,
       titulo: r.jaFeita ? 'Muito bem de novo!' : 'Parabéns, Pirata!',
       texto: (mensagemExtra ? mensagemExtra + ' ' : '') + (r.jaFeita
@@ -81,8 +90,10 @@
         : 'Você desbloqueou mais uma atividade, continue navegando pirata!'),
       extra: `<div class="estrela-mais">${I('moedas', { size: 26 })} +${r.pontos} PONTOS${f.dobro ? ' <span class="x2-pontos">x2</span>' : ''}</div>`
         + (r.completouFase ? estrelasDaFaseHtml(r.resultadoFase, f) : '')
+        + (r.completouFase ? mensagemDaFase(r.resultadoFase) : '')
         + (r.ilhaDoSelo ? `<p class="selo-ganho">${I(r.ilhaDoSelo.seloImg, { size: 34 })} Selo conquistado: ${esc(r.ilhaDoSelo.selo)}!</p>` : ''),
-      btns: [{
+      btns: [...(r.completouFase && r.resultadoFase.estrelas < r.resultadoFase.maxEstrelas
+        ? [{ t: 'Refazer a fase', cls: 'btn-ghost', fn: () => go(`#/atividade/${f.id}/0`) }] : []), {
         t: faseAgoraCompleta ? 'Ver conquista da fase' : (idx + 1 < total ? 'Próxima atividade' : 'Voltar às missões'),
         cls: 'btn-t',
         fn: () => {
@@ -92,6 +103,7 @@
         }
       }]
     });
+    $('.btns .btn-t', janela)?.focus();   // Enter segue em frente; "Refazer a fase" é opcional
   }
 
   /* ============================================================
@@ -162,7 +174,7 @@
           <small>Jogo Online</small>
           <div class="jg-grid">${'<i></i>'.repeat(4)}</div>
           <div class="pirata">${I('usuario')}</div>
-          <button class="btn btn-sm ${pendente ? 'btn-t' : 'btn-off'}" id="btInvestigar" ${pendente ? '' : 'disabled'}>Começar a investigar</button>
+          <button class="btn btn-sm btn-t" id="btInvestigar">Começar a investigar</button>
         </div>
         <div class="jg-side" id="jgSide">
           ${pendente ? `
@@ -187,7 +199,7 @@
       <p class="enunciado">${esc(a.titulo)}</p>
       ${cenaSuporte(a)}
       ${a.texto ? `<p class="texto-cena">${esc(a.texto)}</p>` : ''}
-      ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
+      ${NK.dicaHtml(a.dica)}
       <div class="rodape"><button class="btn btn-t" id="btAvancarDisc">Avançar</button></div>`;
     $('#btAvancarDisc').onclick = () => concluirAtividade();
   }
@@ -229,7 +241,8 @@
         const [titulo, texto] = INFO[chip.dataset.info];
         popup({ cor: 'y', titulo, texto, btns: [{ t: 'Entendi', cls: 'btn-t', fn() {} }] });
       });
-      $('#jgNotif').onclick = () => {
+      // roteiro: [COMEÇAR A INVESTIGAR] (ou a notificação) abre a DICA → [Avançar] → painel Pendentes
+      $('#btInvestigar').onclick = $('#jgNotif').onclick = () => {
         popup({
           cor: 'y', titulo: I('luneta', { cls: 'ico-txt' }) + ' ' + esc(AC.f?.titulo || 'Perfil Misterioso..?'),
           texto: a.dica,
@@ -254,14 +267,14 @@
         const fb = $('#fbChoice');
         fb.style.display = 'block';
         fb.className = 'quiz-fb ' + (o.ok ? 'ok' : 'ruim');
-        NK.som?.[o.ok ? 'acerto' : 'erro']();
+        NK.feedback[o.ok ? 'acerto' : 'erro']();
         fb.textContent = o.fb;
         if (o.ok) {
-          $('#rodapeChoice').innerHTML = `<button class="btn btn-t" id="btOkChoice">Continuar</button>`;
+          $('#rodapeChoice').innerHTML = `<button class="btn btn-t" id="btOkChoice">Avançar</button>`;
           $('#btOkChoice').onclick = () => concluirAtividade();
         } else {
           progresso.registrarErro();
-          $('#rodapeChoice').innerHTML = `<button class="btn btn-c" id="btDeNovo">Tentar de novo</button>`;
+          $('#rodapeChoice').innerHTML = `<button class="btn btn-c" id="btDeNovo">Voltar</button>`;
           $('#btDeNovo').onclick = () => desenharPendentes();
         }
       });
@@ -279,7 +292,7 @@
     palco.innerHTML = `
       ${cenaSuporte(a)}
       <p class="enunciado" style="margin-top:14px">${esc(a.pergunta || '')}</p>
-      ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
+      ${NK.dicaHtml(a.dica)}
       <div class="opcoes ${cartas ? 'cartas' : ''}" id="opcoesWrap">
         ${a.opcoes.map((o, i) => `<button class="opcao" data-i="${i}">
           ${o.tag ? `<span class="tag">${esc(o.tag)}</span>` : ''}
@@ -297,16 +310,16 @@
       const fb = $('#fbChoice');
       fb.style.display = 'block';
       fb.className = 'quiz-fb ' + (o.ok ? 'ok' : 'ruim');
-        NK.som?.[o.ok ? 'acerto' : 'erro']();
+        NK.feedback[o.ok ? 'acerto' : 'erro']();
       fb.textContent = o.fb;
       if (o.ok) {
         b.classList.add('certa');
-        $('#rodapeChoice').innerHTML = `<button class="btn btn-t" id="btOkChoice">Continuar</button>`;
+        $('#rodapeChoice').innerHTML = `<button class="btn btn-t" id="btOkChoice">Avançar</button>`;
         $('#btOkChoice').onclick = () => concluirAtividade();
       } else {
         progresso.registrarErro();
         b.classList.add('errada'); b.classList.add('shake');
-        $('#rodapeChoice').innerHTML = `<button class="btn btn-c" id="btDeNovo">Tentar de novo</button>`;
+        $('#rodapeChoice').innerHTML = `<button class="btn btn-c" id="btDeNovo">Voltar</button>`;
         $('#btDeNovo').onclick = () => rChoice(palco, a);
       }
     });
@@ -320,7 +333,7 @@
     const draw = () => {
       palco.innerHTML = `
         <p class="enunciado">${esc(a.pergunta)}</p>
-        ${a.dica ? `<p class="dica-flutua">${comIcone('luneta', a.dica)}</p>` : ''}
+        ${NK.dicaHtml(a.dica)}
         <p class="prog-hunt">Portas abertas: <b>${acertos.size}/${a.portas.length}</b></p>
         <div class="opcoes" id="portasWrap">
           ${a.portas.map((p, i) => `<button class="opcao" data-i="${i}" ${acertos.has(i) ? 'disabled' : ''}>
@@ -332,7 +345,7 @@
         const i = +b.dataset.i, p = a.portas[i];
         const fb = $('#fbPorta');
         fb.innerHTML = p.seguro ? comIcone('correto', 'Segura! ' + p.why) : comIcone('atencao', 'Arriscada! ' + p.why);
-        NK.som?.acerto();   // abrir a porta é descoberta, não erro
+        NK.som?.acerto();   // abrir a porta é descoberta, não erro (nem conta na sequência de acertos)
         fb.className = 'dica-flutua ' + (p.seguro ? 'boa' : 'ruim');
         acertos.add(i);
         if (acertos.size === a.portas.length) {
