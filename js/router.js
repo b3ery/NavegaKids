@@ -371,7 +371,7 @@
   const CORES_PASSO = ['#4EA8DE', '#FF7A59', '#2EC4B6'];
   const ICONE_TIPO = {
     discover: 'luneta', explain: 'luneta', choice: 'interrogacao', classify: 'bau', hunt: 'luneta',
-    quiz: 'cronometro', sequence: 'mapaTesouro', compose: 'bubbleChat', doors: 'misterio',
+    quiz: 'cronometro', sequence: 'mapaTesouro', compose: 'comunicacao', doors: 'misterio',
     match: 'pedidoAmizade', bau: 'bau', block: 'escudo'
   };
 
@@ -384,11 +384,12 @@
     const passos = f.atividades.map((a, i) => {
       const ft = feita(fid, i);
       const lib = i === 0 || feita(fid, i - 1);
+      // trilha em zigue-zague ocupando a página toda: 1 em cima, 2 embaixo, 3 em cima
       const posArv = [
-        { left: '8%', top: '8%' },
-        { left: '8%', top: '62%' },
-        { left: '52%', top: '62%' },
-      ][i] || { left: '8%', top: '8%' };
+        { left: '4%', top: '6%' },
+        { left: 'calc(50% - 62px)', top: '54%' },
+        { left: 'calc(92% - 124px)', top: '6%' },   // longe da fita amarela do centro do painel
+      ][i] || { left: '4%', top: '6%' };
       return `<button class="passo ${ft ? 'feita' : ''} ${!lib ? 'trancada' : ''}" data-i="${i}" ${lib ? '' : 'disabled'}
         style="left:${posArv.left};top:${posArv.top};--cor:${CORES_PASSO[i % CORES_PASSO.length]}">
         <span class="passo-num">${i + 1}</span>
@@ -397,7 +398,7 @@
         ${lib ? (ft ? `<span class="n ok">${I('correto', { cls: 'ico-txt' })}</span>` : '<span class="n go">Começar</span>') : `<span class="cad">${cadeadoIcon({ size: 20 })}</span>`}
       </button>`;
     }).join('');
-    const linhaArv = 'M 18 20 L 18 68 M 18 68 L 60 68';
+    const linhaArv = 'M 18 26 L 50 74 L 80 26';
 
     montar(`
     <div class="scene missoes">
