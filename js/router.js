@@ -415,7 +415,7 @@
     const linhaArv = 'M 18 26 L 50 74 L 80 26';
 
     montar(`
-    <div class="scene missoes">
+    <div class="scene missoes" style="--cor-ilha:${NK.ILHAS.find(il => il.id === f.ilha)?.cor || '#4EA8DE'}">
       <h1>Missões</h1>
       <div class="sub">${I(f.icone, { size: 30 })}<span>${esc(f.titulo)}</span></div>
       <div class="painel-missao">

@@ -22,8 +22,9 @@
     AC = { f, idx, a };
     progresso.iniciarAtividade(fid, idx);
 
+    const ilha = NK.ILHAS.find(il => il.id === f.ilha);
     montar(`
-    <div class="scene atv" data-bg="fundo">
+    <div class="scene atv" data-bg="fundo" style="--cor-ilha:${ilha?.cor || '#4EA8DE'}">
       <div class="topo">
         <div class="tt">
           <small>Fase ${f.id} · ${esc(f.titulo)} — Atividade ${idx + 1}/${f.atividades.length}</small>
@@ -49,6 +50,7 @@
     // animação de entrada em cascata só na abertura (os redesenhos depois de um clique não piscam)
     palco.classList.add('entrando');
     later(() => palco.classList.remove('entrando'), 1200);
+    palco.dataset.tipo = a.tipo;   // Marujo: ícone do tipo de atividade ao lado do enunciado (style.css)
     // os tipos se registram em NavegaKids.atividades (aqui e em activities2.js)
     (NK.atividades[a.tipo] || NK.atividades.discover)(palco, a);
   }

@@ -217,6 +217,8 @@
   function montar(html, ativo) {
     const stage = $('#stage');
     document.body.classList.remove('tela-figma');
+    // nível Marujo (8 anos): visual mais colorido, ícones maiores e menos rótulos (ver style.css)
+    document.body.classList.toggle('marujo', NK.progresso?.modo() === 'marujo');
     stage.innerHTML = html;
     stage.scrollTop = 0;
     cabecalho(ativo);

@@ -1010,6 +1010,106 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 }
 
 
+
+/* ============================================================
+   NÍVEL MARUJO (8 anos) — mais estímulo visual (profa. Camila):
+   cor da ilha na moldura, cantos arredondados, cores fortes em
+   cada bloco, ícone do tipo de atividade e menos rótulos.
+   Ativado pela classe "marujo" no <body> (core.js → montar).
+   ============================================================ */
+.marujo .atv .topo, .marujo .atv .palco { border-color: var(--cor-ilha, var(--yellow)); border-radius: 22px; }
+.marujo .atv .topo { border-width: 5px; background: #fff; box-shadow: 0 5px 0 var(--navy); }
+.marujo .atv .topo h2 { font-size: clamp(20px, 2.8vw, 26px); }
+.marujo .atv .palco {
+  border-width: 7px; box-shadow: 0 7px 0 var(--navy);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--cor-ilha, var(--yellow)) 22%, #fff) 0, #fffdf5 140px);
+}
+.marujo .chip-papel { display: none; }   /* rótulo pedagógico ("Prática · classificar") é para adultos */
+
+/* enunciado em faixa colorida, com o ícone do tipo de atividade */
+.marujo .palco .enunciado {
+  display: flex; align-items: center; justify-content: center; gap: 12px; width: fit-content; max-width: 100%; margin: 0 auto 14px;
+  font-size: clamp(18px, 2.4vw, 24px); background: #fff; border: 4px solid var(--navy); border-radius: 18px; padding: 8px 18px;
+  box-shadow: 0 4px 0 var(--cor-ilha, var(--yellow));
+}
+.marujo .palco .enunciado::before {
+  content: ""; flex: 0 0 48px; height: 48px; border-radius: 50%; border: 3px solid var(--navy);
+  background: var(--yellow) url(../img/ponto-de-interrogacao.png) center / 30px no-repeat;
+}
+.marujo .palco[data-tipo="hunt"] .enunciado::before, .marujo .palco[data-tipo="explain"] .enunciado::before { background-image: url(../img/luneta.png); background-color: var(--blue); }
+.marujo .palco[data-tipo="classify"] .enunciado::before, .marujo .palco[data-tipo="bau"] .enunciado::before { background-image: url(../img/treasure-chest.png); background-color: var(--teal); }
+.marujo .palco[data-tipo="sequence"] .enunciado::before { background-image: url(../img/mapa-do-tesouro.png); background-color: var(--coral); }
+.marujo .palco[data-tipo="compose"] .enunciado::before { background-image: url(../img/editar.png); background-color: var(--teal); }
+.marujo .palco[data-tipo="match"] .enunciado::before { background-image: url(../img/comunicacao%20(1).png); background-color: var(--coral); }
+.marujo .palco[data-tipo="doors"] .enunciado::before { background-image: url(../img/misterio.png); background-color: var(--blue); }
+.marujo .palco[data-tipo="discover"] .enunciado::before { background-image: url(../img/falando.png); background-color: var(--blue); }
+.marujo .palco[data-tipo="block"] .enunciado::before { background-image: url(../img/escudo.png); background-color: var(--teal); }
+.marujo .palco .texto-cena { font-size: 18px; background: var(--cream-2); border: 3px dashed var(--cor-ilha, var(--yellow)); border-radius: 16px; padding: 8px 14px; width: fit-content; max-width: 100%; margin: 12px auto 0; }
+
+/* botões e cartões: arredondados, maiores e com ícones grandes */
+.marujo :is(.opcao, .item, .cartao, .slot, .bloco, .match button, .quiz-cena, .quiz-fb, .balde, .itens, .chat, .linha-pista) { border-radius: 16px; }
+.marujo .opcao { font-size: 18px; padding: 16px; }
+.marujo .opcao .e .ico, .marujo .item .e .ico, .marujo .linha-pista .e .ico { width: 44px; height: 44px; }
+.marujo .slot .e .ico, .marujo .cartao .e .ico { width: 48px; height: 48px; }
+.marujo .item { font-size: 16px; padding: 10px 14px; }
+
+/* grupos de arrastar: cada grupo com a sua cor forte */
+.marujo .balde { border-width: 4px; border-style: solid; }
+.marujo .balde:nth-child(1) { background: #dcefff; border-color: var(--blue-d); }
+.marujo .balde:nth-child(2) { background: #ffe3da; border-color: var(--coral-d); }
+.marujo .balde:nth-child(3) { background: #d8f6ef; border-color: var(--teal-d); }
+.marujo .balde h4 { font-size: 19px; }
+.marujo .balde h4 .ico { width: 34px; height: 34px; }
+.marujo .balde.alvo { box-shadow: 0 0 0 4px var(--yellow); }
+.marujo .itens { border-width: 3px; border-style: dashed; border-color: var(--cor-ilha, var(--yellow)); background: #fff; }
+
+/* blocos de frase (montar mensagem / pedir ajuda): cada um de uma cor */
+.marujo .bloco { border-bottom-width: 6px; border-radius: 16px; font-size: 16px; }
+.marujo .bloco:nth-child(3n+1):not(.on) { background: #dcefff; border-color: var(--blue-d); }
+.marujo .bloco:nth-child(3n+2):not(.on) { background: #ffe3da; border-color: var(--coral-d); }
+.marujo .bloco:nth-child(3n+3):not(.on) { background: #d8f6ef; border-color: var(--teal-d); }
+.marujo .bloco.on { background: var(--yellow); border-color: var(--navy); }
+
+/* associar: situações em azul, ações em coral */
+.marujo .match button { border-bottom-width: 6px; font-size: 15px; }
+.marujo .match .col:first-child button:not(.par):not(.sel) { background: #dcefff; border-color: var(--blue-d); }
+.marujo .match .col:last-child button:not(.par) { background: #ffe3da; border-color: var(--coral-d); }
+
+/* sequência: espaços e cartões coloridos */
+.marujo .slot { border-color: var(--cor-ilha, var(--navy)); background: #fff; }
+.marujo .slot .n { width: 30px; height: 30px; font-size: 15px; background: var(--cor-ilha, var(--navy)); color: #fff; border: 2px solid var(--navy); }
+.marujo .cartao { border-bottom-width: 6px; }
+
+/* chat: quem manda mensagem em coral claro, você em amarelo */
+.marujo .chat { overflow: hidden; border-width: 3px; }
+.marujo .chat-body { background: linear-gradient(180deg, #e3f4ff, #f5fbff); }
+.marujo .bolha .msg { font-size: 17px; background: #ffece5; border-color: var(--coral-d); border-width: 3px; }
+.marujo .bolha.eu .msg { background: var(--yellow); border-color: var(--navy); }
+.marujo .bolha .av .ico { width: 40px; height: 40px; border: 2px solid var(--navy); }
+
+/* procurar o botão (Fases 8 e 13): botões maiores com fundos coloridos */
+.marujo .mock-app .bt-app { width: 78px; height: 78px; border-radius: 20px; border-bottom-width: 6px; }
+.marujo .mock-app .bt-app .ico { width: 48px; height: 48px; }
+.marujo .mock-app .bt-app:nth-child(3n+1):not(.achada):not(.errada) { background: #dcefff; }
+.marujo .mock-app .bt-app:nth-child(3n+2):not(.achada):not(.errada) { background: #ffe3da; }
+.marujo .mock-app .bt-app:nth-child(3n+3):not(.achada):not(.errada) { background: #d8f6ef; }
+
+/* quiz: cena em destaque */
+.marujo .quiz-cena { background: #dcefff; border: 3px solid var(--blue-d); font-size: 17px; }
+.marujo .quiz-top { font-size: 17px; }
+
+/* dica recolhida: botão amarelo bem visível */
+.marujo .dica-recolhida summary { background: var(--yellow); border: 3px solid var(--navy); border-radius: 99px; font-size: 17px; }
+
+/* tela de Missões: fundo na cor da ilha e atividades bloqueadas coloridas (não cinza) */
+.marujo .missoes { background: linear-gradient(180deg, color-mix(in srgb, var(--cor-ilha, var(--yellow)) 30%, #fff) 0, var(--cream) 70%); }
+.marujo .missoes .sub { background: #fff; border: 3px solid var(--navy); border-radius: 99px; padding: 4px 16px; box-shadow: 0 4px 0 var(--cor-ilha, var(--yellow)); }
+.marujo .painel-missao, .marujo .popup { border-radius: 22px; }
+.marujo .arvore .passo { width: 136px; border-radius: 16px; }
+.marujo .arvore .passo.trancada { background: color-mix(in srgb, var(--cor) 28%, #fff); border-color: var(--cor); }
+.marujo .arvore .passo.trancada .passo-ico { filter: none; opacity: .75; }
+.marujo .arvore .passo .passo-ico { width: 44px; height: 44px; }
+
 /* ---------- impressão do certificado ---------- */
 /* Uma face por folha A4: cada face ocupa a altura útil da folha e o verso sempre começa
    numa folha nova (antes, o verso era cortado no meio). */
