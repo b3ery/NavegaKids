@@ -77,14 +77,14 @@
         {
           titulo: "Detetive do Perfil", papel: "Prática", tipo: "hunt", skin: "perfil",
           dica: "Todo bom detetive junta pistas antes de decidir. Compare esse perfil com quem você já conhece de verdade!",
-          pergunta: "Toque nas pistas que mostram que esse perfil pode não ser confiável.",
+          pergunta: "Use a lupa: toque nas partes do perfil que mostram que ele pode não ser confiável.",
           rounds: [{
             itens: [
-              { img: "usuario", t: "Foto: só um ícone genérico, sem foto de verdade", ok: true,  why: "Pista encontrada! Sem foto de verdade, fica difícil saber quem está do outro lado." },
-              { img: "apoio", t: "Nenhum amigo em comum com a sua lista", ok: true, why: "Boa! Ninguém da sua lista de amigos conhece esse perfil." },
-              { img: "cronometro", t: "Só 3 amigos · conta criada há 2 dias", ok: true, why: "Isso mesmo! Poucos amigos e conta muito nova merecem atenção." },
-              { img: "pirata", t: "Diz que também gosta de jogos de pirata", ok: false, why: "Gostar do mesmo jogo não prova que a pessoa é quem diz ser." },
-              { img: "comunicacao", t: "Escreveu “Olá” de um jeito educado", ok: false, why: "Ser educado não quer dizer que a pessoa é confiável." }
+              { zona: "foto", img: "usuario", t: "Foto: só um ícone genérico, sem foto de verdade", ok: true,  why: "Pista encontrada! Sem foto de verdade, fica difícil saber quem está do outro lado." },
+              { zona: "amigos", img: "apoio", t: "Nenhum amigo em comum com a sua lista", ok: true, why: "Boa! Ninguém da sua lista de amigos conhece esse perfil." },
+              { zona: "conta", img: "cronometro", t: "Só 3 amigos · conta criada há 2 dias", ok: true, why: "Isso mesmo! Poucos amigos e conta muito nova merecem atenção." },
+              { zona: "bio", img: "pirata", t: "Diz que também gosta de jogos de pirata", ok: false, why: "Gostar do mesmo jogo não prova que a pessoa é quem diz ser." },
+              { zona: "mensagem", img: "comunicacao", t: "Escreveu “Olá” de um jeito educado", ok: false, why: "Ser educado não quer dizer que a pessoa é confiável." }
             ]
           }],
           fbOk: "Muito bem, detetive! Foto genérica, nenhum amigo em comum e conta nova: quando aparecem tantas pistas juntas, é melhor não aceitar."

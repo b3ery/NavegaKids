@@ -86,6 +86,33 @@
   /* Fase 1: os 3 amigos do perfil suspeito (nenhum é amigo da criança: "nenhum amigo em comum") */
   const AMIGOS_DO_SUSPEITO = ['Lobo_Sombrio', 'Kraken_77', 'Anonimo_99'];
 
+  /* Fase 1 · Detetive do Perfil: perfil de jogo de verdade (banner, avatar, nível, números,
+     bio e mensagem do pedido). Cada parte é uma zona clicável ligada a uma pista de data.js
+     pelo campo "zona"; a criança investiga com o cursor de lupa. */
+  function perfilJogoHtml(itens) {
+    const zona = (nome, html, cls = '') => {
+      const i = itens.findIndex(it => it.zona === nome);
+      return i < 0 ? html : `<button class="linha-pista zona-perfil zona-${nome} ${cls}" data-i="${i}" aria-label="Investigar: ${esc(itens[i].t)}">
+        ${html}<span class="zona-tag" aria-hidden="true">${esc(itens[i].t)}</span></button>`;
+    };
+    return `<div class="perfil-jogo">
+      <div class="pj-banner"><span class="pj-pendente">Pedido de amizade pendente</span></div>
+      <div class="pj-topo">
+        ${zona('foto', `<span class="pj-avatar">${I('anonimo')}</span><small>sem foto</small>`)}
+        <div class="pj-nome"><b>${esc(NPC1)}</b>
+          <span class="pj-linha"><span class="pj-nivel">Nv. 2</span><span class="pj-online"><i></i>online</span></span></div>
+      </div>
+      ${zona('conta', `<span class="pj-stats">
+          <span><b>3</b><small>amigos</small></span>
+          <span><b>2 dias</b><small>conta criada</small></span>
+          <span><b>1</b><small>partida</small></span></span>`)}
+      ${zona('amigos', `<span class="pj-sec"><small>Amigos em comum</small><b class="pj-zero">0</b></span>
+          <span class="amigos-dele">${AMIGOS_DO_SUSPEITO.map(n => `<span>${I('anonimo', { size: 18 })}${esc(n)}</span>`).join('')}</span>`)}
+      ${zona('bio', `<span class="pj-sec"><small>Bio</small></span><span class="pj-bio">Amo jogos de pirata! Bora jogar juntos?</span>`)}
+      ${zona('mensagem', `<span class="pj-sec"><small>Mensagem do pedido</small></span><span class="pj-msg">Olá, Pirata, poderia me adicionar? Quero ser seu amigo!</span>`)}
+    </div>`;
+  }
+
   function rHunt(palco, a) {
     let rIdx = 0;
 
@@ -101,11 +128,7 @@
           <p class="enunciado">${esc(a.pergunta)}</p>
           ${NK.dicaHtml(a.dica)}
           <p class="prog-hunt">Pistas encontradas: <b id="cntHunt">0</b>/${alvo}</p>
-          ${NK.jogoDetetiveHtml(`<div class="card-perfil">
-              <div class="cabec">${I('anonimo', { size: 44 })}<span>${esc(NPC1)}</span><small>pedido pendente</small></div>
-              <div class="amigos-dele"><b>Amigos dele (3):</b>${AMIGOS_DO_SUSPEITO.map(n => `<span>${I('anonimo', { size: 18 })}${esc(n)}</span>`).join('')}</div>
-              ${round.itens.map((it, i) => `<button class="linha-pista" data-i="${i}"><span class="e">${icone(it)}</span><span>${esc(it.t)}</span></button>`).join('')}
-            </div>`)}
+          ${NK.jogoDetetiveHtml(perfilJogoHtml(round.itens))}
           <div class="dica-flutua" id="fbHunt"></div>`;
       } else if (a.skin === 'chat') {
         palco.innerHTML = `
