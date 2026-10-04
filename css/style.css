@@ -1321,3 +1321,14 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .porta.aberta:has(.arriscada) .porta-placa { border-color: var(--coral-d); background: #ffeee8; box-shadow: 0 4px 0 var(--coral-d); }
 @media (max-width: 560px) { .porta { width: 136px; } .porta-vao { width: 104px; height: 150px; } }
 @media (prefers-reduced-motion: reduce) { .porta-folha { transition: none; } }
+
+/* liga/desliga da leitura automática (Marujo vem ligada; Capitão escolhe) */
+.bt-voz-auto {
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 99px; cursor: pointer;
+  background: #fff; color: var(--navy); border: 2px solid var(--navy); font: inherit; font-weight: 800; font-size: 12px; box-shadow: 0 3px 0 var(--navy);
+}
+.bt-voz-auto svg { width: 16px; height: 16px; opacity: .45; }
+.bt-voz-auto.on { background: var(--teal); color: #fff; }
+.bt-voz-auto.on svg { opacity: 1; }
+.bt-voz-auto:active { translate: 0 2px; box-shadow: 0 1px 0 var(--navy); }
+@media (max-width: 560px) { .atv .topo .acoes { flex-wrap: wrap; justify-content: flex-end; } }

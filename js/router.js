@@ -119,7 +119,7 @@
       <span class="modo-card modo-${m.id}">
         ${I(m.id === 'marujo' ? 'usuario' : 'pirata', { cls: 'modo-ico' })}
         <b>${m.nome}</b><small>${m.idade}</small>
-        <em>${m.id === 'marujo' ? 'Mais tempo para responder e dicas guardadas no botão' : 'Desafio com tempo de 15 segundos'}</em>
+        <em>${m.id === 'marujo' ? 'Voz que lê tudo sozinha, mais tempo para responder e dicas no botão' : 'Desafio com tempo de 15 segundos e voz só se quiser'}</em>
       </span>
     </label>`;
   const escolhaModoHtml = legenda => `<fieldset class="campo-modo"><legend>${legenda}</legend>
@@ -359,7 +359,7 @@
         <h1 class="it-titulo">${esc(f.titulo)}</h1>
         ${f.dobro ? `<div class="it-dobro">${NK.seloDobro('Nesta missão as estrelas e os pontos valem em dobro!')}</div>` : ''}
         <p class="it-texto">${esc(f.abertura.texto)}</p>
-        ${NK.botaoOuvir('', { texto: f.titulo + '. ' + f.abertura.texto, cls: 'it-ouvir' })}
+        ${NK.botaoOuvir('', { texto: f.titulo + '. ' + f.abertura.texto, cls: 'it-ouvir bt-ouvir-principal' })}
         <button class="btn-figma it-comecar" id="btComecar">${esc(f.abertura.btn)}</button>
         ${FILTRO_ASPERO}
       </div>
@@ -430,7 +430,8 @@
             ${f.dobro ? NK.seloDobro('Estrelas e pontos em dobro nesta missão!') : ''}
             <p id="txtMissao">${esc(f.missao || f.abertura.texto)}</p>
             <div class="voz-botoes">
-              ${NK.botaoOuvir('#txtMissao', { cls: 'ouvir-missao' })}
+              ${NK.botaoOuvir('#txtMissao', { cls: 'ouvir-missao bt-ouvir-principal' })}
+              ${NK.botaoVozAuto()}
               ${NK.voz.temVoz ? `<button type="button" class="bt-ouvir bt-voz" id="btVoz" aria-label="Escolher a voz do Ouvir">${I('config', { cls: 'ico-txt' })}<span>Voz</span></button>` : ''}
             </div>
             <div class="progresso">

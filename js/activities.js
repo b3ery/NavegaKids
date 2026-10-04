@@ -31,7 +31,8 @@
         </div>
         <div class="acoes">
           ${f.dobro ? NK.seloDobro('') : ''}
-          ${NK.botaoOuvir('#palco')}
+          ${NK.botaoOuvir('#palco', { cls: 'bt-ouvir-principal' })}
+          ${NK.botaoVozAuto()}
           <span class="chip-papel">${esc(a.papel)}</span>
           <button class="btn btn-sm btn-ghost" id="btSairAtv">Sair</button>
         </div>

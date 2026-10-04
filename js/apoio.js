@@ -210,15 +210,35 @@
     proximo();
   }
 
-  /* Leitura automática: depois que a criança toca em "Ouvir" uma vez, os popups e os
-     feedbacks (certo / repensar) que aparecerem passam a ser lidos sozinhos. */
-  let leituraAuto = false;
+  /* Leitura automática (progresso.vozAuto): no Marujo (8 anos) vem ligada e cada tela,
+     popup e feedback é lido sozinho; no Capitão (9 e 10 anos) vem desligada e a criança
+     escolhe no botão "Voz automática". O "Ouvir" manual funciona sempre. */
+  const leituraAuto = () => progresso.vozAuto();
+
+  /** Botão liga/desliga da leitura automática. */
+  function botaoVozAuto() {
+    const on = leituraAuto();
+    return `<button type="button" class="bt-voz-auto ${on ? 'on' : ''}" aria-pressed="${on}" title="Ler os textos sozinho">
+      ${ICONE_SOM}<span>Voz automática: <b>${on ? 'ligada' : 'desligada'}</b></span></button>`;
+  }
+  function atualizarBotoesVozAuto() {
+    const on = leituraAuto();
+    $$('.bt-voz-auto').forEach(b => { b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); b.querySelector('b').textContent = on ? 'ligada' : 'desligada'; });
+  }
+  document.addEventListener('click', e => {
+    const bt = e.target.closest('.bt-voz-auto');
+    if (!bt) return;
+    e.preventDefault(); e.stopPropagation();
+    progresso.definirVozAuto(!leituraAuto());
+    atualizarBotoesVozAuto();
+    if (leituraAuto()) { const principal = document.querySelector('.bt-ouvir-principal'); if (principal) principal.click(); }
+    else parar();
+  });
 
   document.addEventListener('click', e => {
     const bt = e.target.closest('.bt-ouvir:not(.bt-voz)');   // "Voz" (Missões) só abre a escolha da voz
     if (!bt) return;
     e.preventDefault(); e.stopPropagation();
-    leituraAuto = true;
     const texto = bt.dataset.ouvirTxt ?? textoDe(document.querySelector(bt.dataset.ouvir));
     falar(texto, bt);
   });
@@ -234,7 +254,7 @@
     if (!caixa || caixa.querySelector('.bt-ouvir-pop')) return;
     caixa.id ||= `popup-nk-${++nPopup}`;
     caixa.insertAdjacentHTML('afterbegin', botaoOuvir(`#${caixa.id}`, { cls: 'bt-ouvir-pop' }));
-    if (leituraAuto) setTimeout(() => { if (document.body.contains(caixa)) falar(textoDe(caixa), caixa.querySelector('.bt-ouvir-pop')); }, 350);
+    if (leituraAuto()) setTimeout(() => { if (document.body.contains(caixa)) falar(textoDe(caixa), caixa.querySelector('.bt-ouvir-pop')); }, 350);
   }
 
   function prepararFeedback(fb) {
@@ -244,13 +264,18 @@
     fb.dataset.lido = texto;
     if (!fb.querySelector('.bt-ouvir-fb')) fb.insertAdjacentHTML('beforeend', botaoOuvir('', { texto, rotulo: 'Ouvir', cls: 'bt-ouvir-fb' }));
     else fb.querySelector('.bt-ouvir-fb').dataset.ouvirTxt = texto;
-    if (leituraAuto) falar(texto, fb.querySelector('.bt-ouvir-fb'));
+    if (leituraAuto()) falar(texto, fb.querySelector('.bt-ouvir-fb'));
   }
 
   if (typeof MutationObserver !== 'undefined') {
     let pendente = false;
     const varrer = () => {
       pendente = false;
+      // tela nova com leitura automática: lê o texto principal (atividade, abertura, missão)
+      $$('.bt-ouvir-principal:not([data-auto])').forEach(bt => {
+        bt.dataset.auto = '1';
+        if (leituraAuto() && !document.querySelector('.popup-wrap')) setTimeout(() => { if (document.body.contains(bt) && !botaoFalando) bt.click(); }, 400);
+      });
       $$('.popup-wrap').forEach(prepararPopup);
       $$(FEEDBACK).forEach(prepararFeedback);
     };
@@ -280,5 +305,5 @@
     }
   };
 
-  Object.assign(NK, { dicaHtml, botaoOuvir, pararVoz: parar, feedback, voz: { temVoz, listaVozes, temVozNatural, ehNatural, escolherVoz, vozSalva, salvarVoz, falar, prepararFala, frasesDe, chaveFrase, temGravacao: () => !!gravadas, vozGravada: () => vozGravada } });
+  Object.assign(NK, { dicaHtml, botaoOuvir, botaoVozAuto, pararVoz: parar, feedback, voz: { temVoz, listaVozes, temVozNatural, ehNatural, escolherVoz, vozSalva, salvarVoz, falar, prepararFala, frasesDe, chaveFrase, temGravacao: () => !!gravadas, vozGravada: () => vozGravada } });
 })();

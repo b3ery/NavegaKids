@@ -25,14 +25,15 @@
      cronometrado e menos texto na tela (dicas recolhidas); o Capitão (9 e 10 anos)
      mantém o desafio de 15 segundos. */
   const MODOS = Object.freeze({
-    marujo:  Object.freeze({ id: 'marujo',  nome: 'Marujo',  idade: '8 anos',       tempoQuiz: 45,   dicaRecolhida: true }),
-    capitao: Object.freeze({ id: 'capitao', nome: 'Capitão', idade: '9 e 10 anos',  tempoQuiz: null, dicaRecolhida: false })
+    marujo:  Object.freeze({ id: 'marujo',  nome: 'Marujo',  idade: '8 anos',       tempoQuiz: 45,   dicaRecolhida: true,  vozAuto: true }),
+    capitao: Object.freeze({ id: 'capitao', nome: 'Capitão', idade: '9 e 10 anos',  tempoQuiz: null, dicaRecolhida: false, vozAuto: false })
   });
 
   const estadoInicial = () => ({
     nome: '',
     modo: 'capitao',     // 'marujo' | 'capitao' (ver MODOS)
     modoEscolhido: false,
+    vozAuto: null,       // leitura automática: null = padrão do modo (Marujo liga, Capitão não)
     inicio: Date.now(),
     atividades: {},      // 'fase-indice' → { erros } da melhor tentativa
     selos: [],           // ids das ilhas com selo conquistado
@@ -97,7 +98,14 @@
   const modo = () => estado.modo;
   const modoInfo = () => MODOS[estado.modo];
   const modoEscolhido = () => estado.modoEscolhido;
-  const definirModo = (m) => { if (MODOS[m]) { estado.modo = m; estado.modoEscolhido = true; } };
+  const definirModo = (m) => {
+    if (!MODOS[m]) return;
+    if (m !== estado.modo) estado.vozAuto = null;   // trocou de nível: volta ao padrão de voz do nível
+    estado.modo = m; estado.modoEscolhido = true;
+  };
+  /** Leitura automática ligada? Marujo (8 anos): sim, por padrão. Capitão: só se a criança ligar. */
+  const vozAuto = () => estado.vozAuto ?? MODOS[estado.modo].vozAuto;
+  const definirVozAuto = (ligada) => { estado.vozAuto = !!ligada; };
   /** Segundos do quiz cronometrado: o do roteiro (15 s) ou o do modo, se maior. */
   const tempoDoQuiz = (base) => Math.max(base, modoInfo().tempoQuiz ?? 0);
 
@@ -161,7 +169,7 @@
     // pontos, estrelas, selos
     resultadoDaFase, estrelasTotal, estrelasMax, pontosTotal, selos, level, tempoJogadoMs,
     // sessão
-    nome, definirNome, MODOS, modo, modoInfo, modoEscolhido, definirModo, tempoDoQuiz, introVista, marcarIntroVista, faseVista, definirFaseVista,
+    nome, definirNome, MODOS, modo, modoInfo, modoEscolhido, definirModo, vozAuto, definirVozAuto, tempoDoQuiz, introVista, marcarIntroVista, faseVista, definirFaseVista,
     // atividade em andamento
     iniciarAtividade, registrarErro, concluirAtividade,
     resetar
