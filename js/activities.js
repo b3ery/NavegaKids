@@ -31,8 +31,7 @@
         </div>
         <div class="acoes">
           ${f.dobro ? NK.seloDobro('') : ''}
-          ${NK.botaoOuvir('#palco', { cls: 'bt-ouvir-principal' })}
-          ${NK.botaoVozAuto()}
+          ${NK.botaoOuvir('#palco')}
           <span class="chip-papel">${esc(a.papel)}</span>
           <button class="btn btn-sm btn-ghost" id="btSairAtv">Sair</button>
         </div>
@@ -174,7 +173,7 @@
       </div>
       <div class="jg-body">
         <div class="jg-left jg-perfil">${perfilHtml}</div>
-        <div class="jg-side"><h4>Amigos</h4>${listaAmigosHtml()}</div>
+        <div class="jg-side"><h4>Amigos</h4>${listaAmigosHtml()}<p class="amigos-nota">Compare: esse perfil aparece na sua lista?</p></div>
       </div>
     </div>`;
   }

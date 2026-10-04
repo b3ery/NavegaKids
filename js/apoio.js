@@ -29,10 +29,17 @@
    * Botão "Ouvir". `alvo` é um seletor CSS (o texto é lido do elemento na hora do clique)
    * ou, com `{ texto }`, um texto fixo.
    */
-  function botaoOuvir(alvo, { texto, rotulo = 'Ouvir', cls = '' } = {}) {
+  /**
+   * Botão único de voz: "Voz: ligada / desligada". Ligado, lê a tela na hora e segue lendo
+   * sozinho as próximas telas, popups e feedbacks; desligado, fica em silêncio.
+   * `alvo` é o seletor do que ler nesta tela (ou `{ texto }`, um texto fixo).
+   */
+  function botaoOuvir(alvo, { texto, cls = '' } = {}) {
     if (!temVoz && typeof Audio === 'undefined') return '';
+    const on = progresso.vozAuto();
     const dado = texto ? `data-ouvir-txt="${esc(texto)}"` : `data-ouvir="${esc(alvo)}"`;
-    return `<button type="button" class="bt-ouvir ${cls}" ${dado} aria-label="Ouvir o texto em voz alta">${ICONE_SOM}<span>${esc(rotulo)}</span></button>`;
+    return `<button type="button" class="bt-ouvir bt-ouvir-principal ${on ? 'ligada' : ''} ${cls}" ${dado} aria-pressed="${on}"
+      aria-label="Voz que lê os textos">${ICONE_SOM}<span>Voz: <b>${on ? 'ligada' : 'desligada'}</b></span></button>`;
   }
 
   /* ---------- texto → frases → chave do áudio ----------
@@ -135,9 +142,8 @@
   let audioAtual = null;
 
   function marcar(bt) {
-    $$('.bt-ouvir.on').forEach(b => { b.classList.remove('on'); b.querySelector('span').textContent = b.dataset.rotulo || 'Ouvir'; });
     botaoFalando = bt;
-    if (bt) { bt.dataset.rotulo ??= bt.querySelector('span').textContent; bt.classList.add('on'); bt.querySelector('span').textContent = 'Parar'; }
+    $$('.bt-ouvir-principal').forEach(b => b.classList.toggle('falando', !!bt));   // ícone pulsa enquanto fala
   }
 
   function parar() {
@@ -170,9 +176,7 @@
 
   function falar(texto, bt, { voz: vozForcada } = {}) {
     if (!texto) return;
-    const mesmo = bt && bt === botaoFalando;
     parar();
-    if (mesmo) return;   // segundo toque no mesmo botão: só para
     const minha = sessao;
     const voz = vozForcada || escolherVoz();
 
@@ -210,77 +214,65 @@
     proximo();
   }
 
-  /* Leitura automática (progresso.vozAuto): no Marujo (8 anos) vem ligada e cada tela,
-     popup e feedback é lido sozinho; no Capitão (9 e 10 anos) vem desligada e a criança
-     escolhe no botão "Voz automática". O "Ouvir" manual funciona sempre. */
-  const leituraAuto = () => progresso.vozAuto();
+  /* Leitura automática (progresso.vozAuto): no Marujo (8 anos) vem ligada; no Capitão
+     (9 e 10 anos) vem desligada e a criança escolhe no botão "Voz". */
+  const vozLigada = () => progresso.vozAuto();
+  const textoDoBotao = bt => bt.dataset.ouvirTxt ?? textoDe(document.querySelector(bt.dataset.ouvir));
 
-  /** Botão liga/desliga da leitura automática. */
-  function botaoVozAuto() {
-    const on = leituraAuto();
-    return `<button type="button" class="bt-voz-auto ${on ? 'on' : ''}" aria-pressed="${on}" title="Ler os textos sozinho">
-      ${ICONE_SOM}<span>Voz automática: <b>${on ? 'ligada' : 'desligada'}</b></span></button>`;
+  function atualizarBotoes() {
+    const on = vozLigada();
+    $$('.bt-ouvir-principal').forEach(b => {
+      b.classList.toggle('ligada', on); b.setAttribute('aria-pressed', on);
+      const t = b.querySelector('b'); if (t) t.textContent = on ? 'ligada' : 'desligada';
+    });
   }
-  function atualizarBotoesVozAuto() {
-    const on = leituraAuto();
-    $$('.bt-voz-auto').forEach(b => { b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); b.querySelector('b').textContent = on ? 'ligada' : 'desligada'; });
-  }
-  document.addEventListener('click', e => {
-    const bt = e.target.closest('.bt-voz-auto');
-    if (!bt) return;
-    e.preventDefault(); e.stopPropagation();
-    progresso.definirVozAuto(!leituraAuto());
-    atualizarBotoesVozAuto();
-    if (leituraAuto()) { const principal = document.querySelector('.bt-ouvir-principal'); if (principal) principal.click(); }
-    else parar();
-  });
 
   document.addEventListener('click', e => {
-    const bt = e.target.closest('.bt-ouvir:not(.bt-voz)');   // "Voz" (Missões) só abre a escolha da voz
+    const bt = e.target.closest('.bt-ouvir-principal');
     if (!bt) return;
     e.preventDefault(); e.stopPropagation();
-    const texto = bt.dataset.ouvirTxt ?? textoDe(document.querySelector(bt.dataset.ouvir));
-    falar(texto, bt);
+    progresso.definirVozAuto(!vozLigada());
+    atualizarBotoes();
+    if (vozLigada()) {
+      const pop = document.querySelector('.popup-wrap .popup');
+      falar(pop ? textoDe(pop) : textoDoBotao(bt), bt);
+    } else parar();
   });
 
-  /* ---------- popups e feedbacks também têm "Ouvir" ----------
-     Os popups (core.js) e os feedbacks das atividades são criados em vários lugares; em vez
-     de mexer em cada um, um observador põe o botão neles assim que aparecem na tela. */
+  /* Com a voz ligada, lê sozinho: a tela nova (atividade, abertura, Missões), os popups e
+     os feedbacks (certo / repensar), que são criados em vários lugares do jogo; um
+     observador percebe quando eles aparecem. */
   const FEEDBACK = '.quiz-fb, .dica-flutua.boa, .dica-flutua.ruim';
-  let nPopup = 0;
 
-  function prepararPopup(wrap) {
+  function lerPopup(wrap) {
     const caixa = wrap.querySelector('.popup');
-    if (!caixa || caixa.querySelector('.bt-ouvir-pop')) return;
-    caixa.id ||= `popup-nk-${++nPopup}`;
-    caixa.insertAdjacentHTML('afterbegin', botaoOuvir(`#${caixa.id}`, { cls: 'bt-ouvir-pop' }));
-    if (leituraAuto()) setTimeout(() => { if (document.body.contains(caixa)) falar(textoDe(caixa), caixa.querySelector('.bt-ouvir-pop')); }, 350);
+    if (!caixa || caixa.dataset.lido) return;
+    caixa.dataset.lido = '1';
+    if (vozLigada()) setTimeout(() => { if (document.body.contains(caixa)) falar(textoDe(caixa), null); }, 350);
   }
 
-  function prepararFeedback(fb) {
+  function lerFeedback(fb) {
     if (fb.closest('.popup') || getComputedStyle(fb).display === 'none') return;
-    const texto = prepararFala(fb.innerText.replace(/\b(Ouvir|Parar)\b/g, ''));
+    const texto = prepararFala(fb.innerText);
     if (!texto || fb.dataset.lido === texto) return;
     fb.dataset.lido = texto;
-    if (!fb.querySelector('.bt-ouvir-fb')) fb.insertAdjacentHTML('beforeend', botaoOuvir('', { texto, rotulo: 'Ouvir', cls: 'bt-ouvir-fb' }));
-    else fb.querySelector('.bt-ouvir-fb').dataset.ouvirTxt = texto;
-    if (leituraAuto()) falar(texto, fb.querySelector('.bt-ouvir-fb'));
+    if (vozLigada()) falar(texto, null);
   }
 
   if (typeof MutationObserver !== 'undefined') {
     let pendente = false;
     const varrer = () => {
       pendente = false;
-      // tela nova com leitura automática: lê o texto principal (atividade, abertura, missão)
       $$('.bt-ouvir-principal:not([data-auto])').forEach(bt => {
         bt.dataset.auto = '1';
-        if (leituraAuto() && !document.querySelector('.popup-wrap')) setTimeout(() => { if (document.body.contains(bt) && !botaoFalando) bt.click(); }, 400);
+        if (vozLigada() && !document.querySelector('.popup-wrap'))
+          setTimeout(() => { if (document.body.contains(bt) && !botaoFalando) falar(textoDoBotao(bt), bt); }, 400);
       });
-      $$('.popup-wrap').forEach(prepararPopup);
-      $$(FEEDBACK).forEach(prepararFeedback);
+      $$('.popup-wrap').forEach(lerPopup);
+      $$(FEEDBACK).forEach(lerFeedback);
     };
     new MutationObserver(() => { if (!pendente) { pendente = true; requestAnimationFrame(varrer); } })
-      .observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['class', 'style'] });
+      .observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['style'] });
   }
   window.addEventListener('hashchange', parar);   // trocou de tela: para de falar
 
@@ -305,5 +297,5 @@
     }
   };
 
-  Object.assign(NK, { dicaHtml, botaoOuvir, botaoVozAuto, pararVoz: parar, feedback, voz: { temVoz, listaVozes, temVozNatural, ehNatural, escolherVoz, vozSalva, salvarVoz, falar, prepararFala, frasesDe, chaveFrase, temGravacao: () => !!gravadas, vozGravada: () => vozGravada } });
+  Object.assign(NK, { dicaHtml, botaoOuvir, pararVoz: parar, feedback, voz: { temVoz, listaVozes, temVozNatural, ehNatural, escolherVoz, vozSalva, salvarVoz, falar, prepararFala, frasesDe, chaveFrase, temGravacao: () => !!gravadas, vozGravada: () => vozGravada } });
 })();

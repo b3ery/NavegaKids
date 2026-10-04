@@ -359,7 +359,7 @@
         <h1 class="it-titulo">${esc(f.titulo)}</h1>
         ${f.dobro ? `<div class="it-dobro">${NK.seloDobro('Nesta missão as estrelas e os pontos valem em dobro!')}</div>` : ''}
         <p class="it-texto">${esc(f.abertura.texto)}</p>
-        ${NK.botaoOuvir('', { texto: f.titulo + '. ' + f.abertura.texto, cls: 'it-ouvir bt-ouvir-principal' })}
+        ${NK.botaoOuvir('', { texto: f.titulo + '. ' + f.abertura.texto, cls: 'it-ouvir' })}
         <button class="btn-figma it-comecar" id="btComecar">${esc(f.abertura.btn)}</button>
         ${FILTRO_ASPERO}
       </div>
@@ -430,9 +430,8 @@
             ${f.dobro ? NK.seloDobro('Estrelas e pontos em dobro nesta missão!') : ''}
             <p id="txtMissao">${esc(f.missao || f.abertura.texto)}</p>
             <div class="voz-botoes">
-              ${NK.botaoOuvir('#txtMissao', { cls: 'ouvir-missao bt-ouvir-principal' })}
-              ${NK.botaoVozAuto()}
-              ${NK.voz.temVoz ? `<button type="button" class="bt-ouvir bt-voz" id="btVoz" aria-label="Escolher a voz do Ouvir">${I('config', { cls: 'ico-txt' })}<span>Voz</span></button>` : ''}
+              ${NK.botaoOuvir('#txtMissao', { cls: 'ouvir-missao' })}
+              ${NK.voz.temVoz ? `<button type="button" class="bt-ouvir bt-voz" id="btVoz" aria-label="Escolher qual voz lê os textos">${I('config', { cls: 'ico-txt' })}<span>Trocar voz</span></button>` : ''}
             </div>
             <div class="progresso">
               <span>Seu progresso</span>
