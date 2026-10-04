@@ -1342,3 +1342,7 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 /* Fase 1 · painel Amigos mais estreito, com a pergunta de comparação embaixo */
 .jg-detetive .jg-body { grid-template-columns: 1.5fr 1fr; }
 .jg-detetive .amigos-nota { margin: auto 0 0; padding: 8px 10px; border-radius: 10px; background: var(--cream-2); border: 2px dashed var(--yellow-d); font-weight: 800; font-size: 13px; text-align: center; color: var(--navy); }
+.jg-detetive .amigos-dele { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; color: var(--navy); padding: 6px 8px; background: #f1f5f9; border-radius: 10px; }
+.jg-detetive .amigos-dele b { margin-right: 2px; }
+.jg-detetive .amigos-dele span { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px 2px 3px; background: #fff; border: 2px solid #cbd5e1; border-radius: 99px; }
+.jg-detetive .amigos-dele .ico { width: 18px; height: 18px; }

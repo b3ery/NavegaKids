@@ -173,7 +173,7 @@
       </div>
       <div class="jg-body">
         <div class="jg-left jg-perfil">${perfilHtml}</div>
-        <div class="jg-side"><h4>Amigos</h4>${listaAmigosHtml()}<p class="amigos-nota">Compare: esse perfil aparece na sua lista?</p></div>
+        <div class="jg-side"><h4>Seus amigos</h4>${listaAmigosHtml()}<p class="amigos-nota">Compare: algum amigo dele está na sua lista?</p></div>
       </div>
     </div>`;
   }

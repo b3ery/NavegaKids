@@ -83,6 +83,9 @@
   /* ============================================================
      HUNT — achar pistas/sinais numa cena, chat, app ou perfil
      ============================================================ */
+  /* Fase 1: os 3 amigos do perfil suspeito (nenhum é amigo da criança: "nenhum amigo em comum") */
+  const AMIGOS_DO_SUSPEITO = ['Lobo_Sombrio', 'Kraken_77', 'Anonimo_99'];
+
   function rHunt(palco, a) {
     let rIdx = 0;
 
@@ -100,6 +103,7 @@
           <p class="prog-hunt">Pistas encontradas: <b id="cntHunt">0</b>/${alvo}</p>
           ${NK.jogoDetetiveHtml(`<div class="card-perfil">
               <div class="cabec">${I('anonimo', { size: 44 })}<span>${esc(NPC1)}</span><small>pedido pendente</small></div>
+              <div class="amigos-dele"><b>Amigos dele (3):</b>${AMIGOS_DO_SUSPEITO.map(n => `<span>${I('anonimo', { size: 18 })}${esc(n)}</span>`).join('')}</div>
               ${round.itens.map((it, i) => `<button class="linha-pista" data-i="${i}"><span class="e">${icone(it)}</span><span>${esc(it.t)}</span></button>`).join('')}
             </div>`)}
           <div class="dica-flutua" id="fbHunt"></div>`;
