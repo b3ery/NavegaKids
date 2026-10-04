@@ -60,8 +60,8 @@
      (Fase 1: o Figma usa o anônimo; data.js indica a luneta). */
   const ICONE_FIGMA = { 1: 'anonimo' };
   const iconeFase = f => ICONE_FIGMA[f.id] || f.icone;
-  /* ícones compostos no mapa da ilha (roteiro): Fase 1 "lupa + silhueta de perfil", Fase 5 "lupa + estrela" */
-  const ICONE_DUPLO = { 1: ['misterio', 'anonimo'], 5: ['misterio', 'estrela'] };
+  /* ícones compostos no mapa da ilha (roteiro): Fase 1 "lupa + silhueta de perfil + alerta", Fase 5 "lupa + estrela" */
+  const ICONE_DUPLO = { 1: ['misterio', 'anonimo', 'alerta'], 5: ['misterio', 'estrela'] };
 
   // centro de cada ilha no desenho do Mapa_Home (px do frame) — brilhos/estrelas por cima
   const HOME_ILHAS = [[1296, 548], [1540, 668], [1300, 768]];
@@ -278,7 +278,7 @@
       const conteudo = !lib
         ? `<span class="mf-cad">${CADEADO_FILL}</span>`
         : (ICONE_DUPLO[f.id]
-            ? `${I(ICONE_DUPLO[f.id][0], { cls: 'mf-ic-m' })}${I(ICONE_DUPLO[f.id][1], { cls: 'mf-ic-a' })}`   // composição do Figma / roteiro
+            ? `${I(ICONE_DUPLO[f.id][0], { cls: 'mf-ic-m' })}${I(ICONE_DUPLO[f.id][1], { cls: 'mf-ic-a' })}${ICONE_DUPLO[f.id][2] ? I(ICONE_DUPLO[f.id][2], { cls: 'mf-ic-al' }) : ''}`   // composição do Figma / roteiro
             : I(f.icone, { cls: f.titulo.length > 24 ? 'mf-ic mf-ic-menor' : 'mf-ic' })) + `<span class="mf-tit">${esc(f.titulo)}</span>`;   // título longo (3 linhas): ícone menor
       return `
       <span class="mf-num" style="--i:${i};left:${U(p.n.x)};top:${U(p.n.y)}" aria-hidden="true">${i + 1}</span>

@@ -322,7 +322,7 @@
 
     const drawQ = () => {
       const q = a.perguntas[qi];
-      const tempo = a.tempo ? progresso.tempoDoQuiz(a.tempo) : 0;   // 15 s no modo Capitão, 45 s no Marujo
+      const tempo = progresso.tempoDaAtividade(a);   // Fase 10: 15 s no Capitão, 45 s no Marujo; missões: 20 s só no Capitão
       const ehVM = !!a.vm;
       const ops = ehVM ? [{ t: 'Verdade', ok: q.vm === true }, { t: 'Mito', ok: q.vm === false }] : q.ops;
 

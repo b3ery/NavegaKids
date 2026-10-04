@@ -154,7 +154,7 @@
     },
 
     {
-      id: 3, ilha: 1, titulo: "A Mensagem Estranha", icone: "pare",   // ícones da Ilha 1 conforme o roteiro (STOP · segredo · lupa) npc: NPC1,
+      id: 3, ilha: 1, titulo: "A Mensagem Estranha", icone: "pare", npc: NPC1,   // ícones da Ilha 1 conforme o roteiro (STOP · segredo · lupa)
       abertura: { texto: "Uma garrafa cheia de mensagens chegou até seu chat. Vamos ler com atenção antes de responder qualquer coisa?", btn: "Continuar" },
       aprendizado: "Você não precisa responder a tudo. Elogio demais, pergunta pessoal e pedido de segredo são sinais de alerta.",
       atividades: [
@@ -200,7 +200,7 @@
     },
 
     {
-      id: 4, ilha: 1, titulo: "O Segredo Digital", icone: "bubbleChat", npc: NPC1,
+      id: 4, ilha: 1, titulo: "O Segredo Digital", icone: "bocaZiper", npc: NPC1,
       abertura: { texto: "Psiu... alguém te contou um “segredo só entre vocês dois”. Será que todo segredo é para guardar?", btn: "Continuar" },
       aprendizado: "Segredo que pede silêncio dos adultos merece ser contado. Dados pessoais são só seus e da sua família.",
       atividades: [
@@ -269,7 +269,7 @@
           fbOk: "Você achou todos os sinais escondidos! Olho de águia, pirata!"
         },
         {
-          titulo: "O Que Você Faria", papel: "Prática · mini-quiz", tipo: "quiz",
+          titulo: "O Que Você Faria", papel: "Prática · mini-quiz", tipo: "quiz", tempoCapitao: 20,
           perguntas: [
             { cena: "Um perfil que você não conhece pede pra ser seu amigo.", q: "O que você faz?",
               ops: [{ t: "Aceito, parece legal", ok: false }, { t: "Não aceito e continuo jogando", ok: true }],
@@ -763,7 +763,7 @@
           fbOk: "Tudo ligado! Cada situação tem uma ação certa de guardião."
         },
         {
-          titulo: "Guardião em Ação", papel: "Prática · mini-quiz final", tipo: "quiz",
+          titulo: "Guardião em Ação", papel: "Prática · mini-quiz final", tipo: "quiz", tempoCapitao: 20,
           perguntas: [
             { q: "Um perfil novo, sem foto, pede para ser seu amigo.", ops: [{ t: "Desconfio e não aceito", ok: true }, { t: "Aceito, deve ser legal", ok: false }], fb: "Perfis sem foto e sem amigos em comum merecem desconfiança." },
             { q: "Qual informação é só sua e da sua família?", ops: [{ t: "A cor preferida", ok: false }, { t: "A senha", ok: true }], fb: "Senha, endereço, escola e fotos são informações protegidas." },

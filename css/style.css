@@ -422,6 +422,7 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .mf-no .mf-ic-menor { left: calc(69 * var(--u)); top: calc(14 * var(--u)); width: calc(96 * var(--u)); height: calc(96 * var(--u)); }
 .mf-no .mf-ic-a { left: calc(62 * var(--u)); top: calc(24 * var(--u)); width: calc(110 * var(--u)); height: calc(110 * var(--u)); }  /* Fase 1: anonimo */
 .mf-no .mf-ic-m { left: calc(-3 * var(--u)); top: calc(1 * var(--u)); width: calc(90 * var(--u)); height: calc(90 * var(--u)); }   /* Fase 1: misterio */
+.mf-no .mf-ic-al { left: calc(176 * var(--u)); top: calc(46 * var(--u)); width: calc(50 * var(--u)); height: calc(50 * var(--u)); }   /* Fase 1: alerta */
 .mf-no .mf-tit {
   left: calc(6 * var(--u)); right: calc(6 * var(--u)); bottom: calc(10 * var(--u));
   font-size: calc(24 * var(--u)); font-weight: 600; line-height: 1.1; text-align: center; color: #1E293B;

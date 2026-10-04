@@ -108,6 +108,9 @@
   const definirVozAuto = (ligada) => { estado.vozAuto = !!ligada; };
   /** Segundos do quiz cronometrado: o do roteiro (15 s) ou o do modo, se maior. */
   const tempoDoQuiz = (base) => Math.max(base, modoInfo().tempoQuiz ?? 0);
+  /** Segundos do quiz da atividade: o cronometrado do roteiro (`tempo`) ou, só no Capitão,
+      o desafio extra das missões (`tempoCapitao`) — relato: Marie achou fácil e amou o tempo. 0 = sem tempo. */
+  const tempoDaAtividade = (a) => a.tempo ? tempoDoQuiz(a.tempo) : (estado.modo === 'capitao' && a.tempoCapitao) || 0;
 
   const introVista = (fid) => Boolean(estado.introVista[fid]);
   const marcarIntroVista = (fid) => { estado.introVista[fid] = true; };
@@ -169,7 +172,7 @@
     // pontos, estrelas, selos
     resultadoDaFase, estrelasTotal, estrelasMax, pontosTotal, selos, level, tempoJogadoMs,
     // sessão
-    nome, definirNome, MODOS, modo, modoInfo, modoEscolhido, definirModo, vozAuto, definirVozAuto, tempoDoQuiz, introVista, marcarIntroVista, faseVista, definirFaseVista,
+    nome, definirNome, MODOS, modo, modoInfo, modoEscolhido, definirModo, vozAuto, definirVozAuto, tempoDoQuiz, tempoDaAtividade, introVista, marcarIntroVista, faseVista, definirFaseVista,
     // atividade em andamento
     iniciarAtividade, registrarErro, concluirAtividade,
     resetar

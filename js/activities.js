@@ -65,11 +65,15 @@
     </div>`;
   }
 
+  const marujo = () => progresso.modo() === 'marujo';
+
   /* Relato de testes: perder estrelas frustrava. A fase sem erros é comemorada; com erros,
      o recado é que errar faz parte de aprender e que dá para refazer (vale a melhor tentativa). */
   function mensagemDaFase({ erros, estrelas, maxEstrelas }) {
     if (erros === 0) return `<p class="fase-msg perfeita">${I('conquistas', { cls: 'ico-txt' })} Fase perfeita: nenhum erro!</p>`;
-    if (estrelas < maxEstrelas) return `<p class="fase-msg">Errar faz parte de aprender! Cada erro te ensinou algo novo. Se quiser, refaça a fase para conquistar todas as estrelas: vale sempre a sua melhor tentativa.</p>`;
+    if (estrelas < maxEstrelas) return marujo()   // Marujo (8 anos): recado curto, menos leitura
+      ? `<p class="fase-msg">Errar faz parte de aprender! Você pode refazer a fase.</p>`
+      : `<p class="fase-msg">Errar faz parte de aprender! Cada erro te ensinou algo novo. Se quiser, refaça a fase para conquistar todas as estrelas: vale sempre a sua melhor tentativa.</p>`;
     return '';
   }
 
@@ -85,7 +89,8 @@
     const janela = popup({
       cor: 't', dim: true,
       titulo: r.jaFeita ? 'Muito bem de novo!' : 'Parabéns, Pirata!',
-      texto: (mensagemExtra ? mensagemExtra + ' ' : '') + (r.jaFeita
+      // Marujo (relato: muito texto para 8 anos): só o recado da atividade, sem a frase genérica
+      texto: (mensagemExtra ? mensagemExtra + ' ' : '') + (marujo() && mensagemExtra ? '' : r.jaFeita
         ? 'Você já tinha concluído esta atividade.'
         : 'Você desbloqueou mais uma atividade, continue navegando pirata!'),
       extra: `<div class="estrela-mais">${I('moedas', { size: 26 })} +${r.pontos} PONTOS${f.dobro ? ' <span class="x2-pontos">x2</span>' : ''}</div>`
