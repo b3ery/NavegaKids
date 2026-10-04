@@ -361,34 +361,44 @@
      DOORS — Porta Secreta (segura ou arriscada)
      ============================================================ */
   function rDoors(palco, a) {
-    let acertos = new Set();
-    const draw = () => {
-      palco.innerHTML = `
-        <p class="enunciado">${esc(a.pergunta)}</p>
-        ${NK.dicaHtml(a.dica)}
-        <p class="prog-hunt">Portas abertas: <b>${acertos.size}/${a.portas.length}</b></p>
-        <div class="opcoes" id="portasWrap">
-          ${a.portas.map((p, i) => `<button class="opcao" data-i="${i}" ${acertos.has(i) ? 'disabled' : ''}>
-            <span class="e">${icone(p)}</span><span>${esc(p.t)}</span>
-          </button>`).join('')}
-        </div>
-        <div class="dica-flutua" id="fbPorta"></div>`;
-      $$('.opcao', palco).forEach(b => b.onclick = () => {
-        const i = +b.dataset.i, p = a.portas[i];
-        const fb = $('#fbPorta');
-        fb.innerHTML = p.seguro ? comIcone('correto', 'Segura! ' + p.why) : comIcone('atencao', 'Arriscada! ' + p.why);
-        NK.som?.acerto();   // abrir a porta é descoberta, não erro (nem conta na sequência de acertos)
-        fb.className = 'dica-flutua ' + (p.seguro ? 'boa' : 'ruim');
-        acertos.add(i);
-        if (acertos.size === a.portas.length) {
-          later(() => concluirAtividade(a.fbOk), 700);
-        }
-        draw();
-        $('#fbPorta').innerHTML = p.seguro ? comIcone('correto', 'Segura! ' + p.why) : comIcone('atencao', 'Arriscada! ' + p.why);
-        $('#fbPorta').className = 'dica-flutua ' + (p.seguro ? 'boa' : 'ruim');
-      });
-    };
-    draw();
+    /* Cada lugar é uma porta de madeira com placa. Ao tocar, a porta gira nas dobradiças e
+       mostra atrás se o lugar é seguro (verde) ou arriscado (vermelho). A tela não é
+       redesenhada a cada toque, para a animação de abrir aparecer. */
+    const abertas = new Set();
+    palco.innerHTML = `
+      <p class="enunciado">${esc(a.pergunta)}</p>
+      ${NK.dicaHtml(a.dica)}
+      <p class="prog-hunt">Portas abertas: <b id="cntPortas">0</b>/${a.portas.length}</p>
+      <div class="portas">
+        ${a.portas.map((p, i) => `<button class="porta" data-i="${i}" style="--i:${i}" aria-label="Porta: ${esc(p.t)}">
+          <span class="porta-vao">
+            <span class="porta-atras ${p.seguro ? 'segura' : 'arriscada'}">
+              ${I(p.seguro ? 'correto' : 'atencao', { cls: 'porta-selo' })}
+              <b>${p.seguro ? 'Segura!' : 'Arriscada!'}</b>
+            </span>
+            <span class="porta-folha" aria-hidden="true">
+              <span class="porta-ico">${icone(p)}</span>
+              <i class="porta-macaneta"></i>
+            </span>
+          </span>
+          <span class="porta-placa">${esc(p.t)}</span>
+        </button>`).join('')}
+      </div>
+      <div class="dica-flutua" id="fbPorta"></div>`;
+
+    $$('.porta', palco).forEach(bt => bt.onclick = () => {
+      const i = +bt.dataset.i, p = a.portas[i];
+      if (abertas.has(i)) return;
+      abertas.add(i);
+      bt.classList.add('aberta');
+      bt.setAttribute('aria-label', `${p.t}: ${p.seguro ? 'segura' : 'arriscada'}`);
+      NK.som?.acerto();   // abrir a porta é descoberta, não erro (nem conta na sequência de acertos)
+      $('#cntPortas').textContent = abertas.size;
+      const fb = $('#fbPorta');
+      fb.className = 'dica-flutua ' + (p.seguro ? 'boa' : 'ruim');
+      fb.innerHTML = comIcone(p.seguro ? 'correto' : 'atencao', (p.seguro ? 'Segura! ' : 'Arriscada! ') + p.why);
+      if (abertas.size === a.portas.length) later(() => concluirAtividade(a.fbOk), 1600);
+    });
   }
 
   /* ============================================================

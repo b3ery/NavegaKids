@@ -1284,3 +1284,40 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .popup .bt-ouvir-pop svg { width: 16px; height: 16px; }
 .bt-ouvir.bt-ouvir-fb { display: inline-flex; vertical-align: middle; margin-left: 8px; padding: 2px 9px; font-size: 11px; box-shadow: 0 2px 0 var(--navy); }
 .bt-ouvir.bt-ouvir-fb svg { width: 14px; height: 14px; }
+
+/* ============ Porta Secreta (Fase 6): portas de madeira que abrem ============ */
+.portas { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px 18px; margin: 14px 0 6px; }
+.porta { width: 150px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 10px; font: inherit; color: var(--navy);
+  animation: surge .45s calc(var(--i) * .1s + .15s) cubic-bezier(.2, 1.4, .4, 1) both; }
+/* vão da porta: batente de pedra; dentro, o que está atrás e a folha que gira */
+.porta-vao { position: relative; width: 120px; height: 170px; border-radius: 60px 60px 6px 6px; background: #8a94a6;
+  border: 4px solid var(--navy); box-shadow: inset 0 0 0 5px #b8c0cc; perspective: 600px; overflow: visible; }
+.porta-atras { position: absolute; inset: 5px; border-radius: 52px 52px 3px 3px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  font-weight: 900; font-size: 15px; opacity: 0; transition: opacity .3s .25s; }
+.porta-atras.segura { background: radial-gradient(circle at 50% 40%, #fff 0, #c9f2e6 55%, #8fe0c8 100%); color: var(--teal-d); }
+.porta-atras.arriscada { background: radial-gradient(circle at 50% 40%, #fff 0, #ffd6cb 55%, #ff9f87 100%); color: var(--coral-d); }
+.porta-atras .porta-selo { width: 44px; height: 44px; }
+.porta-folha { position: absolute; inset: 5px; border-radius: 52px 52px 3px 3px; transform-origin: left center; transition: transform .9s cubic-bezier(.3, 1.25, .45, 1);
+  background:
+    linear-gradient(90deg, transparent 47%, rgba(0, 0, 0, .18) 48%, rgba(0, 0, 0, .18) 52%, transparent 53%),
+    repeating-linear-gradient(90deg, #b8773a 0 14px, #a8692f 14px 16px, #c0823f 16px 30px);
+  border: 3px solid #6b4220; box-shadow: inset 0 0 0 6px rgba(107, 66, 32, .35), 0 6px 0 rgba(0, 0, 0, .15);
+  display: flex; align-items: center; justify-content: center; }
+.porta-ico { width: 58px; height: 58px; border-radius: 50%; background: #fff8e6; border: 3px solid #6b4220; display: grid; place-items: center; margin-bottom: 26px; }
+.porta-ico .ico { width: 36px; height: 36px; object-fit: contain; }
+.porta-macaneta { position: absolute; right: 12px; top: 54%; width: 14px; height: 14px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff3b0, #e0a91d 60%, #a87708); border: 2px solid #6b4220; }
+.porta-placa { min-height: 54px; width: 100%; display: flex; align-items: center; justify-content: center; text-align: center; padding: 6px 8px; border-radius: 10px;
+  background: #fff; border: 3px solid var(--navy); box-shadow: 0 4px 0 var(--navy); font-weight: 900; font-size: 13px; line-height: 1.25; }
+.porta:not(.aberta):hover .porta-folha { transform: rotateY(-14deg); }       /* "espiadinha" ao passar o mouse */
+.porta:not(.aberta):hover .porta-placa { background: var(--cream-2); }
+.porta:focus-visible .porta-vao { outline: 3px dashed var(--navy); outline-offset: 4px; }
+.porta.aberta { cursor: default; }
+.porta.aberta .porta-folha { transform: rotateY(-78deg); filter: brightness(.8); }   /* fica entreaberta, vista de lado */
+.porta-ico, .porta-macaneta { transition: opacity .3s; }
+.porta.aberta .porta-ico, .porta.aberta .porta-macaneta { opacity: 0; }
+.porta.aberta .porta-atras { opacity: 1; }
+.porta.aberta .porta-atras .porta-selo { animation: surge .45s .55s cubic-bezier(.2, 1.6, .4, 1) both; }
+.porta.aberta:has(.segura) .porta-placa { border-color: var(--teal-d); background: #e2f8f4; box-shadow: 0 4px 0 var(--teal-d); }
+.porta.aberta:has(.arriscada) .porta-placa { border-color: var(--coral-d); background: #ffeee8; box-shadow: 0 4px 0 var(--coral-d); }
+@media (max-width: 560px) { .porta { width: 136px; } .porta-vao { width: 104px; height: 150px; } }
+@media (prefers-reduced-motion: reduce) { .porta-folha { transition: none; } }
