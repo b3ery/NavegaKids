@@ -1098,9 +1098,6 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .marujo .quiz-cena { background: #dcefff; border: 3px solid var(--blue-d); font-size: 17px; }
 .marujo .quiz-top { font-size: 17px; }
 
-/* dica recolhida: botão amarelo bem visível */
-.marujo .dica-recolhida summary { background: var(--yellow); border: 3px solid var(--navy); border-radius: 99px; font-size: 17px; }
-
 /* tela de Missões: fundo na cor da ilha e atividades bloqueadas coloridas (não cinza) */
 .marujo .missoes { background: linear-gradient(180deg, color-mix(in srgb, var(--cor-ilha, var(--yellow)) 30%, #fff) 0, var(--cream) 70%); }
 .marujo .missoes .sub { background: #fff; border: 3px solid var(--navy); border-radius: 99px; padding: 4px 16px; box-shadow: 0 4px 0 var(--cor-ilha, var(--yellow)); }
@@ -1280,14 +1277,6 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 @media (max-width: 560px) { .intro-frame .bt-ouvir.it-ouvir { top: 8px; right: 8px; font-size: 11px; padding: 4px 9px; } .intro-frame .bt-ouvir.it-ouvir svg { width: 15px; height: 15px; } }
 .detalhe .ouvir-missao { align-self: flex-start; }
 
-.dica-recolhida { margin: 8px auto 0; text-align: center; }
-.dica-recolhida summary {
-  display: inline-flex; align-items: center; gap: 6px; cursor: pointer; list-style: none; padding: 6px 14px; border-radius: 99px;
-  background: #fff; border: 2px dashed var(--navy); font-weight: 800; color: var(--navy);
-}
-.dica-recolhida summary::-webkit-details-marker { display: none; }
-.dica-recolhida[open] summary { background: var(--cream-2); border-style: solid; }
-.dica-recolhida .dica-flutua { margin-top: 8px; }
 
 .campo-modo { border: 0; padding: 0; margin: 0 0 18px; }
 .campo-modo legend { font-weight: 800; color: var(--navy); margin: 0 auto 8px; padding: 0; }

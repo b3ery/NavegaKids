@@ -11,11 +11,10 @@
   const { progresso, $$, esc, I, comIcone, toast } = NK;
 
   /* ---------- dicas ---------- */
-  /** Dica da atividade: nos dois níveis fica guardada no botão "Ver dica" (aberta, entregava a resposta). */
+  /** Dica da atividade: aparece à vista, do mesmo jeito nos dois níveis (no Marujo com o texto curto). */
   function dicaHtml(dica) {
     if (!dica) return '';
-    return `<details class="dica-recolhida"><summary>${I('luneta', { cls: 'ico-txt' })} Ver dica</summary>
-      <p class="dica-flutua">${esc(dica)}</p></details>`;
+    return `<p class="dica-flutua">${comIcone('luneta', dica)}</p>`;
   }
 
   /* ---------- ouvir (leitura em voz alta) ---------- */
@@ -68,9 +67,9 @@
 
   /* partes que só atrapalham na leitura: o nome do contato em cada balão (já foi lido no
      topo do chat), "online", os botões do rodapé (Avançar, Voltar…), contadores e o "Ouvir" */
-  const NAO_LER = '.bolha .msg small, .chat-head small, .rodape, .bt-ouvir, .dica-recolhida summary, .prog-hunt, .quiz-top, .popup .btns, .popup .x';
+  const NAO_LER = '.bolha .msg small, .chat-head small, .rodape, .bt-ouvir, .prog-hunt, .quiz-top, .popup .btns, .popup .x';
 
-  /** Texto visível do elemento + as dicas recolhidas (que o innerText não inclui). */
+  /** Texto visível do elemento (sem as partes de NAO_LER). */
   function textoDe(el) {
     if (!el) return '';
     // esconde por um instante (sem repintar a tela) só para o innerText ignorar
@@ -78,7 +77,6 @@
     escondidos.forEach(([x]) => { x.style.display = 'none'; });
     const partes = [el.innerText];
     escondidos.forEach(([x, d]) => { x.style.display = d; });
-    $$('.dica-recolhida:not([open]) .dica-flutua', el).forEach(d => partes.push('Dica.', d.textContent));
     return prepararFala(partes.join('\n'));
   }
 
