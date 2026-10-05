@@ -32,6 +32,7 @@
         </div>
         <div class="acoes">
           ${f.dobro ? NK.seloDobro('') : ''}
+          <span id="slotDica"></span>
           ${NK.botaoOuvir('#palco')}
           <span class="chip-papel">${esc(a.papel)}</span>
           <button class="btn btn-sm btn-ghost" id="btSairAtv">Sair</button>
@@ -42,6 +43,30 @@
 
     $('#btSairAtv').onclick = () => go('#/missoes');
     renderAtividade();
+    agendarDica(f, idx);
+  }
+
+  /* Botão de dica na barra de cima. Marujo (8 anos): sempre presente. Capitão (9 e 10 anos):
+     aparece depois de 30 s pensando ou de 2 erros. A dica (js/dicas.js) abre num popup. */
+  const ESPERA_DICA = { marujo: 0, capitao: 30000 };
+  let ouvinteErro = null;
+  function agendarDica(f, idx) {
+    if (ouvinteErro) document.removeEventListener('nk-erro', ouvinteErro);
+    const chave = `${f.id}-${idx}`;
+    if (!NK.dicaDoNivel(chave)) return;
+    let erros = 0;
+    const mostrar = () => {
+      const slot = $('#slotDica');
+      if (!slot || slot.firstChild) return;   // já saiu da tela ou o botão já está lá
+      slot.innerHTML = `<button class="btn btn-sm bt-dica" id="btDica">${I('luneta', { cls: 'ico-txt' })} Dica</button>`;
+      $('#btDica').onclick = () => popup({ cor: 'y', titulo: `${I('luneta', { cls: 'ico-txt' })} Dica`, texto: NK.dicaDoNivel(chave), btns: [{ t: 'Entendi', cls: 'btn-t' }] });
+    };
+    const espera = ESPERA_DICA[progresso.modo()] ?? 30000;
+    if (!espera) { mostrar(); return; }   // Marujo: a dica sempre existe
+    later(mostrar, espera);
+    ouvinteErro = () => { if (++erros >= 2) mostrar(); };
+    document.addEventListener('nk-erro', ouvinteErro);
+    NK.onLeave?.(() => document.removeEventListener('nk-erro', ouvinteErro));
   }
 
   function renderAtividade() {

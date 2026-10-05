@@ -1,12 +1,13 @@
 /* ============================================================
    NavegaKids — dicas.js
-   Dicas do botão "Ver dica" por nível, nas atividades que têm resposta
-   certa ou errada:
+   Dicas por nível nas atividades que têm resposta certa ou errada. O botão
+   "Dica" fica na barra de cima: no Marujo está sempre lá; no Capitão
+   aparece depois de 30 s pensando ou de 2 erros:
      marujo  (8 anos)       dica óbvia, quase mostra a resposta
      capitao (9 e 10 anos)  dica sutil, faz pensar sem entregar
    Chave: "fase-atividade" (a atividade começa em 0).
    Nas atividades sem resposta (descoberta, explicação, baú, portas,
-   escudo), o botão mostra a dica do roteiro (campo "dica" de data.js).
+   escudo), a dica do roteiro aparece como texto na própria cena.
    ============================================================ */
 (() => {
   'use strict';

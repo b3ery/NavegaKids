@@ -11,15 +11,15 @@
   const { progresso, $$, esc, I, comIcone, toast } = NK;
 
   /* ---------- dicas ---------- */
-  /** Dica da atividade, no botão "Ver dica" nos dois níveis. Nas atividades com resposta,
-      a dica depende do nível (js/dicas.js): óbvia no Marujo, sutil no Capitão. Nas outras,
-      é a dica do roteiro (no Marujo, a versão curta). */
+  /* ---------- dicas ----------
+     Atividades com resposta certa/errada: a dica (js/dicas.js, óbvia no Marujo e sutil no
+     Capitão) fica num botão na barra de cima, que só aparece depois de a criança passar um
+     tempo pensando ou errar duas vezes (ver activities.js). Nas outras telas, a dica do
+     roteiro é parte da cena e aparece como texto. */
+  const dicaDoNivel = chave => NK.DICAS?.[chave]?.[progresso.modo()] || '';
   function dicaHtml(dica) {
-    const porNivel = NK.DICAS?.[NK.dicaChave]?.[progresso.modo()];
-    const texto = porNivel || dica;
-    if (!texto) return '';
-    return `<details class="dica-recolhida"><summary>${I('luneta', { cls: 'ico-txt' })} Ver dica</summary>
-      <p class="dica-flutua">${esc(texto)}</p></details>`;
+    if (dicaDoNivel(NK.dicaChave) || !dica) return '';
+    return `<p class="dica-flutua">${comIcone('luneta', dica)}</p>`;
   }
 
   /* ---------- ouvir (leitura em voz alta) ---------- */
@@ -72,7 +72,7 @@
 
   /* partes que só atrapalham na leitura: o nome do contato em cada balão (já foi lido no
      topo do chat), "online", os botões do rodapé (Avançar, Voltar…), contadores e o "Ouvir" */
-  const NAO_LER = '.bolha .msg small, .chat-head small, .rodape, .bt-ouvir, .dica-recolhida summary, .prog-hunt, .quiz-top, .popup .btns, .popup .x';
+  const NAO_LER = '.bolha .msg small, .chat-head small, .rodape, .bt-ouvir, .prog-hunt, .quiz-top, .popup .btns, .popup .x';
 
   /** Texto visível do elemento (sem as partes de NAO_LER). */
   function textoDe(el) {
@@ -296,8 +296,9 @@
     erro() {
       NK.som?.erro();
       seguidos = 0;
+      document.dispatchEvent(new Event('nk-erro'));   // activities.js: 2 erros fazem o botão de dica aparecer
     }
   };
 
-  Object.assign(NK, { dicaHtml, botaoOuvir, pararVoz: parar, feedback, voz: { temVoz, listaVozes, temVozNatural, ehNatural, escolherVoz, vozSalva, salvarVoz, falar, prepararFala, frasesDe, chaveFrase, temGravacao: () => !!gravadas, vozGravada: () => vozGravada } });
+  Object.assign(NK, { dicaHtml, dicaDoNivel, botaoOuvir, pararVoz: parar, feedback, voz: { temVoz, listaVozes, temVozNatural, ehNatural, escolherVoz, vozSalva, salvarVoz, falar, prepararFala, frasesDe, chaveFrase, temGravacao: () => !!gravadas, vozGravada: () => vozGravada } });
 })();

@@ -73,9 +73,9 @@ textos.push(
   ...Array.from({ length: 13 }, (_, i) => `+${4 + i} PONTOS`), ...[20, 24, 28, 32, 36, 40].map(n => `+${n} PONTOS`)
 );
 
-// dicas por nível do botão "Ver dica" (js/dicas.js)
+// dicas por nível do botão "Dica" (js/dicas.js)
 Object.values(NK.DICAS).forEach(d => textos.push(d.marujo, d.capitao));
-textos.push('Ver dica');
+textos.push('Dica', 'Entendi');
 
 const frases = {};
 textos.forEach(t => frasesDe(t).forEach(f => { frases[chaveFrase(f)] ??= f; }));

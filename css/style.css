@@ -1515,10 +1515,8 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .jg-lobby .pedido .bt button { border-radius: 10px; border: 2px solid var(--navy); box-shadow: 0 3px 0 var(--navy); font-weight: 900; }
 @media (max-width: 820px) { .jg-lobby .jg-left .lb-info small { display: block; } }
 
-/* botão "Ver dica" (os dois níveis; o texto da dica muda por nível — js/dicas.js) */
-.dica-recolhida { margin: 8px auto 0; text-align: center; }
-.dica-recolhida summary { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; list-style: none; padding: 6px 14px; border-radius: 99px;
-  background: var(--yellow); border: 2px solid var(--navy); box-shadow: 0 3px 0 var(--navy); font-weight: 800; color: var(--navy); }
-.dica-recolhida summary::-webkit-details-marker { display: none; }
-.dica-recolhida[open] summary { background: var(--cream-2); }
-.dica-recolhida .dica-flutua { margin-top: 8px; }
+/* botão "Dica" na barra de cima da atividade (aparece depois de um tempo pensando) */
+.bt-dica { background: var(--yellow); color: var(--navy); border: 2px solid var(--navy); box-shadow: 0 3px 0 var(--navy); border-radius: 99px; font-weight: 900; display: inline-flex; align-items: center; gap: 6px;
+  animation: surge .45s cubic-bezier(.2, 1.6, .4, 1) both, chama 2s .6s ease-in-out 3; }
+.bt-dica .ico-txt { width: 18px; height: 18px; margin: 0; }
+#slotDica:empty { display: none; }
