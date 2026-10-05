@@ -11,10 +11,15 @@
   const { progresso, $$, esc, I, comIcone, toast } = NK;
 
   /* ---------- dicas ---------- */
-  /** Dica da atividade: aparece à vista, do mesmo jeito nos dois níveis (no Marujo com o texto curto). */
+  /** Dica da atividade, no botão "Ver dica" nos dois níveis. Nas atividades com resposta,
+      a dica depende do nível (js/dicas.js): óbvia no Marujo, sutil no Capitão. Nas outras,
+      é a dica do roteiro (no Marujo, a versão curta). */
   function dicaHtml(dica) {
-    if (!dica) return '';
-    return `<p class="dica-flutua">${comIcone('luneta', dica)}</p>`;
+    const porNivel = NK.DICAS?.[NK.dicaChave]?.[progresso.modo()];
+    const texto = porNivel || dica;
+    if (!texto) return '';
+    return `<details class="dica-recolhida"><summary>${I('luneta', { cls: 'ico-txt' })} Ver dica</summary>
+      <p class="dica-flutua">${esc(texto)}</p></details>`;
   }
 
   /* ---------- ouvir (leitura em voz alta) ---------- */
@@ -67,7 +72,7 @@
 
   /* partes que só atrapalham na leitura: o nome do contato em cada balão (já foi lido no
      topo do chat), "online", os botões do rodapé (Avançar, Voltar…), contadores e o "Ouvir" */
-  const NAO_LER = '.bolha .msg small, .chat-head small, .rodape, .bt-ouvir, .prog-hunt, .quiz-top, .popup .btns, .popup .x';
+  const NAO_LER = '.bolha .msg small, .chat-head small, .rodape, .bt-ouvir, .dica-recolhida summary, .prog-hunt, .quiz-top, .popup .btns, .popup .x';
 
   /** Texto visível do elemento (sem as partes de NAO_LER). */
   function textoDe(el) {

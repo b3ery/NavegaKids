@@ -45,7 +45,8 @@
   }
 
   function renderAtividade() {
-    const { a } = AC;
+    const { a, f, idx } = AC;
+    NK.dicaChave = `${f.id}-${idx}`;   // dicas por nível (js/dicas.js)
     const palco = $('#palco');
     // animação de entrada em cascata só na abertura (os redesenhos depois de um clique não piscam)
     palco.classList.add('entrando');

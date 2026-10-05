@@ -228,7 +228,7 @@ flowchart LR
 | 👋 **Home personalizada** | ✅ | Balão do pirata com o nome, as estrelas e a próxima ilha |
 | ♿ **Acessibilidade** | ✅ | Respeita "reduzir movimento", textos alternativos e navegação por teclado |
 | 🧪 **Modo de teste** | ✅ | `?dev=1` libera todas as fases |
-| **Modos por idade** | ✅ | Marujo (8 anos): voz ligada e quiz sem tempo; Capitão (9 e 10 anos): desafio de 15 s e voz só se a criança ligar. Escolha ao digitar o nome; no Diário, o botão "Nível" troca |
+| **Modos por idade** | ✅ | Marujo (8 anos): voz ligada, quiz sem tempo e dicas óbvias no botão "Ver dica"; Capitão (9 e 10 anos): desafio de 15 s, dicas sutis e voz só se a criança ligar. Escolha ao digitar o nome; no Diário, o botão "Nível" troca |
 | **Voz que lê os textos** | ✅ | Um único botão "Voz: ligada / desligada" nas atividades, aberturas e Missões; ligado, lê a tela, os popups e os feedbacks sozinho. Vem ligado no Marujo e desligado no Capitão. Em Missões, "Trocar voz" escolhe a voz. Toca a voz neural gravada (pasta audios/) ou, sem ela, a voz do navegador |
 | **Incentivo** | ✅ | Comemoração de acertos seguidos, "Fase perfeita" e recado de que errar faz parte, com botão para refazer a fase |
 | **Minhas Conquistas** | ✅ | Painel no Diário com estrelas por fase, selos e certificado |
@@ -274,6 +274,7 @@ NavegaKids/
 │   ├── pontuacao.js    # Regras de pontos e estrelas (objeto REGRAS)
 │   ├── progresso.js    # Progresso da sessão: atividades, erros, pontos, estrelas, selos, nome
 │   ├── core.js         # Utilitários, imagens, popups e cabeçalho
+│   ├── dicas.js        # Dicas do botão "Ver dica" por nível (óbvias no Marujo, sutis no Capitão)
 │   ├── apoio.js        # Modos por idade (dicas), ouvir em voz alta e incentivo
 │   ├── activities.js   # Tela de atividade + discover, explain, choice, doors, block
 │   ├── activities2.js  # classify, hunt, sequence, compose, quiz, match, bau

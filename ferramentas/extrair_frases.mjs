@@ -22,7 +22,7 @@ ctx.window = ctx;
 ctx.document = { addEventListener() {}, querySelector() { return null; } };
 ctx.addEventListener = () => {};
 vm.createContext(ctx);
-for (const f of ['js/config.js', 'js/data.js', 'js/pontuacao.js', 'js/progresso.js', 'js/textos-curtos.js', 'js/apoio.js']) vm.runInContext(ler(f), ctx, { filename: f });
+for (const f of ['js/config.js', 'js/data.js', 'js/pontuacao.js', 'js/progresso.js', 'js/textos-curtos.js', 'js/dicas.js', 'js/apoio.js']) vm.runInContext(ler(f), ctx, { filename: f });
 const NK = ctx.NavegaKids;
 const { frasesDe, chaveFrase } = NK.voz;
 
@@ -72,6 +72,10 @@ textos.push(
   ...NK.ILHAS.flatMap(il => [`Selo conquistado: ${il.selo}!`]),
   ...Array.from({ length: 13 }, (_, i) => `+${4 + i} PONTOS`), ...[20, 24, 28, 32, 36, 40].map(n => `+${n} PONTOS`)
 );
+
+// dicas por nível do botão "Ver dica" (js/dicas.js)
+Object.values(NK.DICAS).forEach(d => textos.push(d.marujo, d.capitao));
+textos.push('Ver dica');
 
 const frases = {};
 textos.forEach(t => frasesDe(t).forEach(f => { frases[chaveFrase(f)] ??= f; }));
