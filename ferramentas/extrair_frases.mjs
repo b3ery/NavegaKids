@@ -22,7 +22,7 @@ ctx.window = ctx;
 ctx.document = { addEventListener() {}, querySelector() { return null; } };
 ctx.addEventListener = () => {};
 vm.createContext(ctx);
-for (const f of ['js/config.js', 'js/data.js', 'js/pontuacao.js', 'js/progresso.js', 'js/apoio.js']) vm.runInContext(ler(f), ctx, { filename: f });
+for (const f of ['js/config.js', 'js/data.js', 'js/pontuacao.js', 'js/progresso.js', 'js/textos-curtos.js', 'js/apoio.js']) vm.runInContext(ler(f), ctx, { filename: f });
 const NK = ctx.NavegaKids;
 const { frasesDe, chaveFrase } = NK.voz;
 
@@ -35,6 +35,14 @@ const textos = [];
   else if (Array.isArray(v)) v.forEach(x => coletar(x, chave));
   else if (v && typeof v === 'object') Object.entries(v).forEach(([k, x]) => coletar(x, k));
 })({ ilhas: NK.ILHAS, fases: NK.FASES });
+// textos curtos do Marujo (js/textos-curtos.js troca os textos ao mudar de nível)
+NK.progresso.definirModo('marujo');
+(function coletar(v, chave) {
+  if (typeof v === 'string') { if (!NAO_FALA.has(chave) || (chave === 'b' && /\s/.test(v))) textos.push(v); }
+  else if (Array.isArray(v)) v.forEach(x => coletar(x, chave));
+  else if (v && typeof v === 'object') Object.entries(v).forEach(([k, x]) => coletar(x, k));
+})({ ilhas: NK.ILHAS, fases: NK.FASES });
+NK.progresso.definirModo('capitao');
 [NK.NPC1, NK.NPC2, NK.NPC3].forEach(n => textos.push(n));
 
 // rótulos fixos da interface que aparecem dentro das atividades
@@ -53,6 +61,7 @@ textos.push(
   // popups (core.js, activities.js, router.js)
   'Parabéns, Pirata!', 'Muito bem de novo!', 'Você desbloqueou mais uma atividade, continue navegando pirata!',
   'Você já tinha concluído esta atividade.', 'Fase concluída!', 'Fase perfeita: nenhum erro!',
+  'Errar faz parte de aprender! Você pode refazer a fase.',
   'Errar faz parte de aprender! Cada erro te ensinou algo novo. Se quiser, refaça a fase para conquistar todas as estrelas: vale sempre a sua melhor tentativa.',
   'Este é o seu usuário', 'Aqui aparece seu nome de navegador dentro do jogo.', 'Aqui é seu level', 'Mostra o quanto você já avançou nas aventuras.',
   'Aqui são suas moedas', 'Você troca moedas por itens especiais no jogo.',
