@@ -165,8 +165,8 @@
     { nome: 'Sereia0101', online: false },
     { nome: 'Peixinho01', online: false },
   ];
-  const listaAmigosHtml = () => `<ul class="lista-amigos">${AMIGOS_JOGO.map(a => `
-    <li>${I('utilizador', { size: 26 })}${a.online ? '<i class="online-dot"></i>' : ''}<span>${esc(a.nome)}</span></li>`).join('')}</ul>`;
+  const listaAmigosHtml = (comStatus = false) => `<ul class="lista-amigos">${AMIGOS_JOGO.map(a => `
+    <li>${I('utilizador', { size: 26 })}${a.online ? '<i class="online-dot"></i>' : ''}<span>${esc(a.nome)}${comStatus ? `<small class="${a.online ? 'on' : ''}">${STATUS_AMIGOS[a.nome]}</small>` : ''}</span></li>`).join('')}</ul>`;
 
   /* Fase 1 · Atividade 2 (roteiro): "mesma tela do Joguinho, agora com uma lupa ativa",
      com o perfil suspeito à esquerda e o painel Amigos à direita para comparar. */
@@ -185,40 +185,43 @@
     </div>`;
   }
 
+  /* Tela do "Joguinho" (Fase 1 · Atividade 1): HUD de jogo no topo, lobby da partida à
+     esquerda e, à direita, os amigos com status ou o pedido de amizade pendente. */
+  const STATUS_AMIGOS = { Pirata2020: 'online · jogando agora', Pirata2130: 'online · no lobby', Sereia0101: 'offline · há 2 h', Peixinho01: 'offline · ontem' };
+
   function jogoHtml(pendente) {
-    const AMIGOS = [
-      { nome: 'Pirata2020', online: true },
-      { nome: 'Pirata2130', online: true },
-      { nome: 'Sereia0101', online: false },
-      { nome: 'Peixinho01', online: false },
-    ];
-    return `<div class="jg">
+    return `<div class="jg jg-lobby">
       <div class="jg-top">
         <button class="jg-chip" data-info="usuario">${I('utilizador', { size: 26 })}<span>Pirata0101</span></button>
-        <button class="jg-chip" data-info="level">${I('levelup', { size: 22 })}<span>LEVEL 58</span></button>
+        <button class="jg-chip jg-xp" data-info="level">${I('levelup', { size: 22 })}<span>LEVEL 58<i class="xp"><b style="width:64%"></b></i></span></button>
         <button class="jg-chip" data-info="moedas">${I('moedas', { size: 22 })}<span>520</span></button>
         <div class="dir">
-          <button class="jg-notif" id="jgNotif" ${pendente ? 'style="display:none"' : ''}>${I('pedidoAmizade', { size: 26 })}<span class="badge">1</span></button>
+          <button class="jg-notif" id="jgNotif" aria-label="1 pedido de amizade" ${pendente ? 'style="display:none"' : ''}>${I('pedidoAmizade', { size: 26 })}<span class="badge">1</span></button>
           ${I('config', { size: 26 })}
         </div>
       </div>
       <div class="jg-body">
         <div class="jg-left">
-          <small>Jogo Online</small>
-          <div class="jg-grid">${'<i></i>'.repeat(4)}</div>
-          <div class="pirata">${I('usuario')}</div>
+          <div class="lb-partida">
+            <span class="lb-mapa">${I('mapa')}</span>
+            <div class="lb-info"><small>Jogo Online</small><b>Caça ao Tesouro</b>
+              <span class="lb-online"><i></i>128 piratas jogando agora</span></div>
+          </div>
+          <div class="lb-conves">
+            <div class="pirata">${I('usuario')}</div>
+            <span class="lb-nick">Pirata0101</span>
+          </div>
           <button class="btn btn-sm btn-t" id="btInvestigar">Começar a investigar</button>
         </div>
         <div class="jg-side" id="jgSide">
           ${pendente ? `
           <h4>Pendentes</h4>
           <div class="pedido">
-            <div class="l">${I('utilizador', { size: 26 })}<span>${esc(NPC1)}</span></div>
-            <div>Olá, Pirata, poderia me adicionar? Quero ser seu amigo!</div>
+            <div class="ped-topo"><small>Pedido de amizade</small><span class="ped-novo">novo</span></div>
+            <div class="l"><span class="ped-av">${I('anonimo', { size: 30 })}</span><span><b>${esc(NPC1)}</b><small>Nv. 2</small></span></div>
+            <div class="ped-msg">Olá, Pirata, poderia me adicionar? Quero ser seu amigo!</div>
             <div class="bt"><button class="s" data-op="0">SIM</button><button class="n" data-op="1">NÃO</button></div>
-          </div>` : `<h4>Amigos</h4><ul class="lista-amigos">${AMIGOS.map(a => `
-            <li>${I('utilizador', { size: 26 })}${a.online ? '<i class="online-dot"></i>' : ''}<span>${esc(a.nome)}</span></li>
-          `).join('')}</ul>`}
+          </div>` : `<h4>Seus amigos</h4>${listaAmigosHtml(true)}`}
         </div>
       </div>
     </div>`;

@@ -11,10 +11,9 @@
   const { progresso, $$, esc, I, comIcone, toast } = NK;
 
   /* ---------- dicas ---------- */
-  /** Dica da atividade: aberta no modo Capitão; recolhida atrás de "Ver dica" no Marujo. */
+  /** Dica da atividade: nos dois níveis fica guardada no botão "Ver dica" (aberta, entregava a resposta). */
   function dicaHtml(dica) {
     if (!dica) return '';
-    if (!progresso.modoInfo().dicaRecolhida) return `<p class="dica-flutua">${comIcone('luneta', dica)}</p>`;
     return `<details class="dica-recolhida"><summary>${I('luneta', { cls: 'ico-txt' })} Ver dica</summary>
       <p class="dica-flutua">${esc(dica)}</p></details>`;
   }

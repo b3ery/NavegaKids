@@ -47,7 +47,7 @@ NK.progresso.definirModo('capitao');
 
 // rótulos fixos da interface que aparecem dentro das atividades
 textos.push(
-  'Dica.', '1', '2', '3', '4', '5', '6', '520', 'Você', 'Verdade', 'Mito', 'Sim', 'Não', 'SIM', 'NÃO', 'Amigos', 'Seus amigos', 'Amigos dele (3):', 'Lobo_Sombrio', 'Kraken_77', 'Anonimo_99', 'Compare: algum amigo dele está na sua lista?', 'Pedido de amizade pendente', 'sem foto', 'Nv. 2', 'amigos', '2 dias', 'conta criada', 'partida', 'Amigos em comum', '0', 'Bio', 'Amo jogos de pirata! Bora jogar juntos?', 'Mensagem do pedido', 'Pendentes', 'Lupa ativa', 'Pirata0101', 'LEVEL 58',
+  'Dica.', '1', '2', '3', '4', '5', '6', '520', 'Você', 'Verdade', 'Mito', 'Sim', 'Não', 'SIM', 'NÃO', 'Amigos', 'Seus amigos', 'Amigos dele (3):', 'Lobo_Sombrio', 'Kraken_77', 'Anonimo_99', 'Compare: algum amigo dele está na sua lista?', 'Pedido de amizade pendente', 'Caça ao Tesouro', '128 piratas jogando agora', 'online · jogando agora', 'online · no lobby', 'offline · há 2 h', 'offline · ontem', 'Pedido de amizade', 'novo', 'sem foto', 'Nv. 2', 'amigos', '2 dias', 'conta criada', 'partida', 'Amigos em comum', '0', 'Bio', 'Amo jogos de pirata! Bora jogar juntos?', 'Mensagem do pedido', 'Pendentes', 'Lupa ativa', 'Pirata0101', 'LEVEL 58',
   'Pirata2020', 'Pirata2130', 'Sereia0101', 'Peixinho01', 'Jogo Online', 'Começar a investigar', 'Explore a tela até encontrar algo importante.',
   'Olá, Pirata, poderia me adicionar? Quero ser seu amigo!', 'pedido pendente', 'Sua mensagem', 'escolha um bloco de cada grupo…',
   'Navegador', 'Capitã Bússola', 'Ninguém pode saber disso...', 'Obrigada por me contar! Agora a gente cuida disso juntos.',
@@ -66,7 +66,7 @@ textos.push(
   'Este é o seu usuário', 'Aqui aparece seu nome de navegador dentro do jogo.', 'Aqui é seu level', 'Mostra o quanto você já avançou nas aventuras.',
   'Aqui são suas moedas', 'Você troca moedas por itens especiais no jogo.',
   'Qual é o seu nome de navegador?', 'Pode ser um apelido!', 'Como você quer navegar?', 'Trocar o nível', 'Escolha a idade de quem está jogando',
-  'Marujo', 'Capitão', '8 anos', '9 e 10 anos', 'Voz que lê tudo sozinha, sem tempo para responder e dicas no botão', 'Desafio com tempo de 15 segundos e voz só se quiser',
+  'Marujo', 'Capitão', '8 anos', '9 e 10 anos', 'Voz que lê tudo sozinha e sem tempo para responder', 'Desafio com tempo de 15 segundos e voz só se quiser',
   'Suas estrelas', 'Minhas Conquistas', 'Três acertos seguidos! Você está pegando o jeito!', 'Cinco seguidos! Navegador de olho vivo!',
   'Oito seguidos! Ninguém engana você!', 'Doze seguidos! Você é uma lenda dos mares!',
   ...NK.ILHAS.flatMap(il => [`Selo conquistado: ${il.selo}!`]),

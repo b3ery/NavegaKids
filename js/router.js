@@ -119,7 +119,7 @@
       <span class="modo-card modo-${m.id}">
         ${I(m.id === 'marujo' ? 'usuario' : 'pirata', { cls: 'modo-ico' })}
         <b>${m.nome}</b><small>${m.idade}</small>
-        <em>${m.id === 'marujo' ? 'Voz que lê tudo sozinha, sem tempo para responder e dicas no botão' : 'Desafio com tempo de 15 segundos e voz só se quiser'}</em>
+        <em>${m.id === 'marujo' ? 'Voz que lê tudo sozinha e sem tempo para responder' : 'Desafio com tempo de 15 segundos e voz só se quiser'}</em>
       </span>
     </label>`;
   const escolhaModoHtml = legenda => `<fieldset class="campo-modo"><legend>${legenda}</legend>
@@ -380,23 +380,9 @@
     renderMissoesFase(f.id);
   }
 
-  /* Relato de testes (profa. Camila): cada quadrado de atividade com uma cor forte e
-     um ícone do tipo de atividade, para a tela ficar com mais cara de jogo infantil. */
+  /* Relato de testes (profa. Camila): cada quadrado de atividade com uma cor forte,
+     para a tela ficar com mais cara de jogo infantil. */
   const CORES_PASSO = ['#4EA8DE', '#FF7A59', '#2EC4B6'];
-  const ICONE_TIPO = {
-    discover: 'luneta',          // descobrir / observar a cena
-    explain: 'falando',          // explicação
-    choice: 'interrogacao2',     // escolher uma resposta
-    classify: 'correto',         // separar nos grupos certos
-    hunt: 'misterio',            // procurar pistas com a lupa
-    quiz: 'interrogacao',        // perguntas
-    sequence: 'mapaTesouro',     // montar a rota / a ordem
-    compose: 'comunicacao',      // montar a mensagem
-    doors: 'pedidoAmizade',      // abrir portas para espaços de conversa
-    match: 'apoio',              // ligar situação e ação
-    bau: 'bau',                  // o baú do segredo
-    block: 'escudo'              // ativar o escudo
-  };
 
   function renderMissoesFase(fid) {
     const f = faseById(fid);
@@ -416,7 +402,6 @@
       return `<button class="passo ${ft ? 'feita' : ''} ${!lib ? 'trancada' : ''}" data-i="${i}" ${lib ? '' : 'disabled'}
         style="left:${posArv.left};top:${posArv.top};--cor:${CORES_PASSO[i % CORES_PASSO.length]}">
         <span class="passo-num">${i + 1}</span>
-        ${I(a.tipo === 'quiz' && a.tempo ? 'cronometro' : (ICONE_TIPO[a.tipo] || 'estrela'), { cls: 'passo-ico' })}
         <span>${esc(a.titulo)}</span>
         ${lib ? (ft ? `<span class="n ok">${I('correto', { cls: 'ico-txt' })}</span>` : '<span class="n go">Começar</span>') : `<span class="cad">${cadeadoIcon({ size: 20 })}</span>`}
       </button>`;

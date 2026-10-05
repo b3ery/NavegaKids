@@ -22,11 +22,11 @@
   const TAMANHO_MAX_NOME = 20;
 
   /* Modos por idade (relato de testes): o Marujo (8 anos) responde sem tempo (o quiz
-     cronometrado fica sem relógio) e tem menos texto na tela (dicas recolhidas); o
+     cronometrado fica sem relógio) e tem textos curtos (js/textos-curtos.js); o
      Capitão (9 e 10 anos) mantém o desafio de 15 segundos. */
   const MODOS = Object.freeze({
-    marujo:  Object.freeze({ id: 'marujo',  nome: 'Marujo',  idade: '8 anos',       semTempo: true,  dicaRecolhida: true,  vozAuto: true }),
-    capitao: Object.freeze({ id: 'capitao', nome: 'Capitão', idade: '9 e 10 anos',  semTempo: false, dicaRecolhida: false, vozAuto: false })
+    marujo:  Object.freeze({ id: 'marujo',  nome: 'Marujo',  idade: '8 anos',       semTempo: true,  vozAuto: true }),
+    capitao: Object.freeze({ id: 'capitao', nome: 'Capitão', idade: '9 e 10 anos',  semTempo: false, vozAuto: false })
   });
 
   const estadoInicial = () => ({
