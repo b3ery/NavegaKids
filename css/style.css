@@ -422,7 +422,6 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .mf-no .mf-ic-menor { left: calc(69 * var(--u)); top: calc(14 * var(--u)); width: calc(96 * var(--u)); height: calc(96 * var(--u)); }
 .mf-no .mf-ic-a { left: calc(62 * var(--u)); top: calc(24 * var(--u)); width: calc(110 * var(--u)); height: calc(110 * var(--u)); }  /* Fase 1: anonimo */
 .mf-no .mf-ic-m { left: calc(-3 * var(--u)); top: calc(1 * var(--u)); width: calc(90 * var(--u)); height: calc(90 * var(--u)); }   /* Fase 1: misterio */
-.mf-no .mf-ic-al { left: calc(176 * var(--u)); top: calc(46 * var(--u)); width: calc(50 * var(--u)); height: calc(50 * var(--u)); }   /* Fase 1: alerta */
 .mf-no .mf-tit {
   left: calc(6 * var(--u)); right: calc(6 * var(--u)); bottom: calc(10 * var(--u));
   font-size: calc(24 * var(--u)); font-weight: 600; line-height: 1.1; text-align: center; color: #1E293B;
@@ -783,6 +782,7 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 
 /* --- quiz --- */
 .quiz-top { display: flex; align-items: center; gap: 10px; justify-content: space-between; font-weight: 900; margin-bottom: 8px; }
+.quiz-top:has(> :only-child) { justify-content: center; }   /* sem relógio: "Pergunta 1/5" centralizado como o resto */
 .quiz-top .tempo { display: flex; align-items: center; gap: 6px; }
 .quiz-top .tempo .ico { width: 26px; height: 26px; }
 .barra-tempo { height: 10px; background: #e4e4e4; border-radius: 99px; overflow: hidden; margin-bottom: 12px; }
@@ -1354,13 +1354,6 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .lupa-ativa .ico { width: 22px; height: 22px; }
 @media (max-width: 640px) { .jg-detetive .jg-body { grid-template-columns: 1fr; } .jg-detetive .jg-side { border-left: 0; border-top: 2px solid var(--navy); min-height: 0; } }
 
-/* Fase 10 · Proteja-se: trilha das 4 decisões */
-.trilha-decisoes { list-style: none; display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin: 0 0 12px; padding: 0; }
-.trilha-decisoes li { display: flex; align-items: center; gap: 6px; padding: 4px 10px 4px 4px; border-radius: 99px; background: #e2e2e2; border: 2px solid #999; font-weight: 800; font-size: 12px; color: #6b6b6b; }
-.trilha-decisoes li b { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: #fff; border: 2px solid currentColor; font-size: 12px; }
-.trilha-decisoes li.atual { background: var(--yellow); border-color: var(--navy); color: var(--navy); }
-.trilha-decisoes li.feito { background: var(--teal); border-color: var(--navy); color: #fff; }
-.trilha-decisoes li.feito b { color: var(--teal-d); }
 /* no celular o painel empilha e a fita do meio cairia em cima do quadrado 3 */
 @media (max-width: 820px) { .painel-missao .fita { left: auto; right: 10px; transform: none; height: 54px; } }
 

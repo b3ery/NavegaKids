@@ -60,8 +60,8 @@
      (Fase 1: o Figma usa o anônimo; data.js indica a luneta). */
   const ICONE_FIGMA = { 1: 'anonimo' };
   const iconeFase = f => ICONE_FIGMA[f.id] || f.icone;
-  /* ícones compostos no mapa da ilha (roteiro): Fase 1 "lupa + silhueta de perfil + alerta", Fase 5 "lupa + estrela" */
-  const ICONE_DUPLO = { 1: ['misterio', 'anonimo', 'alerta'], 5: ['misterio', 'estrela'] };
+  /* ícone composto do Figma no mapa da ilha: Fase 1 = lupa + silhueta de perfil */
+  const ICONE_DUPLO = { 1: ['misterio', 'anonimo'] };
 
   // centro de cada ilha no desenho do Mapa_Home (px do frame) — brilhos/estrelas por cima
   const HOME_ILHAS = [[1296, 548], [1540, 668], [1300, 768]];
@@ -119,7 +119,7 @@
       <span class="modo-card modo-${m.id}">
         ${I(m.id === 'marujo' ? 'usuario' : 'pirata', { cls: 'modo-ico' })}
         <b>${m.nome}</b><small>${m.idade}</small>
-        <em>${m.id === 'marujo' ? 'Voz que lê tudo sozinha, mais tempo para responder e dicas no botão' : 'Desafio com tempo de 15 segundos e voz só se quiser'}</em>
+        <em>${m.id === 'marujo' ? 'Voz que lê tudo sozinha, sem tempo para responder e dicas no botão' : 'Desafio com tempo de 15 segundos e voz só se quiser'}</em>
       </span>
     </label>`;
   const escolhaModoHtml = legenda => `<fieldset class="campo-modo"><legend>${legenda}</legend>
@@ -278,7 +278,7 @@
       const conteudo = !lib
         ? `<span class="mf-cad">${CADEADO_FILL}</span>`
         : (ICONE_DUPLO[f.id]
-            ? `${I(ICONE_DUPLO[f.id][0], { cls: 'mf-ic-m' })}${I(ICONE_DUPLO[f.id][1], { cls: 'mf-ic-a' })}${ICONE_DUPLO[f.id][2] ? I(ICONE_DUPLO[f.id][2], { cls: 'mf-ic-al' }) : ''}`   // composição do Figma / roteiro
+            ? `${I(ICONE_DUPLO[f.id][0], { cls: 'mf-ic-m' })}${I(ICONE_DUPLO[f.id][1], { cls: 'mf-ic-a' })}`   // composição do Figma / roteiro
             : I(f.icone, { cls: f.titulo.length > 24 ? 'mf-ic mf-ic-menor' : 'mf-ic' })) + `<span class="mf-tit">${esc(f.titulo)}</span>`;   // título longo (3 linhas): ícone menor
       return `
       <span class="mf-num" style="--i:${i};left:${U(p.n.x)};top:${U(p.n.y)}" aria-hidden="true">${i + 1}</span>
@@ -384,9 +384,18 @@
      um ícone do tipo de atividade, para a tela ficar com mais cara de jogo infantil. */
   const CORES_PASSO = ['#4EA8DE', '#FF7A59', '#2EC4B6'];
   const ICONE_TIPO = {
-    discover: 'luneta', explain: 'luneta', choice: 'interrogacao', classify: 'bau', hunt: 'luneta',
-    quiz: 'cronometro', sequence: 'mapaTesouro', compose: 'comunicacao', doors: 'misterio',
-    match: 'pedidoAmizade', bau: 'bau', block: 'escudo'
+    discover: 'luneta',          // descobrir / observar a cena
+    explain: 'falando',          // explicação
+    choice: 'interrogacao2',     // escolher uma resposta
+    classify: 'correto',         // separar nos grupos certos
+    hunt: 'misterio',            // procurar pistas com a lupa
+    quiz: 'interrogacao',        // perguntas
+    sequence: 'mapaTesouro',     // montar a rota / a ordem
+    compose: 'comunicacao',      // montar a mensagem
+    doors: 'pedidoAmizade',      // abrir portas para espaços de conversa
+    match: 'apoio',              // ligar situação e ação
+    bau: 'bau',                  // o baú do segredo
+    block: 'escudo'              // ativar o escudo
   };
 
   function renderMissoesFase(fid) {
@@ -407,7 +416,7 @@
       return `<button class="passo ${ft ? 'feita' : ''} ${!lib ? 'trancada' : ''}" data-i="${i}" ${lib ? '' : 'disabled'}
         style="left:${posArv.left};top:${posArv.top};--cor:${CORES_PASSO[i % CORES_PASSO.length]}">
         <span class="passo-num">${i + 1}</span>
-        ${I(ICONE_TIPO[a.tipo] || 'estrela', { cls: 'passo-ico' })}
+        ${I(a.tipo === 'quiz' && a.tempo ? 'cronometro' : (ICONE_TIPO[a.tipo] || 'estrela'), { cls: 'passo-ico' })}
         <span>${esc(a.titulo)}</span>
         ${lib ? (ft ? `<span class="n ok">${I('correto', { cls: 'ico-txt' })}</span>` : '<span class="n go">Começar</span>') : `<span class="cad">${cadeadoIcon({ size: 20 })}</span>`}
       </button>`;

@@ -21,12 +21,12 @@
   const DEV = /[?&]dev=1/.test(location.search);   // ?dev=1 libera tudo (teste)
   const TAMANHO_MAX_NOME = 20;
 
-  /* Modos por idade (relato de testes): o Marujo (8 anos) tem mais tempo no quiz
-     cronometrado e menos texto na tela (dicas recolhidas); o Capitão (9 e 10 anos)
-     mantém o desafio de 15 segundos. */
+  /* Modos por idade (relato de testes): o Marujo (8 anos) responde sem tempo (o quiz
+     cronometrado fica sem relógio) e tem menos texto na tela (dicas recolhidas); o
+     Capitão (9 e 10 anos) mantém o desafio de 15 segundos. */
   const MODOS = Object.freeze({
-    marujo:  Object.freeze({ id: 'marujo',  nome: 'Marujo',  idade: '8 anos',       tempoQuiz: 45,   dicaRecolhida: true,  vozAuto: true }),
-    capitao: Object.freeze({ id: 'capitao', nome: 'Capitão', idade: '9 e 10 anos',  tempoQuiz: null, dicaRecolhida: false, vozAuto: false })
+    marujo:  Object.freeze({ id: 'marujo',  nome: 'Marujo',  idade: '8 anos',       semTempo: true,  dicaRecolhida: true,  vozAuto: true }),
+    capitao: Object.freeze({ id: 'capitao', nome: 'Capitão', idade: '9 e 10 anos',  semTempo: false, dicaRecolhida: false, vozAuto: false })
   });
 
   const estadoInicial = () => ({
@@ -106,8 +106,8 @@
   /** Leitura automática ligada? Marujo (8 anos): sim, por padrão. Capitão: só se a criança ligar. */
   const vozAuto = () => estado.vozAuto ?? MODOS[estado.modo].vozAuto;
   const definirVozAuto = (ligada) => { estado.vozAuto = !!ligada; };
-  /** Segundos do quiz cronometrado: o do roteiro (15 s) ou o do modo, se maior. */
-  const tempoDoQuiz = (base) => Math.max(base, modoInfo().tempoQuiz ?? 0);
+  /** Segundos do quiz cronometrado: os do roteiro (15 s) no Capitão; 0 (sem relógio) no Marujo. */
+  const tempoDoQuiz = (base) => (modoInfo().semTempo ? 0 : base);
   /** Segundos do quiz da atividade: o cronometrado do roteiro (`tempo`) ou, só no Capitão,
       o desafio extra das missões (`tempoCapitao`) — relato: Marie achou fácil e amou o tempo. 0 = sem tempo. */
   const tempoDaAtividade = (a) => a.tempo ? tempoDoQuiz(a.tempo) : (estado.modo === 'capitao' && a.tempoCapitao) || 0;

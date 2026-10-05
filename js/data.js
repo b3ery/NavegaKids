@@ -154,7 +154,7 @@
     },
 
     {
-      id: 3, ilha: 1, titulo: "A Mensagem Estranha", icone: "pare", npc: NPC1,   // ícones da Ilha 1 conforme o roteiro (STOP · segredo · lupa)
+      id: 3, ilha: 1, titulo: "A Mensagem Estranha", icone: "bubbleChat", npc: NPC1,
       abertura: { texto: "Uma garrafa cheia de mensagens chegou até seu chat. Vamos ler com atenção antes de responder qualquer coisa?", btn: "Continuar" },
       aprendizado: "Você não precisa responder a tudo. Elogio demais, pergunta pessoal e pedido de segredo são sinais de alerta.",
       atividades: [
@@ -200,7 +200,7 @@
     },
 
     {
-      id: 4, ilha: 1, titulo: "O Segredo Digital", icone: "bocaZiper", npc: NPC1,
+      id: 4, ilha: 1, titulo: "O Segredo Digital", icone: "misterio", npc: NPC1,
       abertura: { texto: "Psiu... alguém te contou um “segredo só entre vocês dois”. Será que todo segredo é para guardar?", btn: "Continuar" },
       aprendizado: "Segredo que pede silêncio dos adultos merece ser contado. Dados pessoais são só seus e da sua família.",
       atividades: [
@@ -238,7 +238,7 @@
           pergunta: "O que você faz com esse segredo?",
           dica: "Segredo bom é festa surpresa. Segredo que pede silêncio… é outra história.",
           opcoes: [
-            { t: "Guardar segredo", img: "bubbleChat", ok: false, fb: "Segredo bom é tipo festa surpresa — deixa todo mundo feliz depois. Segredo que pede silêncio merece ser contado, viu?" },
+            { t: "Guardar segredo", img: "misterio", ok: false, fb: "Segredo bom é tipo festa surpresa — deixa todo mundo feliz depois. Segredo que pede silêncio merece ser contado, viu?" },
             { t: "Contar pra um adulto", img: "apoio", ok: true, fb: "Você quebrou o segredo certo! Quando alguém pede pra esconder algo dos adultos, é hora de contar pra alguém de confiança." }
           ]
         }
@@ -246,7 +246,7 @@
     },
 
     {
-      id: 5, ilha: 1, titulo: "Missão: Cadê o Perigo?", icone: "misterio", npc: NPC1, dobro: true,
+      id: 5, ilha: 1, titulo: "Missão: Cadê o Perigo?", icone: "conquistas", npc: NPC1, dobro: true,
       abertura: { texto: "Última missão da Ilha dos Mistérios! Um mapa cheio de pistas espera por você. Vamos mostrar tudo que já aprendeu?", btn: "Continuar" },
       aprendizado: "Desconfiar do perfil, não compartilhar dados e contar a um adulto: esse é o mapa dos mistérios.",
       atividades: [
@@ -258,7 +258,7 @@
             itens: [
               { img: "anonimo",  t: "Perfil suspeito", ok: true, x: 14, y: 30, why: "Perfil suspeito encontrado!" },
               { img: "pare",     t: "Sinal de STOP", ok: true, x: 72, y: 24, why: "Sinal de STOP! Mensagem estranha à vista." },
-              { img: "bubbleChat", t: "Pedido de segredo", ok: true, x: 45, y: 62, why: "Conversa trancada: pedido de segredo." },
+              { img: "misterio", t: "Pedido de segredo", ok: true, x: 45, y: 62, why: "Boca fechada: pedido de segredo." },
               { img: "dadosPessoais", t: "Pedido de dados pessoais", ok: true, x: 84, y: 66, why: "Quem pede dados pessoais merece desconfiança." },
               { img: "diamond", t: "Diamante", ok: false, x: 28, y: 72, why: "Só um diamante brilhante." },
               { img: "navio", t: "Navio", ok: false, x: 58, y: 18, why: "Só um navio passando, sem perigo." },
@@ -529,31 +529,14 @@
           fbOk: "Rápido e certeiro! Você respondeu tudo como um navegador esperto."
         },
         {
-          // roteiro: "Sequência final de decisões juntando tudo: reconhecer o sinal → escolher
-          // a resposta certa → sair se precisar → ativar o escudo" (uma história, 4 decisões)
-          titulo: "Proteja-se", papel: "Escolha final", tipo: "quiz", decisoes: true,
+          titulo: "Proteja-se", papel: "Escolha final", tipo: "sequence",
+          pergunta: "Monte a sequência final de decisões, tocando nos cartões na ordem.",
           dica: "Reconhecer → responder → sair → proteger.",
-          perguntas: [
-            { passo: "Reconhecer o sinal",
-              cena: "Sombra_das_Marés escreve: “Me passa seu endereço? E vamos conversar em outro aplicativo, só nós dois.”",
-              q: "Que sinal é esse?",
-              ops: [{ t: "Sinal de alerta: pedido pessoal e convite para um lugar reservado", ok: true }, { t: "Só uma conversa normal de jogo", ok: false }],
-              fb: "Isso! Pedido de dado pessoal e convite para sair da plataforma são sinais de alerta." },
-            { passo: "Escolher a resposta certa",
-              cena: "Ele insiste: “Fala logo, vai! É rapidinho.”",
-              q: "O que você responde?",
-              ops: [{ t: "Tá bom, eu moro perto da escola...", ok: false }, { t: "Prefiro não falar sobre isso. Vou perguntar pro meu responsável.", ok: true }],
-              fb: "Resposta educada e firme, chamando um adulto de confiança!" },
-            { passo: "Sair se precisar",
-              cena: "Mesmo assim ele continua: “Se você sair, eu vou ficar muito bravo!”",
-              q: "E agora?",
-              ops: [{ t: "Saio da conversa e conto pra um adulto", ok: true }, { t: "Continuo tentando resolver sozinho", ok: false }],
-              fb: "Sair de uma conversa que incomoda não é falta de educação: é se cuidar." },
-            { passo: "Ativar o escudo",
-              cena: "Ele tenta te chamar de novo pelo chat do jogo.",
-              q: "Qual é o último passo?",
-              ops: [{ t: "Responder pra ele parar", ok: false }, { t: "Ativar o escudo: bloquear Sombra_das_Marés", ok: true }],
-              fb: "Escudo ativado! Agora esse contato não pode mais te mandar mensagem." }
+          passos: [
+            { t: "Reconhecer o sinal", img: "exclamacao3" },
+            { t: "Escolher a resposta certa", img: "bubbleChat" },
+            { t: "Sair da conversa, se precisar", img: "corre" },
+            { t: "Ativar o escudo", img: "escudo" }
           ],
           fbOk: "Sequência de mestre: reconhecer o sinal, responder com firmeza, sair e ativar o escudo!"
         }

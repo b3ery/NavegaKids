@@ -322,15 +322,13 @@
 
     const drawQ = () => {
       const q = a.perguntas[qi];
-      const tempo = progresso.tempoDaAtividade(a);   // Fase 10: 15 s no Capitão, 45 s no Marujo; missões: 20 s só no Capitão
+      const tempo = progresso.tempoDaAtividade(a);   // Capitão: 15 s (Fase 10) e 20 s (missões); Marujo: sem relógio
       const ehVM = !!a.vm;
       const ops = ehVM ? [{ t: 'Verdade', ok: q.vm === true }, { t: 'Mito', ok: q.vm === false }] : q.ops;
 
       palco.innerHTML = `
-        ${a.decisoes ? `<ol class="trilha-decisoes">${a.perguntas.map((x, i) =>
-          `<li class="${i < qi ? 'feito' : i === qi ? 'atual' : ''}"><b>${i + 1}</b>${esc(x.passo)}</li>`).join('')}</ol>` : ''}
         <div class="quiz-top">
-          <span>${q.passo ? `Decisão ${qi + 1}/${total} · ${esc(q.passo)}` : `Pergunta ${qi + 1}/${total}`}</span>
+          <span>Pergunta ${qi + 1}/${total}</span>
           ${tempo ? `<span class="tempo">${I('cronometro', { size: 24 })}<b id="tempoTxt">${tempo}s</b></span>` : ''}
         </div>
         ${tempo ? `<div class="barra-tempo"><i id="barraTempo"></i></div>` : ''}
@@ -371,7 +369,7 @@
         fb.style.display = 'block';
         fb.className = 'quiz-fb ' + (ok ? 'ok' : 'ruim');
         fb.innerHTML = i < 0 ? comIcone('cronometro', 'O tempo acabou! ' + (q.fb || '')) : comIcone(ok ? 'correto' : 'falha', q.fb || '');
-        $('#rodQuiz').innerHTML = `<button class="btn btn-t" id="btProxQ">${qi + 1 < total ? (a.decisoes ? 'Próxima decisão' : 'Próxima pergunta') : 'Ver resultado'}</button>`;
+        $('#rodQuiz').innerHTML = `<button class="btn btn-t" id="btProxQ">${qi + 1 < total ? 'Próxima pergunta' : 'Ver resultado'}</button>`;
         $('#btProxQ').onclick = () => { qi++; if (qi < total) drawQ(); else fimQuiz(); };
       }
       $$('.opcao', palco).forEach(b => b.onclick = () => responder(+b.dataset.i));

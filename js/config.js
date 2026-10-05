@@ -69,7 +69,6 @@
     interrogacao:     ['ponto-de-interrogacao', null],
     interrogacao2:    ['ponto-de-interrogacao (1)', null],
     bubbleChat:       ['bubble-chat', null],
-    bocaZiper:        ['boca-ziper', null],   // Fase 4: rosto com boca fechada por zíper (roteiro)
     comunicacao:      ['comunicacao', null],
     comunicacao2:     ['comunicacao (1)', null],
     falando:          ['falando', null],

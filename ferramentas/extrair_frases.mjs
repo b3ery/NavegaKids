@@ -57,7 +57,7 @@ textos.push(
   'Este é o seu usuário', 'Aqui aparece seu nome de navegador dentro do jogo.', 'Aqui é seu level', 'Mostra o quanto você já avançou nas aventuras.',
   'Aqui são suas moedas', 'Você troca moedas por itens especiais no jogo.',
   'Qual é o seu nome de navegador?', 'Pode ser um apelido!', 'Como você quer navegar?', 'Trocar o nível', 'Escolha a idade de quem está jogando',
-  'Marujo', 'Capitão', '8 anos', '9 e 10 anos', 'Voz que lê tudo sozinha, mais tempo para responder e dicas no botão', 'Desafio com tempo de 15 segundos e voz só se quiser',
+  'Marujo', 'Capitão', '8 anos', '9 e 10 anos', 'Voz que lê tudo sozinha, sem tempo para responder e dicas no botão', 'Desafio com tempo de 15 segundos e voz só se quiser',
   'Suas estrelas', 'Minhas Conquistas', 'Três acertos seguidos! Você está pegando o jeito!', 'Cinco seguidos! Navegador de olho vivo!',
   'Oito seguidos! Ninguém engana você!', 'Doze seguidos! Você é uma lenda dos mares!',
   ...NK.ILHAS.flatMap(il => [`Selo conquistado: ${il.selo}!`]),
