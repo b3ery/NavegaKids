@@ -1322,13 +1322,14 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .itens .item[draggable].sel { background: var(--yellow); border-color: var(--navy); }
 
 /* Fases 9 e 13: cartões com os textos da explicação; o "Texto de apoio" do roteiro em destaque */
-.explica-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; width: min(820px, 100%); margin: 16px auto 0; }
+.explica-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; width: min(820px, 100%); margin: 16px auto 0; }
 .explica-card { display: flex; gap: 10px; align-items: flex-start; text-align: left; background: #fff; border: 3px solid var(--navy); border-bottom-width: 6px; border-radius: 14px; padding: 12px; color: var(--navy); animation: surge .4s calc(var(--i) * .12s + .2s) cubic-bezier(.2, 1.4, .4, 1) both; }
 .explica-card b { display: block; font-size: 15px; font-weight: 900; margin-bottom: 4px; }
 .explica-card p { margin: 0; font-size: 14px; font-weight: 700; line-height: 1.35; }
 .explica-ico { flex-shrink: 0; width: 46px; height: 46px; border-radius: 50%; background: #e6f3fc; border: 2px solid var(--navy); display: grid; place-items: center; }
 .explica-ico .ico { width: 30px; height: 30px; object-fit: contain; }
-.explica-card.apoio { grid-column: 1 / -1; background: var(--cream-2); border-color: var(--yellow-d); }
+.explica-card.apoio { grid-column: 1 / -1; order: 9; background: var(--cream-2); border-color: var(--yellow-d); }   /* texto de apoio: embaixo, largura toda */
+@media (max-width: 560px) { .explica-cards { grid-template-columns: 1fr; } }
 .explica-card.apoio b { font-size: 17px; }
 .explica-card.apoio p { font-size: 16px; }
 .explica-card.apoio .explica-ico { background: var(--yellow); }
