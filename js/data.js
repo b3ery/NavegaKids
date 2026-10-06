@@ -417,7 +417,7 @@
           dica: "Toda plataforma tem um jeito de sair de uma conversa. Vamos encontrar o botão certo?",
           pergunta: "Ache o botão de sair / bloquear escondido entre os outros ícones.",
           rounds: [{
-            titulo: "Joguinho · chat",
+            titulo: "Joguinho · chat", contato: NPC2, msgs: ["Por que você não responde?", "Se você sair, eu vou ficar muito bravo."],
             itens: [
               { img: "config", t: "Configurações", ok: false, why: "Esse é o botão de configurações, não o de sair." },
               { img: "exclamacao3", t: "Notificações", ok: false, why: "Esse mostra avisos, não sai da conversa." },
@@ -651,19 +651,19 @@
           dica: "Cada aplicativo tem o seu jeito de denunciar, quase sempre escondido nos três pontinhos ou no menu. Vamos caçar esse botão?",
           pergunta: "Em cada aplicativo, toque no lugar onde fica o menu com a opção Denunciar.",
           rounds: [
-            { titulo: "Chat de um jogo", itens: [
+            { titulo: "Chat de um jogo", contato: "jogador_estranho", msgs: ["Me passa seu endereço agora!"], itens: [
               { img: "exclamacao3", t: "Notificações", ok: false, why: "Esse mostra avisos." },
               { img: "config", t: "Configurações", ok: false, why: "Esse ajusta o app, mas não é onde se denuncia." },
               { e: "⋮", t: "Três pontinhos", ok: true, why: "Achou! Nos três pontinhos aparece a opção Denunciar." },
               { img: "luneta", t: "Busca", ok: false, why: "Esse serve para procurar coisas." }
             ]},
-            { titulo: "Perfil de uma rede social", itens: [
+            { titulo: "Perfil de uma rede social", contato: "perfil_desconhecido", msgs: ["Posta uma foto sua pra mim!"], itens: [
               { img: "estrela", t: "Curtir", ok: false, why: "Esse serve para curtir." },
               { img: "comunicacao2", t: "Compartilhar", ok: false, why: "Esse compartilha o perfil." },
               { e: "☰", t: "Menu", ok: true, why: "Achou! No menu você encontra Denunciar ou Reportar." },
               { img: "bubbleChat", t: "Comentários", ok: false, why: "Esse abre os comentários." }
             ]},
-            { titulo: "Mensagens diretas", itens: [
+            { titulo: "Mensagens diretas", contato: "anonimo_123", msgs: ["Não conta pra ninguém que a gente conversa."], itens: [
               { img: "falando", t: "Ligar", ok: false, why: "Esse liga para a pessoa." },
               { img: "editar", t: "Anexar", ok: false, why: "Esse anexa arquivos." },
               { img: "naoGosto", t: "Emojis", ok: false, why: "Esse abre os emojis." },

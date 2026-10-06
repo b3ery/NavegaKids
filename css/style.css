@@ -714,7 +714,23 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
   position: relative; height: clamp(280px, 46vh, 400px); border: 3px solid var(--navy); overflow: hidden;
   background-image: linear-gradient(180deg, #a5defa 0%, #d9f3fd 40%, #38b4e2 41%, #1e93c7 100%);
 }
-.cena-hunt.mapa-perg { background-image: radial-gradient(ellipse at 50% 45%, #f6dfa6 0%, #e9c57a 65%, #c99a4d 100%); }
+.cena-hunt.mapa-perg {
+  /* pergaminho: papel envelhecido, bordas queimadas e manchas */
+  border-radius: 18px; border-color: #6b4220;
+  background-image:
+    radial-gradient(circle at 18% 78%, rgba(120, 72, 28, .16) 0 30px, transparent 60px),
+    radial-gradient(circle at 82% 22%, rgba(120, 72, 28, .12) 0 26px, transparent 55px),
+    radial-gradient(ellipse at 50% 45%, #fbecc4 0%, #f1d593 60%, #d9ad62 88%, #a8732f 100%);
+  box-shadow: inset 0 0 0 6px rgba(107, 66, 32, .25), inset 0 0 40px rgba(107, 66, 32, .55);
+}
+.mapa-deco { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.mapa-deco path { fill: none; stroke: #8a5a2b; stroke-width: .6; stroke-dasharray: 2 1.6; stroke-linecap: round; opacity: .7; vector-effect: none; }
+.mapa-rosa { position: absolute; right: 14px; bottom: 12px; width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: start center; padding-top: 2px; pointer-events: none;
+  font-weight: 900; font-size: 12px; color: #6b4220; border: 2px solid #8a5a2b;
+  background: conic-gradient(from 45deg, #8a5a2b 0 12.5%, transparent 0 25%, #8a5a2b 0 37.5%, transparent 0 50%, #8a5a2b 0 62.5%, transparent 0 75%, #8a5a2b 0 87.5%, transparent 0) center / 60% 60% no-repeat, rgba(255, 248, 230, .6); opacity: .8; }
+.mapa-x { position: absolute; right: 9%; top: 18%; font-size: 26px; font-weight: 900; color: #b4532a; opacity: .55; pointer-events: none; }
+.mapa-perg .pista-btn { background: rgba(255, 250, 235, .7); box-shadow: 0 0 0 2px rgba(138, 90, 43, .55), 0 3px 0 rgba(107, 66, 32, .35); }
+.mapa-perg .pista-btn:hover { background: #fff8e6; }
 .pista-btn {
   position: absolute; transform: translate(-50%, -50%); background: rgba(255, 255, 255, .0); border: 0; padding: 4px; width: 78px; height: 78px; border-radius: 50%;
   display: grid; place-items: center; transition: transform .15s, background .2s;
@@ -1529,3 +1545,73 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .jg .jg-chip:disabled, .jg .jg-notif:disabled { cursor: default; }
 .lb-investigando { align-self: center; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 99px; background: var(--yellow); border: 2px solid var(--navy); font-weight: 900; font-size: 13px; color: var(--navy); }
 .lb-investigando .ico-txt { width: 18px; height: 18px; margin: 0; }
+
+/* ============ Fases 8 e 13: aplicativo de mensagens num celular ============ */
+.celular { width: min(380px, 100%); margin: 6px auto 0; background: #0f172a; border-radius: 34px; padding: 10px; box-shadow: 0 10px 0 rgba(15, 23, 42, .25); }
+.cel-status { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 2px 16px 6px; color: #fff; font-size: 11px; font-weight: 800; }
+.cel-notch { position: absolute; left: 50%; top: 0; translate: -50% 0; width: 90px; height: 18px; border-radius: 0 0 12px 12px; background: #0f172a; box-shadow: 0 0 0 2px #1e293b; }
+.cel-topo, .cel-conversa, .cel-base { background: #fff; }
+.cel-topo { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 22px 22px 0 0; border-bottom: 2px solid #e2e8f0; }
+.cel-voltar { font-size: 26px; font-weight: 900; color: var(--navy); line-height: 1; }
+.cel-av { width: 36px; height: 36px; border-radius: 50%; background: #cbd5e1; display: grid; place-items: center; flex-shrink: 0; }
+.cel-nome { display: flex; flex-direction: column; min-width: 0; line-height: 1.15; flex: 1; }
+.cel-nome b { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--navy); }
+.cel-nome small { font-size: 10px; font-weight: 800; color: var(--teal-d); }
+.cel-acoes { display: flex; gap: 4px; }
+.celular .bt-app { width: 40px; height: 40px; border-radius: 50%; border: 2px solid transparent; background: #f1f5f9; display: grid; place-items: center; padding: 0; font-size: 22px; font-weight: 900; color: var(--navy); transition: background .15s, transform .15s; }
+.celular .bt-app .ico { width: 24px; height: 24px; }
+.celular .bt-app:hover { background: var(--cream-2); transform: translateY(-2px); }
+.celular .bt-app.achada { background: #dff7f1; border-color: var(--teal); }
+.celular .bt-app.errada { background: #ffe8e1; border-color: var(--coral); }
+.cel-conversa { min-height: 170px; display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; padding: 14px 12px;
+  background: radial-gradient(circle at 20% 30%, #e0f2fe 0 2px, transparent 3px) 0 0 / 22px 22px, #f8fafc; }
+.cel-msg { align-self: flex-start; max-width: 80%; background: #fff; border: 2px solid #e2e8f0; border-radius: 14px 14px 14px 4px; padding: 7px 11px; font-size: 13px; font-weight: 800; color: var(--navy); text-align: left; }
+.cel-base { display: flex; align-items: center; gap: 8px; padding: 8px 10px 12px; border-radius: 0 0 22px 22px; border-top: 2px solid #e2e8f0; }
+.cel-campo { flex: 1; background: #f1f5f9; border-radius: 99px; padding: 8px 12px; font-size: 12px; font-weight: 700; color: #94a3b8; text-align: left; }
+
+/* ============ Fase 2: lobby da partida em grupo ============ */
+.lobby { border: 3px solid var(--navy); border-radius: 14px; overflow: hidden; max-width: 680px; background: linear-gradient(#e0f2fe, #f0f9ff); }
+.lobby .lobby-topo { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 12px; background: linear-gradient(90deg, #1e293b, #2b3a58); color: #fff; }
+.lobby .lobby-topo > span { display: inline-flex; align-items: center; gap: 8px; }
+.lobby .lobby-topo b { font-size: 15px; }
+.lobby .lobby-topo small { font-size: 11px; font-weight: 800; color: #cbd5e1; }
+.lobby .lobby-mapa { width: 34px; height: 28px; object-fit: cover; border-radius: 6px; border: 2px solid #fff; }
+.lobby .av-lista { grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)); gap: 10px; padding: 14px; }
+.lobby .av-card { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 6px; border: 2px solid var(--navy); border-radius: 14px; background: #fff; box-shadow: 0 3px 0 var(--navy); }
+.lobby .av-card .av-foto { width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; background: #e0f2fe; border: 2px solid var(--navy); }
+.lobby .av-card .av-foto .ico { width: 44px; height: 44px; margin: 0; background: none; }
+.lobby .av-card b { font-size: 13px; color: var(--navy); overflow-wrap: anywhere; }
+.lobby .av-card em { font-style: normal; font-size: 11px; font-weight: 900; color: var(--teal-d); background: #dff7f1; border-radius: 99px; padding: 1px 8px; }
+.lobby .av-card.alerta { border-color: var(--coral-d); background: #fff1ec; box-shadow: 0 3px 0 var(--coral-d); animation: none; position: relative; }
+.lobby .av-card.alerta .av-foto { background: #cbd5e1; border-color: var(--coral-d); }
+.lobby .av-card.alerta::after { content: "!"; position: absolute; top: -10px; right: -8px; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--coral); color: #fff; font-weight: 900; border: 2px solid var(--navy); }
+.lobby .av-card small { font-size: 11px; line-height: 1.2; }
+.lobby .lobby-base { padding: 0 14px 12px; text-align: center; }
+.lobby .lobby-espera { font-size: 12px; font-weight: 800; color: var(--muted); }
+
+/* ============ Fase 15: associar com cartões numerados e coloridos ============ */
+.match { gap: 18px; }
+.match .col h4 { margin: 0 0 4px; font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); text-align: center; }
+.match .col button { display: flex; align-items: center; gap: 10px; text-align: left; border: 3px solid var(--navy); border-radius: 14px; background: #fff; box-shadow: 0 4px 0 var(--navy); padding: 10px 12px; font-weight: 800; font-size: 14px; color: var(--navy); transition: transform .12s, background .15s; }
+.match .col button:not([disabled]):hover { transform: translateY(-2px); }
+.match .col [data-a] { border-left: 10px solid var(--cor); }
+.match .m-num { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--cor); color: #fff; font-weight: 900; border: 2px solid var(--navy); }
+.match .col button.sel { background: color-mix(in srgb, var(--cor) 25%, #fff); outline: 3px dashed var(--navy); outline-offset: 2px; }
+.match .col button.par { background: color-mix(in srgb, var(--cor) 22%, #fff); border-color: var(--cor); box-shadow: 0 4px 0 color-mix(in srgb, var(--cor) 70%, #1e293b); opacity: 1; }
+
+/* ============ Montar frase: blocos com cara de peça de palavra ============ */
+.grupo h4 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.blocos { gap: 10px; }
+.bloco { border: 3px solid var(--navy); border-radius: 12px; box-shadow: 0 4px 0 var(--navy); background: #fff; padding: 9px 14px; font-weight: 800; transition: transform .12s, background .15s; }
+.grupo:nth-of-type(odd) .bloco { border-left: 10px solid var(--blue); }
+.grupo:nth-of-type(even) .bloco { border-left: 10px solid var(--coral); }
+.bloco:not([disabled]):hover { transform: translateY(-2px); }
+.bloco.on { background: var(--yellow); transform: translateY(-2px); }
+.preview-msg .bolha.eu .msg { font-size: 15px; }
+.lobby .av-card { justify-content: center; }
+@media (max-width: 560px) {
+  .cena-hunt.mapa-perg { height: 440px; }
+  .mapa-perg .pista-btn { width: 54px; height: 54px; }
+  .mapa-perg .pista-btn .ico { width: 38px; height: 38px; }
+  .mapa-rosa { width: 40px; height: 40px; }
+}

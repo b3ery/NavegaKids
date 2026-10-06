@@ -157,12 +157,19 @@
     </div>`;
   }
 
+  /* Fase 2 · lobby da partida em grupo, no estilo do Joguinho da Fase 1 */
   function lobbyHtml(cena) {
     if (!cena || cena.tipo !== 'lobby') return '';
     const av = cena.avatares.map(a => `<div class="av-card ${a.alerta ? 'alerta' : ''}">
-      ${I('anonimo', { size: 44 })}<div>${esc(a.nome)}</div>${a.nota ? `<small>${esc(a.nota)}</small>` : ''}
+      <span class="av-foto">${I(a.alerta ? 'anonimo' : 'utilizador', { size: 44 })}</span>
+      <b>${esc(a.nome)}</b>
+      ${a.nota ? `<small>${esc(a.nota)}</small>` : '<em>pronto</em>'}
     </div>`).join('');
-    return `<div class="lobby"><h4>${esc(cena.titulo)}</h4><div class="av-lista">${av}</div></div>`;
+    return `<div class="lobby">
+      <div class="lobby-topo"><span>${I('mapa', { cls: 'lobby-mapa' })}<b>${esc(cena.titulo)}</b></span><small>Caça ao Tesouro · ${cena.avatares.length}/6 jogadores</small></div>
+      <div class="av-lista">${av}</div>
+      <div class="lobby-base"><span class="lobby-espera">Esperando a partida começar…</span></div>
+    </div>`;
   }
 
   function guardioesHtml() {

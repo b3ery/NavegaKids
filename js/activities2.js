@@ -83,6 +83,26 @@
   /* ============================================================
      HUNT — achar pistas/sinais numa cena, chat, app ou perfil
      ============================================================ */
+  /* Fases 8 e 13 · achar o botão: um aplicativo de mensagens dentro de um celular. Os botões
+     ficam onde os apps costumam pôr: metade no cabeçalho, metade na barra de baixo. */
+  function celularHtml(round) {
+    const bts = round.itens.map((it, i) => `<button class="bt-app" data-i="${i}" title="${esc(it.t)}" aria-label="${esc(it.t)}">${icone(it)}</button>`);
+    const meio = Math.ceil(bts.length / 2);
+    return `<div class="celular">
+      <div class="cel-status"><span>9:41</span><i class="cel-notch"></i><span>${esc(round.titulo || 'Aplicativo')}</span></div>
+      <div class="cel-topo">
+        <span class="cel-voltar" aria-hidden="true">‹</span>
+        <span class="cel-av">${I('anonimo', { size: 28 })}</span>
+        <span class="cel-nome"><b>${esc(round.contato || 'Contato')}</b><small>online</small></span>
+        <span class="cel-acoes">${bts.slice(0, meio).join('')}</span>
+      </div>
+      <div class="cel-conversa">
+        ${(round.msgs || []).map(m => `<span class="cel-msg">${esc(m)}</span>`).join('')}
+      </div>
+      <div class="cel-base"><span class="cel-acoes">${bts.slice(meio).join('')}</span><span class="cel-campo">Mensagem…</span></div>
+    </div>`;
+  }
+
   /* Fase 1: os 3 amigos do perfil suspeito (nenhum é amigo da criança: "nenhum amigo em comum") */
   const AMIGOS_DO_SUSPEITO = ['Lobo_Sombrio', 'Kraken_77', 'Anonimo_99'];
 
@@ -145,10 +165,7 @@
           <p class="enunciado">${esc(a.pergunta)}</p>
           ${NK.dicaHtml(a.dica)}
           <p class="prog-hunt">Rodada ${rIdx + 1}/${a.rounds.length} — encontrados: <b id="cntHunt">0</b>/${alvo}</p>
-          <div class="mock-app">
-            <div class="barra">${I('bubbleChat', { cls: 'ico-txt' })}<span>${esc(round.titulo || 'Aplicativo')}</span></div>
-            <div class="corpo">${round.itens.map((it, i) => `<button class="bt-app" data-i="${i}" title="${esc(it.t)}">${icone(it)}</button>`).join('')}</div>
-          </div>
+          ${celularHtml(round)}
           <div class="dica-flutua" id="fbHunt"></div>`;
       } else {
         // skin "scene": cena livre com pontos posicionados
@@ -157,6 +174,11 @@
           ${NK.dicaHtml(a.dica)}
           <p class="prog-hunt">Encontrados: <b id="cntHunt">0</b>/${alvo}</p>
           <div class="cena-hunt mapa-perg">
+            <svg class="mapa-deco" viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M4 50 C 18 40, 22 18, 38 22 S 60 48, 72 34 S 88 10, 96 14" />
+            </svg>
+            <span class="mapa-rosa" aria-hidden="true">N</span>
+            <span class="mapa-x" aria-hidden="true">✕</span>
             ${round.itens.map((it, i) => `<button class="pista-btn" data-i="${i}" style="left:${it.x}%;top:${it.y}%" aria-label="${esc(it.t)}">${icone(it)}</button>`).join('')}
           </div>
           <div class="dica-flutua" id="fbHunt"></div>`;
@@ -382,6 +404,8 @@
   /* ============================================================
      MATCH — associar situação → ação
      ============================================================ */
+  const COR_PAR = ['#4EA8DE', '#FF7A59', '#2EC4B6', '#FFC83B'];   // cada par ligado ganha a cor da sua situação
+
   function rMatch(palco, a) {
     const as = a.pares.map((p, i) => ({ t: p.a, id: i }));
     const bs = shuffle(a.pares.map((p, i) => ({ t: p.b, id: i })));
@@ -393,8 +417,8 @@
         ${NK.dicaHtml(a.dica)}
         <p class="prog-hunt">Ligados: <b>${pares.size}/${a.pares.length}</b></p>
         <div class="match">
-          <div class="col">${as.map(x => `<button data-a="${x.id}" class="${pares.has(x.id) ? 'par' : (selA === x.id ? 'sel' : '')}" ${pares.has(x.id) ? 'disabled' : ''}>${esc(x.t)}</button>`).join('')}</div>
-          <div class="col">${bs.map(x => `<button data-b="${x.id}" class="${pares.has(x.id) ? 'par' : ''}" ${pares.has(x.id) ? 'disabled' : ''}>${esc(x.t)}</button>`).join('')}</div>
+          <div class="col"><h4>Situação</h4>${as.map(x => `<button data-a="${x.id}" style="--cor:${COR_PAR[x.id % COR_PAR.length]}" class="${pares.has(x.id) ? 'par' : (selA === x.id ? 'sel' : '')}" ${pares.has(x.id) ? 'disabled' : ''}><span class="m-num">${x.id + 1}</span><span>${esc(x.t)}</span></button>`).join('')}</div>
+          <div class="col"><h4>Ação de guardião</h4>${bs.map(x => `<button data-b="${x.id}" style="--cor:${COR_PAR[x.id % COR_PAR.length]}" class="${pares.has(x.id) ? 'par' : ''}" ${pares.has(x.id) ? 'disabled' : ''}>${pares.has(x.id) ? `<span class="m-num">${x.id + 1}</span>` : ''}<span>${esc(x.t)}</span></button>`).join('')}</div>
         </div>
         <div class="dica-flutua" id="fbMatch"></div>`;
 
