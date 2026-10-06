@@ -72,7 +72,7 @@
 
   /* partes que só atrapalham na leitura: o nome do contato em cada balão (já foi lido no
      topo do chat), "online", os botões do rodapé (Avançar, Voltar…), contadores e o "Ouvir" */
-  const NAO_LER = '.bolha .msg small, .chat-head small, .rodape, .bt-ouvir, .prog-hunt, .quiz-top, .popup .btns, .popup .x';
+  const NAO_LER = '.bolha .msg small, .quiz-quem, .letra, .vm-selo, .chat-head small, .rodape, .bt-ouvir, .prog-hunt, .quiz-top, .popup .btns, .popup .x';
 
   /** Texto visível do elemento (sem as partes de NAO_LER). */
   function textoDe(el) {

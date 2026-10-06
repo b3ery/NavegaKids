@@ -339,26 +339,41 @@
      QUIZ — perguntas rápidas (com cena, Verdade/Mito, cronometrado)
      ============================================================ */
   function rQuiz(palco, a) {
+    /* A Capitã Bússola apresenta cada pergunta num balão; as respostas são cartões com letra.
+       Verdade ou Mito: a frase vira uma carta que recebe o carimbo depois da resposta. */
     let qi = 0;
     const total = a.perguntas.length;
+    const resultados = [];   // true / false por pergunta respondida (bolinhas do progresso)
+    const LETRAS = 'ABCD';
 
     const drawQ = () => {
       const q = a.perguntas[qi];
       const tempo = progresso.tempoDaAtividade(a);   // Capitão: 15 s (Fase 10) e 20 s (missões); Marujo: sem relógio
       const ehVM = !!a.vm;
       const ops = ehVM ? [{ t: 'Verdade', ok: q.vm === true }, { t: 'Mito', ok: q.vm === false }] : q.ops;
+      const bolinhas = a.perguntas.map((_, i) =>
+        `<i class="${i < resultados.length ? (resultados[i] ? 'ok' : 'ruim') : (i === qi ? 'agora' : '')}"></i>`).join('');
 
       palco.innerHTML = `
         <div class="quiz-top">
-          <span>Pergunta ${qi + 1}/${total}</span>
+          <span class="quiz-prog"><span>Pergunta ${qi + 1}/${total}</span>${total > 1 ? `<span class="quiz-bolinhas" aria-hidden="true">${bolinhas}</span>` : ''}</span>
           ${tempo ? `<span class="tempo">${I('cronometro', { size: 24 })}<b id="tempoTxt">${tempo}s</b></span>` : ''}
         </div>
         ${tempo ? `<div class="barra-tempo"><i id="barraTempo"></i></div>` : ''}
-        ${q.cena ? `<div class="quiz-cena">${esc(q.cena)}</div>` : ''}
-        <p class="enunciado">${esc(q.q)}</p>
+        <div class="quiz-palco ${ehVM ? 'vm' : ''}">
+          <span class="quiz-capita" id="capitaQuiz">${I('pirata')}</span>
+          <div class="quiz-balao">
+            <small class="quiz-quem">Capitã Bússola</small>
+            ${ehVM
+              ? `<div class="vm-carta" id="vmCarta"><p>${esc(q.q)}</p><span class="vm-selo" id="vmSelo"></span></div>`
+              : `${q.cena ? `<p class="quiz-cena">${esc(q.cena)}</p>` : ''}<p class="enunciado">${esc(q.q)}</p>`}
+          </div>
+        </div>
         ${NK.dicaHtml(a.dica)}
-        <div class="opcoes" id="opsQuiz">
-          ${ops.map((o, i) => `<button class="opcao" data-i="${i}"><span>${esc(o.t)}</span></button>`).join('')}
+        <div class="opcoes ${ehVM ? 'opcoes-vm' : 'opcoes-quiz'}" id="opsQuiz">
+          ${ops.map((o, i) => `<button class="opcao" data-i="${i}">${ehVM
+            ? `${I(i === 0 ? 'correto' : 'falha', { cls: 'vm-ico' })}<span>${esc(o.t)}</span>`
+            : `<span class="letra" aria-hidden="true">${LETRAS[i]}</span><span>${esc(o.t)}</span>`}</button>`).join('')}
         </div>
         <div class="quiz-fb" id="fbQuiz" style="display:none"></div>
         <div class="rodape" id="rodQuiz"></div>`;
@@ -369,7 +384,12 @@
         timerId = every(() => {
           const rest = Math.max(0, limite - (Date.now() - t0));
           $('#tempoTxt') && ($('#tempoTxt').textContent = Math.ceil(rest / 1000) + 's');
-          $('#barraTempo') && ($('#barraTempo').style.width = (rest / limite * 100) + '%');
+          const barra = $('#barraTempo');
+          if (barra) {
+            barra.style.width = (rest / limite * 100) + '%';
+            barra.parentElement.classList.toggle('pouco', rest <= limite * .5 && rest > limite * .25);
+            barra.parentElement.classList.toggle('acabando', rest <= limite * .25);
+          }
           if (rest <= 0 && !travado) { responder(-1); }
         }, 100);
       }
@@ -382,17 +402,25 @@
         $$('.opcao', palco).forEach((b, bi) => {
           b.disabled = true;
           if (ops[bi].ok) b.classList.add('certa');
-          else if (bi === i) b.classList.add('errada');
+          else if (bi === i) b.classList.add('errada', 'shake');
         });
         const ok = o ? o.ok : false;
+        resultados.push(ok);
         if (!ok) progresso.registrarErro();
         NK.feedback[ok ? 'acerto' : 'erro']();
+        $('#capitaQuiz')?.classList.add(ok ? 'feliz' : 'pensa');
+        if (ehVM) {
+          const selo = $('#vmSelo');
+          selo.textContent = q.vm ? 'Verdade' : 'Mito';
+          $('#vmCarta').classList.add('carimbada', q.vm ? 'verdade' : 'mito');
+        }
         const fb = $('#fbQuiz');
         fb.style.display = 'block';
         fb.className = 'quiz-fb ' + (ok ? 'ok' : 'ruim');
         fb.innerHTML = i < 0 ? comIcone('cronometro', 'O tempo acabou! ' + (q.fb || '')) : comIcone(ok ? 'correto' : 'falha', q.fb || '');
         $('#rodQuiz').innerHTML = `<button class="btn btn-t" id="btProxQ">${qi + 1 < total ? 'Próxima pergunta' : 'Ver resultado'}</button>`;
         $('#btProxQ').onclick = () => { qi++; if (qi < total) drawQ(); else fimQuiz(); };
+        $('#btProxQ').focus({ preventScroll: true });
       }
       $$('.opcao', palco).forEach(b => b.onclick = () => responder(+b.dataset.i));
     };

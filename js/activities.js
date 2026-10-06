@@ -369,6 +369,19 @@
   /* ============================================================
      CHOICE — escolha simples (com ou sem cena)
      ============================================================ */
+  /* Nas escolhas em que a criança responde ao chat (roteiro: "o que você responde?"),
+     a opção escolhida aparece enviada na conversa, como num aplicativo de verdade. */
+  function enviarResposta(texto, ok) {
+    const corpo = $('#palco .chat-body');
+    if (!corpo) return;
+    corpo.insertAdjacentHTML('beforeend', `
+      <div class="bolha eu enviada ${ok ? '' : 'arriscada'}">
+        <span class="av">${I('usuario')}</span>
+        <span class="msg"><small>${esc(progresso.nome() || 'Você')}</small>${esc(texto)}</span>
+      </div>`);
+    corpo.scrollTop = corpo.scrollHeight;
+  }
+
   function rChoice(palco, a) {
     if (a.tutorial) return rTutorialChoice(palco, a);
     const cartas = a.skin === 'cartas';
@@ -390,6 +403,7 @@
       if (b.disabled) return;
       const o = a.opcoes[+b.dataset.i];
       $$('.opcao', palco).forEach(x => x.disabled = true);
+      if (a.resposta) enviarResposta(o.t, o.ok);
       const fb = $('#fbChoice');
       fb.style.display = 'block';
       fb.className = 'quiz-fb ' + (o.ok ? 'ok' : 'ruim');

@@ -138,7 +138,7 @@
           fbOk: "Jogar junto é diferente de conhecer de verdade — e tudo bem ter os dois tipos de contato, desde que você saiba diferenciar!"
         },
         {
-          titulo: "Embarque Seguro", papel: "Escolha", tipo: "choice",
+          titulo: "Embarque Seguro", papel: "Escolha", tipo: "choice", resposta: true,
           cena: { tipo: "chat", com: NPC1, msgs: [
             { de: "npc", t: "Ei, vem pra minha cabine reservada!" },
             { de: "npc", t: "É um chat de voz privado, só nós dois." }
@@ -331,7 +331,7 @@
           fbOk: "Você abriu todas as portas com cuidado! Espaços com pessoas de confiança são seguros; convites reservados de desconhecidos, não."
         },
         {
-          titulo: "Pare por Aqui", papel: "Escolha", tipo: "choice",
+          titulo: "Pare por Aqui", papel: "Escolha", tipo: "choice", resposta: true,
           cena: { tipo: "chat", com: NPC2, msgs: [
             { de: "npc", t: "Vamos, vai! Prometo que lá é mais legal." },
             { de: "npc", t: "Só me passa seu contato e a gente conversa lá." }
@@ -351,7 +351,7 @@
       aprendizado: "Dá para ser educado e firme ao mesmo tempo: “Prefiro não falar sobre isso. Vou perguntar pro meu responsável.”",
       atividades: [
         {
-          titulo: "Qual Resposta Você Mandaria", papel: "Descoberta · múltipla escolha", tipo: "choice",
+          titulo: "Qual Resposta Você Mandaria", papel: "Descoberta · múltipla escolha", tipo: "choice", resposta: true,
           cena: { tipo: "chat", com: NPC2, msgs: [
             { de: "npc", t: "Você pode me mandar uma foto sua? Só pra eu saber como você é!" }
           ]},
@@ -383,7 +383,7 @@
           fbBad: "Quase! Essa mensagem deixa uma brecha. Que tal montar uma resposta educada, firme e que chame um adulto?"
         },
         {
-          titulo: "Duelo de Respostas", papel: "Escolha · duelo de cartas", tipo: "choice", skin: "cartas",
+          titulo: "Duelo de Respostas", papel: "Escolha · duelo de cartas", tipo: "choice", skin: "cartas", resposta: true,
           cena: { tipo: "chat", com: NPC2, msgs: [
             { de: "npc", t: "Me fala em qual escola você estuda! Eu passo aí pra te ver." }
           ]},

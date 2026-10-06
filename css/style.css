@@ -1646,3 +1646,113 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .cel-bateria { width: 22px; height: 11px; border: 2px solid #fff; border-radius: 3px; padding: 1px; display: inline-flex; position: relative; }
 .cel-bateria::after { content: ""; position: absolute; right: -4px; top: 2px; width: 2px; height: 4px; background: #fff; border-radius: 0 1px 1px 0; }
 .cel-bateria i { width: 70%; background: #4ade80; border-radius: 1px; }
+
+/* ============================================================
+   Quiz com a Capitã Bússola (Fases 5, 10, 12, 14 e 15)
+   ============================================================ */
+.quiz-prog { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.quiz-bolinhas { display: inline-flex; gap: 6px; }
+.quiz-bolinhas i { width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 2px solid var(--navy); }
+.quiz-bolinhas i.agora { background: var(--yellow); transform: scale(1.2); }
+.quiz-bolinhas i.ok { background: var(--teal); border-color: var(--teal-d); }
+.quiz-bolinhas i.ruim { background: var(--coral); border-color: var(--coral-d); }
+.barra-tempo { height: 14px; border: 2px solid var(--navy); }
+.barra-tempo i { background: linear-gradient(90deg, var(--teal), #5fe0c9); transition: background .3s; }
+.barra-tempo.pouco i { background: linear-gradient(90deg, var(--yellow-d), var(--yellow)); }
+.barra-tempo.acabando i { background: linear-gradient(90deg, var(--coral-d), var(--coral)); animation: piscaTempo .5s infinite alternate; }
+@keyframes piscaTempo { to { opacity: .55; } }
+
+.quiz-palco { display: flex; align-items: flex-end; gap: 6px; max-width: 760px; margin: 6px auto 0; }
+.quiz-capita { flex: none; width: 128px; height: 128px; animation: capitaFlutua 3s ease-in-out infinite; }
+.quiz-capita .ico { width: 100%; height: 100%; object-fit: contain; }
+.quiz-capita.feliz { animation: capitaPula .6s cubic-bezier(.3, 1.8, .5, 1) 2; }
+.quiz-capita.pensa { animation: capitaPensa .5s ease-in-out 2; }
+@keyframes capitaFlutua { 50% { transform: translateY(-6px); } }
+@keyframes capitaPula { 40% { transform: translateY(-22px) scale(1.06); } }
+@keyframes capitaPensa { 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
+.quiz-balao {
+  position: relative; flex: 1; background: #fff; border: 3px solid var(--navy); border-radius: 20px; padding: 12px 18px 14px; margin-bottom: 30px;
+  box-shadow: 0 6px 0 rgba(30, 42, 61, .15); text-align: left; animation: balaoEntra .35s cubic-bezier(.2, 1.4, .4, 1);
+}
+.quiz-balao::before {   /* rabinho apontando para a Capitã */
+  content: ''; position: absolute; left: -15px; bottom: 18px; width: 24px; height: 24px; background: #fff;
+  border-left: 3px solid var(--navy); border-bottom: 3px solid var(--navy); transform: rotate(45deg) skew(10deg, 10deg);
+}
+@keyframes balaoEntra { from { opacity: 0; transform: translateY(10px) scale(.96); } }
+.quiz-quem { display: block; font-size: 12px; font-weight: 900; color: var(--coral-d); text-transform: uppercase; letter-spacing: .06em; }
+.quiz-balao .quiz-cena { background: none; border: 0; padding: 0; margin: 4px 0 0; text-align: left; font-size: 17px; color: var(--navy); }
+.quiz-balao .enunciado { margin: 6px 0 0; text-align: left; font-size: 21px; }
+.quiz-balao .quiz-cena + .enunciado { color: var(--blue-d); }
+
+.opcoes-quiz .opcao { flex-direction: row; justify-content: flex-start; text-align: left; gap: 12px; }
+.opcao .letra {
+  flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%;
+  background: var(--navy); color: var(--yellow); font-size: 18px; font-weight: 900;
+}
+.opcao.certa .letra { background: var(--teal-d); color: #fff; }
+.opcao.errada .letra { background: var(--coral-d); color: #fff; }
+
+/* Verdade ou Mito: a frase é uma carta; depois da resposta ela ganha o carimbo */
+.vm-carta {
+  position: relative; margin-top: 6px; padding: 18px 20px; border-radius: 14px; border: 3px dashed var(--yellow-d);
+  background: repeating-linear-gradient(0deg, var(--cream-2) 0 30px, #f3e7c4 30px 31px);
+}
+.vm-carta p { margin: 0; font-size: 22px; font-weight: 900; color: var(--navy); text-align: center; line-height: 1.35; }
+.vm-selo {
+  position: absolute; right: -10px; top: -18px; padding: 4px 14px; border: 4px solid; border-radius: 10px;
+  font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; background: rgba(255, 255, 255, .85);
+  opacity: 0; transform: rotate(12deg) scale(2.2); pointer-events: none;
+}
+.vm-carta.carimbada .vm-selo { opacity: 1; transform: rotate(12deg) scale(1); transition: transform .3s cubic-bezier(.3, 1.6, .5, 1), opacity .15s; }
+.vm-carta.verdade .vm-selo { color: var(--teal-d); border-color: var(--teal-d); }
+.vm-carta.mito .vm-selo { color: var(--coral-d); border-color: var(--coral-d); }
+.vm-carta.mito p { text-decoration: line-through; text-decoration-color: rgba(232, 93, 63, .7); text-decoration-thickness: 3px; }
+.opcoes-vm .opcao { flex: 0 1 230px; flex-direction: row; justify-content: center; gap: 10px; font-size: 22px; padding: 18px; }
+.opcoes-vm .vm-ico { width: 34px; height: 34px; }
+.opcoes-vm .opcao:nth-child(1):not(.certa):not(.errada) { border-color: var(--teal-d); background: #e2f8f4; }
+.opcoes-vm .opcao:nth-child(2):not(.certa):not(.errada) { border-color: var(--coral-d); background: #ffeee8; }
+
+/* A Capitã também comenta as respostas: o feedback vira a fala dela */
+.quiz-fb {
+  position: relative; max-width: 760px; margin-left: auto; margin-right: auto;
+  padding-left: 76px; min-height: 64px; text-align: left; border-radius: 16px; animation: balaoEntra .3s ease-out;
+}
+.quiz-fb > .ico-txt:first-child { display: none; }   /* a Capitã já mostra quem fala */
+.opcoes .opcao.certa, .opcoes .opcao.errada { opacity: 1; }
+.opcoes .opcao[disabled]:not(.certa):not(.errada) { opacity: .45; }
+.quiz-fb::before {
+  content: ''; position: absolute; left: 8px; top: 50%; width: 58px; height: 58px; transform: translateY(-50%);
+  background: #fff url(../img/pirata.png) center / 52px no-repeat; border: 2px solid currentColor; border-radius: 50%;
+}
+
+/* Escolhas que respondem ao chat: a resposta escolhida aparece enviada */
+.chat-body .bolha { animation: bolhaChega .35s ease-out backwards; }
+.chat-body .bolha:nth-child(2) { animation-delay: .35s; }
+.chat-body .bolha:nth-child(3) { animation-delay: .7s; }
+.chat-body .bolha:nth-child(4) { animation-delay: 1.05s; }
+@keyframes bolhaChega { from { opacity: 0; transform: translateY(12px) scale(.94); } }
+.chat-body .bolha.enviada { animation: bolhaEnvia .4s cubic-bezier(.2, 1.4, .4, 1) both; }
+.bolha.enviada .msg { background: #dff7f1; border-color: var(--teal-d); }
+.bolha.enviada .msg::after { content: ' \2713\2713'; color: var(--teal-d); font-size: 13px; letter-spacing: -3px; margin-left: 6px; }
+.bolha.enviada.arriscada .msg { background: #ffeee8; border-color: var(--coral-d); }
+.bolha.enviada.arriscada .msg::after { color: var(--coral-d); }
+@keyframes bolhaEnvia { from { opacity: 0; transform: translate(30px, 16px) scale(.8); } }
+
+@media (max-width: 600px) {
+  .quiz-palco { flex-direction: column; align-items: center; gap: 0; }
+  .quiz-capita { width: 84px; height: 84px; }
+  .quiz-balao { margin-bottom: 0; width: 100%; }
+  .quiz-balao::before { left: 50%; top: -15px; bottom: auto; margin-left: -12px; transform: rotate(135deg) skew(10deg, 10deg); }
+  .quiz-balao .enunciado { font-size: 18px; }
+  .vm-carta p { font-size: 18px; }
+  .vm-selo { font-size: 16px; right: -4px; }
+  .quiz-fb { padding-left: 66px; }
+  .quiz-fb::before { width: 48px; height: 48px; background-size: 42px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quiz-capita, .quiz-capita.feliz, .quiz-capita.pensa, .chat-body .bolha, .quiz-balao { animation: none; }
+}
+/* no balão da Capitã a pergunta não precisa da faixa do Marujo */
+.marujo .palco .quiz-balao .enunciado { display: block; width: auto; margin: 6px 0 0; padding: 0; border: 0; box-shadow: none; background: none; font-size: clamp(19px, 2.4vw, 23px); }
+.marujo .palco .quiz-balao .enunciado::before { content: none; }
+.marujo .quiz-balao .quiz-cena { font-size: 18px; }
