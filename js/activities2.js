@@ -89,7 +89,7 @@
     const bts = round.itens.map((it, i) => `<button class="bt-app" data-i="${i}" title="${esc(it.t)}" aria-label="${esc(it.t)}">${icone(it)}</button>`);
     const meio = Math.ceil(bts.length / 2);
     return `<div class="celular">
-      <div class="cel-status"><span>9:41</span><i class="cel-notch"></i><span>${esc(round.titulo || 'Aplicativo')}</span></div>
+      <div class="cel-status"><span>9:41</span><i class="cel-notch"></i><span class="cel-bateria" aria-hidden="true"><i></i></span></div>
       <div class="cel-topo">
         <span class="cel-voltar" aria-hidden="true">‹</span>
         <span class="cel-av">${I('anonimo', { size: 28 })}</span>
@@ -164,7 +164,7 @@
         palco.innerHTML = `
           <p class="enunciado">${esc(a.pergunta)}</p>
           ${NK.dicaHtml(a.dica)}
-          <p class="prog-hunt">Rodada ${rIdx + 1}/${a.rounds.length} — encontrados: <b id="cntHunt">0</b>/${alvo}</p>
+          <p class="prog-hunt">Rodada ${rIdx + 1}/${a.rounds.length}${round.titulo ? ` · ${esc(round.titulo)}` : ''} — encontrados: <b id="cntHunt">0</b>/${alvo}</p>
           ${celularHtml(round)}
           <div class="dica-flutua" id="fbHunt"></div>`;
       } else {
