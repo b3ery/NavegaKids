@@ -1521,3 +1521,11 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
   animation: surge .45s cubic-bezier(.2, 1.6, .4, 1) both, chama 2s .6s ease-in-out 3; }
 .bt-dica .ico-txt { width: 18px; height: 18px; margin: 0; }
 #slotDica:empty { display: none; }
+
+/* Fase 1 · Atividade 1: depois de "Começar a investigar", cursor de lupa e o pedido de amizade chamando */
+.jg.investigando, .jg.investigando * { cursor: url(../img/cursor-lupa.png) 14 14, zoom-in; }
+.jg.investigando .jg-notif { border-radius: 50%; animation: notifBrilha 1.2s ease-in-out infinite; }   /* brilho sem mudar o tamanho (alvo parado) */
+@keyframes notifBrilha { 0%, 100% { box-shadow: 0 0 0 2px var(--yellow); } 50% { box-shadow: 0 0 0 7px rgba(255, 200, 59, .45); } }
+.jg .jg-chip:disabled, .jg .jg-notif:disabled { cursor: default; }
+.lb-investigando { align-self: center; display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 99px; background: var(--yellow); border: 2px solid var(--navy); font-weight: 900; font-size: 13px; color: var(--navy); }
+.lb-investigando .ico-txt { width: 18px; height: 18px; margin: 0; }

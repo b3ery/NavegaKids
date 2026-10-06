@@ -301,22 +301,32 @@
       moedas: ['Aqui são suas moedas', 'Você troca moedas por itens especiais no jogo.']
     };
 
+    /* Roteiro: tela do Joguinho com [COMEÇAR A INVESTIGAR] → DICA [Avançar] → a criança
+       explora a tela com a lupa até achar o pedido de amizade → painel Pendentes.
+       Antes de clicar em "Começar a investigar", a tela fica parada. */
+    function desenharInicio() {
+      palco.innerHTML = `
+        <p class="enunciado">Toque em “Começar a investigar” para usar a lupa.</p>
+        ${jogoHtml(false)}`;
+      $$('.jg-chip, #jgNotif', palco).forEach(b => { b.disabled = true; });
+      $('#btInvestigar').onclick = () => popup({
+        cor: 'y', titulo: I('luneta', { cls: 'ico-txt' }) + ' ' + esc(AC.f?.titulo || 'Perfil Misterioso..?'),
+        texto: a.dica,
+        btns: [{ t: 'Avançar', cls: 'btn-t', fn: desenharExploracao }]
+      });
+    }
+
     function desenharExploracao() {
       palco.innerHTML = `
-        <p class="enunciado">Explore a tela até encontrar algo importante.</p>
+        <p class="enunciado">Use a lupa: explore a tela até encontrar algo importante.</p>
         ${jogoHtml(false)}`;
+      $('.jg', palco).classList.add('investigando');
+      $('#btInvestigar').outerHTML = `<span class="lb-investigando">${I('misterio', { cls: 'ico-txt' })} Investigando...</span>`;
       $$('.jg-chip', palco).forEach(chip => chip.onclick = () => {
         const [titulo, texto] = INFO[chip.dataset.info];
         popup({ cor: 'y', titulo, texto, btns: [{ t: 'Entendi', cls: 'btn-t', fn() {} }] });
       });
-      // roteiro: [COMEÇAR A INVESTIGAR] (ou a notificação) abre a DICA → [Avançar] → painel Pendentes
-      $('#btInvestigar').onclick = $('#jgNotif').onclick = () => {
-        popup({
-          cor: 'y', titulo: I('luneta', { cls: 'ico-txt' }) + ' ' + esc(AC.f?.titulo || 'Perfil Misterioso..?'),
-          texto: a.dica,
-          btns: [{ t: 'Avançar', cls: 'btn-t', fn: desenharPendentes }]
-        });
-      };
+      $('#jgNotif').onclick = desenharPendentes;   // achou o pedido de amizade
     }
 
     function desenharPendentes() {
@@ -325,10 +335,8 @@
         ${jogoHtml(true)}
         <div class="quiz-fb" id="fbChoice" style="display:none"></div>
         <div class="rodape" id="rodapeChoice"></div>`;
-      $('#btInvestigar').onclick = () => popup({
-        cor: 'y', titulo: I('luneta', { cls: 'ico-txt' }) + ' Perfil Misterioso..?', texto: a.dica,
-        btns: [{ t: 'Entendi', cls: 'btn-t', fn() {} }]
-      });
+      $('.jg', palco).classList.add('investigando');
+      $('#btInvestigar').outerHTML = `<span class="lb-investigando">${I('misterio', { cls: 'ico-txt' })} Investigando...</span>`;
       $$('.pedido button', palco).forEach(b => b.onclick = () => {
         const o = a.opcoes[+b.dataset.op];
         $$('.pedido button', palco).forEach(x => x.disabled = true);
@@ -348,7 +356,7 @@
       });
     }
 
-    desenharExploracao();
+    desenharInicio();
   }
 
   /* ============================================================
