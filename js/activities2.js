@@ -406,6 +406,8 @@
         });
         const ok = o ? o.ok : false;
         resultados.push(ok);
+        const bolinha = $$('.quiz-bolinhas i', palco)[qi];
+        if (bolinha) bolinha.className = ok ? 'ok' : 'ruim';
         if (!ok) progresso.registrarErro();
         NK.feedback[ok ? 'acerto' : 'erro']();
         $('#capitaQuiz')?.classList.add(ok ? 'feliz' : 'pensa');
@@ -421,8 +423,11 @@
         $('#rodQuiz').innerHTML = `<button class="btn btn-t" id="btProxQ">${qi + 1 < total ? 'Próxima pergunta' : 'Ver resultado'}</button>`;
         $('#btProxQ').onclick = () => { qi++; if (qi < total) drawQ(); else fimQuiz(); };
         $('#btProxQ').focus({ preventScroll: true });
+        $('#rodQuiz').scrollIntoView({ block: 'nearest', behavior: 'smooth' });   // no celular o feedback fica abaixo da dobra
       }
       $$('.opcao', palco).forEach(b => b.onclick = () => responder(+b.dataset.i));
+      // a barra de cima continua a mesma: rearma a leitura automática para a nova pergunta
+      if (qi > 0) $('.bt-ouvir-principal')?.removeAttribute('data-auto');
     };
 
     const fimQuiz = () => concluirAtividade(a.fbOk);
