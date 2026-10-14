@@ -263,7 +263,7 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .home-frame .hm-mapa    { left: calc(665 * var(--u));  top: calc(143 * var(--u));  width: calc(1032 * var(--u)); height: calc(1005 * var(--u)); z-index: 1; }
 .home-frame .hm-barco2  { left: calc(-34.1 * var(--u)); top: calc(-38 * var(--u)); width: calc(1783.4 * var(--u)); height: calc(1610 * var(--u)); z-index: 2; } /* 2ª instância: só a faixa inferior aparece (topo fica sob o convés) */
 .home-frame .hm-barco   { left: calc(-5 * var(--u));   top: calc(-238 * var(--u)); width: calc(1733 * var(--u)); height: calc(1564 * var(--u)); z-index: 3; }
-.home-frame .hm-pirata  { left: calc(-147 * var(--u)); top: calc(248 * var(--u));  width: calc(1049 * var(--u)); height: calc(1022 * var(--u)); z-index: 4; }
+.home-frame .hm-pirata  { left: calc(-16 * var(--u)); top: calc(153 * var(--u));  width: calc(853 * var(--u)); height: calc(831 * var(--u)); z-index: 4; }
 .home-frame .hm-volante { left: calc(583 * var(--u));  top: calc(733 * var(--u));  width: calc(516 * var(--u));  height: calc(516 * var(--u));  z-index: 4; }
 
 /* balão de fala do pirata (antes o texto ficava por cima do mapa) */
@@ -511,7 +511,7 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .intro-frame .it-fundo   { left: calc(-20 * var(--u)); top: calc(-2 * var(--u)); width: calc(1763 * var(--u)); height: calc(1717 * var(--u)); z-index: 0; filter: blur(calc(9 * var(--u))); }
 .intro-frame .it-barco2  { left: calc(-34.1 * var(--u)); top: calc(-82 * var(--u)); width: calc(1783.4 * var(--u)); height: calc(1610 * var(--u)); z-index: 1; }
 .intro-frame .it-barco   { left: calc(-22 * var(--u)); top: calc(-261 * var(--u)); width: calc(1754.5 * var(--u)); height: calc(1584 * var(--u)); z-index: 2; }
-.intro-frame .it-pirata  { left: calc(-133 * var(--u)); top: calc(483 * var(--u)); width: calc(1018 * var(--u)); height: calc(991 * var(--u)); z-index: 3; }
+.intro-frame .it-pirata  { left: calc(-11 * var(--u)); top: calc(544 * var(--u)); width: calc(747 * var(--u)); height: calc(727 * var(--u)); z-index: 3; }
 .intro-frame .it-volante { left: calc(574 * var(--u)); top: calc(728 * var(--u)); width: calc(518 * var(--u)); height: calc(518 * var(--u)); z-index: 3; }
 .intro-frame .it-interrog { left: calc(1457 * var(--u)); top: calc(453 * var(--u)); width: calc(169 * var(--u)); height: calc(169 * var(--u)); z-index: 3; }
 .intro-frame .it-icone   { left: calc(555 * var(--u)); top: calc(265 * var(--u)); width: calc(114 * var(--u)); height: calc(114 * var(--u)); z-index: 4; }
