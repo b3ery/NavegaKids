@@ -259,7 +259,7 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 }
 .home-frame > .ico { position: absolute; max-width: none; object-fit: fill; pointer-events: none; }
 /* coordenadas = (Y do Figma − 182 da navbar) */
-.home-frame .hm-fundo   { left: calc(-61 * var(--u));  top: calc(-416 * var(--u)); width: calc(1790 * var(--u)); height: calc(1733 * var(--u)); z-index: 0; }
+.home-frame .hm-fundo   { left: calc(-61 * var(--u));  top: 0; width: calc(1790 * var(--u)); height: calc(1733 * var(--u)); z-index: 0; }
 .home-frame .hm-mapa    { left: calc(665 * var(--u));  top: calc(143 * var(--u));  width: calc(1032 * var(--u)); height: calc(1005 * var(--u)); z-index: 1; }
 .home-frame .hm-barco2  { left: calc(-34.1 * var(--u)); top: calc(-38 * var(--u)); width: calc(1783.4 * var(--u)); height: calc(1610 * var(--u)); z-index: 2; } /* 2ª instância: só a faixa inferior aparece (topo fica sob o convés) */
 .home-frame .hm-barco   { left: calc(-5 * var(--u));   top: calc(-238 * var(--u)); width: calc(1733 * var(--u)); height: calc(1564 * var(--u)); z-index: 3; }
@@ -366,10 +366,10 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
   overflow: hidden; isolation: isolate; background: #e9cf9f; color: #1E293B;
 }
 .mapa-frame .ico { position: absolute; max-width: none; object-fit: fill; }
-.mapa-frame .mf-fundo  { left: 0; top: calc(-29 * var(--u)); width: calc(1728 * var(--u)); height: calc(1683 * var(--u)); z-index: 1; pointer-events: none;
+.mapa-frame .mf-fundo  { left: 0; top: 0; width: calc(1728 * var(--u)); height: calc(1683 * var(--u)); z-index: 1; pointer-events: none;
   -webkit-mask-image: linear-gradient(#000 88%, transparent); mask-image: linear-gradient(#000 88%, transparent); } /* funde com a 2ª instância, sem emenda */
 /* 2ª instância do FundoFases: só a areia aparece, completando o frame abaixo de 1654 */
-.mapa-frame .mf-fundo2 { left: 0; top: calc(540 * var(--u)); width: calc(1728 * var(--u)); height: calc(1683 * var(--u)); z-index: 0; pointer-events: none; }
+.mapa-frame .mf-fundo2 { left: 0; top: calc(569 * var(--u)); width: calc(1728 * var(--u)); height: calc(1683 * var(--u)); z-index: 0; pointer-events: none; }
 
 /* ---- card superior ---- */
 .mf-card {
@@ -1804,8 +1804,8 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 /* celular em pé: a cena da home fica no meio da tela, com céu em cima e convés embaixo (sem faixa branca) */
 @media (max-width: 720px) and (orientation: portrait) {
   html { background: var(--navy); }
-  .scene.home { min-height: calc(100svh - 84px); display: flex; flex-direction: column; justify-content: center;
-    background: linear-gradient(180deg, #7fcbf5 0 50%, var(--navy) 50% 100%); }
+  .scene.home { min-height: calc(100svh - 84px); display: flex; flex-direction: column; justify-content: flex-start;
+    background: var(--navy); }
 }
 @media (max-width: 720px) and (orientation: portrait) {
   .home-frame .hm-balao h1 { font-size: 17px; }
@@ -1817,7 +1817,7 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
   .scene.diario { overflow: hidden; --u: calc(100cqw / 1400); min-height: calc(100svh - 84px); }
   .scene.diario .diario-frame { width: calc(1728 * var(--u)); margin-left: calc(-164 * var(--u)); }
   .scene.diario .dr-titulo { font-size: 22px; }
-  .scene.ilhas { min-height: calc(100svh - 84px); background: linear-gradient(180deg, #7fcbf5 0, #29aadb 100%); }
+  .scene.ilhas { min-height: calc(100svh - 84px); background: #4cc0e6; }
   .ilhas-frame .il-explorar { min-height: 38px; font-size: 15px; font-weight: 800; }
 }
 
@@ -1833,7 +1833,7 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 }
 @media (pointer: coarse) { .btn-sm { min-height: 40px; padding: 8px 14px; } }
 @media (max-width: 720px) and (orientation: portrait) {
-  .scene.ilhas { display: flex; flex-direction: column; justify-content: center; }
+  .scene.ilhas { display: flex; flex-direction: column; justify-content: flex-start; }
 }
 /* Fase 1 · Atividade 1 no celular: o botão "Começar a investigar" ficava fora da tela */
 @media (max-width: 820px) {
@@ -2039,9 +2039,11 @@ body.tela-prologo .topbar { display: none; }
    Ilhas: fundo geral + ilhas desenhadas à mão, centralizadas
    (frame 1728 × 935; o horizonte do fundo geral fica em y 840 da imagem)
    ============================================================ */
-.ilhas-frame .il-fundo { top: calc(-300 * var(--u)); height: calc(1683 * var(--u)); }
+/* regra: o fundo começa logo abaixo do menu (top 0); o horizonte fica em y 840 */
+.ilhas-frame { height: calc(1180 * var(--u)); }
+.ilhas-frame .il-fundo { top: 0; height: calc(1683 * var(--u)); }
 .ilhas-frame .il-ilha {
-  position: absolute; top: calc(120 * var(--u)); width: calc(480 * var(--u)); height: calc(520 * var(--u));
+  position: absolute; top: calc(450 * var(--u)); width: calc(480 * var(--u)); height: calc(520 * var(--u));
   display: flex; flex-direction: column; align-items: center; justify-content: flex-end; z-index: 1; pointer-events: none;
 }
 .ilhas-frame .il-ilha1 { left: calc(48 * var(--u)); }
@@ -2050,23 +2052,26 @@ body.tela-prologo .topbar { display: none; }
 .ilhas-frame .il-desenho { position: static; width: auto; height: auto; max-width: 100%; max-height: calc(430 * var(--u)); filter: drop-shadow(0 calc(10 * var(--u)) 0 rgba(30, 41, 59, .12)); }
 .ilhas-frame .il-bandeira { position: relative; align-self: flex-start; margin: 0 0 calc(-95 * var(--u)) 14%; z-index: 2; width: calc(92 * var(--u)); height: calc(107 * var(--u)); }
 .ilhas-frame .il-bandeira svg { width: 100%; height: 100%; display: block; }
-.ilhas-frame .il-explorar { top: calc(690 * var(--u)); }
+.ilhas-frame .il-explorar { top: calc(1010 * var(--u)); }
 .ilhas-frame .il-explorar1 { left: calc(78 * var(--u)); }
 .ilhas-frame .il-explorar2 { left: calc(654 * var(--u)); }
 .ilhas-frame .il-explorar3 { left: calc(1230 * var(--u)); }
 
 /* Carregamento: fundo geral com o navio no lugar do navio do fundo antigo (x 200–820, y 490–1200
    da imagem de 1728 × 1683). A cena ocupa a altura da tela e mostra o navio inteiro no mar. */
-.carregando-img { height: calc(100svh - max(56px, calc(182 * var(--u)))); overflow: hidden; background: #8fd0f5; }
-.carregando-img .carr-cena { position: absolute; left: 0; bottom: 0; width: 100%; aspect-ratio: 1728 / 1683; transform: translateY(22%); }
+.carregando-img { height: calc(100svh - max(56px, calc(182 * var(--u)))); overflow: hidden; background: #8fd0f5 url(../img/fundogeral.png) 0 0 / 100% 100% no-repeat; }   /* laterais: o mesmo fundo na mesma altura, horizonte alinhado */
+/* regra: o fundo começa logo abaixo do menu; a cena cabe na altura da tela e o navio aparece inteiro */
+.carregando-img .carr-cena { position: absolute; top: 0; left: 50%; height: 100%; aspect-ratio: 1728 / 1683; transform: translateX(-50%); }
 .carregando-img .fundo-full { display: block; width: 100%; height: 100%; }
 .carregando-img .carr-navio { position: absolute; left: -0.35%; top: 8.85%; width: 72.6%; height: auto; pointer-events: none;
   animation: navioMar 3s ease-in-out infinite; transform-origin: 30% 80%; }
 @keyframes navioMar { 0%, 100% { transform: rotate(-2deg) translateY(0); } 50% { transform: rotate(2deg) translateY(-8px); } }
-/* celular em pé: a cena fica mais larga que a tela, com o navio no meio */
-@media (orientation: portrait) {
-  .carregando-img .carr-cena { left: 50%; width: calc((100svh - 70px) * 1.15); transform: translate(-29.5%, 12%); }
-}
+/* celular em pé: a cena preenche a largura (o fundo continua começando no menu) */
+@media (orientation: portrait) { .carregando-img .carr-cena { height: auto; width: max(100%, calc(100svh * .8)); left: 50%; transform: translateX(-29.5%); } }
 @media (prefers-reduced-motion: reduce) { .carregando-img .carr-navio { animation: none; } }
 .carregando .txt { z-index: 2; }
 @media (max-width: 820px) { .carregando .txt { position: relative; margin: 6vh auto 0; background: rgba(255, 249, 230, .85); padding: 10px 16px; border-radius: 16px; } }
+/* carregamento: bordas da cena suavizadas, para o recorte não aparecer */
+.carregando-img .carr-cena { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%); }
+@media (orientation: portrait) { .carregando-img .carr-cena { -webkit-mask-image: none; mask-image: none; } }
+@media (max-width: 820px) { .carregando .txt { position: absolute; left: 50%; bottom: 8%; top: auto; right: auto; transform: translateX(-50%); margin: 0; width: 86%; max-width: 86%; } }
