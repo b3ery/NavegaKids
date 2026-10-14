@@ -2084,3 +2084,7 @@ body.tela-prologo .topbar { display: none; }
   font-size: calc(36 * var(--u)); font-weight: 800; color: var(--navy);
 }
 .mf-linhas line { stroke-width: 3; stroke-opacity: .7; }
+
+/* piratinha (usuario.png): o desenho fica à esquerda dentro da imagem; nos usos pequenos
+   (lobby, avatar do chat, guardiões, baú, popups) ele é deslocado para ficar no centro */
+img[data-k="usuario"]:not(.hm-pirata):not(.it-pirata) { translate: 14.8% 0; }
