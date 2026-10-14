@@ -229,7 +229,7 @@ flowchart LR
 | ♿ **Acessibilidade** | ✅ | Respeita "reduzir movimento", textos alternativos e navegação por teclado |
 | 🧪 **Modo de teste** | ✅ | `?dev=1` libera todas as fases |
 | **Modos por idade** | ✅ | Marujo (8 anos): voz ligada, quiz sem tempo e dicas óbvias (botão "Dica" sempre na barra de cima); Capitão (9 e 10 anos): desafio de 15 s, dicas sutis (o botão "Dica" aparece na barra de cima depois de um tempo pensando ou de 2 erros) e voz só se a criança ligar. Escolha ao digitar o nome; no Diário, o botão "Nível" troca |
-| **Voz que lê os textos** | ✅ | Um único botão "Voz: ligada / desligada" nas atividades, aberturas e Missões; ligado, lê a tela, os popups e os feedbacks sozinho. Vem ligado no Marujo e desligado no Capitão. Em Missões, "Trocar voz" escolhe a voz. Toca a voz neural gravada (pasta audios/) ou, sem ela, a voz do navegador |
+| **Voz que lê os textos** | ✅ | Um único botão "Voz: ligada / desligada" nas atividades, aberturas e Missões; ligado, lê a tela, os popups e os feedbacks sozinho. Vem ligado no Marujo e desligado no Capitão. Em Missões, "Trocar voz" escolhe a voz. Usa a voz do navegador (no Edge e no Chrome ela é mais natural) |
 | **Incentivo** | ✅ | Comemoração de acertos seguidos, "Fase perfeita" e recado de que errar faz parte, com botão para refazer a fase |
 | **Minhas Conquistas** | ✅ | Painel no Diário com estrelas por fase, selos e certificado |
 
@@ -282,8 +282,6 @@ NavegaKids/
 │   └── router.js       # As telas: Início, Ilhas, Mapa, Abertura, Missões, Conclusão, Diário, Certificado
 ├── img/                # Artes e ícones do jogo
 ├── videos/             # Vídeos das fases 9 e 13
-├── audios/             # Voz gravada do botão "Ouvir" (frases.json, manifest.json e os .mp3)
-├── ferramentas/        # extrair_frases.mjs e gerar_audios.mjs (geram a voz gravada, em JavaScript)
 └── README.md           # Este arquivo
 ```
 
@@ -317,17 +315,8 @@ Para trocar uma arte, coloque o PNG em `img/` e ajuste o nome em `js/config.js`.
 
 </div>
 
-### Voz do "Ouvir" (áudios gravados com voz neural)
-Sem áudios, o botão "Ouvir" usa a voz do navegador (no Edge e no Chrome ela é bem melhor). Para uma voz natural em qualquer aparelho, grave as frases com uma API de voz neural. A chave da API fica só no computador de quem gera; o site publica apenas os `.mp3`.
-
-1. Se os textos mudaram, atualize a lista de frases: `node ferramentas/extrair_frases.mjs`
-2. Grave os áudios (escolha uma API). Tudo em JavaScript, com o Node.js:
-   - **Grátis, sem chave** (vozes do Edge, padrão Thalita): `npm install --no-save msedge-tts` e depois `node ferramentas/gerar_audios.mjs`
-   - **Google Cloud Text-to-Speech** (oficial): defina `GOOGLE_TTS_KEY` e rode `node ferramentas/gerar_audios.mjs --api google`
-   - **Azure AI Speech** (oficial): defina `AZURE_SPEECH_KEY` e `AZURE_SPEECH_REGION` e rode `node ferramentas/gerar_audios.mjs --api azure`
-3. Publique a pasta `audios/` (commit e push). O jogo passa a tocar as gravações sozinho.
-
-Opções: `--voz` troca a voz, `--refazer` regrava tudo e `--limite 5` grava só 5 frases para testar.
+### Voz do "Ouvir"
+O botão "Voz" usa a voz do próprio navegador (no Microsoft Edge e no Google Chrome ela é bem mais natural). Em Missões, "Trocar voz" deixa escolher entre as vozes em português do aparelho.
 
 ### Vídeos
 Coloque o `.mp4` em `videos/` e adicione `video: "videos/nome.mp4"` na atividade do tipo `explain` em `js/data.js`.

@@ -45,9 +45,7 @@
       aria-label="Voz que lê os textos">${ICONE_SOM}<span>Voz: <b>${on ? 'ligada' : 'desligada'}</b></span></button>`;
   }
 
-  /* ---------- texto → frases → chave do áudio ----------
-     Funções puras, usadas aqui e em ferramentas/extrair_frases.mjs: o mesmo texto gera a
-     mesma chave nos dois lados, e é por ela que se acha o áudio gravado (audios/<chave>.mp3). */
+  /* ---------- texto para a fala ---------- */
 
   /** Ajustes para a fala: "_" vira espaço, "0/3" vira "0 de 3", pontuação repetida some. */
   function prepararFala(texto) {
@@ -60,16 +58,6 @@
       .replace(/\s+/g, ' ')
       .trim();
   }
-  /** Divide em frases (cada frase tem o seu áudio). */
-  const frasesDe = texto => (prepararFala(texto).match(/[^.!?…]+[.!?…]*/g) || []).map(f => f.trim()).filter(f => /[\p{L}\p{N}]/u.test(f));
-  /** Chave da frase: minúsculas, sem pontuação nas pontas, espaços únicos → hash FNV-1a (8 dígitos hex). */
-  function chaveFrase(frase) {
-    const n = frase.toLowerCase().replace(/[“”"«»]/g, '').replace(/^[\s.,;:!?…-]+|[\s.,;:!?…-]+$/g, '').replace(/\s+/g, ' ');
-    let h = 0x811c9dc5;
-    for (const ch of n) { h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; }
-    return h.toString(16).padStart(8, '0');
-  }
-
   /* partes que só atrapalham na leitura: o nome do contato em cada balão (já foi lido no
      topo do chat), "online", os botões do rodapé (Avançar, Voltar…), contadores e o "Ouvir" */
   const NAO_LER = '.bolha .msg small, .quiz-quem, .letra, .vm-selo, .chat-head small, .rodape, .bt-ouvir, .prog-hunt, .quiz-top, .popup .btns, .popup .x';
@@ -84,18 +72,6 @@
     escondidos.forEach(([x, d]) => { x.style.display = d; });
     return prepararFala(partes.join('\n'));
   }
-
-  /* ---------- áudios gravados (voz neural) ----------
-     ferramentas/gerar_audios.mjs grava cada frase do jogo com uma voz neural (API de voz) em
-     audios/<chave>.mp3 e lista as gravadas em audios/manifest.json. Se o pacote existir, o
-     "Ouvir" toca as gravações; o que não tiver gravação (nome da criança, por exemplo) sai
-     na voz do navegador. Sem pacote, tudo sai na voz do navegador, como antes. */
-  let gravadas = null;   // Set de chaves gravadas, ou null
-  let vozGravada = '';
-  fetch('audios/manifest.json', { cache: 'no-cache' })
-    .then(r => (r.ok ? r.json() : null))
-    .then(m => { if (m && Array.isArray(m.arquivos) && m.arquivos.length) { gravadas = new Set(m.arquivos); vozGravada = m.voz || ''; } })
-    .catch(() => {});
 
   /* ---------- voz do navegador (reserva) ----------
      Forçar o tom agudo deixa a voz robótica; o que faz diferença é escolher a MELHOR voz do
@@ -141,7 +117,6 @@
   let botaoFalando = null;
   let avisouRobotica = false;
   let sessao = 0;          // muda a cada "parar": callbacks de falas antigas são ignorados
-  let audioAtual = null;
 
   function marcar(bt) {
     botaoFalando = bt;
@@ -151,7 +126,6 @@
   function parar() {
     sessao++;
     if (temVoz) window.speechSynthesis.cancel();
-    if (audioAtual) { audioAtual.pause(); audioAtual = null; }
     marcar(null);
   }
 
@@ -182,38 +156,15 @@
     const minha = sessao;
     const voz = vozForcada || escolherVoz();
 
-    // fila: frases gravadas viram áudio; frases seguidas sem gravação são faladas juntas
-    const fila = [];
-    frasesDe(texto).forEach(f => {
-      const chave = chaveFrase(f);
-      if (!vozForcada && gravadas?.has(chave)) fila.push({ audio: `audios/${chave}.mp3`, texto: f });
-      else if (fila.length && !fila[fila.length - 1].audio) fila[fila.length - 1].texto += ' ' + f;
-      else fila.push({ texto: f });
-    });
-    if (!fila.length) return;
-
-    const usaSintese = fila.some(it => !it.audio);
-    if (usaSintese && !vozForcada && !avisouRobotica && !gravadas && vozesPt().length && !temVozNatural()) {
+    const fala = prepararFala(texto);
+    if (!fala) return;
+    if (!vozForcada && !avisouRobotica && vozesPt().length && !temVozNatural()) {
       avisouRobotica = true;
       toast('Dica: no Microsoft Edge ou no Chrome a voz fica bem mais natural.');
     }
-    if (usaSintese && !temVoz && !gravadas) return;
-
+    if (!temVoz) return;
     marcar(bt);
-    let i = 0;
-    const proximo = () => {
-      if (minha !== sessao) return;
-      if (i >= fila.length) { if (botaoFalando === bt) marcar(null); return; }
-      const it = fila[i++];
-      if (!it.audio) { sintetizar(it.texto, voz, proximo); return; }
-      const a = new Audio(it.audio);
-      audioAtual = a;
-      a.playbackRate = progresso.modo() === 'marujo' ? 0.92 : 1;
-      a.onended = proximo;
-      a.onerror = () => { if (minha === sessao) sintetizar(it.texto, voz, proximo); };   // sem o arquivo: voz do navegador
-      a.play().catch(a.onerror);
-    };
-    proximo();
+    sintetizar(fala, voz, () => { if (minha === sessao && botaoFalando === bt) marcar(null); });
   }
 
   /* Leitura automática (progresso.vozAuto): no Marujo (8 anos) vem ligada; no Capitão
@@ -301,5 +252,5 @@
     }
   };
 
-  Object.assign(NK, { dicaHtml, dicaDoNivel, botaoOuvir, pararVoz: parar, feedback, voz: { temVoz, listaVozes, temVozNatural, ehNatural, escolherVoz, vozSalva, salvarVoz, falar, prepararFala, frasesDe, chaveFrase, temGravacao: () => !!gravadas, vozGravada: () => vozGravada } });
+  Object.assign(NK, { dicaHtml, dicaDoNivel, botaoOuvir, pararVoz: parar, feedback, voz: { temVoz, listaVozes, temVozNatural, ehNatural, escolherVoz, vozSalva, salvarVoz, falar, prepararFala } });
 })();
