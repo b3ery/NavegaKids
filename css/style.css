@@ -263,12 +263,12 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .home-frame .hm-mapa    { left: calc(665 * var(--u));  top: calc(143 * var(--u));  width: calc(1032 * var(--u)); height: calc(1005 * var(--u)); z-index: 1; }
 .home-frame .hm-barco2  { left: calc(-34.1 * var(--u)); top: calc(-38 * var(--u)); width: calc(1783.4 * var(--u)); height: calc(1610 * var(--u)); z-index: 2; } /* 2ª instância: só a faixa inferior aparece (topo fica sob o convés) */
 .home-frame .hm-barco   { left: calc(-5 * var(--u));   top: calc(-238 * var(--u)); width: calc(1733 * var(--u)); height: calc(1564 * var(--u)); z-index: 3; }
-.home-frame .hm-pirata  { left: calc(-16 * var(--u)); top: calc(340 * var(--u));  width: calc(853 * var(--u)); height: calc(831 * var(--u)); z-index: 4; }
+.home-frame .hm-pirata  { left: calc(-16 * var(--u)); top: calc(490 * var(--u));  width: calc(853 * var(--u)); height: calc(831 * var(--u)); z-index: 4; }
 .home-frame .hm-volante { left: calc(583 * var(--u));  top: calc(733 * var(--u));  width: calc(516 * var(--u));  height: calc(516 * var(--u));  z-index: 4; }
 
 /* balão de fala do pirata (antes o texto ficava por cima do mapa) */
 .home-frame .hm-balao {
-  position: absolute; z-index: 6; left: calc(320 * var(--u)); top: calc(150 * var(--u)); width: calc(740 * var(--u));
+  position: absolute; z-index: 6; left: calc(320 * var(--u)); top: calc(270 * var(--u)); width: calc(740 * var(--u));
   background: #FFF9E6; border: max(2px, calc(5 * var(--u))) solid #1E293B; border-radius: calc(46 * var(--u));
   padding: calc(30 * var(--u)) calc(42 * var(--u)); box-sizing: border-box; text-align: center; color: #1E293B;
   box-shadow: 0 calc(12 * var(--u)) 0 rgba(30, 41, 59, .25);
