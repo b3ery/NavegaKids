@@ -2034,3 +2034,6 @@ body.tela-prologo .topbar { display: none; }
 }
 .pr-ilhas figure { display: flex; flex-direction: column; align-items: center; }
 .pr-ilhas img { width: clamp(90px, 16vw, 190px); height: clamp(80px, 13vw, 160px); object-fit: contain; }
+/* tela "carregando": o desenho cobre a tela toda, com o navio à vista */
+.carregando-img { height: calc(100svh - max(56px, calc(182 * var(--u)))); overflow: hidden; }
+.carregando-img .fundo-full { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 30% 62%; }

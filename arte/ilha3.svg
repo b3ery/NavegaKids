@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1728" height="1683" viewBox="0 0 1728 1683"><g>
+    <ellipse cx="868" cy="1100" rx="285.2" ry="32.2" fill="#FFFFFF" opacity=".45"/>
+    <ellipse cx="868" cy="1095.0714285714287" rx="239.20000000000002" ry="46" fill="#FFE3A1" stroke="#1E293B" stroke-width="6.571428571428571" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M665.6 1085.2142857142858
+      C 684 899.2192, 757.6 837.15968, 812.8 786.0518400000001
+      C 845 742.24512, 895.6 734.944, 927.8 786.0518400000001
+      C 983 851.76192, 1052 917.472, 1070.4 1085.2142857142858 Z"
+      fill="#FF7A59" stroke="#1E293B" stroke-width="6.571428571428571" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M895.6 749.54624 C 960 844.4608000000001, 1015.2 917.472, 1042.8 1078.642857142857
+      L 1070.4 1085.2142857142858 C 1052 917.472, 983 851.76192, 927.8 786.0518400000001 Z"
+      fill="#E2593A" opacity=".7"/>
+    <path d="M776 844.4608000000001 q 23 21.90336 46 0 M877.2 917.472 q 23 21.90336 46 0 M748.4 968.57984 q 23 21.90336 46 0"
+      fill="none" stroke="#E2593A" stroke-width="8.214285714285714" stroke-linecap="round"/>
+    <path d="M794.4 807.9552 C 822 727.64288, 923.2 720.34176, 941.6 807.9552
+      Q 904.8 829.85856 877.2 807.9552 Q 840.4 837.15968 794.4 807.9552 Z"
+      fill="#2EC4B6" stroke="#1E293B" stroke-width="6.571428571428571" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M665.6 1085.2142857142858 Q 693.2 990.4832 757.6 1005.0854400000001 Q 785.2 1048.89216 840.4 1034.28992
+      Q 895.6 1078.09664 960 1041.59104 Q 1015.2 1056.19328 1070.4 1085.2142857142858 Z"
+      fill="#2EC4B6" stroke="#1E293B" stroke-width="6.571428571428571" stroke-linejoin="round" stroke-linecap="round"/>
+    <g transform="translate(711.6 1080.2857142857142) scale(0.944642857142857 0.944642857142857)">
+  <path d="M0 0 Q 8 -60 -6 -120" fill="none" stroke="#1E293B" stroke-width="22" stroke-linecap="round"/>
+  <path d="M0 0 Q 8 -60 -6 -120" fill="none" stroke="#C27C4A" stroke-width="12" stroke-linecap="round"/>
+  <g transform="translate(-6 -122)">
+    <path d="M0 0 Q -40 -30 -78 -6 Q -40 -12 0 6 Z" fill="#2EC4B6" stroke="#1E293B" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M0 0 Q 42 -32 82 -4 Q 40 -10 0 6 Z" fill="#2EC4B6" stroke="#1E293B" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M0 2 Q -24 -50 -4 -74 Q -2 -40 6 0 Z" fill="#1C9F8D" stroke="#1E293B" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M0 2 Q 30 -44 58 -46 Q 26 -24 6 6 Z" fill="#1C9F8D" stroke="#1E293B" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="-4" cy="6" r="9" fill="#8A5A2B" stroke="#1E293B" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="10" cy="8" r="9" fill="#8A5A2B" stroke="#1E293B" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+  </g></g>
+    <g transform="translate(1033.6 1081.9285714285713) scale(-0.8214285714285714 0.8214285714285714)">
+  <path d="M0 0 Q 8 -60 -6 -120" fill="none" stroke="#1E293B" stroke-width="22" stroke-linecap="round"/>
+  <path d="M0 0 Q 8 -60 -6 -120" fill="none" stroke="#C27C4A" stroke-width="12" stroke-linecap="round"/>
+  <g transform="translate(-6 -122)">
+    <path d="M0 0 Q -40 -30 -78 -6 Q -40 -12 0 6 Z" fill="#2EC4B6" stroke="#1E293B" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M0 0 Q 42 -32 82 -4 Q 40 -10 0 6 Z" fill="#2EC4B6" stroke="#1E293B" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M0 2 Q -24 -50 -4 -74 Q -2 -40 6 0 Z" fill="#1C9F8D" stroke="#1E293B" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M0 2 Q 30 -44 58 -46 Q 26 -24 6 6 Z" fill="#1C9F8D" stroke="#1E293B" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="-4" cy="6" r="9" fill="#8A5A2B" stroke="#1E293B" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="10" cy="8" r="9" fill="#8A5A2B" stroke="#1E293B" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+  </g></g>
+    <g transform="translate(785.2 1075.357142857143) scale(-0.6571428571428571 0.6571428571428571)">
+  <path d="M0 0 Q 8 -60 -6 -120" fill="none" stroke="#1E293B" stroke-width="22" stroke-linecap="round"/>
+  <path d="M0 0 Q 8 -60 -6 -120" fill="none" stroke="#C27C4A" stroke-width="12" stroke-linecap="round"/>
+  <g transform="translate(-6 -122)">
+    <path d="M0 0 Q -40 -30 -78 -6 Q -40 -12 0 6 Z" fill="#2EC4B6" stroke="#1E293B" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M0 0 Q 42 -32 82 -4 Q 40 -10 0 6 Z" fill="#2EC4B6" stroke="#1E293B" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M0 2 Q -24 -50 -4 -74 Q -2 -40 6 0 Z" fill="#1C9F8D" stroke="#1E293B" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M0 2 Q 30 -44 58 -46 Q 26 -24 6 6 Z" fill="#1C9F8D" stroke="#1E293B" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="-4" cy="6" r="9" fill="#8A5A2B" stroke="#1E293B" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><circle cx="10" cy="8" r="9" fill="#8A5A2B" stroke="#1E293B" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+  </g></g>
+    <g transform="translate(868 745.8956800000001) scale(1.0267857142857142)">
+  <rect x="-7" y="-150" width="14" height="160" rx="7" fill="#E0A91D" stroke="#1E293B" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="0" cy="-156" r="12" fill="#FFC83B" stroke="#1E293B" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M7 -142 H96 L78 -112 L96 -82 H7 Z" fill="#2EC4B6" stroke="#1E293B" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+  <text x="46" y="-98" text-anchor="middle" font-family="Fredoka, Nunito, Arial Rounded MT Bold, Arial, sans-serif" font-weight="800" font-size="40" fill="#FFFFFF" stroke="#1E293B" stroke-width="3" paint-order="stroke">3</text>
+</g>
+  </g></svg>
