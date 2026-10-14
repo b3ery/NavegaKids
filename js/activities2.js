@@ -32,7 +32,7 @@
               <div class="dentro">${itens.filter(i => i.colocado === b.id).map(i => `<span class="item no-balde">${esc(i.t)} ${I('correto', { cls: 'ico-txt' })}</span>`).join('')}</div>
             </div>`).join('')}
         </div>
-        <div class="itens" id="itensWrap">${soltos.length ? soltos.map(itemHtml).join('') : '<span style="font-weight:800;color:#1c9f8d">Tudo classificado!</span>'}</div>
+        <div class="itens" id="itensWrap">${soltos.length ? soltos.map(itemHtml).join('') : '<span style="font-weight:800;color:var(--teal-d)">Tudo classificado!</span>'}</div>
         <div class="dica-flutua" id="fbClass"></div>`;
 
       // clique: seleciona um item e depois toca no balde (acessível em touch)
@@ -229,7 +229,7 @@
         <div class="seq-slots">
           ${slots.map((s, i) => `<div class="slot ${s !== null ? 'cheio' : ''}" data-s="${i}" ${s !== null ? 'role="button" tabindex="0" aria-label="Tirar este cartão"' : ''}>
             <span class="n">${i + 1}</span>
-            ${s !== null ? `<span class="e">${icone(passos[s])}</span><span>${esc(passos[s].t)}</span><span class="tirar" aria-hidden="true">×</span>` : '<span style="color:#999">toque para preencher</span>'}
+            ${s !== null ? `<span class="e">${icone(passos[s])}</span><span>${esc(passos[s].t)}</span><span class="tirar" aria-hidden="true">×</span>` : '<span style="color:var(--muted)">toque para preencher</span>'}
           </div>`).join('')}
         </div>
         <div class="cartoes">
@@ -295,7 +295,7 @@
             <div class="chat-head">${I('usuario', { size: 30 })}<span>Sua mensagem</span></div>
             <div class="chat-body">
               <div class="bolha eu"><span class="av">${I('usuario')}</span><span class="msg">${
-                escolha.some(e => e === null) ? '<i style="color:#999">escolha um bloco de cada grupo…</i>'
+                escolha.some(e => e === null) ? '<i style="color:var(--muted)">escolha um bloco de cada grupo…</i>'
                 : esc(a.grupos.map((g, gi) => g.blocos[escolha[gi]].t).join(' '))
               }</span></div>
             </div>

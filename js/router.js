@@ -464,7 +464,7 @@
      ============================================================ */
   /* confetes coloridos caindo (posição, cor, atraso e duração variados) */
   function confetes(n) {
-    const cores = ['#FFC83B', '#2ec4b0', '#ff7a59', '#4EA8DE', '#ffffff'];
+    const cores = ['#FFC83B', '#2EC4B6', '#ff7a59', '#4EA8DE', '#ffffff'];
     return Array.from({ length: n }, (_, i) => {
       const esq = (i * 37) % 100, cor = cores[i % cores.length];
       const dur = 3 + (i % 5) * .6, atraso = -((i * 0.73) % dur), dx = ((i % 7) - 3) * 18;
