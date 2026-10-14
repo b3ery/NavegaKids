@@ -177,10 +177,11 @@
     return w;
   }
 
-  function toast(msg) {
+  function toast(msg, icone) {
     $$('.toast').forEach(t => t.remove());
     const t = document.createElement('div');
-    t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg;
+    t.className = 'toast' + (icone ? ' com-icone' : ''); t.setAttribute('role', 'status');
+    t.innerHTML = (icone ? I(icone, { cls: 'toast-ico' }) : '') + `<span>${esc(msg)}</span>`;
     document.body.appendChild(t);
     setTimeout(() => t.remove(), 2800);
   }
@@ -200,11 +201,19 @@
       <a class="logo" href="#/home">NavegaKids</a>
       <nav class="nav" aria-label="Menu principal">${it('#/home', 'home', 'Início')}${it('#/ilhas', 'ilhas', 'Ilhas')}${it('#/missoes', 'missoes', 'Missões')}${it('#/diario', 'diario', 'Diário do Capitão')}</nav>
       <div class="hud">
+        ${ativo !== 'home' ? `<button class="timao-btn" id="timaoBtn" aria-label="Voltar para o Início" title="Voltar para o Início">${I('timao')}</button>` : ''}
         ${NK.musica ? NK.musica.botaoHtml() : ''}
         <span class="pontosbadge ${_destacar ? 'bump' : ''}" aria-label="Seus pontos: ${pontos}">${I('moedas')}<b>${pontos}</b></span>
         <button class="starbadge ${_destacar ? 'bump' : ''}" id="starBtn" aria-label="Suas estrelas: ${estrelas}">${I('estrela')}<b>${estrelas}</b></button>
       </div>`;
     _destacar = false;
+    // timão: gira como se o navio virasse e então volta para o Início
+    const tm = $('#timaoBtn');
+    if (tm) tm.onclick = () => {
+      if (tm.classList.contains('girando')) return;
+      tm.classList.add('girando');
+      setTimeout(() => go('#/home'), 750);
+    };
     const mb = $('#musicaBtn');
     if (mb) mb.onclick = () => NK.musica.alternar();
     $('#starBtn').onclick = () => popup({

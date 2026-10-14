@@ -34,6 +34,7 @@
         fase: () => telaMapaFase(p),
         missoes: telaMissoes,
         abertura: () => telaAbertura(p),
+        prologo: telaPrologo,
         atividade: () => telaAtividade(p),
         conclusao: () => telaConclusao(p),
         diario: telaDiario,
@@ -337,6 +338,92 @@
   }
 
   /* ============================================================
+     INTRODUÇÃO DO CAPITÃO GANCHO (antes da Fase 1)
+     Cena de game: título, o navio cruza o mar, o Capitão chega voando e fala
+     em balões com texto "digitando". Tocar avança; "Pular" vai direto à Fase 1.
+     ============================================================ */
+  function telaPrologo() {
+    const nome = progresso.nome() || 'navegador';
+    const falas = NK.PROLOGO.map(p => ({ ...p, t: p.t.replace('{nome}', nome) }));
+    let passo = 0, digitando = null;
+
+    montar(`
+    <div class="scene prologo" id="prologo" data-cena="${falas[0].cena}">
+      <div class="pr-ceu" aria-hidden="true"><i class="pr-sol"></i><i class="pr-nuvem n1"></i><i class="pr-nuvem n2"></i><i class="pr-nuvem n3"></i></div>
+      <div class="pr-titulo" aria-hidden="true"><b>NavegaKids</b><small>uma aventura nos mares da internet</small></div>
+      <span class="pr-navio" aria-hidden="true">${I('navioPirata', { alt: '' })}</span>
+      <div class="pr-mar" aria-hidden="true"><i class="pr-onda"></i><i class="pr-onda o2"></i><i class="pr-onda o3"></i></div>
+      <div class="pr-props pr-ilhas" aria-hidden="true">
+        ${ILHAS.map((il, i) => `<figure style="--i:${i};--cor:${il.cor}">${I(il.icone, { alt: '' })}<figcaption>${esc(il.nome)}</figcaption></figure>`).join('')}
+      </div>
+      <div class="pr-props pr-premios" aria-hidden="true">
+        <span style="--i:0">${I('estrela', { alt: '' })}</span><span style="--i:1">${I('medalha', { alt: '' })}</span><span style="--i:2">${I('dica', { alt: '' })}</span>
+      </div>
+      <div class="pr-palco">
+        <span class="pr-capitao" id="prCapitao">${I('capitao', { alt: 'Capitão Gancho' })}</span>
+        <div class="pr-balao" id="prBalao">
+          <small>Capitão Gancho</small>
+          <p class="pr-texto" id="prTexto" aria-hidden="true"></p>
+          <p class="sr" id="prFala" aria-live="polite"></p>
+          <div class="pr-base">
+            <span class="pr-bolinhas" aria-hidden="true">${falas.map((_, i) => `<i data-p="${i}"></i>`).join('')}</span>
+            <button class="btn btn-t pr-seguir" id="prSeguir">Continuar</button>
+          </div>
+        </div>
+      </div>
+      <div class="pr-topo">
+        ${NK.botaoOuvir('#prFala', { cls: 'pr-ouvir' })}
+        <button class="btn btn-sm btn-ghost pr-pular" id="prPular">Pular</button>
+      </div>
+    </div>`, 'ilhas');
+    document.body.classList.add('tela-prologo');
+    NK.onLeave(() => document.body.classList.remove('tela-prologo'));
+
+    const fim = () => { progresso.marcarPrologoVisto(); go('#/abertura/1'); };
+    const mostrar = (i, primeira) => {
+      const f = falas[i];
+      $('#prologo').dataset.cena = f.cena;
+      $$('.pr-bolinhas i').forEach((b, bi) => b.className = bi < i ? 'ok' : bi === i ? 'agora' : '');
+      $('#prSeguir').textContent = i === falas.length - 1 ? 'Vamos navegar!' : 'Continuar';
+      $('#prFala').textContent = f.t;
+      const balao = $('#prBalao');
+      balao.classList.remove('entra'); void balao.offsetWidth; balao.classList.add('entra');
+      $('#prCapitao').classList.remove('fala'); void balao.offsetWidth; $('#prCapitao').classList.add('fala');
+      // texto aparecendo letra por letra
+      const alvo = $('#prTexto');
+      alvo.textContent = '';
+      let n = 0;
+      if (digitando) clearInterval(digitando);
+      digitando = NK.every(() => {
+        n += 1;
+        alvo.textContent = f.t.slice(0, n);
+        if (n >= f.t.length) { clearInterval(digitando); digitando = null; }
+      }, 32);
+      // a primeira fala é lida pela leitura automática da tela; as outras, aqui
+      if (!primeira && progresso.vozAuto()) NK.voz.falar(f.t, $('.bt-ouvir-principal'));
+    };
+    const seguir = () => {
+      if (digitando) {   // primeiro toque completa o texto; o segundo avança
+        clearInterval(digitando); digitando = null;
+        $('#prTexto').textContent = falas[passo].t;
+        return;
+      }
+      NK.pararVoz?.();
+      if (passo >= falas.length - 1) return fim();
+      passo += 1;
+      mostrar(passo);
+    };
+
+    $('#prSeguir').onclick = e => { e.stopPropagation(); seguir(); };
+    $('#prPular').onclick = e => { e.stopPropagation(); NK.pararVoz?.(); fim(); };
+    $('.pr-palco').onclick = e => { if (!e.target.closest('button')) seguir(); };
+    // o título aparece primeiro; o Capitão chega voando e começa a falar
+    $('#prFala').textContent = falas[0].t;
+    later(() => mostrar(0, true), 2300);
+    later(() => $('#prSeguir')?.focus({ preventScroll: true }), 2400);
+  }
+
+  /* ============================================================
      ABERTURA DE FASE (introdução)
      ============================================================ */
   function telaAbertura(fid) {
@@ -345,6 +432,7 @@
     const f = faseById(+fid);
     if (!f) return go('#/ilhas');
     if (!faseLiberada(f.id)) return go(`#/fase/${f.ilha}`);
+    if (f.id === 1 && !progresso.prologoVisto()) return go('#/prologo');   // antes da 1ª fase, o Capitão se apresenta
     progresso.definirFaseVista(f.id);
     montar(`
     <div class="scene abertura">

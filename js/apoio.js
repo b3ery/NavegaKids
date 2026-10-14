@@ -250,7 +250,8 @@
     const caixa = wrap.querySelector('.popup');
     if (!caixa || caixa.dataset.lido) return;
     caixa.dataset.lido = '1';
-    if (vozLigada()) setTimeout(() => { if (document.body.contains(caixa)) falar(textoDe(caixa), null); }, 350);
+    const espera = +caixa.dataset.atraso || 350;   // a dica da garrafa só é lida depois de o papel abrir
+    if (vozLigada()) setTimeout(() => { if (document.body.contains(caixa)) falar(textoDe(caixa), null); }, espera);
   }
 
   function lerFeedback(fb) {
@@ -291,7 +292,7 @@
       NK.som?.acerto();
       seguidos++;
       const msg = COMEMORA[seguidos] || (seguidos > 12 && seguidos % 5 === 0 ? `${seguidos} acertos seguidos! Que sequência!` : '');
-      if (msg) toast(msg);
+      if (msg) toast(msg, 'coracao');   // coração: carinho a cada sequência de acertos
     },
     erro() {
       NK.som?.erro();

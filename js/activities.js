@@ -35,7 +35,7 @@
           <span id="slotDica"></span>
           ${NK.botaoOuvir('#palco')}
           <span class="chip-papel">${esc(a.papel)}</span>
-          <button class="btn btn-sm btn-ghost" id="btSairAtv">Sair</button>
+          <button class="btn btn-sm btn-ghost bt-voltar" id="btSairAtv" aria-label="Voltar para Missões">${I('setaEsq', { cls: 'ico-txt' })} Voltar</button>
         </div>
       </div>
       <div class="palco" id="palco"></div>
@@ -48,6 +48,23 @@
 
   /* Botão de dica na barra de cima. Marujo (8 anos): sempre presente. Capitão (9 e 10 anos):
      aparece depois de 30 s pensando ou de 2 erros. A dica (js/dicas.js) abre num popup. */
+  /* A dica chega numa garrafa pelo mar: a garrafa balança, a rolha pula e o papel
+     desenrola com a dica. A voz espera o papel abrir para ler. */
+  function garrafaDica(texto) {
+    const w = popup({
+      cls: 'popup-garrafa',
+      extra: `<div class="garrafa-cena" aria-hidden="true">
+          <i class="garrafa-onda"></i><i class="garrafa-onda o2"></i>
+          <span class="garrafa">${I('dica')}</span><i class="garrafa-rolha"></i>
+        </div>
+        <div class="garrafa-papel"><h3>Dica</h3><p>${esc(texto)}</p></div>`,
+      btns: [{ t: 'Entendi', cls: 'btn-t' }]
+    });
+    $('.popup', w).dataset.atraso = '2000';
+    // tocar na garrafa pula a animação
+    $('.garrafa-cena', w).onclick = () => w.classList.add('pular');
+  }
+
   const ESPERA_DICA = { marujo: 0, capitao: 30000 };
   let ouvinteErro = null;
   function agendarDica(f, idx) {
@@ -58,8 +75,8 @@
     const mostrar = () => {
       const slot = $('#slotDica');
       if (!slot || slot.firstChild) return;   // já saiu da tela ou o botão já está lá
-      slot.innerHTML = `<button class="btn btn-sm bt-dica" id="btDica">${I('luneta', { cls: 'ico-txt' })} Dica</button>`;
-      $('#btDica').onclick = () => popup({ cor: 'y', titulo: `${I('luneta', { cls: 'ico-txt' })} Dica`, texto: NK.dicaDoNivel(chave), btns: [{ t: 'Entendi', cls: 'btn-t' }] });
+      slot.innerHTML = `<button class="btn btn-sm bt-dica" id="btDica">${I('dica', { cls: 'ico-txt' })} Dica</button>`;
+      $('#btDica').onclick = () => garrafaDica(NK.dicaDoNivel(chave));
     };
     const espera = ESPERA_DICA[progresso.modo()] ?? 30000;
     if (!espera) { mostrar(); return; }   // Marujo: a dica sempre existe
@@ -174,7 +191,7 @@
 
   function guardioesHtml() {
     return `<div class="guardioes">
-      <div class="cap"><div class="pirata">${I('pirata')}</div>Capitã Bússola</div>
+      <div class="cap"><div class="pirata capitao-anim">${I('capitao')}</div>Capitão Gancho</div>
       <div class="cham">
         Um guardião é um adulto que você conhece de verdade, cuida de você e em quem você confia.
         <ul><li>${I('usuario', { cls: 'ico-txt' })} Mãe / Pai / Responsável</li><li>${I('usuario', { cls: 'ico-txt' })} Professora</li><li>${I('usuario', { cls: 'ico-txt' })} Avó / Avô</li><li>${I('usuario', { cls: 'ico-txt' })} Tio / Tia</li><li>${I('pedidoAmizade', { cls: 'ico-txt' })} Outro adulto de confiança</li></ul>

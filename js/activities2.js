@@ -339,7 +339,7 @@
      QUIZ — perguntas rápidas (com cena, Verdade/Mito, cronometrado)
      ============================================================ */
   function rQuiz(palco, a) {
-    /* A Capitã Bússola apresenta cada pergunta num balão; as respostas são cartões com letra.
+    /* O Capitão Gancho apresenta cada pergunta num balão; as respostas são cartões com letra.
        Verdade ou Mito: a frase vira uma carta que recebe o carimbo depois da resposta. */
     let qi = 0;
     const total = a.perguntas.length;
@@ -361,9 +361,9 @@
         </div>
         ${tempo ? `<div class="barra-tempo"><i id="barraTempo"></i></div>` : ''}
         <div class="quiz-palco ${ehVM ? 'vm' : ''}">
-          <span class="quiz-capita" id="capitaQuiz">${I('pirata')}</span>
+          <span class="quiz-capita" id="capitaQuiz">${I('capitao')}</span>
           <div class="quiz-balao">
-            <small class="quiz-quem">Capitã Bússola</small>
+            <small class="quiz-quem">Capitão Gancho</small>
             ${ehVM
               ? `<div class="vm-carta" id="vmCarta"><p>${esc(q.q)}</p><span class="vm-selo" id="vmSelo"></span></div>`
               : `${q.cena ? `<p class="quiz-cena">${esc(q.cena)}</p>` : ''}<p class="enunciado">${esc(q.q)}</p>`}
@@ -480,7 +480,7 @@
      ============================================================ */
   function rBau(palco, a) {
     /* Cena montada uma vez; ao contar o segredo só troca a classe "contou",
-       e o CSS anima: a Capitã chega, o baú encolhe e o peso cai. */
+       e o CSS anima: o Capitão chega, o baú encolhe e o peso cai. */
     palco.innerHTML = `
       <p class="enunciado">${esc(a.titulo)}</p>
       <div class="bau-cena">
@@ -492,9 +492,9 @@
           </figure>
           <span class="bau-bau">${I('bau', { cls: 'bau-img' })}</span>
           <figure class="bau-perso bau-cap" aria-hidden="true">
-            <span class="bau-balao bau-fala">Obrigada por me contar! Agora a gente cuida disso juntos.</span>
-            ${I('pirata', { cls: 'bau-img' })}
-            <figcaption>Capitã Bússola</figcaption>
+            <span class="bau-balao bau-fala">Obrigado por me contar! Agora a gente cuida disso juntos.</span>
+            ${I('capitao', { cls: 'bau-img' })}
+            <figcaption>Capitão Gancho</figcaption>
           </figure>
           <i class="bau-mar" aria-hidden="true"></i>
         </div>
@@ -505,7 +505,7 @@
       </div>
       <p class="texto-cena" id="bauTexto">${esc(a.texto)}</p>
       ${NK.dicaHtml(a.dica)}
-      <div class="rodape"><button class="btn btn-t" id="btBau">Ele conta o segredo pra Capitã Bússola</button></div>`;
+      <div class="rodape"><button class="btn btn-t" id="btBau">Ele conta o segredo pro Capitão Gancho</button></div>`;
 
     const bt = $('#btBau', palco);
     bt.onclick = () => {
@@ -514,7 +514,7 @@
       $('.bau-cap', palco).removeAttribute('aria-hidden');
       $('.trilho', palco).setAttribute('aria-valuenow', '25');
       $('#pesoTag', palco).textContent = 'Bem mais leve!';
-      $('#bauTexto', palco).textContent = 'Ele contou! Dividir o segredo com uma guardiã de confiança deixou o baú bem mais leve.';
+      $('#bauTexto', palco).textContent = 'Ele contou! Dividir o segredo com um guardião de confiança deixou o baú bem mais leve.';
       bt.textContent = 'Continuar';
     };
   }

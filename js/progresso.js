@@ -38,6 +38,7 @@
     atividades: {},      // 'fase-indice' → { erros } da melhor tentativa
     selos: [],           // ids das ilhas com selo conquistado
     introVista: {},      // fases cuja introdução já foi vista
+    prologoVisto: false, // introdução do Capitão Gancho (antes da Fase 1)
     faseVista: null      // fase aberta por último (usada na tela Missões)
   });
 
@@ -114,6 +115,8 @@
 
   const introVista = (fid) => Boolean(estado.introVista[fid]);
   const marcarIntroVista = (fid) => { estado.introVista[fid] = true; };
+  const prologoVisto = () => estado.prologoVisto;
+  const marcarPrologoVisto = () => { estado.prologoVisto = true; };
 
   const faseVista = () => estado.faseVista;
   const definirFaseVista = (fid) => { estado.faseVista = fid; };
@@ -172,7 +175,7 @@
     // pontos, estrelas, selos
     resultadoDaFase, estrelasTotal, estrelasMax, pontosTotal, selos, level, tempoJogadoMs,
     // sessão
-    nome, definirNome, MODOS, modo, modoInfo, modoEscolhido, definirModo, vozAuto, definirVozAuto, tempoDoQuiz, tempoDaAtividade, introVista, marcarIntroVista, faseVista, definirFaseVista,
+    nome, definirNome, MODOS, modo, modoInfo, modoEscolhido, definirModo, vozAuto, definirVozAuto, tempoDoQuiz, tempoDaAtividade, introVista, marcarIntroVista, prologoVisto, marcarPrologoVisto, faseVista, definirFaseVista,
     // atividade em andamento
     iniciarAtividade, registrarErro, concluirAtividade,
     resetar

@@ -27,6 +27,8 @@
 
     /* ---- personagens e cenário ---- */
     pirata:           ['pirata', null],
+    capitao:          ['capitaogancho', null],   // Capitão Gancho, o papagaio guia do jogo
+    timao:            ['voltar', null],          // botão que gira e volta para o Início
     barco:            ['Barco', null],
     navio:            ['navio-mayflower', null],
     navioPirata:      ['navio-pirata', null],   // card "Fase atual" do mapa da ilha
@@ -89,6 +91,13 @@
     nao:              ['nao', null],
     naoGosto:         ['nao-gosto', null],
     martelo:          ['martelo', null],
+    errado:           ['ERRADO', null],
+    dica:             ['dica', null],          // garrafa com a mensagem da dica
+    coracao:          ['coracao', null],
+    setaDir:          ['setapradireita', null],
+    setaEsq:          ['setapraesquerda', null],
+    refazer:          ['refazer', null],
+    impressora:       ['impressora', null],
 
     /* ---- certificados ---- */
     cert1:            ['certificado-final-1', null],

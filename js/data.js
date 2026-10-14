@@ -23,7 +23,7 @@
 
   const NPC1 = "Capitão_Lesma2120";
   const NPC2 = "Sombra_das_Marés";
-  const NPC3 = "Capitã Bússola";
+  const NPC3 = "Capitão Gancho";
 
   const ILHAS = [
     {
@@ -553,7 +553,7 @@
         {
           titulo: "Quem São Meus Guardiões", papel: "Descoberta", tipo: "discover",
           cena: { tipo: "guardioes" },
-          texto: "Conheça a Capitã Bússola: ela explica quem pode apontar o caminho certo.",
+          texto: "Conheça o Capitão Gancho: ele explica quem pode apontar o caminho certo.",
           dica: "Um guardião é um adulto que você conhece de verdade, que cuida de você e em quem você confia. Vamos descobrir quem faz parte do seu time?"
         },
         {
@@ -596,7 +596,7 @@
       atividades: [
         {
           titulo: "O Peso do Segredo", papel: "Descoberta", tipo: "bau",
-          texto: "Este navegador carrega sozinho um baú pesadão: é o segredo dele. O que acontece quando ele conta para a Capitã Bússola?",
+          texto: "Este navegador carrega sozinho um baú pesadão: é o segredo dele. O que acontece quando ele conta para o Capitão Gancho?",
           dica: "Guardar sozinho uma coisa que te assusta pesa demais. Dividir com um guardião faz esse peso diminuir."
         },
         {
@@ -674,8 +674,8 @@
         },
         {
           titulo: "Denuncio com um Guardião", papel: "Escolha", tipo: "choice",
-          cena: { tipo: "chat", com: "Capitã Bússola", msgs: [
-            { de: "npc", t: "Você achou o botão de denúncia no perfil que te deixou desconfortável.", nome: "Capitã Bússola" }
+          cena: { tipo: "chat", com: "Capitão Gancho", msgs: [
+            { de: "npc", t: "Você achou o botão de denúncia no perfil que te deixou desconfortável.", nome: "Capitão Gancho" }
           ]},
           pergunta: "O que você faz?",
           opcoes: [
@@ -773,5 +773,15 @@
     }
   ];
 
-  Object.assign(NK, { NPC1, NPC2, NPC3, ILHAS, FASES });
+  /* Introdução de game (antes da Fase 1): o Capitão Gancho se apresenta.
+     "cena" escolhe o que aparece atrás dele; {nome} vira o nome do navegador. */
+  const PROLOGO = [
+    { cena: "chegada", t: "Ahoy, {nome}! Eu sou o Capitão Gancho, o papagaio mais esperto dos sete mares!" },
+    { cena: "mar",     t: "O mar da internet é cheio de aventuras. Mas também tem piratas espertinhos que tentam enganar a gente." },
+    { cena: "ilhas",   t: "Juntos, vamos visitar três ilhas: a Ilha dos Mistérios, a Ilha das Escolhas e a Ilha dos Guardiões." },
+    { cena: "premios", t: "Em cada ilha você ganha estrelas e um selo. E quando precisar, eu mando uma dica numa garrafa!" },
+    { cena: "partida", t: "Preparado? Segura firme no timão, que a aventura vai começar!" }
+  ];
+
+  Object.assign(NK, { NPC1, NPC2, NPC3, ILHAS, FASES, PROLOGO });
 })();

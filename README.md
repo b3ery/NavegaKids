@@ -71,7 +71,7 @@
 
 ## 🌊 Sobre o Projeto
 
-> **NavegaKids** é um jogo educativo para crianças sobre **segurança na internet e prevenção ao grooming digital**. Ao lado da **Capitã Bússola**, o pequeno navegador atravessa **3 ilhas, 15 fases e 45 atividades** para aprender a reconhecer perfis suspeitos, proteger seus dados, sair de conversas que incomodam, bloquear, denunciar e — principalmente — **pedir ajuda a um adulto de confiança**. Tudo em HTML + CSS + JavaScript puro, sem dependências. 🏴‍☠️
+> **NavegaKids** é um jogo educativo para crianças sobre **segurança na internet e prevenção ao grooming digital**. Ao lado do **Capitão Gancho**, um papagaio pirata,, o pequeno navegador atravessa **3 ilhas, 15 fases e 45 atividades** para aprender a reconhecer perfis suspeitos, proteger seus dados, sair de conversas que incomodam, bloquear, denunciar e — principalmente — **pedir ajuda a um adulto de confiança**. Tudo em HTML + CSS + JavaScript puro, sem dependências. 🏴‍☠️
 
 <br>
 
