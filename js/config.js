@@ -33,9 +33,6 @@
     navio:            ['navio-mayflower', null],
     navioPirata:      ['navio-pirata', null],   // card "Fase atual" do mapa da ilha
     volante:          ['Volante', 'svg:volante'],
-    ilha1:            ['ilha1', null],
-    ilha2:            ['ilha2', null],
-    ilha3:            ['ilha3', null],
 
     /* ---- medalha: selos conquistados e "Fase atual" ---- */
     medalha:          ['medalha', null],
