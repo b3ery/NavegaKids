@@ -281,10 +281,9 @@ NavegaKids/
 │   ├── musica.js       # Música de fundo e efeitos sonoros (Web Audio)
 │   └── router.js       # As telas: Início, Ilhas, Mapa, Abertura, Missões, Conclusão, Diário, Certificado
 ├── img/                # Artes e ícones do jogo
-├── arte/               # Desenhos 2D editáveis (SVG) das artes de cenário e personagem
 ├── videos/             # Vídeos das fases 9 e 13
 ├── audios/             # Voz gravada do botão "Ouvir" (frases.json, manifest.json e os .mp3)
-├── ferramentas/        # extrair_frases.mjs e gerar_audios.mjs (voz gravada) e desenhar_2d.mjs (artes 2D), em JavaScript
+├── ferramentas/        # extrair_frases.mjs e gerar_audios.mjs (geram a voz gravada, em JavaScript)
 └── README.md           # Este arquivo
 ```
 
