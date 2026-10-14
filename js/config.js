@@ -16,14 +16,14 @@
   /* chave : [nome-do-arquivo, reserva ('svg:nome' ou null)] */
   const IMG = {
     /* ---- cenários / fundos ---- */
-    fundoHome:        ['Fundo_Home', null],
-    fundoIlhas:       ['Fundo_Ilhas', null],
-    fundoFases:       ['FundoFases', null],
-    fundoCarregando:  ['fundo_carregando', null],
-    fundo:            ['fundo', null],
+    fundoHome:        ['fundohome', null],     // Início (2D)
+    fundoIlhas:       ['fundogeral', null],    // Ilhas: fundo geral + ilhas desenhadas à mão
+    fundoFases:       ['fundofases', null],    // mapa de cada ilha (céu e areia)
+    fundoCarregando:  ['fundogeral', null],    // carregamento: fundo geral + navio
+    fundo:            ['fundogeral', null],    // fundo geral das telas internas
     mapaTesouro:      ['mapa-do-tesouro', null],
-    mapa:             ['mapa', null],
-    mapaHome:         ['Mapa_Home', null],
+    mapa:             ['mapa-do-tesouro', null],   // ícone de mapa (lobby da Fase 2)
+    mapaHome:         ['mapa', null],          // pergaminho do Início, desenhado à mão
 
     /* ---- personagens e cenário ---- */
     pirata:           ['pirata', null],

@@ -263,7 +263,7 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .home-frame .hm-mapa    { left: calc(665 * var(--u));  top: calc(143 * var(--u));  width: calc(1032 * var(--u)); height: calc(1005 * var(--u)); z-index: 1; }
 .home-frame .hm-barco2  { left: calc(-34.1 * var(--u)); top: calc(-38 * var(--u)); width: calc(1783.4 * var(--u)); height: calc(1610 * var(--u)); z-index: 2; } /* 2ª instância: só a faixa inferior aparece (topo fica sob o convés) */
 .home-frame .hm-barco   { left: calc(-5 * var(--u));   top: calc(-238 * var(--u)); width: calc(1733 * var(--u)); height: calc(1564 * var(--u)); z-index: 3; }
-.home-frame .hm-pirata  { left: calc(-301 * var(--u)); top: calc(248 * var(--u));  width: calc(1049 * var(--u)); height: calc(1022 * var(--u)); z-index: 4; }
+.home-frame .hm-pirata  { left: calc(-147 * var(--u)); top: calc(248 * var(--u));  width: calc(1049 * var(--u)); height: calc(1022 * var(--u)); z-index: 4; }
 .home-frame .hm-volante { left: calc(583 * var(--u));  top: calc(733 * var(--u));  width: calc(516 * var(--u));  height: calc(516 * var(--u));  z-index: 4; }
 
 /* balão de fala do pirata (antes o texto ficava por cima do mapa) */
@@ -511,7 +511,7 @@ body.tela-figma #stage { overflow: visible; background: var(--navy); }
 .intro-frame .it-fundo   { left: calc(-20 * var(--u)); top: calc(-2 * var(--u)); width: calc(1763 * var(--u)); height: calc(1717 * var(--u)); z-index: 0; filter: blur(calc(9 * var(--u))); }
 .intro-frame .it-barco2  { left: calc(-34.1 * var(--u)); top: calc(-82 * var(--u)); width: calc(1783.4 * var(--u)); height: calc(1610 * var(--u)); z-index: 1; }
 .intro-frame .it-barco   { left: calc(-22 * var(--u)); top: calc(-261 * var(--u)); width: calc(1754.5 * var(--u)); height: calc(1584 * var(--u)); z-index: 2; }
-.intro-frame .it-pirata  { left: calc(-283 * var(--u)); top: calc(483 * var(--u)); width: calc(1018 * var(--u)); height: calc(991 * var(--u)); z-index: 3; }
+.intro-frame .it-pirata  { left: calc(-133 * var(--u)); top: calc(483 * var(--u)); width: calc(1018 * var(--u)); height: calc(991 * var(--u)); z-index: 3; }
 .intro-frame .it-volante { left: calc(574 * var(--u)); top: calc(728 * var(--u)); width: calc(518 * var(--u)); height: calc(518 * var(--u)); z-index: 3; }
 .intro-frame .it-interrog { left: calc(1457 * var(--u)); top: calc(453 * var(--u)); width: calc(169 * var(--u)); height: calc(169 * var(--u)); z-index: 3; }
 .intro-frame .it-icone   { left: calc(555 * var(--u)); top: calc(265 * var(--u)); width: calc(114 * var(--u)); height: calc(114 * var(--u)); z-index: 4; }
@@ -2034,3 +2034,39 @@ body.tela-prologo .topbar { display: none; }
 }
 .pr-ilhas figure { display: flex; flex-direction: column; align-items: center; }
 .pr-ilhas img { width: clamp(90px, 16vw, 190px); height: clamp(80px, 13vw, 160px); object-fit: contain; }
+
+/* ============================================================
+   Ilhas: fundo geral + ilhas desenhadas à mão, centralizadas
+   (frame 1728 × 935; o horizonte do fundo geral fica em y 840 da imagem)
+   ============================================================ */
+.ilhas-frame .il-fundo { top: calc(-300 * var(--u)); height: calc(1683 * var(--u)); }
+.ilhas-frame .il-ilha {
+  position: absolute; top: calc(120 * var(--u)); width: calc(480 * var(--u)); height: calc(520 * var(--u));
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end; z-index: 1; pointer-events: none;
+}
+.ilhas-frame .il-ilha1 { left: calc(48 * var(--u)); }
+.ilhas-frame .il-ilha2 { left: calc(624 * var(--u)); }
+.ilhas-frame .il-ilha3 { left: calc(1200 * var(--u)); }
+.ilhas-frame .il-desenho { position: static; width: auto; height: auto; max-width: 100%; max-height: calc(430 * var(--u)); filter: drop-shadow(0 calc(10 * var(--u)) 0 rgba(30, 41, 59, .12)); }
+.ilhas-frame .il-bandeira { position: relative; align-self: flex-start; margin: 0 0 calc(-95 * var(--u)) 14%; z-index: 2; width: calc(92 * var(--u)); height: calc(107 * var(--u)); }
+.ilhas-frame .il-bandeira svg { width: 100%; height: 100%; display: block; }
+.ilhas-frame .il-explorar { top: calc(690 * var(--u)); }
+.ilhas-frame .il-explorar1 { left: calc(78 * var(--u)); }
+.ilhas-frame .il-explorar2 { left: calc(654 * var(--u)); }
+.ilhas-frame .il-explorar3 { left: calc(1230 * var(--u)); }
+
+/* Carregamento: fundo geral com o navio no lugar do navio do fundo antigo (x 200–820, y 490–1200
+   da imagem de 1728 × 1683). A cena ocupa a altura da tela e mostra o navio inteiro no mar. */
+.carregando-img { height: calc(100svh - max(56px, calc(182 * var(--u)))); overflow: hidden; background: #8fd0f5; }
+.carregando-img .carr-cena { position: absolute; left: 0; bottom: 0; width: 100%; aspect-ratio: 1728 / 1683; transform: translateY(22%); }
+.carregando-img .fundo-full { display: block; width: 100%; height: 100%; }
+.carregando-img .carr-navio { position: absolute; left: -0.35%; top: 8.85%; width: 72.6%; height: auto; pointer-events: none;
+  animation: navioMar 3s ease-in-out infinite; transform-origin: 30% 80%; }
+@keyframes navioMar { 0%, 100% { transform: rotate(-2deg) translateY(0); } 50% { transform: rotate(2deg) translateY(-8px); } }
+/* celular em pé: a cena fica mais larga que a tela, com o navio no meio */
+@media (orientation: portrait) {
+  .carregando-img .carr-cena { left: 50%; width: calc((100svh - 70px) * 1.15); transform: translate(-29.5%, 12%); }
+}
+@media (prefers-reduced-motion: reduce) { .carregando-img .carr-navio { animation: none; } }
+.carregando .txt { z-index: 2; }
+@media (max-width: 820px) { .carregando .txt { position: relative; margin: 6vh auto 0; background: rgba(255, 249, 230, .85); padding: 10px 16px; border-radius: 16px; } }

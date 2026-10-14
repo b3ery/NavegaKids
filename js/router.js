@@ -165,17 +165,23 @@
      ILHAS
      ============================================================ */
   function telaIlhas() {
-    /* Frame de Ilhas do Figma/Locofy (1728 × 1117). Fundo_Ilhas + ilha1/2/3 com
-       canvas inteiro; ilha liberada recebe “Explorar” (ou “Revisitar” se já
-       concluída), ilha bloqueada recebe o cadeado grande. */
-    const camadas = ILHAS.map(il => I(il.img, { cls: `il-ilha il-ilha${il.id}`, alt: il.nome })).join('');
+    /* Fundo geral + as 3 ilhas desenhadas à mão, centralizadas, com a bandeira numerada
+       (a mesma do Diário). Ilha bloqueada usa o desenho com cadeado; ilha liberada
+       recebe “Explorar” (ou “Revisitar” se já concluída) logo abaixo. */
+    const camadas = ILHAS.map(il => {
+      const lib = ilhaLiberada(il.id);
+      return `<div class="il-ilha il-ilha${il.id} ${lib ? '' : 'bloq'}">
+        <span class="il-bandeira">${bandeira(il)}</span>
+        ${I(lib ? il.icone : il.iconeBloqueado, { cls: 'il-desenho', alt: lib ? il.nome : `${il.nome} — bloqueada` })}
+      </div>`;
+    }).join('');
     const controles = ILHAS.map(il => {
       const liberada = ilhaLiberada(il.id);
       const completa = ilhaCompleta(il.id);
       return liberada
         ? `<button class="btn-figma il-explorar il-explorar${il.id}" data-il="${il.id}"
             aria-label="${esc(il.nome)}${completa ? ' — concluída' : ''}">${completa ? 'Revisitar' : 'Explorar'}</button>`
-        : `<button class="il-lock il-lock${il.id}" disabled aria-label="${esc(il.nome)} — bloqueada">${CADEADO_FILL}</button>`;
+        : '';
     }).join('');
 
     montar(`
@@ -204,7 +210,10 @@
     montar(`
     <div class="scene carregando">
       <div class="carregando-img">
-        ${I('fundoCarregando', { cls: 'fundo-full', alt: 'Navegando pelo mar' })}
+        <div class="carr-cena">
+          ${I('fundoCarregando', { cls: 'fundo-full', alt: 'Navegando pelo mar' })}
+          ${I('navioPirata', { cls: 'carr-navio', alt: '' })}
+        </div>
         <div class="txt">${esc(il.carregando)}
           <div class="barra"><i></i></div>
         </div>
