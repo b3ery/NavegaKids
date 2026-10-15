@@ -208,12 +208,9 @@
   function telaCarregando(iid) {
     const il = ilhaById(+iid) || ILHAS[0];
     montar(`
-    <div class="scene carregando">
+    <div class="scene carregando" data-bg="fundo">
       <div class="carregando-img">
-        <div class="carr-cena">
-          ${I('fundoCarregando', { cls: 'fundo-full', alt: 'Navegando pelo mar' })}
-          ${I('navioPirata', { cls: 'carr-navio', alt: '' })}
-        </div>
+        ${I('navioPirata', { cls: 'carr-navio', alt: 'Navio navegando pelo mar' })}
         <div class="txt">${esc(il.carregando)}
           <div class="barra"><i></i></div>
         </div>
