@@ -2095,3 +2095,10 @@ img[data-k="usuario"]:not(.hm-pirata):not(.it-pirata):not(.bau-img) { transform:
 /* o navio aparece inteiro mesmo quando o mar fica abaixo da tela; o texto fica abaixo do sol */
 .carregando-img .carr-navio { top: min(calc(max(100cqw / 1728, 100cqh / 1683) * 840 - min(38cqw, 60cqh) * .72), calc(100cqh - min(38cqw, 60cqh) * .86)); }
 @media (orientation: landscape) { .carregando .txt { top: 58%; } }
+/* computador (tela deitada): a imagem inteira na largura e a página rola até o mar;
+   o navio fica exatamente no lugar do navio do fundo antigo (x 200–820, y 490–1200 de 1728 × 1683) */
+@media (orientation: landscape) {
+  .carregando-img { height: auto; aspect-ratio: 1728 / 1683; container-type: normal; }
+  .carregando-img .carr-navio { left: -0.35%; top: 8.85%; width: 72.6%; height: auto; }
+  .carregando .txt { top: 36%; }
+}
