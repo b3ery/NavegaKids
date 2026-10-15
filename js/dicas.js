@@ -15,6 +15,8 @@
 
   NK.DICAS = {
     /* ---------- Ilha 1 ---------- */
+    '1-0': { marujo: 'Você não conhece esse pirata de verdade. No pedido de amizade, toque em NÃO.',
+             capitao: 'Antes de aceitar, pense: você já conhece essa pessoa fora do jogo?' },
     '1-1': { marujo: 'Procure 3 coisas: a foto, os números do perfil e os amigos em comum.',
              capitao: 'Repare no que falta nesse perfil, não no que ele diz.' },
     '1-2': { marujo: 'Não responda! Ignore ou bloqueie.',
