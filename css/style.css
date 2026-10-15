@@ -2059,7 +2059,7 @@ body.tela-prologo .topbar { display: none; }
 
 /* Carregamento: fundo geral com o navio no lugar do navio do fundo antigo (x 200–820, y 490–1200
    da imagem de 1728 × 1683). A cena ocupa a altura da tela e mostra o navio inteiro no mar. */
-.carregando-img { height: calc(100svh - max(56px, calc(182 * var(--u)))); overflow: hidden; background: #8fd0f5 url(../img/fundogeral.png) 0 0 / 100% 100% no-repeat; }   /* laterais: o mesmo fundo na mesma altura, horizonte alinhado */
+.carregando-img { height: calc(100svh - max(56px, calc(182 * var(--u)))); overflow: hidden; background: #8fd0f5; }
 /* regra: o fundo começa logo abaixo do menu; a cena cabe na altura da tela e o navio aparece inteiro */
 .carregando-img .carr-cena { position: absolute; top: 0; left: 50%; height: 100%; aspect-ratio: 1728 / 1683; transform: translateX(-50%); }
 .carregando-img .fundo-full { display: block; width: 100%; height: 100%; }
@@ -2071,9 +2071,6 @@ body.tela-prologo .topbar { display: none; }
 @media (prefers-reduced-motion: reduce) { .carregando-img .carr-navio { animation: none; } }
 .carregando .txt { z-index: 2; }
 @media (max-width: 820px) { .carregando .txt { position: relative; margin: 6vh auto 0; background: rgba(255, 249, 230, .85); padding: 10px 16px; border-radius: 16px; } }
-/* carregamento: bordas da cena suavizadas, para o recorte não aparecer */
-.carregando-img .carr-cena { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%); }
-@media (orientation: portrait) { .carregando-img .carr-cena { -webkit-mask-image: none; mask-image: none; } }
 @media (max-width: 820px) { .carregando .txt { position: absolute; left: 50%; bottom: 8%; top: auto; right: auto; transform: translateX(-50%); margin: 0; width: 86%; max-width: 86%; } }
 
 /* mapa da ilha: cards retos; o número vira uma bolinha no canto do card, por cima dele */
@@ -2088,3 +2085,37 @@ body.tela-prologo .topbar { display: none; }
 /* piratinha (usuario.png): o desenho fica à esquerda dentro da imagem; nos usos pequenos
    (lobby, avatar do chat, guardiões, baú, popups) ele é deslocado para ficar no centro */
 img[data-k="usuario"]:not(.hm-pirata):not(.it-pirata):not(.bau-img) { transform: translateX(14.8%); }   /* transform soma com as animações de flutuar */
+
+
+/* carregamento: fundo normal, na largura toda a partir do menu, com o navio no lugar do navio antigo */
+.carregando-img { height: auto; overflow: hidden; background: none; }
+.carregando-img .carr-cena { position: relative; top: auto; left: auto; width: 100%; height: auto; aspect-ratio: 1728 / 1683; transform: none; }
+.carregando-img .fundo-full { width: 100%; height: 100%; }
+@media (orientation: portrait) { .carregando-img .carr-cena { width: 100%; transform: none; } }
+/* carregamento (final): fundo normal cobrindo a tela a partir do menu, como nas atividades;
+   o navio fica sobre a linha do mar (horizonte do fundo geral = 840/1683 da altura da imagem) */
+.carregando-img { height: calc(100svh - max(56px, calc(182 * var(--u)))); container-type: size; overflow: hidden;
+  background: #8fd0f5 url(../img/fundogeral.png) center top / cover no-repeat; }
+.carregando-img .carr-cena { position: static; width: auto; height: auto; aspect-ratio: auto; transform: none; animation: none; }
+.carregando-img .carr-cena::before, .carregando-img .fundo-full { display: none; }
+.carregando-img .carr-navio {
+  --s: min(52cqw, 78cqh);
+  --hz: calc(max(100cqw / 1728, 100cqh / 1683) * 840);
+  position: absolute; width: var(--s); height: var(--s); left: max(2cqw, calc(30cqw - var(--s) / 2));
+  top: min(calc(var(--hz) - var(--s) * .7), calc(100cqh - var(--s) * .86));
+}
+@media (orientation: portrait) { .carregando-img .carr-navio { --s: min(90cqw, 60cqh); left: calc(50cqw - var(--s) / 2); } }
+.carregando-img .carr-navio { --s: min(40cqw, 62cqh); top: calc(var(--hz) - var(--s) * .74); }
+@media (orientation: portrait) { .carregando-img .carr-navio { --s: min(90cqw, 60cqh); } }
+/* carregamento (escolhido pela equipe): imagem inteira no meio, na altura da tela a partir do menu;
+   faixas laterais lisas, céu em cima e mar embaixo, sem repetir nada */
+.carregando-img {
+  background: linear-gradient(180deg, rgb(45,160,250) 0%, rgb(76,181,254) 11.9%, rgb(108,198,254) 23.8%, rgb(142,214,253) 35.7%, rgb(182,226,251) 47.5%, rgb(189,227,251) 49.9%, rgb(91,197,230) 49.9%, rgb(88,194,228) 100%);
+}
+.carregando-img .carr-cena { position: absolute; top: 0; left: 50%; height: 100%; width: auto; aspect-ratio: 1728 / 1683; transform: translateX(-50%); }
+.carregando-img .fundo-full { display: block; width: 100%; height: 100%; }
+.carregando-img .carr-navio { --s: auto; position: absolute; left: -0.35%; top: 8.85%; width: 72.6%; height: auto; }
+@media (orientation: portrait) {
+  .carregando-img .carr-cena { height: auto; width: max(100%, calc(100cqh * .8)); transform: translateX(-29.5%); }
+  .carregando-img .carr-navio { left: -0.35%; top: 8.85%; width: 72.6%; }
+}
