@@ -117,7 +117,7 @@
             { nome: "Pirata2020" }, { nome: "Pirata2130" }, { nome: "Sereia0101" }, { nome: "peixinho01" },
             { nome: NPC1, alerta: true, nota: "entrou sem querer na partida em grupo" }
           ]},
-          texto: "Olha só quem está na sua partida em grupo! O Capitão_Lesma2120 apareceu de novo — dessa vez já “confirmado” sem querer.",
+          texto: "Olha só quem está na sua partida em grupo! O Capitão_Lesma2120 apareceu de novo, dessa vez já “confirmado” sem querer.",
           dica: "Nem todo mundo que joga com você é alguém que você conhece de verdade. Vamos dar uma olhada em quem está aqui?"
         },
         {
@@ -135,7 +135,7 @@
             { t: "peixinho01", sub: "só conversamos no jogo", b: "tela" },
             { t: NPC1, sub: "nunca vi pessoalmente", b: "tela" }
           ],
-          fbOk: "Jogar junto é diferente de conhecer de verdade — e tudo bem ter os dois tipos de contato, desde que você saiba diferenciar!"
+          fbOk: "Jogar junto é diferente de conhecer de verdade, e tudo bem ter os dois tipos de contato, desde que você saiba diferenciar!"
         },
         {
           titulo: "Embarque Seguro", papel: "Escolha", tipo: "choice", resposta: true,
@@ -238,7 +238,7 @@
           pergunta: "O que você faz com esse segredo?",
           dica: "Segredo bom é festa surpresa. Segredo que pede silêncio… é outra história.",
           opcoes: [
-            { t: "Guardar segredo", img: "misterio", ok: false, fb: "Segredo bom é tipo festa surpresa — deixa todo mundo feliz depois. Segredo que pede silêncio merece ser contado, viu?" },
+            { t: "Guardar segredo", img: "misterio", ok: false, fb: "Segredo bom é tipo festa surpresa, deixa todo mundo feliz depois. Segredo que pede silêncio merece ser contado, viu?" },
             { t: "Contar pra um adulto", img: "apoio", ok: true, fb: "Você quebrou o segredo certo! Quando alguém pede pra esconder algo dos adultos, é hora de contar pra alguém de confiança." }
           ]
         }
@@ -303,7 +303,7 @@
     /* =====================  ILHA 2 · ESCOLHAS  ===================== */
     {
       id: 6, ilha: 2, titulo: "Vamos Conversar em Outro Lugar?", icone: "comunicacao", npc: NPC2,
-      abertura: { texto: "Bem-vindo à Ilha das Escolhas, navegador! Aqui você vai treinar como escolher o caminho mais seguro — mesmo quando alguém tenta te levar pra outro lugar.", btn: "COMEÇAR A AVENTURA" },
+      abertura: { texto: "Bem-vindo à Ilha das Escolhas, navegador! Aqui você vai treinar como escolher o caminho mais seguro, mesmo quando alguém tenta te levar pra outro lugar.", btn: "COMEÇAR A AVENTURA" },
       missao: "Depois de bloquear aquele perfil misterioso, um novo contato apareceu no seu caminho... será que é o mesmo tipo de conversa de novo? Complete as 3 atividades para descobrir.",
       aprendizado: "Quando alguém quer levar a conversa para um lugar mais privado, é hora de prestar atenção redobrada.",
       atividades: [
@@ -356,7 +356,7 @@
             { de: "npc", t: "Você pode me mandar uma foto sua? Só pra eu saber como você é!" }
           ]},
           pergunta: "Qual resposta você mandaria?",
-          dica: "Não existe só uma forma de responder — mas algumas são bem mais seguras que outras.",
+          dica: "Não existe só uma forma de responder, mas algumas são bem mais seguras que outras.",
           opcoes: [
             { t: "Claro! Vou te mandar agora.", ok: false, fb: "Vamos pensar de novo: fotos são informações pessoais e não devem ir para quem só conhecemos pela tela." },
             { t: "Prefiro não mandar. Vou perguntar pro meu responsável.", ok: true, fb: "Ótima resposta! Firme, educada e ainda chama um adulto de confiança para a conversa." },
@@ -400,7 +400,7 @@
     {
       id: 8, ilha: 2, titulo: "Hora de Sair", icone: "corre", npc: NPC2,
       abertura: { texto: "Às vezes, a atitude mais corajosa é simplesmente sair da conversa. Vamos descobrir quando é a hora certa?", btn: "Continuar" },
-      aprendizado: "Sair de uma conversa que incomoda não é falta de educação — é se cuidar.",
+      aprendizado: "Sair de uma conversa que incomoda não é falta de educação, é se cuidar.",
       atividades: [
         {
           titulo: "Isso Está Estranho", papel: "Descoberta", tipo: "discover",
@@ -436,7 +436,7 @@
           ]},
           pergunta: "Você está desconfortável. O que faz?",
           opcoes: [
-            { t: "Sair da conversa e contar pra um adulto", img: "corre", ok: true, fb: "Isso mesmo! Sair de uma conversa que incomoda não é falta de educação — é se cuidar." },
+            { t: "Sair da conversa e contar pra um adulto", img: "corre", ok: true, fb: "Isso mesmo! Sair de uma conversa que incomoda não é falta de educação, é se cuidar." },
             { t: "Continuar tentando resolver sozinho", img: "interrogacao", ok: false, fb: "Vamos pensar de novo: você não precisa resolver isso sozinho. Sair e contar pra alguém de confiança também é uma ótima escolha." }
           ]
         }
@@ -453,7 +453,7 @@
           slides: [
             { titulo: "O escudo existe nos aplicativos", img: "escudo", txt: "Nos jogos e aplicativos existe um ícone de bloqueio. Geralmente ele fica no perfil da pessoa ou nos três pontinhos." },
             { titulo: "O que ele faz?", img: "bloquearUsuario", txt: "Ao bloquear alguém, essa pessoa não consegue mais te mandar mensagem." },
-            { titulo: "Você pode usar sempre", img: "escudo", apoio: true, txt: "O escudo não é feitiço mágico, é uma ferramenta de verdade que existe nos aplicativos — e você pode usar sempre que precisar." }
+            { titulo: "Você pode usar sempre", img: "escudo", apoio: true, txt: "O escudo não é feitiço mágico, é uma ferramenta de verdade que existe nos aplicativos, e você pode usar sempre que precisar." }
           ]
         },
         {
@@ -471,7 +471,7 @@
             { t: "Colega que discordou de você durante o jogo", img: "comunicacao", b: "nao" },
             { t: "Alguém que continua te chamando mesmo depois do seu “não”", img: "exclamacao3", b: "sim" }
           ],
-          fbOk: "Boa! O escudo é para quem insiste em te deixar desconfortável — não pra qualquer discussão do dia a dia."
+          fbOk: "Boa! O escudo é para quem insiste em te deixar desconfortável, não pra qualquer discussão do dia a dia."
         },
         {
           titulo: "Bloqueio Ativado", papel: "Escolha final", tipo: "block",
@@ -480,7 +480,7 @@
             { de: "npc", t: "Vou continuar te mandando mensagem!" }
           ]},
           botao: "Bloquear Sombra_das_Marés",
-          fbOk: "Escudo ativado! Agora esse contato não pode mais te mandar mensagem. Você protegeu seu próprio espaço — e isso é coisa de navegador experiente."
+          fbOk: "Escudo ativado! Agora esse contato não pode mais te mandar mensagem. Você protegeu seu próprio espaço, e isso é coisa de navegador experiente."
         }
       ]
     },

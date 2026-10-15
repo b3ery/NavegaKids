@@ -164,7 +164,7 @@
         palco.innerHTML = `
           <p class="enunciado">${esc(a.pergunta)}</p>
           ${NK.dicaHtml(a.dica)}
-          <p class="prog-hunt">Rodada ${rIdx + 1}/${a.rounds.length}${round.titulo ? ` · ${esc(round.titulo)}` : ''} — encontrados: <b id="cntHunt">0</b>/${alvo}</p>
+          <p class="prog-hunt">Rodada ${rIdx + 1}/${a.rounds.length}${round.titulo ? ` · ${esc(round.titulo)}` : ''} · encontrados: <b id="cntHunt">0</b>/${alvo}</p>
           ${celularHtml(round)}
           <div class="dica-flutua" id="fbHunt"></div>`;
       } else {

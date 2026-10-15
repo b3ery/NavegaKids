@@ -1,4 +1,4 @@
-# NavegaKids — Jogo de Segurança na Internet
+# NavegaKids · Jogo de Segurança na Internet
 
 <div align="center">
 
@@ -8,7 +8,7 @@
 
 <div align="center">
 
-[![Typing SVG](https://readme-typing-svg.herokuapp.com/?color=4EA8DE&size=20&center=true&vCenter=true&width=900&lines=🧭+Navegue+pelas+ilhas+e+encontre+as+estrelas!;🔍+Aprenda+a+desconfiar+de+perfis+misteriosos...;🛡️+Ative+o+escudo+e+bloqueie+quem+insiste!;🤝+Nenhum+pirata+navega+sozinho+—+conte+pra+um+guardião!)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.herokuapp.com/?color=4EA8DE&size=20&center=true&vCenter=true&width=900&lines=🧭+Navegue+pelas+ilhas+e+encontre+as+estrelas!;🔍+Aprenda+a+desconfiar+de+perfis+misteriosos...;🛡️+Ative+o+escudo+e+bloqueie+quem+insiste!;🤝+Nenhum+pirata+navega+sozinho,+conte+pra+um+guardião!)](https://git.io/typing-svg)
 
 </div>
 
@@ -71,7 +71,7 @@
 
 ## 🌊 Sobre o Projeto
 
-> **NavegaKids** é um jogo educativo para crianças sobre **segurança na internet e prevenção ao grooming digital**. Ao lado do **Capitão Gancho**, um papagaio pirata,, o pequeno navegador atravessa **3 ilhas, 15 fases e 45 atividades** para aprender a reconhecer perfis suspeitos, proteger seus dados, sair de conversas que incomodam, bloquear, denunciar e — principalmente — **pedir ajuda a um adulto de confiança**. Tudo em HTML + CSS + JavaScript puro, sem dependências. 🏴‍☠️
+> **NavegaKids** é um jogo educativo para crianças sobre **segurança na internet e prevenção ao grooming digital**. Ao lado do **Capitão Gancho**, um papagaio pirata,, o pequeno navegador atravessa **3 ilhas, 15 fases e 45 atividades** para aprender a reconhecer perfis suspeitos, proteger seus dados, sair de conversas que incomodam, bloquear, denunciar e, principalmente, **pedir ajuda a um adulto de confiança**. Tudo em HTML + CSS + JavaScript puro, sem dependências. 🏴‍☠️
 
 <br>
 
@@ -93,7 +93,7 @@
 
 ## 🏝️ As Três Ilhas
 
-### 🔍 Ilha 1 — Ilha dos Mistérios · selo *Observador Atento*
+### 🔍 Ilha 1 · Ilha dos Mistérios · selo *Observador Atento*
 
 <div align="center">
 
@@ -103,11 +103,11 @@
 | 2 | **Amigo ou Desconhecido?** | Jogar junto é diferente de conhecer de verdade |
 | 3 | **A Mensagem Estranha** | Elogio exagerado, pergunta pessoal e pedido de segredo são sinais de alerta |
 | 4 | **O Segredo Digital** | Segredo que pede silêncio dos adultos merece ser contado; dados pessoais são só seus |
-| 5 ⭐ | **Missão: Cadê o Perigo?** | Revisão da ilha — **estrelas em dobro** |
+| 5 ⭐ | **Missão: Cadê o Perigo?** | Revisão da ilha, **estrelas em dobro** |
 
 </div>
 
-### 🛡️ Ilha 2 — Ilha das Escolhas · selo *Guardião das Escolhas Seguras*
+### 🛡️ Ilha 2 · Ilha das Escolhas · selo *Guardião das Escolhas Seguras*
 
 <div align="center">
 
@@ -117,11 +117,11 @@
 | 7 | **Escolha a Mensagem Certa** | Responder de forma educada e firme |
 | 8 | **Hora de Sair** | Sair de uma conversa que incomoda é se cuidar |
 | 9 | **Ative o Escudo** | Usar o bloqueio dos aplicativos (com vídeo explicativo) |
-| 10 ⭐ | **Missão: Escolha Segura** | Revisão da ilha com quiz cronometrado — **estrelas em dobro** |
+| 10 ⭐ | **Missão: Escolha Segura** | Revisão da ilha com quiz cronometrado, **estrelas em dobro** |
 
 </div>
 
-### 🤝 Ilha 3 — Ilha dos Guardiões · selo *Guardião dos Mares*
+### 🤝 Ilha 3 · Ilha dos Guardiões · selo *Guardião dos Mares*
 
 <div align="center">
 
@@ -131,7 +131,7 @@
 | 12 | **Quebrando o Silêncio** | Contar sempre ajuda; a culpa nunca é da criança |
 | 13 | **Sinal de Socorro** | Onde fica o botão Denunciar e os canais oficiais, como o Disque 100 (com vídeo) |
 | 14 | **Guardião de um Amigo** | Como apoiar um amigo e ir junto falar com um adulto |
-| 15 ⭐ | **Missão: Guardião dos Mares** | Revisão das três ilhas — **estrelas em dobro** e certificado final |
+| 15 ⭐ | **Missão: Guardião dos Mares** | Revisão das três ilhas, **estrelas em dobro** e certificado final |
 
 </div>
 
@@ -195,7 +195,10 @@ flowchart LR
     P --> B[🏝️ Ilhas]
     B -->|Explorar| C[⛵ Carregando]
     C --> D[🗺️ Mapa da Ilha]
-    D -->|Prosseguir| E[🧭 Abertura da Fase]
+    D -->|Prosseguir| K{Fase 1?}
+    K -->|1ª vez| Q[🦜 Introdução do Capitão Gancho]
+    Q --> E
+    K -->|não| E[🧭 Abertura da Fase]
     E --> F[📋 Missões]
     F --> G[🎯 Atividade 1 → 2 → 3]
     G -->|fase concluída| F
@@ -232,6 +235,13 @@ flowchart LR
 | **Voz que lê os textos** | ✅ | Um único botão "Voz: ligada / desligada" nas atividades, aberturas e Missões; ligado, lê a tela, os popups e os feedbacks sozinho. Vem ligado no Marujo e desligado no Capitão. Em Missões, "Trocar voz" escolhe a voz. Usa a voz do navegador (no Edge e no Chrome ela é mais natural) |
 | **Incentivo** | ✅ | Comemoração de acertos seguidos, "Fase perfeita" e recado de que errar faz parte, com botão para refazer a fase |
 | **Minhas Conquistas** | ✅ | Painel no Diário com estrelas por fase, selos e certificado |
+| **Capitão Gancho** | ✅ | Papagaio pirata que guia a criança: apresenta as perguntas dos quizzes, comenta os feedbacks e aparece nas Fases 11 e 12; pula ao acertar e nega com a cabeça ao errar |
+| **Introdução de game** | ✅ | Antes da Fase 1: título, navio cruzando o mar e o Capitão Gancho chegando voando para se apresentar (com "Pular" e "Vamos navegar!") |
+| **Dica na garrafa** | ✅ | O botão "Dica" traz uma garrafa pelo mar; a rolha pula e o papel abre com a dica do nível |
+| **Timão** | ✅ | No cabeçalho, gira e volta para o Início; nas atividades, "Voltar" leva para Missões |
+| **Visual infantil** | ✅ | Paleta oficial (Amarelo Vivo, Laranja Amigável, Azul Céu, Verde Turquesa, Creme Suave e Azul Noturno), cantos redondos e sombras "de brinquedo" |
+| **Artes 2D** | ✅ | Fundo geral, fundo do Início e das fases, mapa e ilhas desenhados à mão; os fundos sempre começam logo abaixo do menu |
+| **Celular** | ✅ | Menu em duas linhas, botões maiores para tocar e telas que cabem na largura |
 
 </div>
 
@@ -299,18 +309,28 @@ Todo o código fica dentro de **uma única variável global**, `NavegaKids`, par
 - Quando a criança acertar ou errar, chame `NavegaKids.feedback.acerto()` / `.erro()` (toca o som e conta a sequência de acertos). Para a vitória, `NavegaKids.som.vitoria()`.
 - Para a dica de uma atividade nova, use `NavegaKids.dicaHtml(a.dica)`: ela aparece aberta no modo Capitão e recolhida no Marujo.
 - Uma fase com `dobro: true` vale estrelas e pontos em dobro e ganha o selo "x2" automaticamente.
+- As falas da introdução do Capitão Gancho (antes da Fase 1) ficam em `PROLOGO`, no fim de `js/data.js`. `{nome}` vira o nome do navegador.
+- Textos sem travessão: use vírgula, ponto ou "·".
 
 ### Artes
-Para trocar uma arte, coloque o PNG em `img/` e ajuste o nome em `js/config.js`. Use nomes sem espaço e sem acento (ex.: `ilha-praia.png`).
+Para trocar uma arte, coloque o PNG em `img/` e ajuste o nome em `js/config.js`. Use nomes sem espaço e sem acento (ex.: `ilha-praia.png`). Os fundos têm 1728 × 1683 e sempre começam logo abaixo do menu.
 
 <div align="center">
 
 | Arte | Onde aparece | Onde se configura |
 |:---|:---|:---|
+| `fundogeral.png` | atrás das atividades, aberturas, Missões, Ilhas e carregamento | `js/config.js` (`fundo`, `fundoIlhas`, `fundoCarregando`) |
+| `fundohome.png` | Início | `js/config.js` (`fundoHome`) |
+| `fundofases.png` | mapa de cada ilha (céu e areia) | `js/config.js` (`fundoFases`) |
+| `mapa.png` | pergaminho do Início | `js/config.js` (`mapaHome`) |
+| `usuario.png` | piratinha do Início, da abertura, do lobby da Fase 1 e do chat | `js/config.js` (`usuario`) |
+| `capitaogancho.png` | Capitão Gancho (quizzes, feedbacks, introdução, Fases 11 e 12) | `js/config.js` (`capitao`) |
+| `dica.png` | botão "Dica" e a garrafa que traz a dica | `js/config.js` (`dica`) |
+| `voltar.png` | timão do cabeçalho que volta ao Início | `js/config.js` (`timao`) |
 | `estrela.png` | cabeçalho, mapa da ilha, popups e Diário | `js/config.js` (`estrela`) |
 | `medalha.png` | "Principais Conquistas" no Diário e "FASE ATUAL" em Missões | `js/config.js` (`medalha`) |
 | `navio-pirata.png` | card "FASE ATUAL" do mapa de cada ilha | `js/config.js` (`navioPirata`) |
-| `ilha-praia.png`, `ilha-arvores.png`, `ilha-montanhas.png` (+ `-bloqueada`) | seção "Ilhas" do Diário | `js/data.js`, campos `icone` e `iconeBloqueado` |
+| `ilha-praia.png`, `ilha-arvores.png`, `ilha-montanhas.png` (+ `-bloqueada`) | tela Ilhas, Diário e introdução | `js/data.js`, campos `icone` e `iconeBloqueado` |
 | `luneta.png`, `escudo.png`, `navio-mayflower.png` | selo de cada ilha (Diário e popup) | `js/data.js`, campo `seloImg` |
 
 </div>
@@ -327,7 +347,7 @@ Coloque o `.mp4` em `videos/` e adicione `video: "videos/nome.mp4"` na atividade
 
 <div align="center">
 
-Feito com 🧭 muita <code>navegação</code> e ⭐ <code>estrelas</code> — para crianças navegarem com segurança
+Feito com 🧭 muita <code>navegação</code> e ⭐ <code>estrelas</code>, para crianças navegarem com segurança
 
 <br>
 

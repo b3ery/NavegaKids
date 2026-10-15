@@ -172,7 +172,7 @@
       const lib = ilhaLiberada(il.id);
       return `<div class="il-ilha il-ilha${il.id} ${lib ? '' : 'bloq'}">
         <span class="il-bandeira">${bandeira(il)}</span>
-        ${I(lib ? il.icone : il.iconeBloqueado, { cls: 'il-desenho', alt: lib ? il.nome : `${il.nome} — bloqueada` })}
+        ${I(lib ? il.icone : il.iconeBloqueado, { cls: 'il-desenho', alt: lib ? il.nome : `${il.nome} · bloqueada` })}
       </div>`;
     }).join('');
     const controles = ILHAS.map(il => {
@@ -180,7 +180,7 @@
       const completa = ilhaCompleta(il.id);
       return liberada
         ? `<button class="btn-figma il-explorar il-explorar${il.id}" data-il="${il.id}"
-            aria-label="${esc(il.nome)}${completa ? ' — concluída' : ''}">${completa ? 'Revisitar' : 'Explorar'}</button>`
+            aria-label="${esc(il.nome)}${completa ? ' · concluída' : ''}">${completa ? 'Revisitar' : 'Explorar'}</button>`
         : '';
     }).join('');
 
@@ -292,7 +292,7 @@
       <span class="mf-num" style="--i:${i};left:${U(p.x - 117)};top:${U(p.y - 117)}" aria-hidden="true">${i + 1}</span>
       <button class="mf-no ${comp ? 'feita' : ''} ${!lib ? 'trancada' : ''} ${f.id === atual.id && !comp ? 'atual' : ''}"
         style="--i:${i};left:${U(p.x)};top:${U(p.y)};--ang:${p.ang}deg" data-f="${f.id}" ${lib ? '' : 'aria-disabled="true"'}
-        aria-label="Fase ${i + 1}: ${esc(f.titulo)}${f.dobro ? ' — estrelas em dobro' : ''}${comp ? ' — concluída' : lib ? '' : ' — bloqueada'}">
+        aria-label="Fase ${i + 1}: ${esc(f.titulo)}${f.dobro ? ' · estrelas em dobro' : ''}${comp ? ' · concluída' : lib ? '' : ' · bloqueada'}">
         ${conteudo}
         ${comp ? I('correto', { cls: 'mf-ok' }) : ''}
         ${f.dobro ? `${I('estrela', { cls: 'mf-dobro' })}<b class="mf-x2" aria-hidden="true">x2</b>` : ''}
@@ -675,7 +675,7 @@
 
   function telaDiario() {
     /* Diário do Capitão — geometria medida no print do Figma (frame 1728 px). */
-    const nome = progresso.nome() || '—';   // sem nome: o lápis ao lado permite editar
+    const nome = progresso.nome() || 'sem nome';   // sem nome: o lápis ao lado permite editar
     const totalFases = FASES.length;
     const feitasFases = FASES.filter(f => faseCompleta(f.id)).length;
     const pct = Math.round((feitasFases / totalFases) * 100);
@@ -699,7 +699,7 @@
         : `<span class="dr-slot" style="--cor:${il.cor};left:${U(cx - 57)};top:${U(690)}"></span>`)
         + `<span class="dr-num" style="--cor:${il.cor};left:${U(cx - 72)};top:${U(674)}" aria-hidden="true">${il.id}</span>`
         + `<button class="dr-cq" data-cq="${il.id}" ${box(cx - 64, 676, 128, 132)}
-            aria-label="${tem ? `Selo ${esc(il.selo)} — ver conquistas da ${esc(il.nome)}` : `Selo da ${esc(il.nome)} ainda não conquistado — ver o que falta`}"></button>`;
+            aria-label="${tem ? `Selo ${esc(il.selo)} · ver conquistas da ${esc(il.nome)}` : `Selo da ${esc(il.nome)} ainda não conquistado · ver o que falta`}"></button>`;
     }).join('');
     const iconeConquistas = img('medalha', 302, 621, 64, 64, { cls: 'dr-medalha' });
 
@@ -716,10 +716,10 @@
       const feitas = fs.filter(f => faseCompleta(f.id)).length;
       const cx = ILHA_CENTRO_X[i];
       return img(lib ? il.icone : il.iconeBloqueado, cx - ILHA_L / 2, ILHA_BASE_Y - ILHA_A, ILHA_L, ILHA_A,
-          { cls: 'dr-ilha', alt: lib ? il.nome : `${il.nome} — bloqueada` })
+          { cls: 'dr-ilha', alt: lib ? il.nome : `${il.nome} · bloqueada` })
         + `<span class="dr-bandeira" ${box(cx - 92, ILHA_BASE_Y - ILHA_A - 22, 46, 54)}>${bandeira(il)}</span>`
         + `<button class="dr-btn ${ehProx ? 'go-y' : 'go-grey'}" data-ir="${il.id}" ${at(BTX[i], ehProx ? 753 : 759)}
-            ${lib ? '' : 'aria-disabled="true"'} aria-label="${esc(il.nome)}${lib ? '' : ' — bloqueada'}">${ehProx ? 'Começar' : 'VER'}</button>`
+            ${lib ? '' : 'aria-disabled="true"'} aria-label="${esc(il.nome)}${lib ? '' : ' · bloqueada'}">${ehProx ? 'Começar' : 'VER'}</button>`
         + `<div class="dr-ilha-prog" style="--cor:${il.cor};left:${U(cx - 66)};top:${U(806)};width:${U(132)}"
             role="progressbar" aria-label="${esc(il.nome)}: ${feitas} de ${fs.length} fases" aria-valuenow="${feitas}" aria-valuemin="0" aria-valuemax="${fs.length}">
             <i style="width:${(feitas / fs.length) * 100}%"></i></div>
@@ -790,10 +790,10 @@
     if (!jornadaCompleta()) { go('#/diario'); return; }
     montar(`
     <div class="scene certificado">
-      <div class="certificado-card" id="certCard" role="button" tabindex="0" aria-label="Certificado — clique para virar" aria-pressed="false">
+      <div class="certificado-card" id="certCard" role="button" tabindex="0" aria-label="Certificado: clique para virar" aria-pressed="false">
         <span class="certificado-inner">
-          <span class="certificado-frente">${I('cert1', { alt: 'Certificado Guardião da Internet — frente' })}</span>
-          <span class="certificado-verso">${I('cert2', { alt: 'Certificado — verso: Guardião dos Mares Digitais' })}</span>
+          <span class="certificado-frente">${I('cert1', { alt: 'Certificado Guardião da Internet, frente' })}</span>
+          <span class="certificado-verso">${I('cert2', { alt: 'Certificado, verso: Guardião dos Mares Digitais' })}</span>
         </span>
       </div>
       <p class="dica-flip">Clique no certificado para virar</p>

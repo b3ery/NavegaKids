@@ -27,7 +27,7 @@
     <div class="scene atv" data-bg="fundo" style="--cor-ilha:${ilha?.cor || '#4EA8DE'}">
       <div class="topo">
         <div class="tt">
-          <small>Fase ${f.id} · ${esc(f.titulo)} — Atividade ${idx + 1}/${f.atividades.length}</small>
+          <small>Fase ${f.id} · ${esc(f.titulo)} · Atividade ${idx + 1}/${f.atividades.length}</small>
           <h2>${esc(a.titulo)}</h2>
         </div>
         <div class="acoes">
