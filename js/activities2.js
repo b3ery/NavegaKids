@@ -199,7 +199,7 @@
           const emCima = caixa.top - base.top < base.height / 2, naEsq = caixa.left + caixa.width / 2 < base.left + base.width / 2;
           const pos = (emCima ? `top:${caixa.bottom - base.top + 6}px;` : `bottom:${base.bottom - caixa.top + 6}px;`) + (naEsq ? `left:${Math.max(12, caixa.left - base.left)}px;right:auto;` : `right:${Math.max(12, base.right - caixa.right)}px;`);
           cel.insertAdjacentHTML('beforeend', `<div class="menu-app" role="menu" style="${pos}">
-            ${it.menu.map((op, k) => `<button role="menuitem" data-op="${k}" class="${op === 'Denunciar' ? 'op-denunciar' : ''}">${op === 'Denunciar' ? I('reportar', { cls: 'ico-txt' }) : ''}<span>${esc(op)}</span></button>`).join('')}
+            ${it.menu.map((op, k) => { const ic = { Denunciar: 'reportar', Bloquear: 'bloquearUsuario' }[op]; return `<button role="menuitem" data-op="${k}" class="${op === 'Denunciar' ? 'op-denunciar' : ic ? '' : 'op-sem-ico'}">${ic ? I(ic, { cls: 'ico-txt' }) : ''}<span>${esc(op)}</span></button>`; }).join('')}
           </div>`);
           const menu = $('.menu-app', cel);
           menu.querySelector('button').focus();

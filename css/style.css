@@ -2070,9 +2070,9 @@ body.tela-prologo .topbar { display: none; }
 /* piratinha (usuario.png): o desenho fica à esquerda dentro da imagem; nos usos pequenos
    (lobby, avatar do chat, guardiões, baú, popups) ele é deslocado para ficar no centro */
 /* personagem escolhido: cada desenho é encaixado nos mesmos pés e altura do pirata original
-   (variáveis vindas de alinharPersonagem). Usa translate/scale individuais, que somam com as animações. */
-img.personagem { transform-origin: var(--ox, 50%) var(--oy, 100%); translate: var(--nx, 0%) var(--ny, 0%); scale: var(--ns, 1); }
-img.personagem:not(.hm-pirata):not(.it-pirata):not(.bau-img):not([data-k="leo"]) { translate: calc(var(--nx, 0%) + 14.8%) var(--ny, 0%); }
+   (variáveis vindas de alinharPersonagem). Usa transform, porque as animações de flutuar mexem só em translate. */
+img.personagem { transform-origin: var(--ox, 50%) var(--oy, 100%); transform: translate(var(--nx, 0%), var(--ny, 0%)) scale(var(--ns, 1)); }
+img.personagem:not(.hm-pirata):not(.it-pirata):not(.bau-img):not([data-k="leo"]) { transform: translate(calc(var(--nx, 0%) + var(--centro, 14.8%)), var(--ny, 0%)) scale(var(--ns, 1)); }   /* nos usos pequenos o personagem fica no meio */
 
 
 
@@ -2175,7 +2175,8 @@ img.personagem:not(.hm-pirata):not(.it-pirata):not(.bau-img):not([data-k="leo"])
 }
 .menu-app button:hover, .menu-app button:focus-visible { background: #eef6ff; outline: none; }
 .menu-app .op-denunciar { color: #c0392b; }
-.menu-app .op-denunciar .ico { width: 26px; height: 26px; }
+.menu-app button .ico { width: 26px; height: 26px; }
+.menu-app .op-sem-ico { padding-left: 50px; }
 @keyframes menuAbre { from { opacity: 0; transform: translateY(-6px) scale(.96); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .menu-app { animation: none; } }
 
@@ -2191,3 +2192,6 @@ img.personagem:not(.hm-pirata):not(.it-pirata):not(.bau-img):not([data-k="leo"])
 .avatar-op input:checked + .foto-perfil { box-shadow: 0 0 0 4px var(--yellow), 0 0 0 7px var(--navy); transform: scale(1.06); }
 .avatar-op input:focus-visible + .foto-perfil { outline: 3px dashed var(--navy); outline-offset: 5px; }
 .campo-avatar + .campo-modo, .popup .campo-avatar { margin-bottom: 14px; }
+.diario-frame .dr-editar-av { position: absolute; z-index: 3; padding: 0; display: grid; place-items: center; }
+.diario-frame .dr-editar-av .ico { width: 70%; height: 70%; }
+.diario-frame .dr-editar-av:hover .ico, .diario-frame .dr-editar-av:focus-visible .ico { transform: scale(1.15); }

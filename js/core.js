@@ -45,18 +45,18 @@
   /* Personagens: caixa do desenho dentro da imagem (1728 × 1683) e o centro do rosto,
      para alinhar qualquer personagem ao lugar do pirata original e recortar as fotinhas. */
   const PERSONAGENS = {
-    usuario:  { caixa: [72, 338, 1146, 1634],  rosto: [600, 338, 700] },
+    usuario:  { caixa: [72, 338, 1146, 1634],  rosto: [560, 330, 900] },
     usuario2: { caixa: [330, 192, 1378, 1486], rosto: [905, 192, 760] },
-    usuario3: { caixa: [560, 196, 1310, 1486], rosto: [880, 196, 680] },
-    usuario4: { caixa: [448, 196, 1284, 1482], rosto: [866, 196, 720] },
+    usuario3: { caixa: [560, 196, 1310, 1486], rosto: [893, 196, 700] },
+    usuario4: { caixa: [448, 196, 1284, 1482], rosto: [830, 196, 720] },
     leo:      { caixa: [380, 190, 1340, 1328], rosto: [900, 190, 760] }
   };
-  /** Estilo que coloca o personagem k no lugar (mesmos pés e altura) do pirata original. */
+  /** Estilo que coloca o personagem k no lugar do pirata original: mesma altura, mesmos pés e cabeça na mesma linha. */
   function alinharPersonagem(k) {
     if (k === 'usuario') return '';
     const [ux0, uy0, ux1, uy1] = PERSONAGENS.usuario.caixa, [x0, y0, x1, y1] = PERSONAGENS[k].caixa;
-    const sc = (uy1 - uy0) / (y1 - y0), cx = (x0 + x1) / 2, ucx = (ux0 + ux1) / 2;
-    return `--ox:${(cx / 1728 * 100).toFixed(2)}%;--oy:${(y1 / 1683 * 100).toFixed(2)}%;--nx:${((ucx - cx) / 1728 * 100).toFixed(2)}%;--ny:${((uy1 - y1) / 1683 * 100).toFixed(2)}%;--ns:${sc.toFixed(3)};`;
+    const sc = (uy1 - uy0) / (y1 - y0), cx = PERSONAGENS[k].rosto[0], ucx = PERSONAGENS.usuario.rosto[0];   // alinha pela cabeça
+    return `--ox:${(cx / 1728 * 100).toFixed(2)}%;--oy:${(y1 / 1683 * 100).toFixed(2)}%;--nx:${((ucx - cx) / 1728 * 100).toFixed(2)}%;--ny:${((uy1 - y1) / 1683 * 100).toFixed(2)}%;--ns:${sc.toFixed(3)};--centro:${((864 - ucx) / 1728 * 100).toFixed(2)}%;`;
   }
   /** Fotinha redonda de perfil com o rosto do personagem k. */
   function fotoPerfil(k, o = {}) {

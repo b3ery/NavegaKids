@@ -134,20 +134,20 @@
         ${NK.fotoPerfil(a, { alt: `Personagem ${i + 1}` })}</label>`).join("")}</div>
     </fieldset>`;
 
-  /** Na primeira vez (Navegar!) pede nome, personagem e nível; o lápis do Diário pede nome e personagem. */
+  /** Na primeira vez (Navegar!) pede nome, personagem e nível; o lápis do nome no Diário pede só o nome. */
   function pedirNome(depois, { comModo = true } = {}) {
     const w = popup({
       cor: 'b', titulo: 'Qual é o seu nome de navegador?',
       extra: `<label class="campo-nome"><span>Pode ser um apelido!</span>
         <input id="inNome" type="text" maxlength="20" autocomplete="off"
           value="${esc(progresso.nome())}" placeholder="Ex.: Pirata Corajoso"></label>
-        ${escolhaAvatarHtml()}
+        ${comModo ? escolhaAvatarHtml() : ''}
         ${comModo ? escolhaModoHtml('Como você quer navegar?') : ''}`,
       btns: [
         { t: 'Agora não', cls: 'btn-ghost', fn: () => depois?.() },
         { t: 'Confirmar', cls: 'btn-t', fn: janela => {
           progresso.definirNome($('#inNome', janela).value);
-          progresso.definirAvatar($('input[name="avatar"]:checked', janela)?.value);
+          if (comModo) progresso.definirAvatar($('input[name="avatar"]:checked', janela)?.value);
           if (comModo) progresso.definirModo($('input[name="modo"]:checked', janela)?.value);
           depois?.();
         } }
@@ -156,6 +156,17 @@
     const campo = $('#inNome', w);
     campo.focus();
     campo.onkeydown = e => { if (e.key === 'Enter') $('[data-b="1"]', w).click(); };
+  }
+
+  /** Diário: o lápis ao lado do retrato troca o personagem. */
+  function pedirAvatar(depois) {
+    popup({
+      cor: 'b', titulo: 'Trocar o personagem', extra: escolhaAvatarHtml(),
+      btns: [
+        { t: 'Cancelar', cls: 'btn-ghost' },
+        { t: 'Confirmar', cls: 'btn-t', fn: janela => { progresso.definirAvatar($('input[name="avatar"]:checked', janela)?.value); depois?.(); } }
+      ]
+    });
   }
 
   /** Diário: troca só o nível (8 anos ou 9 e 10 anos). */
@@ -820,7 +831,7 @@
         <h2 class="dr-h3" ${at(403, 238)}>MEU CANTINHO</h2>
         ${img('estrela', 678, 227, 63)}
         <span class="dr-h3" style="left:${U(748)};top:${U(238)};font-weight:400">${estrelasTotal()}</span>
-        ${img('editar', 262, 345, 22)}
+        <button class="dr-editar dr-editar-av" id="btEditarAvatar" ${box(256, 339, 34, 34)} aria-label="Trocar personagem">${I('editar')}</button>
         <span class="dr-avatar" ${box(282, 339, 128, 128)}>${NK.fotoPerfil(progresso.avatar(), { alt: 'Seu personagem' })}</span>
         <p class="dr-txt" ${at(432, 386)}><b>Navegador:</b> <span>${esc(nome)}</span>
           <button class="dr-editar" id="btEditarNome" aria-label="Editar nome">${I('editar', { cls: 'dr-inline' })}</button></p>
@@ -847,6 +858,7 @@
     const cert = $('#btVerCert'); if (cert) cert.onclick = () => go('#/certificado');
     const rst = $('#btReset'); if (rst) rst.onclick = () => { progresso.resetar(); go('#/home'); };
     $('#btEditarNome').onclick = () => pedirNome(telaDiario, { comModo: false });
+    $('#btEditarAvatar').onclick = () => pedirAvatar(telaDiario);
     $('#btModo').onclick = () => pedirModo(telaDiario);
     $('#btConquistas').onclick = $('#btConquistasTit').onclick = $('.dr-medalha').onclick = () => popupConquistas();
     $$('.dr-cq').forEach(b => b.onclick = () => popupConquistas(+b.dataset.cq));
