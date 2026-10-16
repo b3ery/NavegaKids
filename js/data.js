@@ -776,11 +776,11 @@
   /* Introdução de game (antes da Fase 1): o Capitão Gancho se apresenta.
      "cena" escolhe o que aparece atrás dele; {nome} vira o nome do navegador. */
   const PROLOGO = [
-    { cena: "chegada", t: "Ahoy, {nome}! Eu sou o Capitão Gancho, o papagaio mais esperto dos sete mares!" },
-    { cena: "mar",     t: "O mar da internet é cheio de aventuras. Mas também tem piratas espertinhos que tentam enganar a gente." },
-    { cena: "ilhas",   t: "Juntos, vamos visitar três ilhas: a Ilha dos Mistérios, a Ilha das Escolhas e a Ilha dos Guardiões." },
-    { cena: "premios", t: "Em cada ilha você ganha estrelas e um selo. E quando precisar, eu mando uma dica numa garrafa!" },
-    { cena: "partida", t: "Preparado? Segura firme no timão, que a aventura vai começar!" }
+    { cena: "chegada", t: "Ahoy, {nome}! Eu sou o Capitão Gancho, o papagaio mais esperto dos sete mares!", curta: "Ahoy, {nome}! Eu sou o Capitão Gancho!" },
+    { cena: "mar",     t: "O mar da internet é cheio de aventuras. Mas também tem piratas espertinhos que tentam enganar a gente.", curta: "Na internet tem gente que tenta enganar." },
+    { cena: "ilhas",   t: "Juntos, vamos visitar três ilhas: a Ilha dos Mistérios, a Ilha das Escolhas e a Ilha dos Guardiões.", curta: "Vamos visitar três ilhas!" },
+    { cena: "premios", t: "Em cada ilha você ganha estrelas e um selo. E quando precisar, eu mando uma dica numa garrafa!", curta: "Você vai ganhar estrelas e selos. E eu mando dicas numa garrafa!" },
+    { cena: "partida", t: "Preparado? Segura firme no timão, que a aventura vai começar!", curta: "Vamos começar?" }
   ];
 
   Object.assign(NK, { NPC1, NPC2, NPC3, ILHAS, FASES, PROLOGO });

@@ -379,6 +379,8 @@
     NK.onLeave(() => document.body.classList.remove('tela-prologo'));
 
     const fim = () => { aoTerminar?.(); go(destino); };
+    const marujo = progresso.modo() === 'marujo';
+    falas = falas.map(x => ({ ...x, t: (marujo && x.curta) || x.t }));
     const mostrar = (i, primeira) => {
       const f = falas[i];
       $('#prologo').dataset.cena = f.cena || '';
@@ -419,19 +421,19 @@
     $('.pr-palco').onclick = e => { if (!e.target.closest('button')) seguir(); };
     // o título aparece primeiro; o Capitão chega voando e começa a falar
     $('#prFala').textContent = falas[0].t;
-    later(() => mostrar(0, true), 2300);
-    later(() => $('#prSeguir')?.focus({ preventScroll: true }), 2400);
+    later(() => mostrar(0, true), 2700);
+    later(() => $('#prSeguir')?.focus({ preventScroll: true }), 2800);
   }
 
   const ilhasHtml = () => ILHAS.map((il, i) => `<figure style="--i:${i};--cor:${il.cor}">${I(il.icone, { alt: '' })}<figcaption>${esc(il.nome)}</figcaption></figure>`).join('');
-  const estrelasHtml = (n, max) => Array.from({ length: max }, (_, i) => `<span style="--i:${i}" class="${i < n ? '' : 'apagada'}">${I('estrela', { alt: '' })}</span>`).join('');
+  const estrelasHtml = n => Array.from({ length: Math.max(1, n) }, (_, i) => `<span style="--i:${i}">${I('estrela', { alt: '' })}</span>`).join('');   // só as estrelas ganhas
   const nomeNav = () => progresso.nome() || 'navegador';
 
   /** Introdução (antes da Fase 1). */
   function telaPrologo() {
     cenaCapitao({
       titulo: 'NavegaKids', subtitulo: 'uma aventura nos mares da internet',
-      falas: NK.PROLOGO.map(p => ({ ...p, t: p.t.replace('{nome}', nomeNav()) })),
+      falas: NK.PROLOGO.map(p => ({ ...p, t: p.t.replace('{nome}', nomeNav()), curta: p.curta?.replace('{nome}', nomeNav()) })),
       adereços: {
         ilhas: ilhasHtml(),
         premios: `<span style="--i:0">${I('estrela', { alt: '' })}</span><span style="--i:1">${I('medalha', { alt: '' })}</span><span style="--i:2">${I('dica', { alt: '' })}</span>`
@@ -452,12 +454,12 @@
       return cenaCapitao({
         titulo: 'Fase concluída!', subtitulo: f.titulo,
         falas: [
-          { cena: 'estrelas', t: `Muito bem, ${nomeNav()}! Você terminou a fase "${f.titulo}" e ganhou ${r.estrelas} ${r.estrelas === 1 ? 'estrela' : 'estrelas'}!` },
+          { cena: 'estrelas', t: `Muito bem, ${nomeNav()}! Você terminou a fase "${f.titulo}" e ganhou ${r.estrelas} ${r.estrelas === 1 ? 'estrela' : 'estrelas'}!`, curta: `Muito bem, ${nomeNav()}! Fase completa!` },
           { cena: 'licao', t: f.aprendizado },
-          { cena: 'estrelas', t: ultimaDaIlha ? 'Essa era a última fase da ilha. Vamos ver o que você conquistou?' : 'Bora para a próxima fase? A aventura continua!' }
+          { cena: 'estrelas', t: ultimaDaIlha ? 'Essa era a última fase da ilha. Vamos ver o que você conquistou?' : 'Bora para a próxima fase? A aventura continua!', curta: ultimaDaIlha ? 'Vamos ver o seu prêmio?' : 'Vamos para a próxima fase!' }
         ],
         adereços: {
-          estrelas: estrelasHtml(Math.min(r.estrelas, 3), 3),
+          estrelas: estrelasHtml(Math.min(r.estrelas, 3)),
           licao: `<span style="--i:0">${I(f.icone, { alt: '' })}</span>`
         },
         destino: '#/missoes', btnFim: ultimaDaIlha ? 'Ver a conquista' : 'Continuar'
@@ -470,11 +472,11 @@
       return cenaCapitao({
         titulo: `${il.nome} conquistada!`, subtitulo: `selo ${il.selo}`,
         falas: [
-          { cena: 'ilha', t: `Ahoy, ${nomeNav()}! Você completou as cinco fases da ${il.nome}!` },
-          { cena: 'selo', t: `Por isso ganhou o selo ${il.selo}. Ele já está guardado no Diário do Capitão!` },
+          { cena: 'ilha', t: `Ahoy, ${nomeNav()}! Você completou as cinco fases da ${il.nome}!`, curta: `Ahoy, ${nomeNav()}! Você venceu a ${il.nome}!` },
+          { cena: 'selo', t: `Por isso ganhou o selo ${il.selo}. Ele já está guardado no Diário do Capitão!`, curta: `Você ganhou um selo novo!` },
           ultima
-            ? { cena: 'ilha', t: 'Essa era a última ilha. Que viagem, hein? Tenho uma surpresa para você...' }
-            : { cena: 'ilha', t: 'Agora prepare o navio: uma nova ilha está esperando por você!' }
+            ? { cena: 'ilha', t: 'Essa era a última ilha. Que viagem, hein? Tenho uma surpresa para você...', curta: 'Tenho uma surpresa para você!' }
+            : { cena: 'ilha', t: 'Agora prepare o navio: uma nova ilha está esperando por você!', curta: 'Uma nova ilha espera por você!' }
         ],
         adereços: {
           ilha: `<figure style="--i:0;--cor:${il.cor}">${I(il.icone, { alt: '' })}<figcaption>${esc(il.nome)}</figcaption></figure>`,
@@ -488,10 +490,10 @@
       return cenaCapitao({
         titulo: 'Jornada completa!', subtitulo: 'Guardião dos Mares Digitais',
         falas: [
-          { cena: 'ilhas', t: `${nomeNav()}, você navegou pelas três ilhas e venceu todas as fases. Estou muito orgulhoso!` },
-          { cena: 'premios', t: 'Agora você sabe desconfiar de perfis estranhos, proteger seus dados, sair de conversas ruins, bloquear e denunciar.' },
-          { cena: 'premios', t: 'E o mais importante: nenhum pirata navega sozinho. Sempre que precisar, conte para um adulto de confiança.' },
-          { cena: 'ilhas', t: 'Por isso, você ganhou o seu certificado de Guardião dos Mares Digitais. Vamos ver?' }
+          { cena: 'ilhas', t: `${nomeNav()}, você navegou pelas três ilhas e venceu todas as fases. Estou muito orgulhoso!`, curta: `${nomeNav()}, você venceu as três ilhas!` },
+          { cena: 'premios', t: 'Agora você sabe desconfiar de perfis estranhos, proteger seus dados, sair de conversas ruins, bloquear e denunciar.', curta: 'Agora você sabe se proteger na internet.' },
+          { cena: 'premios', t: 'E o mais importante: nenhum pirata navega sozinho. Sempre que precisar, conte para um adulto de confiança.', curta: 'Se algo te assustar, conte para um adulto.' },
+          { cena: 'ilhas', t: 'Por isso, você ganhou o seu certificado de Guardião dos Mares Digitais. Vamos ver?', curta: 'Você ganhou um certificado! Vamos ver?' }
         ],
         adereços: {
           ilhas: ilhasHtml(),

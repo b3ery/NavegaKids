@@ -2138,3 +2138,6 @@ img[data-k="usuario"]:not(.hm-pirata):not(.it-pirata):not(.bau-img) { transform:
 .prologo .pr-mar { z-index: 1; }
 .prologo .pr-mar .pr-onda.o2, .prologo .pr-mar .pr-onda.o3 { z-index: 3; }
 .prologo .pr-mar { pointer-events: none; }
+/* viagem: a ilha fica com a base dentro do mar (antes parecia flutuar) */
+.viagem .vg-ilha { bottom: calc(38% - clamp(150px, 26vw, 340px) * .2); z-index: 0; }
+.viagem .pr-mar .pr-onda.o2, .viagem .pr-mar .pr-onda.o3 { z-index: 3; }
