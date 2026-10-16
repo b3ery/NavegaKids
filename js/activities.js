@@ -5,6 +5,9 @@
 (() => {
   'use strict';
   const NK = (window.NavegaKids ??= {});
+  const meuRosto = (size) => NK.fotoPerfil(progresso.avatar(), { size });
+  /** foto de perfil dos amigos do jogo: os personagens que a criança não escolheu */
+  const rostoAmigo = (i, size) => { const outros = [...progresso.AVATARES.filter(a => a !== progresso.avatar()), 'leo']; return NK.fotoPerfil(outros[i % outros.length], { size }); };
   const { NPC1, progresso, $, $$, esc, go, later, I, icone, comIcone, popup, montar, destacarContadores } = NK;
   const { faseById, faseLiberada, feita, DEV } = progresso;
 
@@ -166,11 +169,11 @@
     const quem = m => m.nome || (m.de === 'eu' ? progresso.nome() || 'Você' : cena.com);
     const msgs = cena.msgs.map(m => `
       <div class="bolha ${m.de === 'eu' ? 'eu' : ''}">
-        <span class="av">${m.de === 'eu' ? I('usuario') : I('anonimo')}</span>
+        <span class="av">${m.de === 'eu' ? meuRosto() : cena.foto ? NK.fotoPerfil(cena.foto) : I('anonimo')}</span>
         <span class="msg">${quem(m) ? `<small>${esc(quem(m))}</small>` : ''}${esc(m.t)}</span>
       </div>`).join('');
     return `<div class="chat">
-      <div class="chat-head">${I('anonimo', { size: 34, cls: 'ico' })}<span>${esc(cena.com)}</span><small>online</small></div>
+      <div class="chat-head">${cena.foto ? NK.fotoPerfil(cena.foto, { size: 34 }) : I('anonimo', { size: 34, cls: 'ico' })}<span>${esc(cena.com)}</span><small>online</small></div>
       <div class="chat-body">${msgs}</div>
     </div>`;
   }
@@ -178,8 +181,8 @@
   /* Fase 2 · lobby da partida em grupo, no estilo do Joguinho da Fase 1 */
   function lobbyHtml(cena) {
     if (!cena || cena.tipo !== 'lobby') return '';
-    const av = cena.avatares.map(a => `<div class="av-card ${a.alerta ? 'alerta' : ''}">
-      <span class="av-foto">${I(a.alerta ? 'anonimo' : 'utilizador', { size: 44 })}</span>
+    const av = cena.avatares.map((a, i) => `<div class="av-card ${a.alerta ? 'alerta' : ''}">
+      <span class="av-foto">${a.alerta ? I('anonimo', { size: 44 }) : rostoAmigo(i, 54)}</span>
       <b>${esc(a.nome)}</b>
       ${a.nota ? `<small>${esc(a.nota)}</small>` : '<em>pronto</em>'}
     </div>`).join('');
@@ -195,7 +198,7 @@
       <div class="cap"><div class="pirata capitao-anim">${I('capitao')}</div>Capitão Gancho</div>
       <div class="cham">
         Um guardião é um adulto que você conhece de verdade, cuida de você e em quem você confia.
-        <ul><li>${I('usuario', { cls: 'ico-txt' })} Mãe / Pai / Responsável</li><li>${I('usuario', { cls: 'ico-txt' })} Professora</li><li>${I('usuario', { cls: 'ico-txt' })} Avó / Avô</li><li>${I('usuario', { cls: 'ico-txt' })} Tio / Tia</li><li>${I('pedidoAmizade', { cls: 'ico-txt' })} Outro adulto de confiança</li></ul>
+        <ul><li>${I('utilizador', { cls: 'ico-txt' })} Mãe / Pai / Responsável</li><li>${I('utilizador', { cls: 'ico-txt' })} Professora</li><li>${I('utilizador', { cls: 'ico-txt' })} Avó / Avô</li><li>${I('utilizador', { cls: 'ico-txt' })} Tio / Tia</li><li>${I('pedidoAmizade', { cls: 'ico-txt' })} Outro adulto de confiança</li></ul>
       </div>
     </div>`;
   }
@@ -216,15 +219,15 @@
     { nome: 'Sereia0101', online: false },
     { nome: 'Peixinho01', online: false },
   ];
-  const listaAmigosHtml = (comStatus = false) => `<ul class="lista-amigos">${AMIGOS_JOGO.map(a => `
-    <li>${I('utilizador', { size: 26 })}${a.online ? '<i class="online-dot"></i>' : ''}<span>${esc(a.nome)}${comStatus ? `<small class="${a.online ? 'on' : ''}">${STATUS_AMIGOS[a.nome]}</small>` : ''}</span></li>`).join('')}</ul>`;
+  const listaAmigosHtml = (comStatus = false) => `<ul class="lista-amigos">${AMIGOS_JOGO.map((a, i) => `
+    <li>${rostoAmigo(i, 30)}${a.online ? '<i class="online-dot"></i>' : ''}<span>${esc(a.nome)}${comStatus ? `<small class="${a.online ? 'on' : ''}">${STATUS_AMIGOS[a.nome]}</small>` : ''}</span></li>`).join('')}</ul>`;
 
   /* Fase 1 · Atividade 2 (roteiro): "mesma tela do Joguinho, agora com uma lupa ativa",
      com o perfil suspeito à esquerda e o painel Amigos à direita para comparar. */
   function jogoDetetiveHtml(perfilHtml) {
     return `<div class="jg jg-detetive">
       <div class="jg-top">
-        <span class="jg-chip">${I('utilizador', { size: 26 })}<span>Pirata0101</span></span>
+        <span class="jg-chip">${meuRosto(28)}<span>Pirata0101</span></span>
         <span class="jg-chip">${I('levelup', { size: 22 })}<span>LEVEL 58</span></span>
         <span class="jg-chip">${I('moedas', { size: 22 })}<span>520</span></span>
         <div class="dir"><span class="lupa-ativa">${I('misterio', { size: 24 })} Lupa ativa</span></div>
@@ -243,7 +246,7 @@
   function jogoHtml(pendente) {
     return `<div class="jg jg-lobby">
       <div class="jg-top">
-        <button class="jg-chip" data-info="usuario">${I('utilizador', { size: 26 })}<span>Pirata0101</span></button>
+        <button class="jg-chip" data-info="usuario">${meuRosto(28)}<span>Pirata0101</span></button>
         <button class="jg-chip jg-xp" data-info="level">${I('levelup', { size: 22 })}<span>LEVEL 58<i class="xp"><b style="width:64%"></b></i></span></button>
         <button class="jg-chip" data-info="moedas">${I('moedas', { size: 22 })}<span>520</span></button>
         <div class="dir">
@@ -394,7 +397,7 @@
     if (!corpo) return;
     corpo.insertAdjacentHTML('beforeend', `
       <div class="bolha eu enviada ${ok ? '' : 'arriscada'}">
-        <span class="av">${I('usuario')}</span>
+        <span class="av">${meuRosto()}</span>
         <span class="msg"><small>${esc(progresso.nome() || 'Você')}</small>${esc(texto)}</span>
       </div>`);
     corpo.scrollTop = corpo.scrollHeight;

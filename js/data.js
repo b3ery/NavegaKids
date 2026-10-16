@@ -649,25 +649,25 @@
         {
           titulo: "Onde Fica o Sinal", papel: "Prática · achar a ferramenta", tipo: "hunt", skin: "app",
           dica: "Cada aplicativo tem o seu jeito de denunciar, quase sempre escondido nos três pontinhos ou no menu. Vamos caçar esse botão?",
-          pergunta: "Em cada aplicativo, toque no lugar onde fica o menu com a opção Denunciar.",
+          pergunta: "Em cada aplicativo, abra o menu e toque em Denunciar.",
           rounds: [
             { titulo: "Chat de um jogo", contato: "jogador_estranho", msgs: ["Me passa seu endereço agora!"], itens: [
               { img: "exclamacao3", t: "Notificações", ok: false, why: "Esse mostra avisos." },
               { img: "config", t: "Configurações", ok: false, why: "Esse ajusta o app, mas não é onde se denuncia." },
-              { e: "⋮", t: "Três pontinhos", ok: true, why: "Achou! Nos três pontinhos aparece a opção Denunciar." },
+              { e: "⋮", t: "Três pontinhos", ok: true, menu: ["Silenciar","Denunciar","Bloquear"], why: "Isso! Nos três pontinhos fica a opção Denunciar." },
               { img: "luneta", t: "Busca", ok: false, why: "Esse serve para procurar coisas." }
             ]},
             { titulo: "Perfil de uma rede social", contato: "perfil_desconhecido", msgs: ["Posta uma foto sua pra mim!"], itens: [
               { img: "estrela", t: "Curtir", ok: false, why: "Esse serve para curtir." },
               { img: "comunicacao2", t: "Compartilhar", ok: false, why: "Esse compartilha o perfil." },
-              { e: "☰", t: "Menu", ok: true, why: "Achou! No menu você encontra Denunciar ou Reportar." },
+              { e: "☰", t: "Menu", ok: true, menu: ["Seguir","Denunciar","Copiar link"], why: "Isso! No menu fica a opção Denunciar." },
               { img: "bubbleChat", t: "Comentários", ok: false, why: "Esse abre os comentários." }
             ]},
             { titulo: "Mensagens diretas", contato: "anonimo_123", msgs: ["Não conta pra ninguém que a gente conversa."], itens: [
               { img: "falando", t: "Ligar", ok: false, why: "Esse liga para a pessoa." },
               { img: "editar", t: "Anexar", ok: false, why: "Esse anexa arquivos." },
               { img: "naoGosto", t: "Emojis", ok: false, why: "Esse abre os emojis." },
-              { e: "⋯", t: "Mais opções", ok: true, why: "Achou! Em “mais opções” você pode denunciar ou bloquear." }
+              { e: "⋯", t: "Mais opções", ok: true, menu: ["Fixar conversa","Bloquear","Denunciar"], why: "Isso! Em mais opções fica a opção Denunciar." }
             ]}
           ],
           fbOk: "Você caçou o botão nos três aplicativos! Agora você sabe onde procurar."
@@ -693,7 +693,7 @@
       atividades: [
         {
           titulo: "O Amigo Preocupado", papel: "Descoberta", tipo: "discover",
-          cena: { tipo: "chat", com: "Leo (seu amigo)", msgs: [
+          cena: { tipo: "chat", com: "Leo (seu amigo)", foto: "leo", msgs: [
             { de: "npc", t: "Posso te contar uma coisa? Fico meio sem graça...", nome: "Leo" },
             { de: "npc", t: "Um perfil desconhecido anda mandando mensagens estranhas pra mim.", nome: "Leo" },
             { de: "npc", t: "Eu não sei o que fazer.", nome: "Leo" }
@@ -716,7 +716,7 @@
         },
         {
           titulo: "Juntos Somos Mais Fortes", papel: "Escolha", tipo: "choice",
-          cena: { tipo: "chat", com: "Leo (seu amigo)", msgs: [
+          cena: { tipo: "chat", com: "Leo (seu amigo)", foto: "leo", msgs: [
             { de: "npc", t: "Será que eu conto pra alguém? Tenho medo...", nome: "Leo" }
           ]},
           pergunta: "O que você faz?",

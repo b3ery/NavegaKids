@@ -2069,7 +2069,10 @@ body.tela-prologo .topbar { display: none; }
 
 /* piratinha (usuario.png): o desenho fica à esquerda dentro da imagem; nos usos pequenos
    (lobby, avatar do chat, guardiões, baú, popups) ele é deslocado para ficar no centro */
-img[data-k="usuario"]:not(.hm-pirata):not(.it-pirata):not(.bau-img) { transform: translateX(14.8%); }   /* transform soma com as animações de flutuar */
+/* personagem escolhido: cada desenho é encaixado nos mesmos pés e altura do pirata original
+   (variáveis vindas de alinharPersonagem). Usa translate/scale individuais, que somam com as animações. */
+img.personagem { transform-origin: var(--ox, 50%) var(--oy, 100%); translate: var(--nx, 0%) var(--ny, 0%); scale: var(--ns, 1); }
+img.personagem:not(.hm-pirata):not(.it-pirata):not(.bau-img):not([data-k="leo"]) { translate: calc(var(--nx, 0%) + 14.8%) var(--ny, 0%); }
 
 
 
@@ -2141,3 +2144,50 @@ img[data-k="usuario"]:not(.hm-pirata):not(.it-pirata):not(.bau-img) { transform:
 /* viagem: a ilha fica com a base dentro do mar (antes parecia flutuar) */
 .viagem .vg-ilha { bottom: calc(38% - clamp(150px, 26vw, 340px) * .2); z-index: 0; }
 .viagem .pr-mar .pr-onda.o2, .viagem .pr-mar .pr-onda.o3 { z-index: 3; }
+
+
+/* ============================================================
+   Fotinha de perfil (rosto recortado do personagem)
+   ============================================================ */
+.foto-perfil {
+  display: inline-block; flex: none; width: 32px; height: 32px; border-radius: 50%;
+  background-color: #cfeaff; background-repeat: no-repeat; border: 2px solid #fff;
+  box-shadow: 0 0 0 2px var(--navy); vertical-align: middle;
+}
+.popup .who .av > .foto-perfil, .cel-av > .foto-perfil, .dr-avatar > .foto-perfil { width: 100%; height: 100%; }
+.lobby .av-card .av-foto > .foto-perfil { box-shadow: none; border: 0; }
+.marujo .bolha .av .foto-perfil { width: 40px; height: 40px; }
+.dr-avatar { display: block; }
+.dr-avatar > .foto-perfil { border-width: max(3px, calc(6 * var(--u))); box-shadow: 0 0 0 max(2px, calc(5 * var(--u))) var(--navy); }
+
+/* ============================================================
+   Menu do aplicativo (três pontinhos) com a opção Denunciar
+   ============================================================ */
+.celular { position: relative; }
+.menu-app {
+  position: absolute; right: 22px; z-index: 20; min-width: 190px; padding: 6px;
+  background: #fff; border-radius: 16px; box-shadow: 0 10px 24px rgba(15, 23, 42, .35);
+  display: flex; flex-direction: column; gap: 4px; animation: menuAbre .18s ease-out;
+}
+.menu-app button {
+  display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 0; border-radius: 12px;
+  background: transparent; font: inherit; font-weight: 700; color: var(--navy); text-align: left; cursor: pointer;
+}
+.menu-app button:hover, .menu-app button:focus-visible { background: #eef6ff; outline: none; }
+.menu-app .op-denunciar { color: #c0392b; }
+.menu-app .op-denunciar .ico { width: 26px; height: 26px; }
+@keyframes menuAbre { from { opacity: 0; transform: translateY(-6px) scale(.96); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .menu-app { animation: none; } }
+
+/* ============================================================
+   Escolha do personagem (primeira vez e lápis do Diário)
+   ============================================================ */
+.campo-avatar { border: 0; margin: 12px 0 0; padding: 0; }
+.campo-avatar legend { font-weight: 800; margin-bottom: 8px; color: var(--navy); }
+.avatar-ops { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.avatar-op { position: relative; cursor: pointer; display: grid; place-items: center; }
+.avatar-op input { position: absolute; opacity: 0; pointer-events: none; }
+.avatar-op .foto-perfil { width: 100%; height: auto; aspect-ratio: 1; max-width: 84px; border-width: 3px; box-shadow: 0 0 0 3px #cbd5e1; transition: box-shadow .15s, transform .15s; }
+.avatar-op input:checked + .foto-perfil { box-shadow: 0 0 0 4px var(--yellow), 0 0 0 7px var(--navy); transform: scale(1.06); }
+.avatar-op input:focus-visible + .foto-perfil { outline: 3px dashed var(--navy); outline-offset: 5px; }
+.campo-avatar + .campo-modo, .popup .campo-avatar { margin-bottom: 14px; }

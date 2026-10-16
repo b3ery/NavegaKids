@@ -42,11 +42,40 @@
   }
 
   /* <img> com fallback automático: tenta as extensões e, se nada existir, some */
+  /* Personagens: caixa do desenho dentro da imagem (1728 × 1683) e o centro do rosto,
+     para alinhar qualquer personagem ao lugar do pirata original e recortar as fotinhas. */
+  const PERSONAGENS = {
+    usuario:  { caixa: [72, 338, 1146, 1634],  rosto: [600, 338, 700] },
+    usuario2: { caixa: [330, 192, 1378, 1486], rosto: [905, 192, 760] },
+    usuario3: { caixa: [560, 196, 1310, 1486], rosto: [880, 196, 680] },
+    usuario4: { caixa: [448, 196, 1284, 1482], rosto: [866, 196, 720] },
+    leo:      { caixa: [380, 190, 1340, 1328], rosto: [900, 190, 760] }
+  };
+  /** Estilo que coloca o personagem k no lugar (mesmos pés e altura) do pirata original. */
+  function alinharPersonagem(k) {
+    if (k === 'usuario') return '';
+    const [ux0, uy0, ux1, uy1] = PERSONAGENS.usuario.caixa, [x0, y0, x1, y1] = PERSONAGENS[k].caixa;
+    const sc = (uy1 - uy0) / (y1 - y0), cx = (x0 + x1) / 2, ucx = (ux0 + ux1) / 2;
+    return `--ox:${(cx / 1728 * 100).toFixed(2)}%;--oy:${(y1 / 1683 * 100).toFixed(2)}%;--nx:${((ucx - cx) / 1728 * 100).toFixed(2)}%;--ny:${((uy1 - y1) / 1683 * 100).toFixed(2)}%;--ns:${sc.toFixed(3)};`;
+  }
+  /** Fotinha redonda de perfil com o rosto do personagem k. */
+  function fotoPerfil(k, o = {}) {
+    const p = PERSONAGENS[k] || PERSONAGENS.usuario;
+    const [cx, top, lado] = p.rosto;
+    const esq = cx - lado / 2;
+    const pos = `${(esq / (1728 - lado) * 100).toFixed(2)}% ${(top / (1683 - lado) * 100).toFixed(2)}%`;
+    return `<span class="foto-perfil ${o.cls || ''}" style="background-image:url('${srcOf(k, 0)}');background-size:${(1728 / lado * 100).toFixed(1)}% auto;background-position:${pos};${o.size ? `width:${o.size}px;height:${o.size}px;` : ''}" ${o.alt ? `role="img" aria-label="${esc(o.alt)}"` : 'aria-hidden="true"'}></span>`;
+  }
+  const avatarAtual = () => NK.progresso?.avatar?.() || 'usuario';
+
   function I(key, o = {}) {
+    // "usuario" é sempre o personagem que a criança escolheu
+    let estiloExtra = '';
+    if (key === 'usuario') { const av = avatarAtual(); estiloExtra = alinharPersonagem(av); key = av; }
     const d = IMG[key];
     if (!d) return '';
-    const st = o.size ? `width:${o.size}px;height:${o.size}px;` : '';
-    return `<img class="ico${o.cls ? ' ' + o.cls : ''}" src="${srcOf(key, 0)}" data-k="${key}" data-i="0" ` +
+    const st = (o.size ? `width:${o.size}px;height:${o.size}px;` : '') + estiloExtra;
+    return `<img class="ico${o.cls ? ' ' + o.cls : ''}${estiloExtra || PERSONAGENS[key] ? ' personagem' : ''}" src="${srcOf(key, 0)}" data-k="${key}" data-i="0" ` +
       (o.alt ? `alt="${esc(o.alt)}"` : 'alt="" aria-hidden="true"') +
       (st ? ` style="${st}"` : '') + ' draggable="false" onerror="NavegaKids.imgFail(this)">';
   }
@@ -158,7 +187,7 @@
     w.setAttribute('role', 'dialog');
     w.innerHTML = `<div class="popup ${o.cor ? 'cor-' + o.cor : ''} ${o.cls || ''}">
       ${o.x ? '<button class="x" aria-label="Fechar">X</button>' : ''}
-      ${o.avatar ? `<div class="who">${I('usuario', { cls: 'av' })}<span>${esc(o.avatar.nome)}</span></div>` : ''}
+      ${o.avatar ? `<div class="who">${fotoPerfil(avatarAtual(), { cls: 'av' })}<span>${esc(o.avatar.nome)}</span></div>` : ''}
       ${o.titulo ? `<h3>${o.titulo}</h3>` : ''}
       ${o.texto ? `<p>${esc(o.texto)}</p>` : ''}
       ${o.extra || ''}
@@ -238,7 +267,7 @@
     // utilitários
     $, $$, esc, shuffle, go, later, every, clearTimers, onLeave,
     // imagens
-    I, imgFail, icone, comIcone, seloDobro, cadeadoIcon, posicionarSobreCover, setBg,
+    I, imgFail, icone, fotoPerfil, PERSONAGENS, alinharPersonagem, comIcone, seloDobro, cadeadoIcon, posicionarSobreCover, setBg,
     // popups e tela
     fecharPopups, popup, toast, destacarContadores, cabecalho, montar
   });

@@ -247,6 +247,9 @@ flowchart LR
 | **Timão** | ✅ | No cabeçalho, gira e volta para o Início; nas atividades, "Voltar" leva para Missões |
 | **Visual infantil** | ✅ | Paleta oficial (Amarelo Vivo, Laranja Amigável, Azul Céu, Verde Turquesa, Creme Suave e Azul Noturno), cantos redondos e sombras "de brinquedo" |
 | **Artes 2D** | ✅ | Fundo geral, fundo do Início e das fases, mapa e ilhas desenhados à mão; os fundos sempre começam logo abaixo do menu |
+| **Escolha do personagem** | ✅ | Ao digitar o nome (e no lápis do Diário) a criança escolhe entre 4 personagens; o escolhido aparece no Início, na abertura, no Diário, nos chats e no lobby |
+| **Fotinhas de perfil** | ✅ | Chats, lobby e lista de amigos mostram o rosto dos personagens; o Leo (Fase 14) tem a própria foto |
+| **Menu Denunciar** | ✅ | Na Fase 13, tocar nos três pontinhos ou no menu abre as opções do aplicativo e a criança escolhe "Denunciar" |
 | **Celular** | ✅ | Menu em duas linhas, botões maiores para tocar e telas que cabem na largura |
 
 </div>
@@ -329,7 +332,9 @@ Para trocar uma arte, coloque o PNG em `img/` e ajuste o nome em `js/config.js`.
 | `fundohome.png` | Início | `js/config.js` (`fundoHome`) |
 | `fundofases.png` | mapa de cada ilha (céu e areia) | `js/config.js` (`fundoFases`) |
 | `mapa.png` | pergaminho do Início | `js/config.js` (`mapaHome`) |
-| `usuario.png` | piratinha do Início, da abertura, do lobby da Fase 1 e do chat | `js/config.js` (`usuario`) |
+| `usuario.png`, `Usuario02.png`, `Usuario03.png`, `Usuario04.png` | personagens para escolher (Início, abertura, Diário, chats e lobby). O recorte do rosto e o encaixe ficam em `PERSONAGENS`, em `js/core.js` | `js/config.js` (`usuario` a `usuario4`) |
+| `Leo.png` | fotinha do Leo nos chats da Fase 14 | `js/config.js` (`leo`) |
+| `reportar.png` | opção "Denunciar" do menu na Fase 13 | `js/config.js` (`reportar`) |
 | `capitaogancho.png` | Capitão Gancho (quizzes, feedbacks, introdução, Fases 11 e 12) | `js/config.js` (`capitao`) |
 | `dica.png` | botão "Dica" e a garrafa que traz a dica | `js/config.js` (`dica`) |
 | `voltar.png` | timão do cabeçalho que volta ao Início | `js/config.js` (`timao`) |

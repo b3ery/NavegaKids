@@ -31,6 +31,7 @@
 
   const estadoInicial = () => ({
     nome: '',
+    avatar: 'usuario',   // personagem escolhido (usuario, usuario2, usuario3, usuario4)
     modo: 'capitao',     // 'marujo' | 'capitao' (ver MODOS)
     modoEscolhido: false,
     vozAuto: null,       // leitura automática: null = padrão do modo (Marujo liga, Capitão não)
@@ -94,6 +95,9 @@
   /* ---------- sessão: nome e navegação ---------- */
 
   const nome = () => estado.nome;
+  const AVATARES = Object.freeze(['usuario', 'usuario2', 'usuario3', 'usuario4']);
+  const avatar = () => estado.avatar;
+  const definirAvatar = (a) => { if (AVATARES.includes(a)) estado.avatar = a; };
   const definirNome = (novoNome) => { estado.nome = String(novoNome ?? '').trim().slice(0, TAMANHO_MAX_NOME); };
 
   const modo = () => estado.modo;
@@ -175,7 +179,7 @@
     // pontos, estrelas, selos
     resultadoDaFase, estrelasTotal, estrelasMax, pontosTotal, selos, level, tempoJogadoMs,
     // sessão
-    nome, definirNome, MODOS, modo, modoInfo, modoEscolhido, definirModo, vozAuto, definirVozAuto, tempoDoQuiz, tempoDaAtividade, introVista, marcarIntroVista, prologoVisto, marcarPrologoVisto, faseVista, definirFaseVista,
+    nome, definirNome, AVATARES, avatar, definirAvatar, MODOS, modo, modoInfo, modoEscolhido, definirModo, vozAuto, definirVozAuto, tempoDoQuiz, tempoDaAtividade, introVista, marcarIntroVista, prologoVisto, marcarPrologoVisto, faseVista, definirFaseVista,
     // atividade em andamento
     iniciarAtividade, registrarErro, concluirAtividade,
     resetar

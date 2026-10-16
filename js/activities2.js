@@ -190,6 +190,28 @@
         if (el.classList.contains('achada') || el.classList.contains('errada')) return;
         const i = +el.dataset.i, it = round.itens[i];
         const fb = $('#fbHunt');
+        // três pontinhos / menu: abre as opções do aplicativo; a criança escolhe "Denunciar"
+        if (it.ok && it.menu && !el.dataset.denunciou) {
+          $$('.menu-app', palco).forEach(m => m.remove());
+          const cel = el.closest('.celular');
+          const caixa = el.getBoundingClientRect(), base = cel.getBoundingClientRect();
+          // abre para baixo se o botão está no alto do celular, para cima se está embaixo; do lado do botão
+          const emCima = caixa.top - base.top < base.height / 2, naEsq = caixa.left + caixa.width / 2 < base.left + base.width / 2;
+          const pos = (emCima ? `top:${caixa.bottom - base.top + 6}px;` : `bottom:${base.bottom - caixa.top + 6}px;`) + (naEsq ? `left:${Math.max(12, caixa.left - base.left)}px;right:auto;` : `right:${Math.max(12, base.right - caixa.right)}px;`);
+          cel.insertAdjacentHTML('beforeend', `<div class="menu-app" role="menu" style="${pos}">
+            ${it.menu.map((op, k) => `<button role="menuitem" data-op="${k}" class="${op === 'Denunciar' ? 'op-denunciar' : ''}">${op === 'Denunciar' ? I('reportar', { cls: 'ico-txt' }) : ''}<span>${esc(op)}</span></button>`).join('')}
+          </div>`);
+          const menu = $('.menu-app', cel);
+          menu.querySelector('button').focus();
+          $$('button', menu).forEach(b => b.onclick = ev => {
+            ev.stopPropagation();
+            const op = it.menu[+b.dataset.op];
+            if (op === 'Denunciar') { menu.remove(); el.dataset.denunciou = '1'; el.click(); }
+            else { b.classList.add('shake'); fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('nao', `"${op}" não é a opção de denunciar. Procure Denunciar.`); NK.feedback.erro(); later(() => b.classList.remove('shake'), 500); }
+          });
+          fb.className = 'dica-flutua'; fb.innerHTML = comIcone('luneta', 'Abriu o menu! Agora escolha a opção certa.');
+          return;
+        }
         if (it.ok) {
           el.classList.add('achada');
           if (a.skin === 'chat') el.insertAdjacentHTML('beforeend', `<span class="stop">${I('pare')}</span>`);   // roteiro: aparece o STOP ao acertar
@@ -292,9 +314,9 @@
           </div>`).join('')}
         <div class="preview-msg">
           <div class="chat">
-            <div class="chat-head">${I('usuario', { size: 30 })}<span>Sua mensagem</span></div>
+            <div class="chat-head">${NK.fotoPerfil(progresso.avatar(), { size: 30 })}<span>Sua mensagem</span></div>
             <div class="chat-body">
-              <div class="bolha eu"><span class="av">${I('usuario')}</span><span class="msg">${
+              <div class="bolha eu"><span class="av">${NK.fotoPerfil(progresso.avatar())}</span><span class="msg">${
                 escolha.some(e => e === null) ? '<i style="color:var(--muted)">escolha um bloco de cada grupo…</i>'
                 : esc(a.grupos.map((g, gi) => g.blocos[escolha[gi]].t).join(' '))
               }</span></div>

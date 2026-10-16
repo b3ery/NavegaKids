@@ -27,7 +27,12 @@
 
     /* ---- personagens e cenário ---- */
     pirata:           ['pirata', null],
-    capitao:          ['capitaogancho', null],   // Capitão Gancho, o papagaio guia do jogo
+    capitao:          ['capitaogancho', null],
+    usuario2:         ['Usuario02', null],      // personagens para a criança escolher
+    usuario3:         ['Usuario03', null],
+    usuario4:         ['Usuario04', null],
+    leo:              ['Leo', null],            // Leo, o amigo da Fase 14
+    reportar:         ['reportar', null],       // opção Denunciar dos menus (Fase 13)   // Capitão Gancho, o papagaio guia do jogo
     timao:            ['voltar', null],          // botão que gira e volta para o Início
     barco:            ['Barco', null],
     navio:            ['navio-mayflower', null],
