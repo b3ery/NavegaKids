@@ -147,7 +147,8 @@
         t: faseAgoraCompleta ? 'Ver conquista da fase' : (idx + 1 < total ? 'Próxima atividade' : 'Voltar às missões'),
         cls: 'btn-t',
         fn: () => {
-          if (faseAgoraCompleta) { go('#/missoes'); }
+          // fase concluída pela primeira vez: o Capitão Gancho comemora; depois, volta às missões
+          if (faseAgoraCompleta) { go(r.completouFase ? `#/capitao/fase/${f.id}` : '#/missoes'); }
           else if (idx + 1 < total) { go(`#/atividade/${f.id}/${idx + 1}`); }
           else { go('#/missoes'); }
         }

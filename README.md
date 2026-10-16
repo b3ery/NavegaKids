@@ -202,9 +202,13 @@ flowchart LR
     E --> F[📋 Missões]
     F --> G[🎯 Atividade 1 → 2 → 3]
     G -->|fase concluída| F
-    F -->|última fase da ilha| H[🏅 Conclusão + selo]
+    F -->|fase concluída| Z[🦜 Capitão comemora]
+    Z --> F
+    F -->|última fase da ilha| Y[🦜 Capitão: ilha conquistada]
+    Y --> H[🏅 Conclusão + selo]
     H -->|próxima ilha| B
-    H -->|última ilha| I[📜 Certificado]
+    H -->|última ilha| X[🦜 Capitão: jornada completa]
+    X --> I[📜 Certificado]
     H --> J[📖 Diário do Capitão]
 ```
 
@@ -237,6 +241,8 @@ flowchart LR
 | **Minhas Conquistas** | ✅ | Painel no Diário com estrelas por fase, selos e certificado |
 | **Capitão Gancho** | ✅ | Papagaio pirata que guia a criança: apresenta as perguntas dos quizzes, comenta os feedbacks e aparece nas Fases 11 e 12; pula ao acertar e nega com a cabeça ao errar |
 | **Introdução de game** | ✅ | Antes da Fase 1: título, navio cruzando o mar e o Capitão Gancho chegando voando para se apresentar (com "Pular" e "Vamos navegar!") |
+| **Capitão nas conquistas** | ✅ | No mesmo estilo da introdução, o Capitão Gancho comemora o fim de cada fase (estrelas e o aprendizado da fase), o fim de cada ilha (selo) e a jornada completa (antes do certificado) |
+| **Viagem entre ilhas** | ✅ | Ao explorar uma ilha, o navio navega pelo mar até ela, que vai surgindo no horizonte |
 | **Dica na garrafa** | ✅ | O botão "Dica" traz uma garrafa pelo mar; a rolha pula e o papel abre com a dica do nível |
 | **Timão** | ✅ | No cabeçalho, gira e volta para o Início; nas atividades, "Voltar" leva para Missões |
 | **Visual infantil** | ✅ | Paleta oficial (Amarelo Vivo, Laranja Amigável, Azul Céu, Verde Turquesa, Creme Suave e Azul Noturno), cantos redondos e sombras "de brinquedo" |

@@ -35,6 +35,7 @@
         missoes: telaMissoes,
         abertura: () => telaAbertura(p),
         prologo: telaPrologo,
+        capitao: () => telaCapitao(p),
         atividade: () => telaAtividade(p),
         conclusao: () => telaConclusao(p),
         diario: telaDiario,
@@ -206,17 +207,18 @@
      CARREGAMENTO
      ============================================================ */
   function telaCarregando(iid) {
+    /* Viagem até a ilha, no estilo da introdução: o navio navega pelo mar
+       até a ilha, que vai surgindo no horizonte. */
     const il = ilhaById(+iid) || ILHAS[0];
     montar(`
-    <div class="scene carregando" data-bg="fundo">
-      <div class="carregando-img">
-        ${I('navioPirata', { cls: 'carr-navio', alt: 'Navio navegando pelo mar' })}
-        <div class="txt">${esc(il.carregando)}
-          <div class="barra"><i></i></div>
-        </div>
-      </div>
+    <div class="scene prologo viagem">
+      <div class="pr-ceu" aria-hidden="true"><i class="pr-sol"></i><i class="pr-nuvem n1"></i><i class="pr-nuvem n2"></i><i class="pr-nuvem n3"></i></div>
+      <figure class="vg-ilha" style="--cor:${il.cor}" aria-hidden="true">${I(il.icone, { alt: '' })}</figure>
+      <div class="pr-mar" aria-hidden="true"><i class="pr-onda"></i><i class="pr-onda o2"></i><i class="pr-onda o3"></i></div>
+      <span class="pr-navio vg-navio">${I('navioPirata', { alt: 'Navio navegando até a ilha' })}</span>
+      <div class="vg-txt" role="status">${esc(il.carregando)}<div class="barra"><i></i></div></div>
     </div>`, 'ilhas');
-    later(() => { go(`#/fase/${il.id}`); }, 2200);
+    later(() => { go(`#/fase/${il.id}`); }, 3600);
   }
 
   /* ============================================================
@@ -342,27 +344,20 @@
   }
 
   /* ============================================================
-     INTRODUÇÃO DO CAPITÃO GANCHO (antes da Fase 1)
-     Cena de game: título, o navio cruza o mar, o Capitão chega voando e fala
-     em balões com texto "digitando". Tocar avança; "Pular" vai direto à Fase 1.
+     CENAS DO CAPITÃO GANCHO (mesmo estilo da introdução)
+     Céu, mar, navio e o Capitão falando em balões com texto "digitando".
+     Usada na introdução (antes da Fase 1), no fim de cada fase, no fim de
+     cada ilha e no final da jornada. Tocar avança; "Pular" vai ao destino.
      ============================================================ */
-  function telaPrologo() {
-    const nome = progresso.nome() || 'navegador';
-    const falas = NK.PROLOGO.map(p => ({ ...p, t: p.t.replace('{nome}', nome) }));
+  function cenaCapitao({ falas, titulo, subtitulo, adereços = {}, destino, btnFim = 'Continuar', aoTerminar }) {
     let passo = 0, digitando = null;
-
     montar(`
-    <div class="scene prologo" id="prologo" data-cena="${falas[0].cena}">
+    <div class="scene prologo" id="prologo" data-cena="${falas[0].cena || ''}">
       <div class="pr-ceu" aria-hidden="true"><i class="pr-sol"></i><i class="pr-nuvem n1"></i><i class="pr-nuvem n2"></i><i class="pr-nuvem n3"></i></div>
-      <div class="pr-titulo" aria-hidden="true"><b>NavegaKids</b><small>uma aventura nos mares da internet</small></div>
+      <div class="pr-titulo" aria-hidden="true"><b>${esc(titulo)}</b>${subtitulo ? `<small>${esc(subtitulo)}</small>` : ''}</div>
       <span class="pr-navio" aria-hidden="true">${I('navioPirata', { alt: '' })}</span>
       <div class="pr-mar" aria-hidden="true"><i class="pr-onda"></i><i class="pr-onda o2"></i><i class="pr-onda o3"></i></div>
-      <div class="pr-props pr-ilhas" aria-hidden="true">
-        ${ILHAS.map((il, i) => `<figure style="--i:${i};--cor:${il.cor}">${I(il.icone, { alt: '' })}<figcaption>${esc(il.nome)}</figcaption></figure>`).join('')}
-      </div>
-      <div class="pr-props pr-premios" aria-hidden="true">
-        <span style="--i:0">${I('estrela', { alt: '' })}</span><span style="--i:1">${I('medalha', { alt: '' })}</span><span style="--i:2">${I('dica', { alt: '' })}</span>
-      </div>
+      ${Object.entries(adereços).map(([k, html]) => `<div class="pr-props pr-${k}" data-p="${k}" aria-hidden="true">${html}</div>`).join('')}
       <div class="pr-palco">
         <span class="pr-capitao" id="prCapitao">${I('capitao', { alt: 'Capitão Gancho' })}</span>
         <div class="pr-balao" id="prBalao">
@@ -383,12 +378,13 @@
     document.body.classList.add('tela-prologo');
     NK.onLeave(() => document.body.classList.remove('tela-prologo'));
 
-    const fim = () => { progresso.marcarPrologoVisto(); go('#/abertura/1'); };
+    const fim = () => { aoTerminar?.(); go(destino); };
     const mostrar = (i, primeira) => {
       const f = falas[i];
-      $('#prologo').dataset.cena = f.cena;
+      $('#prologo').dataset.cena = f.cena || '';
+      $$('.pr-props').forEach(p => p.classList.toggle('on', p.dataset.p === f.cena));
       $$('.pr-bolinhas i').forEach((b, bi) => b.className = bi < i ? 'ok' : bi === i ? 'agora' : '');
-      $('#prSeguir').textContent = i === falas.length - 1 ? 'Vamos navegar!' : 'Continuar';
+      $('#prSeguir').textContent = i === falas.length - 1 ? btnFim : 'Continuar';
       $('#prFala').textContent = f.t;
       const balao = $('#prBalao');
       balao.classList.remove('entra'); void balao.offsetWidth; balao.classList.add('entra');
@@ -425,6 +421,86 @@
     $('#prFala').textContent = falas[0].t;
     later(() => mostrar(0, true), 2300);
     later(() => $('#prSeguir')?.focus({ preventScroll: true }), 2400);
+  }
+
+  const ilhasHtml = () => ILHAS.map((il, i) => `<figure style="--i:${i};--cor:${il.cor}">${I(il.icone, { alt: '' })}<figcaption>${esc(il.nome)}</figcaption></figure>`).join('');
+  const estrelasHtml = (n, max) => Array.from({ length: max }, (_, i) => `<span style="--i:${i}" class="${i < n ? '' : 'apagada'}">${I('estrela', { alt: '' })}</span>`).join('');
+  const nomeNav = () => progresso.nome() || 'navegador';
+
+  /** Introdução (antes da Fase 1). */
+  function telaPrologo() {
+    cenaCapitao({
+      titulo: 'NavegaKids', subtitulo: 'uma aventura nos mares da internet',
+      falas: NK.PROLOGO.map(p => ({ ...p, t: p.t.replace('{nome}', nomeNav()) })),
+      adereços: {
+        ilhas: ilhasHtml(),
+        premios: `<span style="--i:0">${I('estrela', { alt: '' })}</span><span style="--i:1">${I('medalha', { alt: '' })}</span><span style="--i:2">${I('dica', { alt: '' })}</span>`
+      },
+      destino: '#/abertura/1', btnFim: 'Vamos navegar!',
+      aoTerminar: () => progresso.marcarPrologoVisto()
+    });
+  }
+
+  /** Capitão no fim de uma fase (#/capitao/fase/ID), de uma ilha (#/capitao/ilha/ID) e da jornada (#/capitao/final). */
+  function telaCapitao(p) {
+    const [tipo, id] = p.split('/');
+    if (tipo === 'fase') {
+      const f = faseById(+id);
+      if (!f || !faseCompleta(f.id)) return go('#/missoes');
+      const r = progresso.resultadoDaFase(f.id) || { estrelas: 0, maxEstrelas: 3 };
+      const ultimaDaIlha = fasesDaIlha(f.ilha).slice(-1)[0].id === f.id;
+      return cenaCapitao({
+        titulo: 'Fase concluída!', subtitulo: f.titulo,
+        falas: [
+          { cena: 'estrelas', t: `Muito bem, ${nomeNav()}! Você terminou a fase "${f.titulo}" e ganhou ${r.estrelas} ${r.estrelas === 1 ? 'estrela' : 'estrelas'}!` },
+          { cena: 'licao', t: f.aprendizado },
+          { cena: 'estrelas', t: ultimaDaIlha ? 'Essa era a última fase da ilha. Vamos ver o que você conquistou?' : 'Bora para a próxima fase? A aventura continua!' }
+        ],
+        adereços: {
+          estrelas: estrelasHtml(Math.min(r.estrelas, 3), 3),
+          licao: `<span style="--i:0">${I(f.icone, { alt: '' })}</span>`
+        },
+        destino: '#/missoes', btnFim: ultimaDaIlha ? 'Ver a conquista' : 'Continuar'
+      });
+    }
+    if (tipo === 'ilha') {
+      const il = ilhaById(+id);
+      if (!il || !ilhaCompleta(il.id)) return go('#/ilhas');
+      const ultima = il.id === ILHAS.at(-1).id;
+      return cenaCapitao({
+        titulo: `${il.nome} conquistada!`, subtitulo: `selo ${il.selo}`,
+        falas: [
+          { cena: 'ilha', t: `Ahoy, ${nomeNav()}! Você completou as cinco fases da ${il.nome}!` },
+          { cena: 'selo', t: `Por isso ganhou o selo ${il.selo}. Ele já está guardado no Diário do Capitão!` },
+          ultima
+            ? { cena: 'ilha', t: 'Essa era a última ilha. Que viagem, hein? Tenho uma surpresa para você...' }
+            : { cena: 'ilha', t: 'Agora prepare o navio: uma nova ilha está esperando por você!' }
+        ],
+        adereços: {
+          ilha: `<figure style="--i:0;--cor:${il.cor}">${I(il.icone, { alt: '' })}<figcaption>${esc(il.nome)}</figcaption></figure>`,
+          selo: `<span style="--i:0">${I(il.seloImg, { alt: '' })}</span><span style="--i:1">${I('medalha', { alt: '' })}</span>`
+        },
+        destino: `#/conclusao/${il.id}`, btnFim: 'Ver meu selo'
+      });
+    }
+    if (tipo === 'final') {
+      if (!jornadaCompleta()) return go('#/ilhas');
+      return cenaCapitao({
+        titulo: 'Jornada completa!', subtitulo: 'Guardião dos Mares Digitais',
+        falas: [
+          { cena: 'ilhas', t: `${nomeNav()}, você navegou pelas três ilhas e venceu todas as fases. Estou muito orgulhoso!` },
+          { cena: 'premios', t: 'Agora você sabe desconfiar de perfis estranhos, proteger seus dados, sair de conversas ruins, bloquear e denunciar.' },
+          { cena: 'premios', t: 'E o mais importante: nenhum pirata navega sozinho. Sempre que precisar, conte para um adulto de confiança.' },
+          { cena: 'ilhas', t: 'Por isso, você ganhou o seu certificado de Guardião dos Mares Digitais. Vamos ver?' }
+        ],
+        adereços: {
+          ilhas: ilhasHtml(),
+          premios: `<span style="--i:0">${I('estrela', { alt: '' })}</span><span style="--i:1">${I('medalha', { alt: '' })}</span><span style="--i:2">${I('escudo', { alt: '' })}</span>`
+        },
+        destino: '#/certificado', btnFim: 'Ver meu certificado'
+      });
+    }
+    go('#/ilhas');
   }
 
   /* ============================================================
@@ -544,7 +620,7 @@
   function aposFase(fid) {
     const f = faseById(fid);
     const ultimaDaIlha = fasesDaIlha(f.ilha).slice(-1)[0].id === fid;
-    if (ultimaDaIlha) go(`#/conclusao/${f.ilha}`);
+    if (ultimaDaIlha) go(`#/capitao/ilha/${f.ilha}`);
     else {
       const proxima = fasesDaIlha(f.ilha).find(x => x.id > fid);
       go(`#/abertura/${proxima.id}`);
@@ -582,7 +658,7 @@
       </div>
     </div>`, 'ilhas');
     // última ilha: o botão principal leva ao certificado (roteiro: "Imprimir meu certificado")
-    $('#btProx').onclick = () => go(ultimaIlha ? '#/certificado' : '#/ilhas');
+    $('#btProx').onclick = () => go(ultimaIlha ? '#/capitao/final' : '#/ilhas');
     const bd = $('#btDiario2'); if (bd) bd.onclick = () => go('#/diario');   // roteiro: só na conclusão da jornada
   }
 

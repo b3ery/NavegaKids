@@ -2102,3 +2102,39 @@ img[data-k="usuario"]:not(.hm-pirata):not(.it-pirata):not(.bau-img) { transform:
   .carregando-img .carr-navio { left: -0.35%; top: 8.85%; width: 72.6%; height: auto; }
   .carregando .txt { top: 36%; }
 }
+
+/* ============================================================
+   Cenas do Capitão (fim de fase, ilha e jornada) e viagem entre ilhas
+   ============================================================ */
+/* adereços da fala atual */
+.pr-props.on > * { opacity: 1; transform: none; }
+.pr-props .apagada { filter: grayscale(1); opacity: .35 !important; }
+.pr-estrelas img, .pr-licao img, .pr-selo img, .pr-premios img { width: clamp(70px, 12vw, 130px); height: clamp(70px, 12vw, 130px); object-fit: contain; animation: ilhaFlutua 2.4s ease-in-out infinite; animation-delay: calc(var(--i) * -.6s); }
+.pr-ilha figure { display: flex; flex-direction: column; align-items: center; }
+.pr-ilha img { width: clamp(120px, 20vw, 230px); height: clamp(100px, 16vw, 190px); object-fit: contain; animation: ilhaFlutua 3s ease-in-out infinite; }
+.pr-ilha figcaption { display: inline-block; margin-top: 4px; padding: 3px 12px; border-radius: 99px; background: var(--cor); color: #fff; font-weight: 800; text-shadow: 0 1px 0 rgba(0,0,0,.25); }
+.pr-titulo b { font-size: clamp(36px, 7vw, 96px); }
+
+/* navio com o casco dentro d'água (antes ficava acima do mar): a linha d'água do desenho
+   fica a ~25% da altura da imagem, contando de baixo */
+.prologo .pr-navio { bottom: calc(38% - min(300px, 48vw) * .42); z-index: 2; }
+@media (max-width: 640px) { .prologo .pr-navio { bottom: calc(38% - min(300px, 48vw) * .42); } }
+
+/* viagem: com o menu visível, o navio sai da esquerda e para perto da ilha */
+.prologo.viagem { min-height: calc(100svh - max(56px, calc(182 * var(--u)))); }
+.viagem .vg-ilha { position: absolute; right: 8%; bottom: calc(38% - 10px); margin: 0; z-index: 0; width: clamp(150px, 26vw, 340px);
+  animation: vgIlha 3.2s ease-out both; }
+.viagem .vg-ilha img { width: 100%; height: auto; display: block; filter: drop-shadow(0 8px 0 rgba(30, 41, 59, .15)); }
+@keyframes vgIlha { from { opacity: 0; translate: 0 40px; scale: .6; } to { opacity: 1; translate: 0 0; scale: 1; } }
+.viagem .vg-navio { animation: vgNavega 3.4s cubic-bezier(.3, .1, .3, 1) both, navioBalanca 1.6s ease-in-out infinite; }
+@keyframes vgNavega { from { translate: -110% 0; } to { translate: calc(100vw - 100% - 8vw - clamp(150px, 26vw, 340px)) 0; } }
+.vg-txt { position: absolute; top: 12%; left: 50%; transform: translateX(-50%); z-index: 3; text-align: center;
+  background: rgba(255, 249, 230, .92); border: 3px solid var(--navy); border-radius: 18px; padding: 12px 22px; font-weight: 900; color: var(--navy);
+  font-size: clamp(16px, 2.4vw, 26px); box-shadow: 0 6px 0 rgba(30, 41, 59, .2); width: max-content; max-width: 90%; }
+.vg-txt .barra { margin: 10px auto 0; width: min(260px, 100%); height: 12px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.vg-txt .barra i { display: block; height: 100%; width: 0; background: var(--yellow); animation: carrega 3.4s ease-out forwards; }
+@media (prefers-reduced-motion: reduce) { .viagem .vg-navio, .viagem .vg-ilha { animation: none; } }
+/* a frente do mar passa por cima do casco: parece que o navio está dentro d'água */
+.prologo .pr-mar { z-index: 1; }
+.prologo .pr-mar .pr-onda.o2, .prologo .pr-mar .pr-onda.o3 { z-index: 3; }
+.prologo .pr-mar { pointer-events: none; }
