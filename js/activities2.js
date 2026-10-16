@@ -504,7 +504,6 @@
     /* Cena montada uma vez; ao contar o segredo só troca a classe "contou",
        e o CSS anima: o Capitão chega, o baú encolhe e o peso cai. */
     palco.innerHTML = `
-      <p class="enunciado">${esc(a.titulo)}</p>
       <div class="bau-cena">
         <div class="bau-palco">
           <figure class="bau-perso bau-nav">

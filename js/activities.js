@@ -163,31 +163,73 @@
   /* ============================================================
      BLOCO REUTILIZÁVEL: chat de cena
      ============================================================ */
-  function chatHtml(cena) {
+  function chatHtml(cena, { anim = false } = {}) {
     if (!cena || cena.tipo !== 'chat') return '';
     // bolha da criança leva o nome dela (ou "Você"); nunca o nick do contato
     const quem = m => m.nome || (m.de === 'eu' ? progresso.nome() || 'Você' : cena.com);
     const msgs = cena.msgs.map(m => `
-      <div class="bolha ${m.de === 'eu' ? 'eu' : ''}">
-        <span class="av">${m.de === 'eu' ? meuRosto() : cena.foto ? NK.fotoPerfil(cena.foto) : I('anonimo')}</span>
+      <div class="bolha ${m.de === 'eu' ? 'eu' : ''}${anim ? ' espera' : ''}">
+        <span class="av">${m.de === 'eu' ? meuRosto() : cena.foto ? NK.fotoPerfil(cena.foto) : cena.com === NK.NPC3 ? I('capitao') : I('anonimo')}</span>
         <span class="msg">${quem(m) ? `<small>${esc(quem(m))}</small>` : ''}${esc(m.t)}</span>
       </div>`).join('');
     return `<div class="chat">
-      <div class="chat-head">${cena.foto ? NK.fotoPerfil(cena.foto, { size: 34 }) : I('anonimo', { size: 34, cls: 'ico' })}<span>${esc(cena.com)}</span><small>online</small></div>
+      <div class="chat-head">${cena.foto ? NK.fotoPerfil(cena.foto, { size: 34 }) : I(cena.com === NK.NPC3 ? 'capitao' : 'anonimo', { size: 34, cls: 'ico' })}<span>${esc(cena.com)}</span><small>online</small></div>
       <div class="chat-body">${msgs}</div>
+    </div>`;
+  }
+
+  /* As mensagens do chat chegam uma por vez, com os três pontinhos de "digitando". */
+  function animarChat(palco) {
+    const bolhas = $$('.chat-body .bolha.espera', palco);
+    if (!bolhas.length) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { bolhas.forEach(b => b.classList.remove('espera')); return; }
+    const corpo = $('.chat-body', palco), status = $('.chat-head small', palco);
+    let k = 0;
+    const passo = () => {
+      while (k < bolhas.length && !bolhas[k].classList.contains('espera')) k++;
+      const b = bolhas[k];
+      if (!b || !b.isConnected) return;
+      const eu = b.classList.contains('eu');
+      b.insertAdjacentHTML('beforebegin', `<div class="bolha digitando${eu ? ' eu' : ''}" aria-hidden="true"><span class="av">${b.querySelector('.av').innerHTML}</span><span class="msg"><i></i><i></i><i></i></span></div>`);
+      if (status && !eu) status.textContent = 'digitando…';
+      corpo.scrollTop = corpo.scrollHeight;
+      later(() => {
+        b.previousElementSibling?.classList.contains('digitando') && b.previousElementSibling.remove();
+        b.classList.remove('espera'); b.classList.add('chega');
+        if (status) status.textContent = 'online';
+        corpo.scrollTop = corpo.scrollHeight;
+        k++;
+        if (k < bolhas.length) later(passo, 300);
+      }, 650 + Math.min(900, b.textContent.trim().length * 12));
+    };
+    later(passo, 350);
+  }
+  const mostrarChatTodo = palco => { $$('.chat-body .digitando', palco).forEach(d => d.remove()); $$('.chat-body .bolha.espera', palco).forEach(b => b.classList.remove('espera')); };
+
+  /* O Capitão Gancho fala num balão (mesmo visual do quiz). No Marujo fica só a frase principal. */
+  function falaCapitao(principal, extra = '') {
+    if (!principal) return '';
+    const mostrarExtra = extra && progresso.modo() !== 'marujo' && !NK.dicaDoNivel(NK.dicaChave);
+    return `<div class="quiz-palco fala-cap">
+      <span class="quiz-capita" id="capitaFala">${I('capitao')}</span>
+      <div class="quiz-balao"><small class="quiz-quem">Capitão Gancho</small>
+        <p class="enunciado" id="falaTxt">${esc(principal)}</p>
+        ${mostrarExtra ? `<p class="fc-extra">${comIcone('luneta', extra)}</p>` : ''}
+        <div class="quiz-fb" id="fbFala" style="display:none"></div>
+      </div>
     </div>`;
   }
 
   /* Fase 2 · lobby da partida em grupo, no estilo do Joguinho da Fase 1 */
   function lobbyHtml(cena) {
     if (!cena || cena.tipo !== 'lobby') return '';
-    const av = cena.avatares.map((a, i) => `<div class="av-card ${a.alerta ? 'alerta' : ''}">
+    const av = cena.avatares.map((a, i) => `<div class="av-card ${a.alerta ? 'alerta' : ''}" style="--i:${i}">
       <span class="av-foto">${a.alerta ? I('anonimo', { size: 44 }) : rostoAmigo(i, 54)}</span>
       <b>${esc(a.nome)}</b>
       ${a.nota ? `<small>${esc(a.nota)}</small>` : '<em>pronto</em>'}
     </div>`).join('');
     return `<div class="lobby">
-      <div class="lobby-topo"><span>${I('mapa', { cls: 'lobby-mapa' })}<b>${esc(cena.titulo)}</b></span><small>Caça ao Tesouro · ${cena.avatares.length}/6 jogadores</small></div>
+      <div class="lobby-topo"><span><span class="lb-mapa lb-mapa-p">${I('mapa')}</span><b>${esc(cena.titulo)}</b></span><small>Caça ao Tesouro · ${cena.avatares.length}/6 jogadores</small></div>
       <div class="av-lista">${av}</div>
       <div class="lobby-base"><span class="lobby-espera">Esperando a partida começar…</span></div>
     </div>`;
@@ -203,10 +245,10 @@
     </div>`;
   }
 
-  function cenaSuporte(a) {
+  function cenaSuporte(a, o = {}) {
     const c = a.cena;
     if (!c) return '';
-    if (c.tipo === 'chat') return chatHtml(c);
+    if (c.tipo === 'chat') return chatHtml(c, o);
     if (c.tipo === 'lobby') return lobbyHtml(c);
     if (c.tipo === 'guardioes') return guardioesHtml();
     if (c.tipo === 'jogo') return jogoHtml();
@@ -285,12 +327,13 @@
      DISCOVER — leitura guiada de uma cena
      ============================================================ */
   function rDiscover(palco, a) {
+    // o título já está no topo; o texto e a dica viram a fala do Capitão (na tela dos guardiões ele já está na cena)
+    const comCapitao = a.cena?.tipo === 'guardioes';
     palco.innerHTML = `
-      <p class="enunciado">${esc(a.titulo)}</p>
-      ${cenaSuporte(a)}
-      ${a.texto ? `<p class="texto-cena">${esc(a.texto)}</p>` : ''}
-      ${NK.dicaHtml(a.dica)}
+      ${cenaSuporte(a, { anim: true })}
+      ${comCapitao ? `${a.texto ? `<p class="texto-cena">${esc(a.texto)}</p>` : ''}${NK.dicaHtml(a.dica)}` : falaCapitao(a.texto, a.dica)}
       <div class="rodape"><button class="btn btn-t" id="btAvancarDisc">Avançar</button></div>`;
+    animarChat(palco);
     $('#btAvancarDisc').onclick = () => concluirAtividade();
   }
 
@@ -403,29 +446,33 @@
     corpo.scrollTop = corpo.scrollHeight;
   }
 
-  function rChoice(palco, a) {
+  function rChoice(palco, a, reabrindo = false) {
     if (a.tutorial) return rTutorialChoice(palco, a);
     const cartas = a.skin === 'cartas';
     palco.innerHTML = `
-      ${cenaSuporte(a)}
-      <p class="enunciado" style="margin-top:14px">${esc(a.pergunta || '')}</p>
-      ${NK.dicaHtml(a.dica)}
+      ${cenaSuporte(a, { anim: !reabrindo })}
+      ${falaCapitao(a.pergunta || '', a.dica)}
       <div class="opcoes ${cartas ? 'cartas' : ''}" id="opcoesWrap">
-        ${a.opcoes.map((o, i) => `<button class="opcao" data-i="${i}">
+        ${a.opcoes.map((o, i) => `<button class="opcao" data-i="${i}" style="--i:${i}">
           ${o.tag ? `<span class="tag">${esc(o.tag)}</span>` : ''}
           ${o.img ? `<span class="e-big">${icone(o)}</span>` : ''}
           <span>${esc(o.t)}</span>
         </button>`).join('')}
       </div>
-      <div class="quiz-fb" id="fbChoice" style="display:none"></div>
       <div class="rodape" id="rodapeChoice"></div>`;
+    animarChat(palco);
 
     $$('.opcao', palco).forEach(b => b.onclick = () => {
       if (b.disabled) return;
       const o = a.opcoes[+b.dataset.i];
       $$('.opcao', palco).forEach(x => x.disabled = true);
+      mostrarChatTodo(palco);
       if (a.resposta) enviarResposta(o.t, o.ok);
-      const fb = $('#fbChoice');
+      // a resposta do Capitão aparece no próprio balão, no lugar da pergunta
+      const fb = $('#fbFala');
+      $('#falaTxt').style.display = 'none';
+      $('.fala-cap .fc-extra')?.remove();
+      $('#capitaFala')?.classList.add(o.ok ? 'feliz' : 'pensa');
       fb.style.display = 'block';
       fb.className = 'quiz-fb ' + (o.ok ? 'ok' : 'ruim');
         NK.feedback[o.ok ? 'acerto' : 'erro']();
@@ -438,7 +485,7 @@
         progresso.registrarErro();
         b.classList.add('errada'); b.classList.add('shake');
         $('#rodapeChoice').innerHTML = `<button class="btn btn-c" id="btDeNovo">Voltar</button>`;
-        $('#btDeNovo').onclick = () => rChoice(palco, a);
+        $('#btDeNovo').onclick = () => rChoice(palco, a, true);
       }
     });
   }

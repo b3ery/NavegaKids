@@ -249,6 +249,7 @@ flowchart LR
 | **Artes 2D** | ✅ | Fundo geral, fundo do Início e das fases, mapa e ilhas desenhados à mão; os fundos sempre começam logo abaixo do menu |
 | **Escolha do personagem** | ✅ | Ao digitar o nome (e no lápis do Diário) a criança escolhe entre 4 personagens; o escolhido aparece no Início, na abertura, no Diário, nos chats e no lobby |
 | **Fotinhas de perfil** | ✅ | Chats, lobby e lista de amigos mostram o rosto dos personagens; o Leo (Fase 14) tem a própria foto |
+| **Fases mais vivas** | ✅ | Nas telas de leitura e de escolha, o Capitão Gancho fala num balão e responde no próprio balão; as mensagens do chat chegam uma por vez com o "digitando"; os jogadores entram no lobby um por vez; opções e peças maiores entram pulando |
 | **Menu Denunciar** | ✅ | Na Fase 13, tocar nos três pontinhos ou no menu abre as opções do aplicativo e a criança escolhe "Denunciar" |
 | **Celular** | ✅ | Menu em duas linhas, botões maiores para tocar e telas que cabem na largura |
 
