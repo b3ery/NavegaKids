@@ -252,5 +252,5 @@
     }
   };
 
-  Object.assign(NK, { dicaHtml, dicaDoNivel, botaoOuvir, pararVoz: parar, feedback, voz: { temVoz, listaVozes, temVozNatural, ehNatural, escolherVoz, vozSalva, salvarVoz, falar, prepararFala } });
+  Object.assign(NK, { dicaHtml, dicaDoNivel, botaoOuvir, pararVoz: parar, atualizarVoz: atualizarBotoes, feedback, voz: { temVoz, listaVozes, temVozNatural, ehNatural, escolherVoz, vozSalva, salvarVoz, falar, prepararFala } });
 })();

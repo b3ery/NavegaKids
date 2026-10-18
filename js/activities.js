@@ -182,7 +182,7 @@
   function animarChat(palco) {
     const bolhas = $$('.chat-body .bolha.espera', palco);
     if (!bolhas.length) return;
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { bolhas.forEach(b => b.classList.remove('espera')); return; }
+    if (NK.semMovimento || matchMedia('(prefers-reduced-motion: reduce)').matches) { bolhas.forEach(b => b.classList.remove('espera')); return; }
     const corpo = $('.chat-body', palco), status = $('.chat-head small', palco);
     let k = 0;
     const passo = () => {
