@@ -130,7 +130,7 @@
   }
 
   /** Fala um trecho na voz do navegador (em blocos curtos: o Chrome corta falas longas). */
-  function sintetizar(texto, voz, depois) {
+  function sintetizar(texto, voz, depois, minha = sessao) {
     if (!temVoz) { depois(); return; }
     const blocos = [];
     (texto.match(/[^.!?…]+[.!?…]*\s*/g) || [texto]).forEach(f => {
@@ -145,7 +145,10 @@
       if (voz) u.voice = voz;
       u.pitch = 1;   // tom original: mudar o tom deixa a voz mais robótica
       u.rate = RITMO[progresso.modo()] || 1;
+      // se mandaram parar enquanto os pedaços esperavam na fila, cada pedaço confere antes de falar
+      u.onstart = () => { if (minha !== sessao) window.speechSynthesis.cancel(); };
       if (i === lista.length - 1) { u.onend = depois; u.onerror = depois; }
+      window.speechSynthesis.resume();   // alguns navegadores ficam "pausados" depois de um cancelar
       window.speechSynthesis.speak(u);
     });
   }
@@ -164,7 +167,7 @@
     }
     if (!temVoz) return;
     marcar(bt);
-    sintetizar(fala, voz, () => { if (minha === sessao && botaoFalando === bt) marcar(null); });
+    sintetizar(fala, voz, () => { if (minha === sessao && botaoFalando === bt) marcar(null); }, minha);
   }
 
   /* Leitura automática (progresso.vozAuto): no Marujo (8 anos) vem ligada; no Capitão
@@ -202,7 +205,7 @@
     if (!caixa || caixa.dataset.lido) return;
     caixa.dataset.lido = '1';
     const espera = +caixa.dataset.atraso || 350;   // a dica da garrafa só é lida depois de o papel abrir
-    if (vozLigada()) setTimeout(() => { if (document.body.contains(caixa)) falar(textoDe(caixa), null); }, espera);
+    if (vozLigada()) setTimeout(() => { if (vozLigada() && document.body.contains(caixa)) falar(textoDe(caixa), null); }, espera);
   }
 
   function lerFeedback(fb) {
@@ -220,7 +223,7 @@
       $$('.bt-ouvir-principal:not([data-auto])').forEach(bt => {
         bt.dataset.auto = '1';
         if (vozLigada() && !document.querySelector('.popup-wrap'))
-          setTimeout(() => { if (document.body.contains(bt) && !botaoFalando) falar(textoDoBotao(bt), bt); }, 400);
+          setTimeout(() => { if (vozLigada() && document.body.contains(bt) && !botaoFalando) falar(textoDoBotao(bt), bt); }, 400);
       });
       $$('.popup-wrap').forEach(lerPopup);
       $$(FEEDBACK).forEach(lerFeedback);

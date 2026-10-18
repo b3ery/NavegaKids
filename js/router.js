@@ -633,7 +633,7 @@
     $('#btIlhas').onclick = () => go('#/ilhas');
     const bv = $('#btVoz'); if (bv) bv.onclick = popupVoz;
     // sem ter passado pela introdução, “Começar” leva primeiro à introdução da fase
-    $$('[data-i]', $('.arvore')).forEach(b => b.onclick = () => go(progresso.introVista(fid) || DEV ? `#/atividade/${fid}/${b.dataset.i}` : `#/abertura/${fid}`));
+    $$('.passo[data-i]', $('.arvore')).forEach(b => b.onclick = () => go(progresso.introVista(fid) || DEV ? `#/atividade/${fid}/${b.dataset.i}` : `#/abertura/${fid}`));
     const av = $('#btAvancarFase');
     if (av) av.onclick = () => aposFase(fid);
   }
