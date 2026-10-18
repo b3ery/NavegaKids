@@ -12,7 +12,7 @@
   const CHAVE = 'navegakids-acessibilidade';
 
   // texto: 0 normal, 1 grande, 2 maior · o resto liga/desliga
-  const PADRAO = { texto: 0, contraste: false, leitura: false, parado: false, destaque: false, cursor: false, regua: false };
+  const PADRAO = { texto: 0, escuro: false, contraste: false, leitura: false, parado: false, destaque: false, cursor: false, regua: false };
   let op = { ...PADRAO };
   try { Object.assign(op, JSON.parse(localStorage.getItem(CHAVE) || '{}')); } catch (e) {}
   const salvar = () => { try { localStorage.setItem(CHAVE, JSON.stringify(op)); } catch (e) {} };
@@ -21,6 +21,7 @@
   const svg = d => `<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${d}</svg>`;
   const ICONES = {
     acess: svg('<circle cx="12" cy="4.5" r="2"/><path d="M4 8.5c2.6.9 5.3 1.3 8 1.3s5.4-.4 8-1.3"/><path d="M12 9.8v4.4"/><path d="M8.5 21l3.5-6.8 3.5 6.8"/>'),
+    escuro: svg('<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>'),
     contraste: svg('<circle cx="12" cy="12" r="9"/><path d="M12 3v18" /><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>'),
     leitura: svg('<path d="M4 19V6"/><path d="M4 6h5"/><path d="M4 12h4"/><path d="M13 19l3.5-12L20 19"/><path d="M14.3 15h4.4"/>'),
     parado: svg('<circle cx="12" cy="12" r="9"/><path d="M10 9v6M14 9v6"/>'),
@@ -32,6 +33,7 @@
   };
 
   const OPCOES = [
+    { k: 'escuro', t: 'Modo escuro', s: 'Noite no mar' },
     { k: 'contraste', t: 'Cores fortes', s: 'Mais contraste' },
     { k: 'leitura', t: 'Letra espaçada', s: 'Mais fácil de ler' },
     { k: 'parado', t: 'Parar animações', s: 'Tela sem movimento' },
@@ -47,7 +49,7 @@
   function aplicar() {
     html.classList.remove('a11y-texto-1', 'a11y-texto-2');
     if (op.texto) html.classList.add(`a11y-texto-${op.texto}`);
-    ['contraste', 'leitura', 'parado', 'destaque', 'cursor', 'regua'].forEach(k => html.classList.toggle(`a11y-${k}`, !!op[k]));
+    ['escuro', 'contraste', 'leitura', 'parado', 'destaque', 'cursor', 'regua'].forEach(k => html.classList.toggle(`a11y-${k}`, !!op[k]));
     NK.semMovimento = !!op.parado;   // o chat que "digita" mostra tudo de uma vez
     if (!op.regua) regua?.remove(), regua = null;
     else if (!regua) { regua = document.createElement('div'); regua.className = 'a11y-faixa'; regua.setAttribute('aria-hidden', 'true'); document.body.appendChild(regua); }
@@ -105,7 +107,7 @@
         if (k === 'voz') {
           progresso.definirVozAuto(!vozLigada());
           NK.atualizarVoz?.();
-          if (!vozLigada()) NK.pararVoz?.();
+          if (vozLigada()) NK.lerTela?.(); else NK.pararVoz?.();   // ligou: já lê a tela
         } else op[k] = !op[k];
         mudou(k);
       });

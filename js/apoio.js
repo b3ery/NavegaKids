@@ -183,6 +183,13 @@
     });
   }
 
+  /** Lê o que está na tela agora: o popup aberto, o texto do botão Voz da tela ou, sem ele, a tela inteira. */
+  function lerTela() {
+    const pop = document.querySelector('.popup-wrap .popup');
+    const bt = document.querySelector('.bt-ouvir-principal');
+    falar(pop ? textoDe(pop) : bt ? textoDoBotao(bt) : textoDe(document.getElementById('stage')), pop ? null : bt);
+  }
+
   document.addEventListener('click', e => {
     const bt = e.target.closest('.bt-ouvir-principal');
     if (!bt) return;
@@ -255,5 +262,5 @@
     }
   };
 
-  Object.assign(NK, { dicaHtml, dicaDoNivel, botaoOuvir, pararVoz: parar, atualizarVoz: atualizarBotoes, feedback, voz: { temVoz, listaVozes, temVozNatural, ehNatural, escolherVoz, vozSalva, salvarVoz, falar, prepararFala } });
+  Object.assign(NK, { dicaHtml, dicaDoNivel, botaoOuvir, pararVoz: parar, atualizarVoz: atualizarBotoes, lerTela, feedback, voz: { temVoz, listaVozes, temVozNatural, ehNatural, escolherVoz, vozSalva, salvarVoz, falar, prepararFala } });
 })();
