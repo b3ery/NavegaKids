@@ -22,8 +22,7 @@
     const draw = () => {
       const soltos = itens.filter(i => i.colocado === null);
       palco.innerHTML = `
-        <p class="enunciado">${esc(a.pergunta)}</p>
-        ${NK.dicaHtml(a.dica)}
+        ${NK.falaCapitao(a.pergunta, a.dica, { mini: true, sempreExtra: true })}
         <div class="baldes">
           ${a.baldes.map(b => `
             <div class="balde alvo" data-b="${b.id}">
@@ -145,15 +144,13 @@
 
       if (a.skin === 'perfil') {
         palco.innerHTML = `
-          <p class="enunciado">${esc(a.pergunta)}</p>
-          ${NK.dicaHtml(a.dica)}
+          ${NK.falaCapitao(a.pergunta, a.dica, { mini: true, sempreExtra: true })}
           <p class="prog-hunt">Pistas encontradas: <b id="cntHunt">0</b>/${alvo}</p>
           ${NK.jogoDetetiveHtml(perfilJogoHtml(round.itens))}
           <div class="dica-flutua" id="fbHunt"></div>`;
       } else if (a.skin === 'chat') {
         palco.innerHTML = `
-          <p class="enunciado">${esc(a.pergunta)}</p>
-          ${NK.dicaHtml(a.dica)}
+          ${NK.falaCapitao(a.pergunta, a.dica, { mini: true, sempreExtra: true })}
           <p class="prog-hunt">Sinais encontrados: <b id="cntHunt">0</b>/${alvo}</p>
           <div class="chat">
             <div class="chat-head">${I('anonimo', { size: 34 })}<span>${esc(a.com)}</span><small>online</small></div>
@@ -162,16 +159,14 @@
           <div class="dica-flutua" id="fbHunt"></div>`;
       } else if (a.skin === 'app') {
         palco.innerHTML = `
-          <p class="enunciado">${esc(a.pergunta)}</p>
-          ${NK.dicaHtml(a.dica)}
+          ${NK.falaCapitao(a.pergunta, a.dica, { mini: true, sempreExtra: true })}
           <p class="prog-hunt">Rodada ${rIdx + 1}/${a.rounds.length}${round.titulo ? ` · ${esc(round.titulo)}` : ''} · encontrados: <b id="cntHunt">0</b>/${alvo}</p>
           ${celularHtml(round)}
           <div class="dica-flutua" id="fbHunt"></div>`;
       } else {
         // skin "scene": cena livre com pontos posicionados
         palco.innerHTML = `
-          <p class="enunciado">${esc(a.pergunta)}</p>
-          ${NK.dicaHtml(a.dica)}
+          ${NK.falaCapitao(a.pergunta, a.dica, { mini: true, sempreExtra: true })}
           <p class="prog-hunt">Encontrados: <b id="cntHunt">0</b>/${alvo}</p>
           <div class="cena-hunt mapa-perg">
             <svg class="mapa-deco" viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true">
@@ -246,8 +241,7 @@
 
     const draw = () => {
       palco.innerHTML = `
-        <p class="enunciado">${esc(a.pergunta)}</p>
-        ${NK.dicaHtml(a.dica)}
+        ${NK.falaCapitao(a.pergunta, a.dica, { mini: true, sempreExtra: true })}
         <div class="seq-slots">
           ${slots.map((s, i) => `<div class="slot ${s !== null ? 'cheio' : ''}" data-s="${i}" ${s !== null ? 'role="button" tabindex="0" aria-label="Tirar este cartão"' : ''}>
             <span class="n">${i + 1}</span>
@@ -303,8 +297,7 @@
 
     const draw = () => {
       palco.innerHTML = `
-        <p class="enunciado">${esc(a.pergunta)}</p>
-        ${NK.dicaHtml(a.dica)}
+        ${NK.falaCapitao(a.pergunta, a.dica, { mini: true, sempreExtra: true })}
         ${a.grupos.map((g, gi) => `
           <div class="grupo">
             <h4>${esc(g.label)}</h4>
@@ -468,8 +461,7 @@
 
     const draw = () => {
       palco.innerHTML = `
-        <p class="enunciado">${esc(a.pergunta)}</p>
-        ${NK.dicaHtml(a.dica)}
+        ${NK.falaCapitao(a.pergunta, a.dica, { mini: true, sempreExtra: true })}
         <p class="prog-hunt">Ligados: <b>${pares.size}/${a.pares.length}</b></p>
         <div class="match">
           <div class="col"><h4>Situação</h4>${as.map(x => `<button data-a="${x.id}" style="--cor:${COR_PAR[x.id % COR_PAR.length]}" class="${pares.has(x.id) ? 'par' : (selA === x.id ? 'sel' : '')}" ${pares.has(x.id) ? 'disabled' : ''}><span class="m-num">${x.id + 1}</span><span>${esc(x.t)}</span></button>`).join('')}</div>

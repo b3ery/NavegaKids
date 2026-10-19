@@ -248,15 +248,24 @@
     8: 'Oito seguidos! Ninguém engana você!',
     12: 'Doze seguidos! Você é uma lenda dos mares!'
   };
+
+  /* o Capitão do balão reage: pula ao acertar, balança a cabeça ao errar */
+  function reageCapitao(cls) {
+    const c = document.getElementById('capitaFala');
+    if (!c) return;
+    c.classList.remove('feliz', 'pensa'); void c.offsetWidth; c.classList.add(cls);
+  }
   const feedback = {
     acerto() {
       NK.som?.acerto();
+      reageCapitao('feliz');
       seguidos++;
       const msg = COMEMORA[seguidos] || (seguidos > 12 && seguidos % 5 === 0 ? `${seguidos} acertos seguidos! Que sequência!` : '');
       if (msg) toast(msg, 'coracao');   // coração: carinho a cada sequência de acertos
     },
     erro() {
       NK.som?.erro();
+      reageCapitao('pensa');
       seguidos = 0;
       document.dispatchEvent(new Event('nk-erro'));   // activities.js: 2 erros fazem o botão de dica aparecer
     }

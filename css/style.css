@@ -2432,3 +2432,16 @@ html.a11y-escuro .balde .dentro { border-color: rgba(255, 255, 255, .2); }
 html.a11y-escuro .balde .dentro:empty::before { color: rgba(255, 255, 255, .4); }
 /* joinha para cima (Sim): o mesmo desenho do joinha para baixo, virado */
 .opcao .e-big.vira .ico { transform: scaleY(-1); }
+/* Capitão nas atividades de mexer: balão mais baixo, para a atividade caber na tela */
+.fala-cap.mini { margin: 0 auto 12px; }
+.fala-cap.mini .quiz-capita { width: 78px; height: 78px; }
+.fala-cap.mini .quiz-balao { margin-bottom: 14px; padding: 8px 16px 10px; }
+.fala-cap.mini .quiz-balao .enunciado { font-size: 19px; margin-top: 2px; }
+.fala-cap.mini .quiz-balao::before { bottom: 14px; }
+@media (max-width: 600px) {
+  .fala-cap.mini { flex-direction: row; align-items: flex-end; gap: 4px; }
+  .fala-cap.mini .quiz-capita { width: 58px; height: 58px; }
+  .fala-cap.mini .quiz-balao { margin-bottom: 10px; width: auto; }
+  .fala-cap.mini .quiz-balao::before { left: -15px; top: auto; bottom: 12px; margin-left: 0; transform: rotate(45deg) skew(10deg, 10deg); }
+  .fala-cap.mini .quiz-balao .enunciado { font-size: 16px; }
+}

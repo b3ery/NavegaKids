@@ -207,10 +207,11 @@
   const mostrarChatTodo = palco => { $$('.chat-body .digitando', palco).forEach(d => d.remove()); $$('.chat-body .bolha.espera', palco).forEach(b => b.classList.remove('espera')); };
 
   /* O Capitão Gancho fala num balão (mesmo visual do quiz). No Marujo fica só a frase principal. */
-  function falaCapitao(principal, extra = '') {
+  function falaCapitao(principal, extra = '', { mini = false, sempreExtra = false } = {}) {
     if (!principal) return '';
-    const mostrarExtra = extra && progresso.modo() !== 'marujo' && !NK.dicaDoNivel(NK.dicaChave);
-    return `<div class="quiz-palco fala-cap">
+    // nas atividades de mexer (mini) a dica continua como antes; nas de leitura, no Marujo fica só a frase principal
+    const mostrarExtra = extra && !NK.dicaDoNivel(NK.dicaChave) && (sempreExtra || progresso.modo() !== 'marujo');
+    return `<div class="quiz-palco fala-cap${mini ? ' mini' : ''}">
       <span class="quiz-capita" id="capitaFala">${I('capitao')}</span>
       <div class="quiz-balao"><small class="quiz-quem">Capitão Gancho</small>
         <p class="enunciado" id="falaTxt">${esc(principal)}</p>
@@ -377,7 +378,7 @@
        Antes de clicar em "Começar a investigar", a tela fica parada. */
     function desenharInicio() {
       palco.innerHTML = `
-        <p class="enunciado">Toque em “Começar a investigar” para usar a lupa.</p>
+        ${falaCapitao('Toque em “Começar a investigar” para usar a lupa.', '', { mini: true })}
         ${jogoHtml(false)}`;
       $$('.jg-chip, #jgNotif', palco).forEach(b => { b.disabled = true; });
       $('#btInvestigar').onclick = () => popup({
@@ -389,7 +390,7 @@
 
     function desenharExploracao() {
       palco.innerHTML = `
-        <p class="enunciado">Use a lupa: explore a tela até encontrar algo importante.</p>
+        ${falaCapitao('Use a lupa: explore a tela até encontrar algo importante.', '', { mini: true })}
         ${jogoHtml(false)}`;
       $('.jg', palco).classList.add('investigando');
       $('#btInvestigar').outerHTML = `<span class="lb-investigando">${I('misterio', { cls: 'ico-txt' })} Investigando...</span>`;
@@ -402,7 +403,7 @@
 
     function desenharPendentes() {
       palco.innerHTML = `
-        <p class="enunciado">${esc(a.titulo)}</p>
+        ${falaCapitao(a.titulo, '', { mini: true })}
         ${jogoHtml(true)}
         <div class="quiz-fb" id="fbChoice" style="display:none"></div>
         <div class="rodape" id="rodapeChoice"></div>`;
@@ -499,8 +500,7 @@
        redesenhada a cada toque, para a animação de abrir aparecer. */
     const abertas = new Set();
     palco.innerHTML = `
-      <p class="enunciado">${esc(a.pergunta)}</p>
-      ${NK.dicaHtml(a.dica)}
+      ${falaCapitao(a.pergunta, a.dica, { mini: true, sempreExtra: true })}
       <p class="prog-hunt">Portas abertas: <b id="cntPortas">0</b>/${a.portas.length}</p>
       <div class="portas">
         ${a.portas.map((p, i) => `<button class="porta" data-i="${i}" style="--i:${i}" aria-label="Porta: ${esc(p.t)}">
@@ -551,5 +551,5 @@
   }
 
   NK.atividades = { discover: rDiscover, explain: rExplain, choice: rChoice, doors: rDoors, block: rBlock };
-  Object.assign(NK, { telaAtividade, concluirAtividade, jogoDetetiveHtml });
+  Object.assign(NK, { telaAtividade, concluirAtividade, jogoDetetiveHtml, falaCapitao });
 })();
