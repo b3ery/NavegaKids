@@ -286,28 +286,40 @@ open index.html
 
 ```
 NavegaKids/
-├── index.html          # Página única do jogo (a ordem dos scripts importa)
+├── index.html            # Página única do jogo, com a lista dos arquivos e a versão (num lugar só)
 ├── css/
-│   └── style.css       # Todos os estilos e animações
+│   ├── base.css          # Cores, botões, barra superior, popups, personagens e animações
+│   ├── telas.css         # Início, Ilhas, viagem, mapa da ilha, abertura, cenas do Capitão,
+│   │                     # Missões, conclusão, Diário e certificado
+│   ├── atividades.css    # Tela da atividade e cada tipo de atividade (chat, escolhas, quiz...)
+│   └── acessibilidade.css # Painel de acessibilidade e o modo escuro
 ├── js/
-│   ├── config.js       # Liga cada imagem da pasta img/ a um nome
-│   ├── data.js         # Todo o conteúdo: ilhas, fases e atividades
-│   ├── pontuacao.js    # Regras de pontos e estrelas (objeto REGRAS)
-│   ├── progresso.js    # Progresso da sessão: atividades, erros, pontos, estrelas, selos, nome
-│   ├── core.js         # Utilitários, imagens, popups e cabeçalho
-│   ├── dicas.js        # Dicas por nível (óbvias no Marujo, sutis no Capitão)
-│   ├── apoio.js        # Modos por idade (dicas), ouvir em voz alta e incentivo
-│   ├── activities.js   # Tela de atividade + discover, explain, choice, doors, block
-│   ├── activities2.js  # classify, hunt, sequence, compose, quiz, match, bau
-│   ├── musica.js       # Música de fundo e efeitos sonoros (Web Audio)
-│   ├── router.js       # As telas: Início, Ilhas, Mapa, Abertura, Missões, Conclusão, Diário, Certificado
+│   ├── config.js         # Liga cada imagem da pasta img/ a um nome
+│   ├── data.js           # Todo o conteúdo: ilhas, fases e atividades
+│   ├── pontuacao.js      # Regras de pontos e estrelas (objeto REGRAS)
+│   ├── progresso.js      # Progresso da sessão: atividades, erros, pontos, estrelas, selos, nome
+│   ├── textos-curtos.js  # Versões curtas dos textos para o Marujo
+│   ├── dicas.js          # Dicas por nível (óbvias no Marujo, sutis no Capitão)
+│   ├── core.js           # Utilitários, imagens, popups e cabeçalho
+│   ├── apoio.js          # Voz que lê os textos, dicas e incentivo
+│   ├── activities.js     # Tela de atividade + discover, explain, choice, doors, block
+│   ├── activities2.js    # classify, hunt, sequence, compose, quiz, match, bau
+│   ├── musica.js         # Música de fundo e efeitos sonoros (Web Audio)
+│   ├── telas/            # Uma tela por arquivo
+│   │   ├── comum.js      # Peças usadas por várias telas (bandeira, cadeado, ícone da fase...)
+│   │   ├── jogador.js    # Popups de nome, personagem e nível
+│   │   ├── inicio.js · ilhas.js · mapa.js · capitao.js · abertura.js
+│   │   └── missoes.js · conclusao.js · diario.js · certificado.js
+│   ├── router.js         # Liga cada endereço (#/home, #/ilhas...) à sua tela
 │   └── acessibilidade.js # Painel de acessibilidade (botão amarelo no canto)
-├── img/                # Artes e ícones do jogo
-├── videos/             # Vídeos das fases 9 e 13
-└── README.md           # Este arquivo
+├── img/                  # Artes e ícones do jogo
+├── videos/               # Vídeos das fases 9 e 13
+└── README.md             # Este arquivo
 ```
 
 Todo o código fica dentro de **uma única variável global**, `NavegaKids`, para não conflitar com as landing pages dos outros times.
+
+**Arquivos e versão:** a lista de arquivos CSS e JS fica no `index.html`, em `NavegaKids.arquivos`. Depois de publicar uma mudança, troque só o número em `VERSAO` para os navegadores baixarem tudo de novo. A ordem da lista importa: cada arquivo usa o que os anteriores registraram em `NavegaKids`. Para criar uma tela nova, crie o arquivo em `js/telas/`, registre a tela em `NavegaKids.telas`, coloque o nome na lista do `index.html` e a rota no `router.js`.
 
 <br>
 

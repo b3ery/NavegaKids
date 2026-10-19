@@ -8,31 +8,36 @@
 <link rel="icon" type="image/png" href="img/pirata.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20261019d">
+<script>
+  /* Lista única dos arquivos do jogo.
+     VERSAO: troque só aqui depois de publicar uma mudança, para o navegador baixar tudo de novo.
+     A ORDEM importa: cada arquivo usa o que os anteriores registraram em window.NavegaKids. */
+  window.NavegaKids = { arquivos: {
+    VERSAO: '20261019e',
+    css: ['base', 'telas', 'atividades', 'acessibilidade'],
+    js: [
+      'config', 'data',                              // conteúdo e configuração (imagens, roteiro)
+      'pontuacao', 'progresso',                      // pontos, estrelas, selos e desbloqueio
+      'textos-curtos', 'dicas',                      // textos do Marujo e dicas por nível
+      'core',                                        // imagens, popups e montagem das telas
+      'apoio',                                       // voz, dicas e incentivo
+      'activities', 'activities2',                   // tela de atividade e os tipos de atividade
+      'musica',                                      // música de fundo (Web Audio, sem arquivo)
+      'telas/comum', 'telas/jogador',                // peças e popups usados por várias telas
+      'telas/inicio', 'telas/ilhas', 'telas/mapa', 'telas/capitao', 'telas/abertura',
+      'telas/missoes', 'telas/conclusao', 'telas/diario', 'telas/certificado',
+      'router',                                      // liga cada endereço à sua tela
+      'acessibilidade'                               // painel de acessibilidade
+    ]
+  } };
+  NavegaKids.arquivos.css.forEach(n => document.write(`<link rel="stylesheet" href="css/${n}.css?v=${NavegaKids.arquivos.VERSAO}">`));
+</script>
 </head>
 <body>
   <header class="topbar" id="topbar"></header>
   <main id="stage" role="main"></main>
-
-  <!-- A ORDEM importa: cada arquivo usa o que os anteriores registraram em window.NavegaKids -->
-  <!-- Conteúdo e configuração do jogo -->
-  <script src="js/config.js?v=20261019d"></script>
-  <script src="js/data.js?v=20261019d"></script>
-  <!-- Progressão: pontos, estrelas, selos -->
-  <script src="js/pontuacao.js?v=20261019d"></script>
-  <script src="js/progresso.js?v=20261019d"></script>
-  <script src="js/textos-curtos.js?v=20261019d"></script>
-  <script src="js/dicas.js?v=20261019d"></script>
-  <!-- Motor do jogo -->
-  <script src="js/core.js?v=20261019d"></script>
-  <!-- Apoio: dicas por modo, ouvir em voz alta, incentivo -->
-  <script src="js/apoio.js?v=20261019d"></script>
-  <script src="js/activities.js?v=20261019d"></script>
-  <script src="js/activities2.js?v=20261019d"></script>
-  <!-- Música de fundo (Web Audio, sem arquivo) -->
-  <script src="js/musica.js?v=20261019d"></script>
-  <script src="js/router.js?v=20261019d"></script>
-  <!-- Painel de acessibilidade (feito no próprio jogo, sem script de fora) -->
-  <script src="js/acessibilidade.js?v=20261019d"></script>
+  <script>
+    NavegaKids.arquivos.js.forEach(n => document.write(`<script src="js/${n}.js?v=${NavegaKids.arquivos.VERSAO}"><\/script>`));
+  </script>
 </body>
 </html>
