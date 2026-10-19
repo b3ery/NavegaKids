@@ -455,7 +455,7 @@
       <div class="opcoes ${cartas ? 'cartas' : ''}" id="opcoesWrap">
         ${a.opcoes.map((o, i) => `<button class="opcao" data-i="${i}" style="--i:${i}">
           ${o.tag ? `<span class="tag">${esc(o.tag)}</span>` : ''}
-          ${o.img ? `<span class="e-big">${icone(o)}</span>` : ''}
+          ${o.img ? `<span class="e-big${o.vira ? ' vira' : ''}">${icone(o)}</span>` : ''}
           <span>${esc(o.t)}</span>
         </button>`).join('')}
       </div>

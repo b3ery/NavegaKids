@@ -2430,3 +2430,5 @@ html.a11y-escuro img.ico[data-k="anonimo"] { background: #dfe7f2; border-radius:
 html.a11y-escuro .itens { background: rgba(255, 255, 255, .06); }
 html.a11y-escuro .balde .dentro { border-color: rgba(255, 255, 255, .2); }
 html.a11y-escuro .balde .dentro:empty::before { color: rgba(255, 255, 255, .4); }
+/* joinha para cima (Sim): o mesmo desenho do joinha para baixo, virado */
+.opcao .e-big.vira .ico { transform: scaleY(-1); }

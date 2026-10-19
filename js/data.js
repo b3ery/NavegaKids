@@ -146,8 +146,8 @@
           pergunta: "O convite é para um chat de voz privado. Você aceita?",
           dica: "Um espaço privado com alguém que só conhecemos pela tela… vale pensar duas vezes.",
           opcoes: [
-            { t: "Sim", ok: false, fb: "Opa! Gostar do mesmo jogo não é a mesma coisa que confiar 100%. Bora repensar esse convite?" },
-            { t: "Não", ok: true,  fb: "Boa, navegador! Ir para um espaço privado com alguém que você só conhece pela tela merece uma conversa com um adulto antes." }
+            { t: "Sim", img: "naoGosto", vira: true, ok: false, fb: "Opa! Gostar do mesmo jogo não é a mesma coisa que confiar 100%. Bora repensar esse convite?" },
+            { t: "Não", img: "naoGosto", ok: true,  fb: "Boa, navegador! Ir para um espaço privado com alguém que você só conhece pela tela merece uma conversa com um adulto antes." }
           ]
         }
       ]
@@ -338,8 +338,8 @@
           ]},
           pergunta: "Ele insiste no convite. O que você responde?",
           opcoes: [
-            { t: "Sim, vamos conversar lá", ok: false, fb: "Vamos repensar: quando alguém quer sair do olhar de outras pessoas para conversar só com você, isso merece atenção redobrada." },
-            { t: "Não, prefiro continuar aqui", ok: true, fb: "Boa escolha! Continuar a conversa num lugar onde seus responsáveis podem acompanhar é sempre mais seguro." }
+            { t: "Sim, vamos conversar lá", img: "naoGosto", vira: true, ok: false, fb: "Vamos repensar: quando alguém quer sair do olhar de outras pessoas para conversar só com você, isso merece atenção redobrada." },
+            { t: "Não, prefiro continuar aqui", img: "naoGosto", ok: true, fb: "Boa escolha! Continuar a conversa num lugar onde seus responsáveis podem acompanhar é sempre mais seguro." }
           ]
         }
       ]
@@ -358,9 +358,9 @@
           pergunta: "Qual resposta você mandaria?",
           dica: "Não existe só uma forma de responder, mas algumas são bem mais seguras que outras.",
           opcoes: [
-            { t: "Claro! Vou te mandar agora.", ok: false, fb: "Vamos pensar de novo: fotos são informações pessoais e não devem ir para quem só conhecemos pela tela." },
-            { t: "Prefiro não mandar. Vou perguntar pro meu responsável.", ok: true, fb: "Ótima resposta! Firme, educada e ainda chama um adulto de confiança para a conversa." },
-            { t: "Mando se você prometer que não conta pra ninguém.", ok: false, fb: "Vamos pensar de novo: aceitar um segredo é entrar no jogo de quem quer esconder algo dos adultos." }
+            { t: "Claro! Vou te mandar agora.", img: "comunicacao2", ok: false, fb: "Vamos pensar de novo: fotos são informações pessoais e não devem ir para quem só conhecemos pela tela." },
+            { t: "Prefiro não mandar. Vou perguntar pro meu responsável.", img: "apoio", ok: true, fb: "Ótima resposta! Firme, educada e ainda chama um adulto de confiança para a conversa." },
+            { t: "Mando se você prometer que não conta pra ninguém.", img: "misterio", ok: false, fb: "Vamos pensar de novo: aceitar um segredo é entrar no jogo de quem quer esconder algo dos adultos." }
           ]
         },
         {
