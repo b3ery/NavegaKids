@@ -4,60 +4,79 @@
    ============================================================ */
 
 /* ---------- Início ---------- */
+
 /* Frame Home: 1728 × 1683 px (navbar 182 + 1501 de composição). */
-.scene.home { min-height: 0; display: block; background: var(--navy-fundo); }
+.scene.home {
+  min-height: 0;
+  display: block;
+  background: var(--navy-fundo);
+}
+
 .home-frame {
   position: relative;
+  isolation: isolate;
   width: 100%;
   height: calc(1501 * var(--u));
   overflow: hidden;   /* só o frame corta, como o clip do frame no Figma */
-  isolation: isolate;
 }
-.home-frame > .ico { position: absolute; max-width: none; object-fit: fill; pointer-events: none; }
+
+.home-frame > .ico {
+  position: absolute;
+  max-width: none;
+  object-fit: fill;
+  pointer-events: none;
+}
+
 /* coordenadas = (Y do Figma − 182 da navbar) */
 .home-frame .hm-fundo {
   left: calc(-61 * var(--u));
   top: 0;
+  z-index: 0;
   width: calc(1790 * var(--u));
   height: calc(1733 * var(--u));
-  z-index: 0;
 }
+
 .home-frame .hm-mapa {
   left: calc(665 * var(--u));
   top: calc(143 * var(--u));
+  z-index: 1;
   width: calc(1032 * var(--u));
   height: calc(1005 * var(--u));
-  z-index: 1;
 }
+
 .home-frame .hm-barco2 {
   left: calc(-34.1 * var(--u));
   top: calc(-38 * var(--u));
+  z-index: 2;
   width: calc(1783.4 * var(--u));
   height: calc(1610 * var(--u));
-  z-index: 2;
 }
+
 /* 2ª instância: só a faixa inferior aparece (topo fica sob o convés) */
 .home-frame .hm-barco {
   left: calc(-5 * var(--u));
   top: calc(-238 * var(--u));
+  z-index: 3;
   width: calc(1733 * var(--u));
   height: calc(1564 * var(--u));
-  z-index: 3;
 }
+
 .home-frame .hm-pirata {
   left: calc(-24 * var(--u));
   top: calc(289 * var(--u));
+  z-index: 4;
   width: calc(1066 * var(--u));
   height: calc(1039 * var(--u));
-  z-index: 4;
 }
+
 .home-frame .hm-volante {
   left: calc(583 * var(--u));
   top: calc(733 * var(--u));
+  z-index: 4;
   width: calc(516 * var(--u));
   height: calc(516 * var(--u));
-  z-index: 4;
 }
+
 /* balão de fala do pirata, ao lado do mapa */
 .home-frame .hm-balao {
   position: absolute;
@@ -65,16 +84,17 @@
   left: calc(320 * var(--u));
   top: calc(195 * var(--u));
   width: calc(740 * var(--u));
-  background: #FFF9E6;
-  border: max(2px, calc(5 * var(--u))) solid #1E293B;
-  border-radius: calc(46 * var(--u));
   padding: calc(30 * var(--u)) calc(42 * var(--u));
   box-sizing: border-box;
   text-align: center;
   color: #1E293B;
+  background: #FFF9E6;
+  border: max(2px, calc(5 * var(--u))) solid #1E293B;
+  border-radius: calc(46 * var(--u));
   box-shadow: 0 calc(12 * var(--u)) 0 rgba(30, 41, 59, .25);
   transform-origin: 10% 100%;
 }
+
 .home-frame .hm-balao::after {
   /* rabinho apontando para o pirata */
   content: "";
@@ -86,6 +106,7 @@
   background: #1E293B;
   clip-path: polygon(0 0, 100% 0, 0 100%);
 }
+
 .home-frame .hm-balao::before {
   content: "";
   position: absolute;
@@ -97,6 +118,7 @@
   background: #FFF9E6;
   clip-path: polygon(0 0, 100% 0, 0 100%);
 }
+
 .home-frame .hm-balao h1 {
   margin: 0;
   font-size: calc(60 * var(--u));
@@ -104,16 +126,24 @@
   line-height: 1.1;
   color: #1E293B;
 }
-.home-frame .hm-balao p { margin: calc(12 * var(--u)) 0 0; font-size: calc(34 * var(--u)); font-weight: 700; line-height: 1.25; }
+
+.home-frame .hm-balao p {
+  margin: calc(12 * var(--u)) 0 0;
+  font-size: calc(34 * var(--u));
+  font-weight: 700;
+  line-height: 1.25;
+}
+
 .home-frame .hm-balao .hm-status {
   display: inline-block;
   margin-top: calc(18 * var(--u));
   padding: calc(8 * var(--u)) calc(22 * var(--u));
-  background: #FFC83B;
-  border-radius: 999px;
   font-size: calc(28 * var(--u));
   font-weight: 800;
+  background: #FFC83B;
+  border-radius: 999px;
 }
+
 /* o mapa inteiro vira um atalho para as ilhas */
 .home-frame .hm-mapa-link {
   position: absolute;
@@ -127,35 +157,55 @@
   border-radius: calc(40 * var(--u));
   cursor: pointer;
 }
-.home-frame .hm-mapa-link:hover, .home-frame .hm-mapa-link:focus-visible { background: rgba(255, 255, 255, .12); }
+
+.home-frame .hm-mapa-link:hover,
+.home-frame .hm-mapa-link:focus-visible {
+  background: rgba(255, 255, 255, .12);
+}
+
 .home-frame .hm-brilho {
   position: absolute;
   z-index: 6;
   width: calc(56 * var(--u));
   height: calc(56 * var(--u));
-  pointer-events: none;
   background: radial-gradient(circle, #fff 0 18%, transparent 20%), conic-gradient(from 45deg, transparent 0 20deg, var(--yellow-l) 20deg 70deg, transparent 70deg 110deg, var(--yellow-l) 110deg 160deg, transparent 160deg 200deg, var(--yellow-l) 200deg 250deg, transparent 250deg 290deg, var(--yellow-l) 290deg 340deg, transparent 340deg);
   clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
   animation: brilhoPisca 2.2s ease-in-out infinite;
   animation-delay: calc(var(--i, 0) * -.7s);
+  pointer-events: none;
 }
+
 .home-frame .hm-ilha-estrela {
   z-index: 6;
   width: calc(80 * var(--u));
   height: calc(80 * var(--u));
-  pointer-events: none;
   animation: surge .5s .6s cubic-bezier(.2, 1.6, .4, 1) both, brilhaLeve 3s 1.2s ease-in-out infinite;
+  pointer-events: none;
 }
-.home-frame .hm-pirata { animation: flutua 3.2s ease-in-out infinite; }
-.home-frame .hm-volante { animation: volanteGira 6s ease-in-out infinite; }
-.home-frame .hm-mapa { animation: entraDireita .8s .2s cubic-bezier(.2, .9, .3, 1.1) both, flutuaLento 6s 1s ease-in-out infinite; }
-.home-frame .hm-balao { animation: balaoEntra .6s .3s cubic-bezier(.2, 1.4, .4, 1) both, flutuaLento 5s 1.2s ease-in-out infinite; }
-/* Botão Navegar! — posição do Locofy (bottom 134, centrado, 420 × 129), acima de tudo */
+
+.home-frame .hm-pirata {
+  animation: flutua 3.2s ease-in-out infinite;
+}
+
+.home-frame .hm-volante {
+  animation: volanteGira 6s ease-in-out infinite;
+}
+
+.home-frame .hm-mapa {
+  animation: entraDireita .8s .2s cubic-bezier(.2, .9, .3, 1.1) both, flutuaLento 6s 1s ease-in-out infinite;
+}
+
+.home-frame .hm-balao {
+  animation: balaoEntra .6s .3s cubic-bezier(.2, 1.4, .4, 1) both, flutuaLento 5s 1.2s ease-in-out infinite;
+}
+
+/* botão Navegar!: posição do Figma (bottom 134, centrado, 420 × 129), acima de tudo */
 .home-frame .hm-navegar {
   left: calc(654 * var(--u));
   bottom: calc(134 * var(--u));
   animation: surge .5s .5s cubic-bezier(.2, 1.4, .4, 1) both, chama 2.4s 1.5s ease-in-out infinite;
 }
+
 @media (max-width: 720px) and (orientation: portrait) {
   .scene.home {
     min-height: calc(100svh - 84px);
@@ -164,78 +214,119 @@
     justify-content: flex-start;
     background: var(--navy-fundo);
   }
-  .home-frame .hm-balao h1 { font-size: 17px; }
-  .home-frame .hm-balao p { font-size: 11px; }
+
+  .home-frame .hm-balao h1 {
+    font-size: 17px;
+  }
+
+  .home-frame .hm-balao p {
+    font-size: 11px;
+  }
+
   .home-frame .hm-navegar {
-    width: 150px;
-    min-height: 44px;
     left: calc(50% - 75px);
     bottom: 8px;
+    width: 150px;
+    min-height: 44px;
     font-size: 18px;
     font-weight: 800;
   }
 }
+
 img.personagem:not(.hm-pirata):not(.it-pirata):not(.bau-img):not([data-k="leo"]) {
   transform: translate(calc(var(--nx, 0%) + var(--centro, 14.8%)), var(--ny, 0%)) scale(var(--ns, 1));
 }
 
 /* ---------- Ilhas ---------- */
-/* Frame Ilhas do Locofy: 1728 × 1117 px com overflow hidden (navbar 182 + 935).
-Coordenadas abaixo = (Y do Figma − 182). */
-.scene.ilhas { min-height: 0; display: block; padding: 0; background: var(--navy-fundo); }
-.ilhas-frame > .ico { position: absolute; max-width: none; object-fit: fill; }
+
+/* Frame Ilhas: 1728 × 1117 px com overflow hidden (navbar 182 + 935).
+   Coordenadas abaixo = (Y do Figma − 182). */
+.scene.ilhas {
+  min-height: 0;
+  display: block;
+  padding: 0;
+  background: var(--navy-fundo);
+}
+
+.ilhas-frame > .ico {
+  position: absolute;
+  max-width: none;
+  object-fit: fill;
+}
+
 /* ilha1/2/3: canvas 1728 × 1683 inteiro (transparência preservada), cada um
-registrado exatamente sobre a ilha correspondente do Figma */
+   registrado exatamente sobre a ilha correspondente do Figma */
 .ilhas-frame .il-ilha {
-  animation: flutuaLento 5s ease-in-out infinite;
   position: absolute;
   top: calc(450 * var(--u));
+  z-index: 1;
   width: calc(480 * var(--u));
   height: calc(520 * var(--u));
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  z-index: 1;
+  animation: flutuaLento 5s ease-in-out infinite;
   pointer-events: none;
 }
-/* Explorar — Locofy: top calc(50% + 65.5px) do frame de 1117 (= 624), left 49 */
+
+/* botão Explorar: posição do Figma (top 624 no frame de 1117 px, left 49) */
 .ilhas-frame .il-explorar {
-  animation: surge .5s .3s cubic-bezier(.2, 1.4, .4, 1) both, chama 2.4s 1.2s ease-in-out infinite;
   top: calc(1010 * var(--u));
+  animation: surge .5s .3s cubic-bezier(.2, 1.4, .4, 1) both, chama 2.4s 1.2s ease-in-out infinite;
 }
+
 @media (max-width: 720px) and (orientation: portrait) {
-  .ilhas-frame .il-explorar { min-height: 38px; font-size: 15px; font-weight: 800; }
+  .ilhas-frame .il-explorar {
+    min-height: 38px;
+    font-size: 15px;
+    font-weight: 800;
+  }
+
   .scene.ilhas {
     min-height: calc(100svh - 84px);
-    background: #4cc0e6;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    background: #4cc0e6;
   }
 }
+
 /* regra: o fundo começa logo abaixo do menu (top 0); o horizonte fica em y 840 */
 .ilhas-frame {
   position: relative;
+  isolation: isolate;
   width: 100%;
   overflow: hidden;
-  isolation: isolate;
-  background: var(--card);
   height: calc(1180 * var(--u));
+  background: var(--card);
 }
+
 /* Fundo_Ilhas: 100% da caixa .ilhas (1728 × 1117) com object-fit: cover
-→ 1728 × 1309 centralizado verticalmente (top −96) */
+   → 1728 × 1309 centralizado verticalmente (top −96) */
 .ilhas-frame .il-fundo {
   left: 0;
-  width: calc(1728 * var(--u));
   z-index: 0;
-  pointer-events: none;
   top: 0;
+  width: calc(1728 * var(--u));
   height: calc(1683 * var(--u));
+  pointer-events: none;
 }
-.ilhas-frame .il-ilha1 { left: calc(48 * var(--u)); }
-.ilhas-frame .il-ilha2 { animation-delay: -1.6s; left: calc(624 * var(--u)); }
-.ilhas-frame .il-ilha3 { animation-delay: -3.2s; left: calc(1200 * var(--u)); }
+
+.ilhas-frame .il-ilha1 {
+  left: calc(48 * var(--u));
+}
+
+.ilhas-frame .il-ilha2 {
+  left: calc(624 * var(--u));
+  animation-delay: -1.6s;
+}
+
+.ilhas-frame .il-ilha3 {
+  left: calc(1200 * var(--u));
+  animation-delay: -3.2s;
+}
+
 .ilhas-frame .il-desenho {
   position: static;
   width: auto;
@@ -244,56 +335,87 @@ registrado exatamente sobre a ilha correspondente do Figma */
   max-height: calc(430 * var(--u));
   filter: drop-shadow(0 calc(10 * var(--u)) 0 rgba(30, 41, 59, .12));
 }
+
 .ilhas-frame .il-bandeira {
   position: relative;
+  z-index: 2;
   align-self: flex-start;
   margin: 0 0 calc(-95 * var(--u)) 14%;
-  z-index: 2;
   width: calc(92 * var(--u));
   height: calc(107 * var(--u));
 }
-.ilhas-frame .il-bandeira svg { width: 100%; height: 100%; display: block; }
-.ilhas-frame .il-explorar1 { left: calc(78 * var(--u)); }
-.ilhas-frame .il-explorar2 { left: calc(654 * var(--u)); }
-.ilhas-frame .il-explorar3 { left: calc(1230 * var(--u)); }
+
+.ilhas-frame .il-bandeira svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.ilhas-frame .il-explorar1 {
+  left: calc(78 * var(--u));
+}
+
+.ilhas-frame .il-explorar2 {
+  left: calc(654 * var(--u));
+}
+
+.ilhas-frame .il-explorar3 {
+  left: calc(1230 * var(--u));
+}
 
 /* ---------- Mapa da ilha ---------- */
+
 /* Frame medido no print do Figma (Ilha 1): 1728 × ≈2216 px (navbar 182 + 2034).
-Coordenadas abaixo = (Y do Figma − 182). FundoFases em escala 1 (1728 × 1683)
-com o horizonte (y 887 do PNG) exatamente na base do card superior. */
-.scene.ilha-mapa { min-height: 0; display: block; padding: 0; background: var(--navy-fundo); }
+   Coordenadas abaixo = (Y do Figma − 182). FundoFases em escala 1 (1728 × 1683)
+   com o horizonte (y 887 do PNG) exatamente na base do card superior. */
+.scene.ilha-mapa {
+  min-height: 0;
+  display: block;
+  padding: 0;
+  background: var(--navy-fundo);
+}
+
 .mapa-frame {
   position: relative;
+  isolation: isolate;
   width: 100%;
   height: calc(2034 * var(--u));
   overflow: hidden;
-  isolation: isolate;
-  background: #e9cf9f;
   color: #1E293B;
+  background: #e9cf9f;
 }
-.mapa-frame .ico { position: absolute; max-width: none; object-fit: fill; }
+
+.mapa-frame .ico {
+  position: absolute;
+  max-width: none;
+  object-fit: fill;
+}
+
 .mapa-frame .mf-fundo {
   left: 0;
   top: 0;
+  z-index: 1;
   width: calc(1728 * var(--u));
   height: calc(1683 * var(--u));
-  z-index: 1;
-  pointer-events: none;
   -webkit-mask-image: linear-gradient(#000 88%, transparent);
   mask-image: linear-gradient(#000 88%, transparent);
+  pointer-events: none;
 }
+
 /* 2ª instância do FundoFases: só a areia aparece, completando o frame abaixo de 1654 */
 .mapa-frame .mf-fundo2 {
   left: 0;
   top: calc(569 * var(--u));
+  z-index: 0;
   width: calc(1728 * var(--u));
   height: calc(1683 * var(--u));
-  z-index: 0;
   pointer-events: none;
 }
+
 /* ---- animações do mapa da ilha ----
-Os cards já usam "transform" para posição/rotação; as animações usam as
-propriedades independentes translate/scale/rotate para não brigar com ele. */
+   Os cards já usam "transform" para posição/rotação; as animações usam as
+   propriedades independentes translate/scale/rotate para não brigar com ele. */
+
 .mf-card {
   position: absolute;
   z-index: 5;
@@ -301,26 +423,38 @@ propriedades independentes translate/scale/rotate para não brigar com ele. */
   top: calc(284 * var(--u));
   width: calc(1226 * var(--u));
   height: calc(582 * var(--u));
+  box-sizing: border-box;
   background: #FFF9E6;
   border: max(1px, calc(3 * var(--u))) solid #1E293B;
-  box-sizing: border-box;
   animation: mfDesce .6s cubic-bezier(.2, .9, .3, 1.2) both;
 }
-.mf-card > * { position: absolute; margin: 0; }
+
+.mf-card > * {
+  position: absolute;
+  margin: 0;
+}
+
 /* navio-pirata.png tem margem transparente (desenho em x 328–1312, y 544–1664 de 2000 px):
-a caixa é maior para o DESENHO ocupar o mesmo lugar do navio antigo (x 72–358, y 127–453) */
+   a caixa é maior para o DESENHO ocupar o mesmo lugar do navio antigo (x 72–358, y 127–453) */
 .mf-card .mf-navio {
   left: calc(-23 * var(--u));
   top: calc(-31 * var(--u));
   width: calc(582 * var(--u));
   height: calc(582 * var(--u));
-  pointer-events: none;
   animation: mfBalanca 4s ease-in-out infinite;
   transform-origin: 50% 75%;
+  pointer-events: none;
 }
-.mapa-frame.ilha2 .mf-titulo { color: var(--coral); }
+
+.mapa-frame.ilha2 .mf-titulo {
+  color: var(--coral);
+}
+
 /* Ilha 2: título coral (Figma) */
-.mapa-frame.ilha3 .mf-titulo { color: var(--teal-d); }
+.mapa-frame.ilha3 .mf-titulo {
+  color: var(--teal-d);
+}
+
 /* Ilha 3: título verde-água (Figma) */
 .mf-card .mf-parabens {
   left: calc(560 * var(--u));
@@ -331,17 +465,22 @@ a caixa é maior para o DESENHO ocupar o mesmo lugar do navio antigo (x 72–358
   line-height: 1.25;
   text-align: center;
 }
-.mf-card .mf-tesouro { line-height: 1.1; }
+
+.mf-card .mf-tesouro {
+  line-height: 1.1;
+}
+
 .mf-card .mf-titulo {
   left: calc(451 * var(--u));
-  width: calc(600 * var(--u));
   top: calc(30 * var(--u));
+  width: calc(600 * var(--u));
   text-align: center;
   font-size: calc(48 * var(--u));
   font-weight: 700;
   color: #4EA8DE;
   line-height: 1.2;
 }
+
 .mf-card .mf-label {
   left: calc(606 * var(--u));
   top: calc(100 * var(--u));
@@ -349,43 +488,53 @@ a caixa é maior para o DESENHO ocupar o mesmo lugar do navio antigo (x 72–358
   font-weight: 700;
   line-height: 1.2;
 }
+
 .mf-card .mf-fase {
   left: calc(606 * var(--u));
   top: calc(148 * var(--u));
+  max-width: calc(560 * var(--u));
+  overflow: hidden;
   font-size: calc(30 * var(--u));
   font-weight: 400;
   line-height: 1.2;
-  max-width: calc(560 * var(--u));
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .mf-card .mf-prosseguir {
   left: calc(586 * var(--u));
   top: calc(226 * var(--u));
   width: calc(331 * var(--u));
   height: calc(95 * var(--u));
-  border: 0;
   padding: 0;
-  background: #FFC83B;
   color: #1E293B;
   font-size: calc(34 * var(--u));
   font-weight: 700;
-  transition: background .15s, translate .15s, box-shadow .15s;
+  border: 0;
+  background: #FFC83B;
   box-shadow: 0 calc(6 * var(--u)) 0 var(--yellow-d);
+  transition: background .15s, translate .15s, box-shadow .15s;
   animation: mfChama 2.2s ease-in-out 1s infinite;
 }
-.mf-card .mf-estrela .ico { left: 0; top: 0; width: 100%; height: 100%; }
+
+.mf-card .mf-estrela .ico {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .mf-card .mf-estrela b {
   position: absolute;
   left: 48.7%;
   top: 45.1%;
-  transform: translate(-50%, -50%);
   line-height: 1;
   font-size: calc(30 * var(--u));
   font-weight: 700;
+  transform: translate(-50%, -50%);
 }
-/* stepper 1–5 */
+
+/* barra numerada das fases (1 a 5) */
 .mf-card .mf-trilho {
   left: calc(500 * var(--u));
   top: calc(465 * var(--u));
@@ -393,67 +542,124 @@ a caixa é maior para o DESENHO ocupar o mesmo lugar do navio antigo (x 72–358
   height: calc(4 * var(--u));
   background: var(--line);
 }
+
 .mf-card .mf-passo {
+  top: calc(467 * var(--u));
   width: calc(34 * var(--u));
   height: calc(30 * var(--u));
   border-radius: 50%;
   background: var(--line);
   transform: translate(-50%, -50%);
-  top: calc(467 * var(--u));
 }
-.mf-card .mf-passo.on { background: #4EA8DE; }
+
+.mf-card .mf-passo.on {
+  background: #4EA8DE;
+}
+
 .mf-card .mf-pnum {
-  transform: translateX(-50%);
   top: calc(398 * var(--u));
   font-size: calc(30 * var(--u));
   font-weight: 600;
   color: var(--muted);
   line-height: 1;
+  transform: translateX(-50%);
 }
-.mf-card .mf-pnum.on { color: #1E293B; }
+
+.mf-card .mf-pnum.on {
+  color: #1E293B;
+}
+
 /* ---- caminho, decorações e cards das fases (tudo na areia) ---- */
+
 .mf-linhas {
   position: absolute;
   left: 0;
   top: 0;
+  z-index: 2;
   width: 100%;
   height: 100%;
-  z-index: 2;
   pointer-events: none;
 }
+
 .mapa-frame .mf-decor {
   z-index: 3;
-  pointer-events: none;
   animation: mfFlutua 5s ease-in-out infinite;
   animation-delay: calc(var(--i, 0) * -.9s);
+  pointer-events: none;
 }
-.mapa-frame .mf-decor-topo { z-index: 6; }
+
+.mapa-frame .mf-decor-topo {
+  z-index: 6;
+}
+
 .mf-no {
   position: absolute;
   z-index: 4;
   width: calc(234 * var(--u));
   height: calc(234 * var(--u));
-  transform: translate(-50%, -50%) rotate(var(--ang));
-  background: #FFF9E6;
-  border: max(1px, calc(2 * var(--u))) solid #1E293B;
   padding: 0;
   box-sizing: border-box;
   color: #000;
+  background: #FFF9E6;
+  border: max(1px, calc(2 * var(--u))) solid #1E293B;
+  box-shadow: 0 calc(8 * var(--u)) calc(14 * var(--u)) rgba(30, 41, 59, .18);
+  transform: translate(-50%, -50%) rotate(var(--ang));
   animation: mfSurge .5s cubic-bezier(.2, .9, .3, 1.3) both, mfFlutua 4.5s ease-in-out infinite;
   animation-delay: calc(.35s + var(--i, 0) * .12s), calc(var(--i, 0) * -.8s);
   transition: scale .2s, box-shadow .2s, filter .2s;
-  box-shadow: 0 calc(8 * var(--u)) calc(14 * var(--u)) rgba(30, 41, 59, .18);
 }
-.mf-no > * { position: absolute; }
-.mf-no .ico { max-width: none; }
-.mf-no .mf-cad { left: calc(8 * var(--u)); top: calc(6 * var(--u)); width: calc(218 * var(--u)); height: calc(218 * var(--u)); }
-.mf-no .mf-cad svg { width: 100%; height: 100%; display: block; }
-.mf-no .mf-ic { left: calc(52 * var(--u)); top: calc(22 * var(--u)); width: calc(130 * var(--u)); height: calc(130 * var(--u)); }
-.mf-no .mf-ic-menor { left: calc(69 * var(--u)); top: calc(14 * var(--u)); width: calc(96 * var(--u)); height: calc(96 * var(--u)); }
-.mf-no .mf-ic-a { left: calc(62 * var(--u)); top: calc(24 * var(--u)); width: calc(110 * var(--u)); height: calc(110 * var(--u)); }
-/* Fase 1: anonimo */
-.mf-no .mf-ic-m { left: calc(-3 * var(--u)); top: calc(1 * var(--u)); width: calc(90 * var(--u)); height: calc(90 * var(--u)); }
-/* Fase 1: misterio */
+
+.mf-no > * {
+  position: absolute;
+}
+
+.mf-no .ico {
+  max-width: none;
+}
+
+.mf-no .mf-cad {
+  left: calc(8 * var(--u));
+  top: calc(6 * var(--u));
+  width: calc(218 * var(--u));
+  height: calc(218 * var(--u));
+}
+
+.mf-no .mf-cad svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.mf-no .mf-ic {
+  left: calc(52 * var(--u));
+  top: calc(22 * var(--u));
+  width: calc(130 * var(--u));
+  height: calc(130 * var(--u));
+}
+
+.mf-no .mf-ic-menor {
+  left: calc(69 * var(--u));
+  top: calc(14 * var(--u));
+  width: calc(96 * var(--u));
+  height: calc(96 * var(--u));
+}
+
+.mf-no .mf-ic-a {
+  left: calc(62 * var(--u));
+  top: calc(24 * var(--u));
+  width: calc(110 * var(--u));
+  height: calc(110 * var(--u));
+}
+
+/* Fase 1: silhueta do perfil (anonimo.png) */
+.mf-no .mf-ic-m {
+  left: calc(-3 * var(--u));
+  top: calc(1 * var(--u));
+  width: calc(90 * var(--u));
+  height: calc(90 * var(--u));
+}
+
+/* Fase 1: lupa (misterio.png) */
 .mf-no .mf-tit {
   left: calc(6 * var(--u));
   right: calc(6 * var(--u));
@@ -464,6 +670,7 @@ a caixa é maior para o DESENHO ocupar o mesmo lugar do navio antigo (x 72–358
   text-align: center;
   color: #1E293B;
 }
+
 .mf-card .mf-estrela {
   left: calc(1097 * var(--u));
   top: calc(19 * var(--u));
@@ -471,51 +678,74 @@ a caixa é maior para o DESENHO ocupar o mesmo lugar do navio antigo (x 72–358
   height: calc(105 * var(--u));
   animation: mfBrilha 3s ease-in-out infinite;
 }
+
 .mf-card .mf-prosseguir:hover {
   background: var(--yellow-d);
-  translate: 0 calc(-3 * var(--u));
   box-shadow: 0 calc(9 * var(--u)) 0 var(--yellow-d);
+  translate: 0 calc(-3 * var(--u));
   animation-play-state: paused;
 }
-.mf-card .mf-prosseguir:active { translate: 0 calc(4 * var(--u)); box-shadow: 0 calc(2 * var(--u)) 0 var(--yellow-d); }
-.mf-card .mf-passo.agora { animation: mfPulsoPasso 1.6s ease-in-out infinite; }
+
+.mf-card .mf-prosseguir:active {
+  box-shadow: 0 calc(2 * var(--u)) 0 var(--yellow-d);
+  translate: 0 calc(4 * var(--u));
+}
+
+.mf-card .mf-passo.agora {
+  animation: mfPulsoPasso 1.6s ease-in-out infinite;
+}
+
 .mf-linhas line {
+  animation: mfCaminho 1.4s linear infinite;
   stroke: #1E293B;
   vector-effect: non-scaling-stroke;
   stroke-dasharray: 10 8;
-  animation: mfCaminho 1.4s linear infinite;
   stroke-width: 3;
   stroke-opacity: .7;
 }
+
 /* atenção: fica por cima da borda do card 1 */
 /* mapa da ilha: cards retos; o número vira uma bolinha no canto do card, por cima dele */
 .mf-num {
   position: absolute;
-  line-height: 1;
-  animation: mfSurge .4s ease-out both;
-  animation-delay: calc(.35s + var(--i, 0) * .12s);
   z-index: 6;
-  transform: translate(-50%, -50%);
   display: grid;
   place-items: center;
   width: calc(64 * var(--u));
   height: calc(64 * var(--u));
+  line-height: 1;
+  font-size: calc(36 * var(--u));
+  font-weight: 800;
+  color: var(--navy);
   border-radius: 50%;
   background: var(--yellow);
   border: max(2px, calc(4 * var(--u))) solid var(--navy);
   box-shadow: 0 calc(4 * var(--u)) 0 rgba(30, 41, 59, .25);
-  font-size: calc(36 * var(--u));
-  font-weight: 800;
-  color: var(--navy);
+  animation: mfSurge .4s ease-out both;
+  animation-delay: calc(.35s + var(--i, 0) * .12s);
+  transform: translate(-50%, -50%);
 }
-.mf-no:not(.trancada):hover { scale: 1.08; box-shadow: 0 calc(16 * var(--u)) calc(24 * var(--u)) rgba(30, 41, 59, .3); }
+
+.mf-no:not(.trancada):hover {
+  box-shadow: 0 calc(16 * var(--u)) calc(24 * var(--u)) rgba(30, 41, 59, .3);
+  scale: 1.08;
+}
+
 .mf-no.atual {
+  z-index: 5;
   animation: mfSurge .5s cubic-bezier(.2, .9, .3, 1.3) both, mfAtual 1.8s ease-in-out infinite;
   animation-delay: calc(.35s + var(--i, 0) * .12s), 1s;
-  z-index: 5;
 }
-.mf-no.trancada { filter: saturate(.6) brightness(.96); cursor: not-allowed; }
-.mf-no.nega { animation: mfNega .45s ease; }
+
+.mf-no.trancada {
+  filter: saturate(.6) brightness(.96);
+  cursor: not-allowed;
+}
+
+.mf-no.nega {
+  animation: mfNega .45s ease;
+}
+
 .mf-no .mf-ok {
   right: calc(-18 * var(--u));
   top: calc(-18 * var(--u));
@@ -524,6 +754,7 @@ a caixa é maior para o DESENHO ocupar o mesmo lugar do navio antigo (x 72–358
   animation: mfSurge .4s cubic-bezier(.2, .9, .3, 1.6) both;
   animation-delay: calc(.8s + var(--i, 0) * .12s);
 }
+
 .mf-no .mf-dobro {
   right: calc(-3 * var(--u));
   top: calc(-4 * var(--u));
@@ -531,103 +762,135 @@ a caixa é maior para o DESENHO ocupar o mesmo lugar do navio antigo (x 72–358
   height: calc(78 * var(--u));
   animation: mfGira 6s linear infinite;
 }
+
 .mf-no .mf-x2 {
   position: absolute;
   right: calc(-14 * var(--u));
   top: calc(54 * var(--u));
   z-index: 1;
-  background: #ff7a59;
+  padding: calc(4 * var(--u)) calc(8 * var(--u));
   color: #fff;
   font-size: calc(24 * var(--u));
   font-weight: 900;
   line-height: 1;
-  padding: calc(4 * var(--u)) calc(8 * var(--u));
+  background: #ff7a59;
   border-radius: 999px;
   border: max(1px, calc(2 * var(--u))) solid #fff;
   animation: chama 2s ease-in-out infinite;
 }
 
 /* ---------- Abertura da fase ---------- */
-.intro-frame .it-dobro { position: absolute; z-index: 4; left: calc(682 * var(--u)); top: calc(375 * var(--u)); }
+
+.intro-frame .it-dobro {
+  position: absolute;
+  z-index: 4;
+  left: calc(682 * var(--u));
+  top: calc(375 * var(--u));
+}
+
 .intro-frame .it-dobro .selo-dobro {
-  font-size: max(12px, calc(28 * var(--u)));
   padding: calc(8 * var(--u)) calc(22 * var(--u)) calc(8 * var(--u)) calc(14 * var(--u));
+  font-size: max(12px, calc(28 * var(--u)));
   animation: surge .5s .5s cubic-bezier(.2, 1.6, .4, 1) both, dobroBrilho 2.4s linear infinite;
 }
-.intro-frame .it-dobro .selo-dobro b { font-size: max(12px, calc(26 * var(--u))); }
+
+.intro-frame .it-dobro .selo-dobro b {
+  font-size: max(12px, calc(26 * var(--u)));
+}
+
 /* Frame do Figma: 1728 × 1683 (navbar 182 + 1501), com scroll, como a Home.
-Coordenadas = (Y do Figma − 182), medidas no print e conferidas com o Locofy. */
-.scene.abertura { min-height: 0; display: block; padding: 0; background: var(--navy-fundo); }
+   Coordenadas = (Y do Figma − 182). */
+.scene.abertura {
+  min-height: 0;
+  display: block;
+  padding: 0;
+  background: var(--navy-fundo);
+}
+
 .intro-frame {
   position: relative;
+  isolation: isolate;
   width: 100%;
   height: calc(1501 * var(--u));
   overflow: hidden;
-  isolation: isolate;
   background: #6cc0f2;
 }
-.intro-frame > .ico { position: absolute; max-width: none; object-fit: fill; pointer-events: none; }
+
+.intro-frame > .ico {
+  position: absolute;
+  max-width: none;
+  object-fit: fill;
+  pointer-events: none;
+}
+
 /* fundo básico das telas internas (fundo.png) com blur real */
 .intro-frame .it-fundo {
   left: calc(-20 * var(--u));
   top: calc(-2 * var(--u));
+  z-index: 0;
   width: calc(1763 * var(--u));
   height: calc(1717 * var(--u));
-  z-index: 0;
   filter: blur(calc(9 * var(--u)));
 }
+
 .intro-frame .it-barco2 {
   left: calc(-34.1 * var(--u));
   top: calc(-82 * var(--u));
+  z-index: 1;
   width: calc(1783.4 * var(--u));
   height: calc(1610 * var(--u));
-  z-index: 1;
 }
+
 .intro-frame .it-barco {
   left: calc(-22 * var(--u));
   top: calc(-261 * var(--u));
+  z-index: 2;
   width: calc(1754.5 * var(--u));
   height: calc(1584 * var(--u));
-  z-index: 2;
 }
+
 .intro-frame .it-pirata {
   left: calc(-11 * var(--u));
   top: calc(544 * var(--u));
+  z-index: 3;
   width: calc(747 * var(--u));
   height: calc(727 * var(--u));
-  z-index: 3;
   animation: flutua 3.2s ease-in-out infinite;
 }
+
 .intro-frame .it-volante {
   left: calc(574 * var(--u));
   top: calc(728 * var(--u));
+  z-index: 3;
   width: calc(518 * var(--u));
   height: calc(518 * var(--u));
-  z-index: 3;
   animation: volanteGira 6s ease-in-out infinite;
 }
+
 .intro-frame .it-interrog {
   left: calc(1457 * var(--u));
   top: calc(453 * var(--u));
+  z-index: 3;
   width: calc(169 * var(--u));
   height: calc(169 * var(--u));
-  z-index: 3;
   animation: balanca 2.6s ease-in-out infinite;
 }
+
 .intro-frame .it-icone {
   left: calc(555 * var(--u));
   top: calc(265 * var(--u));
+  z-index: 4;
   width: calc(114 * var(--u));
   height: calc(114 * var(--u));
-  z-index: 4;
   animation: surge .5s .2s cubic-bezier(.2, 1.6, .4, 1) both, flutua 3s 1s ease-in-out infinite;
 }
+
 .intro-frame .it-titulo {
   position: absolute;
   z-index: 4;
-  margin: 0;
   left: calc(682 * var(--u));
   top: calc(290 * var(--u));
+  margin: 0;
   max-width: calc(1030 * var(--u));
   font-size: calc(64 * var(--u));
   font-weight: 700;
@@ -636,12 +899,13 @@ Coordenadas = (Y do Figma − 182), medidas no print e conferidas com o Locofy. 
   white-space: nowrap;
   animation: entraCima .6s .1s ease-out both;
 }
+
 .intro-frame .it-texto {
   position: absolute;
   z-index: 4;
-  margin: 0;
   left: calc(309 * var(--u));
   top: calc(438 * var(--u));
+  margin: 0;
   width: calc(1131 * var(--u));
   font-size: calc(50 * var(--u));
   font-weight: 700;
@@ -649,6 +913,7 @@ Coordenadas = (Y do Figma − 182), medidas no print e conferidas com o Locofy. 
   color: #1E293B;
   animation: entraCima .6s .3s ease-out both;
 }
+
 .intro-frame .it-comecar {
   left: calc(654 * var(--u));
   bottom: calc(134 * var(--u));
@@ -658,6 +923,7 @@ Coordenadas = (Y do Figma − 182), medidas no print e conferidas com o Locofy. 
   text-transform: uppercase;
   animation: surge .5s .6s cubic-bezier(.2, 1.4, .4, 1) both, chama 2.4s 1.6s ease-in-out infinite;
 }
+
 /* botão de voz da abertura: fora do desenho do Figma, fixo no canto de cima (não cobre ícone nem título) */
 .intro-frame .it-ouvir {
   position: absolute;
@@ -665,17 +931,35 @@ Coordenadas = (Y do Figma − 182), medidas no print e conferidas com o Locofy. 
   right: 16px;
   top: 16px;
   left: auto;
-  font-size: 14px;
   padding: 8px 14px;
+  font-size: 14px;
 }
-.intro-frame .it-ouvir svg { width: 20px; height: 20px; }
+
+.intro-frame .it-ouvir svg {
+  width: 20px;
+  height: 20px;
+}
+
 @media (max-width: 560px) {
-  .intro-frame .bt-ouvir.it-ouvir { top: 8px; right: 8px; font-size: 11px; padding: 4px 9px; }
-  .intro-frame .bt-ouvir.it-ouvir svg { width: 15px; height: 15px; }
+  .intro-frame .bt-ouvir.it-ouvir {
+    top: 8px;
+    right: 8px;
+    padding: 4px 9px;
+    font-size: 11px;
+  }
+
+  .intro-frame .bt-ouvir.it-ouvir svg {
+    width: 15px;
+    height: 15px;
+  }
 }
 
 /* ---------- Cenas do Capitão Gancho ---------- */
-body.tela-prologo .topbar { display: none; }
+
+body.tela-prologo .topbar {
+  display: none;
+}
+
 .scene.prologo {
   position: relative;
   min-height: 100svh;
@@ -684,7 +968,13 @@ body.tela-prologo .topbar { display: none; }
   padding: 0;
   background: linear-gradient(180deg, var(--blue) 0, #7fcbf5 45%, var(--blue-l) 62%);
 }
-.pr-ceu { position: absolute; inset: 0; pointer-events: none; }
+
+.pr-ceu {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
 .pr-sol {
   position: absolute;
   right: 9%;
@@ -696,6 +986,7 @@ body.tela-prologo .topbar { display: none; }
   box-shadow: 0 0 0 16px rgba(255, 200, 59, .35), 0 0 0 34px rgba(255, 200, 59, .15);
   animation: solPulsa 4s ease-in-out infinite;
 }
+
 .pr-nuvem {
   position: absolute;
   width: 150px;
@@ -705,10 +996,34 @@ body.tela-prologo .topbar { display: none; }
   opacity: .9;
   animation: nuvemVai 38s linear infinite;
 }
-.pr-nuvem::before, .pr-nuvem::after { content: ''; position: absolute; background: var(--card); border-radius: 50%; }
-.pr-nuvem::before { width: 64px; height: 64px; left: 22px; top: -30px; }
-.pr-nuvem::after { width: 48px; height: 48px; left: 74px; top: -20px; }
-.pr-nuvem.n1 { top: 12%; left: -10%; }
+
+.pr-nuvem::before,
+.pr-nuvem::after {
+  content: '';
+  position: absolute;
+  background: var(--card);
+  border-radius: 50%;
+}
+
+.pr-nuvem::before {
+  left: 22px;
+  top: -30px;
+  width: 64px;
+  height: 64px;
+}
+
+.pr-nuvem::after {
+  left: 74px;
+  top: -20px;
+  width: 48px;
+  height: 48px;
+}
+
+.pr-nuvem.n1 {
+  top: 12%;
+  left: -10%;
+}
+
 .pr-nuvem.n2 {
   top: 24%;
   left: 40%;
@@ -716,6 +1031,7 @@ body.tela-prologo .topbar { display: none; }
   animation-duration: 52s;
   animation-delay: -20s;
 }
+
 .pr-nuvem.n3 {
   top: 6%;
   left: 70%;
@@ -723,6 +1039,7 @@ body.tela-prologo .topbar { display: none; }
   animation-duration: 46s;
   animation-delay: -8s;
 }
+
 .pr-mar {
   position: absolute;
   left: 0;
@@ -731,6 +1048,7 @@ body.tela-prologo .topbar { display: none; }
   height: 38%;
   pointer-events: none;
 }
+
 .pr-onda {
   position: absolute;
   left: -10%;
@@ -742,18 +1060,34 @@ body.tela-prologo .topbar { display: none; }
   box-shadow: inset 0 10px 0 rgba(255, 255, 255, .3);
   animation: ondaVai 3s ease-in-out infinite alternate;
 }
-.pr-onda.o2 { top: 22%; background: var(--blue-d); animation-delay: -1.5s; }
-.pr-onda.o3 { top: 48%; background: var(--navy-2); animation-duration: 4s; }
+
+.pr-onda.o2 {
+  top: 22%;
+  background: var(--blue-d);
+  animation-delay: -1.5s;
+}
+
+.pr-onda.o3 {
+  top: 48%;
+  background: var(--navy-2);
+  animation-duration: 4s;
+}
+
 .pr-navio {
   position: absolute;
   bottom: 30%;
   left: 0;
-  width: min(300px, 48vw);
   z-index: 1;
-  pointer-events: none;
+  width: min(300px, 48vw);
   animation: navioCruza 9s ease-in-out .3s both, navioBalanca 2.4s ease-in-out infinite;
+  pointer-events: none;
 }
-.pr-navio .ico { width: 100%; height: auto; }
+
+.pr-navio .ico {
+  width: 100%;
+  height: auto;
+}
+
 /* título que abre a cena e depois sobe e some */
 .pr-titulo {
   position: absolute;
@@ -762,60 +1096,71 @@ body.tela-prologo .topbar { display: none; }
   top: 30%;
   z-index: 5;
   text-align: center;
-  pointer-events: none;
   animation: tituloEntra .8s cubic-bezier(.2, 1.4, .4, 1) both, tituloSai .6s ease-in 1.8s forwards;
+  pointer-events: none;
 }
+
 .pr-titulo small {
   display: inline-block;
   margin-top: 10px;
   padding: 6px 16px;
-  border-radius: 99px;
-  background: var(--navy-fundo);
   color: var(--cream);
   font-weight: 800;
   font-size: clamp(14px, 2vw, 20px);
+  border-radius: 99px;
+  background: var(--navy-fundo);
 }
+
 /* adereços de cada fala */
 .pr-props {
   position: absolute;
   left: 0;
   right: 0;
   top: 13%;
+  z-index: 2;
   display: flex;
   justify-content: center;
   gap: clamp(10px, 4vw, 48px);
-  z-index: 2;
   pointer-events: none;
 }
+
 .pr-props > * {
+  margin: 0;
+  text-align: center;
   opacity: 0;
   transform: translateY(30px) scale(.6);
   transition: opacity .4s, transform .5s cubic-bezier(.2, 1.5, .4, 1);
   transition-delay: calc(var(--i) * .25s);
-  margin: 0;
-  text-align: center;
 }
-.prologo[data-cena="ilhas"] .pr-ilhas > *, .prologo[data-cena="premios"] .pr-premios > * { opacity: 1; transform: none; }
+
+.prologo[data-cena="ilhas"] .pr-ilhas > *,
+.prologo[data-cena="premios"] .pr-premios > * {
+  opacity: 1;
+  transform: none;
+}
+
 .pr-ilhas img {
-  filter: drop-shadow(0 8px 0 rgba(30, 41, 59, .2));
-  animation: ilhaFlutua 3s ease-in-out infinite;
-  animation-delay: calc(var(--i) * -.8s);
   width: clamp(90px, 16vw, 190px);
   height: clamp(80px, 13vw, 160px);
   object-fit: contain;
+  filter: drop-shadow(0 8px 0 rgba(30, 41, 59, .2));
+  animation: ilhaFlutua 3s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -.8s);
 }
+
 .pr-ilhas figcaption {
   display: inline-block;
   margin-top: 4px;
   padding: 3px 10px;
-  border-radius: 99px;
-  background: var(--cor);
   color: #fff;
   font-weight: 800;
   font-size: clamp(11px, 1.6vw, 15px);
   -webkit-text-stroke: 0;
   text-shadow: 0 1px 0 rgba(0,0,0,.25);
+  border-radius: 99px;
+  background: var(--cor);
 }
+
 .pr-premios img {
   width: clamp(70px, 12vw, 130px);
   height: clamp(70px, 12vw, 130px);
@@ -823,20 +1168,25 @@ body.tela-prologo .topbar { display: none; }
   animation: ilhaFlutua 2.4s ease-in-out infinite;
   animation-delay: calc(var(--i) * -.6s);
 }
-.prologo[data-cena="partida"] .pr-navio { animation: navioCruza 9s ease-in-out .3s both, navioBalanca 1.2s ease-in-out infinite; }
-/* Capitão + balão */
+
+.prologo[data-cena="partida"] .pr-navio {
+  animation: navioCruza 9s ease-in-out .3s both, navioBalanca 1.2s ease-in-out infinite;
+}
+
+/* Capitão Gancho e o balão de fala */
 .pr-palco {
   position: absolute;
   left: 50%;
   bottom: 4%;
-  transform: translateX(-50%);
-  width: min(900px, 94vw);
   z-index: 4;
+  width: min(900px, 94vw);
   display: flex;
   align-items: flex-end;
   gap: 10px;
+  transform: translateX(-50%);
   cursor: pointer;
 }
+
 .pr-capitao {
   flex: none;
   width: clamp(130px, 22vw, 230px);
@@ -844,8 +1194,18 @@ body.tela-prologo .topbar { display: none; }
   transform-origin: 50% 90%;
   animation: capitaoVoa 1.3s cubic-bezier(.2, 1, .3, 1) 1.9s both, papagaioBalanca 2.6s ease-in-out 3.2s infinite;
 }
-.pr-capitao .ico { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 10px 0 rgba(30, 41, 59, .2)); }
-.pr-capitao.fala .ico { animation: capitaoFala .5s ease-in-out 2; }
+
+.pr-capitao .ico {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 0 rgba(30, 41, 59, .2));
+}
+
+.pr-capitao.fala .ico {
+  animation: capitaoFala .5s ease-in-out 2;
+}
+
 .pr-balao {
   position: relative;
   flex: 1;
@@ -857,11 +1217,36 @@ body.tela-prologo .topbar { display: none; }
   box-shadow: 0 8px 0 rgba(30, 41, 59, .25);
   opacity: 0;
 }
-.pr-balao.entra { animation: balaoEntra .35s cubic-bezier(.2, 1.4, .4, 1) both; opacity: 1; }
+
+.pr-balao.entra {
+  opacity: 1;
+  animation: balaoEntra .35s cubic-bezier(.2, 1.4, .4, 1) both;
+}
+
 /* rabinho apontando para o Capitão: triângulo azul-noite (a borda) e um branco por dentro */
-.pr-balao::before, .pr-balao::after { content: ''; position: absolute; width: 0; height: 0; border-style: solid; }
-.pr-balao::before { left: -24px; bottom: 22px; border-width: 15px 24px 15px 0; border-color: transparent var(--navy) transparent transparent; }
-.pr-balao::after { left: -17px; bottom: 27px; border-width: 10px 18px 10px 0; border-color: transparent var(--card) transparent transparent; }
+.pr-balao::before,
+.pr-balao::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.pr-balao::before {
+  left: -24px;
+  bottom: 22px;
+  border-width: 15px 24px 15px 0;
+  border-color: transparent var(--navy) transparent transparent;
+}
+
+.pr-balao::after {
+  left: -17px;
+  bottom: 27px;
+  border-width: 10px 18px 10px 0;
+  border-color: transparent var(--card) transparent transparent;
+}
+
 .pr-balao small {
   display: block;
   font-size: 13px;
@@ -870,6 +1255,7 @@ body.tela-prologo .topbar { display: none; }
   text-transform: uppercase;
   letter-spacing: .08em;
 }
+
 .pr-texto {
   margin: 6px 0 12px;
   min-height: 3.4em;
@@ -878,6 +1264,7 @@ body.tela-prologo .topbar { display: none; }
   color: var(--navy);
   line-height: 1.35;
 }
+
 .pr-base {
   display: flex;
   align-items: center;
@@ -885,7 +1272,12 @@ body.tela-prologo .topbar { display: none; }
   gap: 10px;
   flex-wrap: wrap;
 }
-.pr-bolinhas { display: inline-flex; gap: 7px; }
+
+.pr-bolinhas {
+  display: inline-flex;
+  gap: 7px;
+}
+
 .pr-bolinhas i {
   width: 13px;
   height: 13px;
@@ -894,9 +1286,22 @@ body.tela-prologo .topbar { display: none; }
   border: 2px solid var(--navy);
   transition: background .2s, transform .2s;
 }
-.pr-bolinhas i.agora { background: var(--yellow); transform: scale(1.25); }
-.pr-bolinhas i.ok { background: var(--teal); }
-.pr-seguir { font-size: 18px; padding: 12px 26px; animation: chama 2.4s ease-in-out infinite; }
+
+.pr-bolinhas i.agora {
+  background: var(--yellow);
+  transform: scale(1.25);
+}
+
+.pr-bolinhas i.ok {
+  background: var(--teal);
+}
+
+.pr-seguir {
+  padding: 12px 26px;
+  font-size: 18px;
+  animation: chama 2.4s ease-in-out infinite;
+}
+
 .pr-topo {
   position: absolute;
   right: 14px;
@@ -906,109 +1311,218 @@ body.tela-prologo .topbar { display: none; }
   gap: 8px;
   align-items: center;
 }
+
 @media (max-width: 640px) {
-  .pr-palco { flex-direction: column; align-items: center; gap: 0; bottom: 2%; }
-  .pr-capitao { width: 120px; height: 120px; }
-  .pr-balao { margin-bottom: 0; width: 100%; }
-  .pr-balao::before { left: 50%; top: -24px; bottom: auto; margin-left: -15px; border-width: 0 15px 24px 15px; border-color: transparent transparent var(--navy) transparent; }
-  .pr-balao::after { left: 50%; top: -17px; bottom: auto; margin-left: -10px; border-width: 0 10px 18px 10px; border-color: transparent transparent var(--card) transparent; }
-  .pr-props { top: 9%; }
-  .pr-navio { bottom: 46%; }
-  .pr-titulo { top: 22%; }
+  .pr-palco {
+    bottom: 2%;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .pr-capitao {
+    width: 120px;
+    height: 120px;
+  }
+
+  .pr-balao {
+    margin-bottom: 0;
+    width: 100%;
+  }
+
+  .pr-balao::before {
+    left: 50%;
+    top: -24px;
+    bottom: auto;
+    margin-left: -15px;
+    border-width: 0 15px 24px 15px;
+    border-color: transparent transparent var(--navy) transparent;
+  }
+
+  .pr-balao::after {
+    left: 50%;
+    top: -17px;
+    bottom: auto;
+    margin-left: -10px;
+    border-width: 0 10px 18px 10px;
+    border-color: transparent transparent var(--card) transparent;
+  }
+
+  .pr-props {
+    top: 9%;
+  }
+
+  .pr-navio {
+    bottom: 46%;
+  }
+
+  .pr-titulo {
+    top: 22%;
+  }
 }
+
 @media (prefers-reduced-motion: reduce) {
-  .pr-navio, .pr-nuvem, .pr-onda, .pr-capitao, .pr-titulo, .pr-sol, .pr-ilhas img, .pr-premios img, .pr-seguir { animation: none; }
-  .pr-titulo { display: none; }
+  .pr-navio,
+  .pr-nuvem,
+  .pr-onda,
+  .pr-capitao,
+  .pr-titulo,
+  .pr-sol,
+  .pr-ilhas img,
+  .pr-premios img,
+  .pr-seguir {
+    animation: none;
+  }
+
+  .pr-titulo {
+    display: none;
+  }
 }
-.pr-ilhas figure { display: flex; flex-direction: column; align-items: center; }
+
+.pr-ilhas figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 /* adereços da fala atual */
-.pr-props.on > * { opacity: 1; transform: none; }
-.pr-props .apagada { filter: grayscale(1); opacity: .35 !important; }
-.pr-estrelas img, .pr-licao img, .pr-selo img, .pr-premios img {
+.pr-props.on > * {
+  opacity: 1;
+  transform: none;
+}
+
+.pr-props .apagada {
+  filter: grayscale(1);
+  opacity: .35 !important;
+}
+
+.pr-estrelas img,
+.pr-licao img,
+.pr-selo img,
+.pr-premios img {
   width: clamp(70px, 12vw, 130px);
   height: clamp(70px, 12vw, 130px);
   object-fit: contain;
   animation: ilhaFlutua 2.4s ease-in-out infinite;
   animation-delay: calc(var(--i) * -.6s);
 }
-.pr-ilha figure { display: flex; flex-direction: column; align-items: center; }
+
+.pr-ilha figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .pr-ilha img {
   width: clamp(120px, 20vw, 230px);
   height: clamp(100px, 16vw, 190px);
   object-fit: contain;
   animation: ilhaFlutua 3s ease-in-out infinite;
 }
+
 .pr-ilha figcaption {
   display: inline-block;
   margin-top: 4px;
   padding: 3px 12px;
-  border-radius: 99px;
-  background: var(--cor);
   color: #fff;
   font-weight: 800;
   text-shadow: 0 1px 0 rgba(0,0,0,.25);
+  border-radius: 99px;
+  background: var(--cor);
 }
+
 .pr-titulo b {
   display: block;
   font-weight: 800;
   color: var(--yellow);
   letter-spacing: .02em;
   -webkit-text-stroke: 3px var(--navy);
-  paint-order: stroke fill;
   text-shadow: 0 8px 0 var(--navy);
   font-size: clamp(36px, 7vw, 96px);
+  paint-order: stroke fill;
 }
+
 /* navio com o casco dentro d'água: a linha d'água do desenho
-fica a ~25% da altura da imagem, contando de baixo */
-.prologo .pr-navio { bottom: calc(38% - min(300px, 48vw) * .42); z-index: 2; }
-@media (max-width: 640px) {
-  .prologo .pr-navio { bottom: calc(38% - min(300px, 48vw) * .42); }
+   fica a ~25% da altura da imagem, contando de baixo */
+.prologo .pr-navio {
+  bottom: calc(38% - min(300px, 48vw) * .42);
+  z-index: 2;
 }
-.prologo .pr-mar .pr-onda.o2, .prologo .pr-mar .pr-onda.o3 { z-index: 3; }
+
+@media (max-width: 640px) {
+  .prologo .pr-navio {
+    bottom: calc(38% - min(300px, 48vw) * .42);
+  }
+}
+
+.prologo .pr-mar .pr-onda.o2,
+.prologo .pr-mar .pr-onda.o3 {
+  z-index: 3;
+}
+
 /* a frente do mar passa por cima do casco: parece que o navio está dentro d'água */
-.prologo .pr-mar { z-index: 1; pointer-events: none; }
+.prologo .pr-mar {
+  z-index: 1;
+  pointer-events: none;
+}
 
 /* ---------- Viagem entre ilhas ---------- */
+
 /* viagem: com o menu visível, o navio sai da esquerda e para perto da ilha */
-.prologo.viagem { min-height: calc(100svh - max(56px, calc(182 * var(--u)))); }
+.prologo.viagem {
+  min-height: calc(100svh - max(56px, calc(182 * var(--u))));
+}
+
 /* viagem: a ilha fica com a base dentro do mar */
 .viagem .vg-ilha {
   position: absolute;
   right: 8%;
+  bottom: calc(38% - clamp(150px, 26vw, 340px) * .2);
+  z-index: 0;
   margin: 0;
   width: clamp(150px, 26vw, 340px);
   animation: vgIlha 3.2s ease-out both;
-  bottom: calc(38% - clamp(150px, 26vw, 340px) * .2);
-  z-index: 0;
 }
-.viagem .vg-ilha img { width: 100%; height: auto; display: block; filter: drop-shadow(0 8px 0 rgba(30, 41, 59, .15)); }
-.viagem .vg-navio { animation: vgNavega 3.4s cubic-bezier(.3, .1, .3, 1) both, navioBalanca 1.6s ease-in-out infinite; }
+
+.viagem .vg-ilha img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 8px 0 rgba(30, 41, 59, .15));
+}
+
+.viagem .vg-navio {
+  animation: vgNavega 3.4s cubic-bezier(.3, .1, .3, 1) both, navioBalanca 1.6s ease-in-out infinite;
+}
+
 .vg-txt {
   position: absolute;
   top: 12%;
   left: 50%;
-  transform: translateX(-50%);
   z-index: 3;
-  text-align: center;
-  background: rgba(255, 249, 230, .92);
-  border: 3px solid var(--navy);
-  border-radius: 18px;
   padding: 12px 22px;
+  width: max-content;
+  max-width: 90%;
+  text-align: center;
   font-weight: 900;
   color: var(--navy);
   font-size: clamp(16px, 2.4vw, 26px);
+  background: rgba(255, 249, 230, .92);
+  border: 3px solid var(--navy);
+  border-radius: 18px;
   box-shadow: 0 6px 0 rgba(30, 41, 59, .2);
-  width: max-content;
-  max-width: 90%;
+  transform: translateX(-50%);
 }
+
 .vg-txt .barra {
   margin: 10px auto 0;
   width: min(260px, 100%);
   height: 12px;
+  overflow: hidden;
   border-radius: 99px;
   background: var(--line);
-  overflow: hidden;
 }
+
 .vg-txt .barra i {
   display: block;
   height: 100%;
@@ -1016,59 +1530,101 @@ fica a ~25% da altura da imagem, contando de baixo */
   background: var(--yellow);
   animation: carrega 3.4s ease-out forwards;
 }
+
 @media (prefers-reduced-motion: reduce) {
-  .viagem .vg-navio, .viagem .vg-ilha { animation: none; }
+  .viagem .vg-navio,
+  .viagem .vg-ilha {
+    animation: none;
+  }
 }
-.viagem .pr-mar .pr-onda.o2, .viagem .pr-mar .pr-onda.o3 { z-index: 3; }
+
+.viagem .pr-mar .pr-onda.o2,
+.viagem .pr-mar .pr-onda.o3 {
+  z-index: 3;
+}
 
 /* ---------- Missões ---------- */
-.missoes .detalhe .selo-dobro { margin: 6px 0 2px; }
-.missoes { background: var(--cream); padding: 12px clamp(10px, 4vw, 60px) 30px; align-items: center; }
-.missoes h1 { margin: 4px 0 2px; font-size: clamp(26px, 3.6vw, 38px); font-weight: 900; color: var(--navy); }
-.missoes .sub .ico { width: 34px; height: 34px; }
+
+.missoes .detalhe .selo-dobro {
+  margin: 6px 0 2px;
+}
+
+.missoes {
+  padding: 12px clamp(10px, 4vw, 60px) 30px;
+  align-items: center;
+  background: var(--cream);
+}
+
+.missoes h1 {
+  margin: 4px 0 2px;
+  font-size: clamp(26px, 3.6vw, 38px);
+  font-weight: 900;
+  color: var(--navy);
+}
+
+.missoes .sub .ico {
+  width: 34px;
+  height: 34px;
+}
+
 .painel-missao {
   position: relative;
   width: min(880px, 100%);
-  background: var(--coral);
   padding: 14px;
+  background: var(--coral);
   border-radius: 4px;
   animation: surge .5s .15s cubic-bezier(.2, 1.2, .4, 1) both;
 }
+
 .painel-missao .fita {
   position: absolute;
   top: -6px;
   left: 50%;
-  transform: translateX(-50%);
+  z-index: 3;
   width: 26px;
   height: 74px;
   background: var(--yellow);
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
   border: 0;
   box-shadow: none;
-  z-index: 3;
+  transform: translateX(-50%);
   animation: fitaBalanca 3s 1s ease-in-out infinite;
   transform-origin: 50% 0;
 }
+
 .painel-missao .fechar {
   position: absolute;
   top: 10px;
   left: 14px;
+  z-index: 2;
   color: #fff;
-  background: none;
-  border: 0;
   font-weight: 900;
   font-size: 22px;
-  z-index: 2;
+  background: none;
+  border: 0;
 }
+
 .painel-missao .in {
-  background: var(--card);
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   min-height: 300px;
   overflow: hidden;
+  background: var(--card);
 }
-.arvore { position: relative; padding: 20px; min-height: 350px; }
-.arvore-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.arvore {
+  position: relative;
+  padding: 20px;
+  min-height: 350px;
+}
+
+.arvore-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .arvore-svg path {
   fill: none;
   stroke: var(--navy);
@@ -1077,47 +1633,97 @@ fica a ~25% da altura da imagem, contando de baixo */
   stroke-linecap: round;
   vector-effect: non-scaling-stroke;
 }
+
 .arvore .passo {
   position: absolute;
   width: 108px;
-  background: var(--line);
-  border: 2px solid var(--navy);
-  border-radius: 8px;
   padding: 8px;
-  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
+  text-align: center;
   font-weight: 800;
   font-size: 12px;
   color: var(--navy);
   line-height: 1.2;
+  background: var(--line);
+  border: 2px solid var(--navy);
+  border-radius: 8px;
   animation: surge .4s cubic-bezier(.2, 1.4, .4, 1) both;
 }
-.arvore .passo .n { font-size: 10px; font-weight: 900; }
-.arvore .passo .n.go { background: var(--yellow); color: var(--navy); padding: 2px 8px; border-radius: 5px; }
+
+.arvore .passo .n {
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.arvore .passo .n.go {
+  padding: 2px 8px;
+  color: var(--navy);
+  background: var(--yellow);
+  border-radius: 5px;
+}
+
 .arvore .passo .n.ok {
-  background: var(--teal);
-  color: #fff;
   width: 20px;
   height: 20px;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #fff;
+  background: var(--teal);
+  border-radius: 50%;
 }
-.arvore .passo.feita { background: var(--teal-l); border-color: var(--teal); }
-.arvore .passo.trancada { background: var(--line); color: var(--muted); border-color: var(--muted); cursor: not-allowed; }
-.arvore .passo.trancada .cadeado-svg { color: var(--muted); }
+
+.arvore .passo.feita {
+  background: var(--teal-l);
+  border-color: var(--teal);
+}
+
+.arvore .passo.trancada {
+  color: var(--muted);
+  background: var(--line);
+  border-color: var(--muted);
+  cursor: not-allowed;
+}
+
+.arvore .passo.trancada .cadeado-svg {
+  color: var(--muted);
+}
+
 /* texto contido na página direita */
-.detalhe .fase-atual { display: flex; gap: 12px; align-items: center; }
-.detalhe .fase-atual .ico { width: 64px; height: 56px; object-fit: contain; }
-.detalhe .fase-atual .emo { font-size: 48px; }
-.detalhe .fase-atual b { display: block; font-size: 20px; }
-.detalhe .fase-atual small { font-weight: 800; color: var(--muted); }
-.detalhe .fase-atual > div { min-width: 0; }
-/* barra de progresso restaurada: “Seu progresso … 0%” e a barra logo abaixo */
+.detalhe .fase-atual {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.detalhe .fase-atual .ico {
+  width: 64px;
+  height: 56px;
+  object-fit: contain;
+}
+
+.detalhe .fase-atual .emo {
+  font-size: 48px;
+}
+
+.detalhe .fase-atual b {
+  display: block;
+  font-size: 20px;
+}
+
+.detalhe .fase-atual small {
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.detalhe .fase-atual > div {
+  min-width: 0;
+}
+
+/* "Seu progresso" com a porcentagem e a barra logo abaixo */
 .progresso {
   margin-top: auto;
   display: grid;
@@ -1125,8 +1731,20 @@ fica a ~25% da altura da imagem, contando de baixo */
   align-items: center;
   gap: 6px 10px;
 }
-.progresso span { font-size: 13px; font-weight: 800; color: var(--muted); }
-.progresso em { font-size: 13px; font-weight: 900; font-style: normal; color: var(--navy); }
+
+.progresso span {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.progresso em {
+  font-size: 13px;
+  font-weight: 900;
+  font-style: normal;
+  color: var(--navy);
+}
+
 .progresso .trilho i {
   display: block;
   height: 100%;
@@ -1134,6 +1752,7 @@ fica a ~25% da altura da imagem, contando de baixo */
   background: var(--yellow);
   transition: width .6s ease;
 }
+
 .missoes .baixo {
   margin-top: 18px;
   display: flex;
@@ -1141,117 +1760,226 @@ fica a ~25% da altura da imagem, contando de baixo */
   flex-wrap: wrap;
   justify-content: center;
 }
+
 @media (max-width: 820px) {
-  .painel-missao .in { grid-template-columns: 1fr; }
-  .arvore { border-right: 0; border-bottom: 2px solid var(--navy); }
+  .painel-missao .in {
+    grid-template-columns: 1fr;
+  }
+
+  .arvore {
+    border-right: 0;
+    border-bottom: 2px solid var(--navy);
+  }
 }
+
 /* tela de Missões: fundo na cor da ilha e atividades bloqueadas coloridas (não cinza) */
-.marujo .missoes { background: linear-gradient(180deg, color-mix(in srgb, var(--cor-ilha, var(--yellow)) 30%, #fff) 0, var(--cream) 70%); }
+.marujo .missoes {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--cor-ilha, var(--yellow)) 30%, #fff) 0, var(--cream) 70%);
+}
+
 .marujo .missoes .sub {
+  padding: 4px 16px;
   background: var(--card);
   border: 3px solid var(--navy);
   border-radius: 99px;
-  padding: 4px 16px;
   box-shadow: 0 4px 0 var(--cor-ilha, var(--yellow));
 }
-.marujo .painel-missao { border-radius: 22px; }
-.marujo .arvore .passo { width: 136px; border-radius: 16px; }
-.marujo .arvore .passo.trancada { background: color-mix(in srgb, var(--cor) 28%, #fff); border-color: var(--cor); }
-.missoes h1, .missoes .sub { animation: entraCima .5s ease-out both; }
+
+.marujo .painel-missao {
+  border-radius: 22px;
+}
+
+.marujo .arvore .passo {
+  width: 136px;
+  border-radius: 16px;
+}
+
+.marujo .arvore .passo.trancada {
+  background: color-mix(in srgb, var(--cor) 28%, #fff);
+  border-color: var(--cor);
+}
+
+.missoes h1,
+.missoes .sub {
+  animation: entraCima .5s ease-out both;
+}
+
 .missoes .sub {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-bottom: 14px;
   font-weight: 800;
   font-size: 20px;
-  margin-bottom: 14px;
   animation-delay: .08s;
 }
-.arvore .passo:nth-of-type(1) { animation-delay: .35s; }
-.arvore .passo:nth-of-type(2) { animation-delay: .5s; }
-.arvore .passo:nth-of-type(3) { animation-delay: .65s; }
+
+.arvore .passo:nth-of-type(1) {
+  animation-delay: .35s;
+}
+
+.arvore .passo:nth-of-type(2) {
+  animation-delay: .5s;
+}
+
+.arvore .passo:nth-of-type(3) {
+  animation-delay: .65s;
+}
+
 .arvore .passo .n.go {
   display: inline-block;
-  animation: chama 2s 1.2s ease-in-out infinite;
-  background: var(--navy-fundo);
   color: var(--yellow);
+  background: var(--navy-fundo);
+  animation: chama 2s 1.2s ease-in-out infinite;
 }
-.missoes .fase-atual .ico { animation: brilhaLeve 3s ease-in-out infinite; }
-.missoes .progresso .trilho i { animation: enche 1s .5s ease-out both; }
-.detalhe .ouvir-missao { align-self: flex-start; }
+
+.missoes .fase-atual .ico {
+  animation: brilhaLeve 3s ease-in-out infinite;
+}
+
+.missoes .progresso .trilho i {
+  animation: enche 1s .5s ease-out both;
+}
+
+.detalhe .ouvir-missao {
+  align-self: flex-start;
+}
+
 /* Missões: um quadrado de cor forte por atividade */
 .arvore .passo {
   width: 124px;
-  background: var(--cor);
   color: var(--navy);
+  background: var(--cor);
   border-width: 3px;
   box-shadow: 0 4px 0 var(--navy);
   border-radius: 14px;
 }
-.arvore .passo:not([disabled]):hover { translate: 0 -2px; }
+
+.arvore .passo:not([disabled]):hover {
+  translate: 0 -2px;
+}
+
 .arvore .passo .passo-num {
   position: absolute;
   top: -12px;
   left: -12px;
   width: 26px;
   height: 26px;
-  border-radius: 50%;
   display: grid;
   place-items: center;
-  background: var(--yellow);
-  border: 2px solid var(--navy);
   font-size: 13px;
   font-weight: 900;
+  border-radius: 50%;
+  background: var(--yellow);
+  border: 2px solid var(--navy);
 }
-.arvore .passo.feita { background: var(--cor); border-color: var(--navy); }
-.arvore .passo.feita .n.ok { width: 28px; height: 28px; background: var(--card); border: 2px solid var(--navy); }
-.arvore .passo.feita .n.ok .ico { width: 18px; height: 18px; margin: 0; }
+
+.arvore .passo.feita {
+  background: var(--cor);
+  border-color: var(--navy);
+}
+
+.arvore .passo.feita .n.ok {
+  width: 28px;
+  height: 28px;
+  background: var(--card);
+  border: 2px solid var(--navy);
+}
+
+.arvore .passo.feita .n.ok .ico {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+
 @media (max-width: 820px) {
-  .painel-missao .fita { left: auto; right: 10px; transform: none; height: 54px; }
+  .painel-missao .fita {
+    left: auto;
+    right: 10px;
+    height: 54px;
+    transform: none;
+  }
 }
+
 /* Missões: "Ouvir" e "Voz" (escolher a voz) lado a lado */
-.detalhe .voz-botoes { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-.painel-missao, .painel-missao .in { border-radius: 22px; }
+.detalhe .voz-botoes {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.painel-missao,
+.painel-missao .in {
+  border-radius: 22px;
+}
+
 .progresso .trilho {
   grid-column: 1 / -1;
   grid-row: 2;
   height: 12px;
-  border-radius: 99px;
   overflow: hidden;
+  border-radius: 99px;
   background: var(--line);
 }
+
 /* Missões: atividade trancada fica num tom clarinho da sua cor, em vez de cinza */
 .arvore .passo.trancada {
+  color: var(--muted);
   border-top: 8px solid var(--cor);
   box-shadow: none;
   background: color-mix(in srgb, var(--cor, var(--yellow)) 16%, #fff);
   border-color: color-mix(in srgb, var(--cor, var(--navy)) 45%, var(--line));
   border-top-color: var(--cor, var(--navy));
-  color: var(--muted);
 }
 
 /* ---------- Conclusão da ilha ---------- */
-.conclusao { align-items: center; justify-content: center; padding: 20px; }
+
+.conclusao {
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
 .conclusao .cx {
   width: min(560px, 100%);
+  padding: 26px 26px 24px;
+  text-align: center;
   background: var(--cream);
   border: 6px solid var(--navy);
   outline: 20px solid var(--navy);
-  text-align: center;
-  padding: 26px 26px 24px;
   animation: pop .4s;
 }
-.conclusao .selo { font-size: 64px; display: block; margin-bottom: 4px; }
-.conclusao .selo .ico { width: 82px; height: 82px; }
-.conclusao .selo .emo { font-size: 64px; }
-.conclusao p.extra { font-size: 17px; color: var(--teal-d); animation: entraCima .5s 1s ease-out both; }
+
+.conclusao .selo {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 64px;
+}
+
+.conclusao .selo .ico {
+  width: 82px;
+  height: 82px;
+}
+
+.conclusao .selo .emo {
+  font-size: 64px;
+}
+
+.conclusao p.extra {
+  font-size: 17px;
+  color: var(--teal-d);
+  animation: entraCima .5s 1s ease-out both;
+}
+
 .conclusao p {
+  margin: 8px 0;
   font-size: 20px;
   font-weight: 900;
   line-height: 1.35;
-  margin: 8px 0;
   color: var(--navy);
 }
+
 .conclusao .btns {
   display: flex;
   gap: 10px;
@@ -1259,49 +1987,80 @@ fica a ~25% da altura da imagem, contando de baixo */
   flex-wrap: wrap;
   margin-top: 16px;
 }
-.conclusao .selo { animation: seloGira .9s .3s cubic-bezier(.2, 1.3, .4, 1) both; }
-.conclusao .selo .ico { animation: flutua 3s 1.2s ease-in-out infinite; }
+
+.conclusao .selo {
+  animation: seloGira .9s .3s cubic-bezier(.2, 1.3, .4, 1) both;
+}
+
+.conclusao .selo .ico {
+  animation: flutua 3s 1.2s ease-in-out infinite;
+}
+
 .conclusao .selo-tag {
   display: inline-block;
-  background: var(--yellow);
+  padding: 6px 16px;
+  margin: 4px 0;
   color: var(--navy);
   font-weight: 900;
-  padding: 6px 16px;
+  background: var(--yellow);
   border-radius: 99px;
-  margin: 4px 0;
   animation: surge .4s .8s cubic-bezier(.2, 1.6, .4, 1) both, brilhaLeve 3s 1.4s ease-in-out infinite;
 }
+
 .conclusao .confetes {
   position: fixed;
   inset: 0;
-  pointer-events: none;
-  overflow: hidden;
   z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
 }
+
 .conclusao .confetes i {
   position: absolute;
   top: -20px;
   width: 12px;
   height: 18px;
   border-radius: 3px;
-  animation: confete linear infinite;
   opacity: .9;
+  animation: confete linear infinite;
 }
-.conclusao .cx { animation: popupEntra .6s cubic-bezier(.2, 1.3, .4, 1) both; position: relative; z-index: 2; }
+
+.conclusao .cx {
+  position: relative;
+  z-index: 2;
+  animation: popupEntra .6s cubic-bezier(.2, 1.3, .4, 1) both;
+}
 
 /* ---------- Diário do Capitão ---------- */
+
 /* Frame do Figma: 1728 × ≈1134 (navbar 182 + 952). Coordenadas = (Y − 182). */
-.scene.diario { min-height: 0; display: block; padding: 0; background: #FFF9E6; }
+.scene.diario {
+  min-height: 0;
+  display: block;
+  padding: 0;
+  background: #FFF9E6;
+}
+
 .diario-frame {
   position: relative;
   width: 100%;
   height: calc(952 * var(--u));
   overflow: hidden;
-  background: #FFF9E6;
   color: #1E293B;
+  background: #FFF9E6;
 }
-.diario-frame > * { position: absolute; margin: 0; }
-.diario-frame .ico { position: absolute; max-width: none; object-fit: fill; }
+
+.diario-frame > * {
+  position: absolute;
+  margin: 0;
+}
+
+.diario-frame .ico {
+  position: absolute;
+  max-width: none;
+  object-fit: fill;
+}
+
 .dr-titulo {
   left: 0;
   right: 0;
@@ -1312,6 +2071,7 @@ fica a ~25% da altura da imagem, contando de baixo */
   line-height: 1.2;
   text-shadow: 0 calc(4 * var(--u)) calc(4 * var(--u)) rgba(0, 0, 0, .25);
 }
+
 .dr-azul {
   left: calc(181 * var(--u));
   top: calc(188 * var(--u));
@@ -1319,106 +2079,179 @@ fica a ~25% da altura da imagem, contando de baixo */
   height: calc(718 * var(--u));
   background: #4EA8DE;
 }
+
 .dr-branco {
   left: calc(234 * var(--u));
   top: calc(217 * var(--u));
   width: calc(1276 * var(--u));
   height: calc(650 * var(--u));
+  box-sizing: border-box;
   background: var(--card);
   border: calc(5 * var(--u)) solid #1E293B;
-  box-sizing: border-box;
 }
+
 .dr-fita {
   /* marcador turquesa com duas pontas, sem linha no meio */
   left: calc(823 * var(--u));
   top: calc(217 * var(--u));
+  z-index: 2;
   width: calc(74 * var(--u));
   height: calc(240 * var(--u));
   background: #2EC4B6;
-  z-index: 2;
   clip-path: polygon(0 0, 100% 0, 100% 78%, 82% 100%, 52% 78%, 21% 100%, 0 78%);
 }
-.dr-h3 { font-size: calc(36 * var(--u)); font-weight: 700; line-height: 1.2; }
-.dr-txt { font-size: calc(27 * var(--u)); line-height: 1.2; white-space: nowrap; }
-.dr-txt b { font-weight: 700; }
-.dr-txt span { font-weight: 400; }
+
+.dr-h3 {
+  font-size: calc(36 * var(--u));
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.dr-txt {
+  font-size: calc(27 * var(--u));
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.dr-txt b {
+  font-weight: 700;
+}
+
+.dr-txt span {
+  font-weight: 400;
+}
+
 .dr-slot {
   width: calc(114 * var(--u));
   height: calc(111 * var(--u));
-  border: calc(4 * var(--u)) solid var(--cor, #1E293B);
   box-sizing: border-box;
+  border: calc(4 * var(--u)) solid var(--cor, #1E293B);
   background: linear-gradient(#1E293B, #1E293B) 48% 0 / calc(3 * var(--u)) 100% no-repeat, linear-gradient(#1E293B, #1E293B) 0 48% / 100% calc(3 * var(--u)) no-repeat;
 }
+
 /* cores das ilhas (bandeiras 1 azul · 2 laranja · 3 verde) nos detalhes do Diário */
 .dr-num {
+  z-index: 1;
   width: calc(34 * var(--u));
   height: calc(34 * var(--u));
-  border-radius: 50%;
-  background: var(--cor);
-  color: #fff;
-  border: calc(3 * var(--u)) solid #1E293B;
   box-sizing: border-box;
   display: grid;
   place-items: center;
+  color: #fff;
   font-size: calc(18 * var(--u));
   font-weight: 900;
   line-height: 1;
-  z-index: 1;
+  border-radius: 50%;
+  background: var(--cor);
+  border: calc(3 * var(--u)) solid #1E293B;
 }
+
 .dr-selo-fundo {
+  box-sizing: border-box;
   border-radius: 50%;
   background: color-mix(in srgb, var(--cor) 22%, #fff);
   border: calc(5 * var(--u)) solid var(--cor);
-  box-sizing: border-box;
 }
+
 .diario-frame .dr-cq {
+  z-index: 2;
+  padding: 0;
   background: none;
   border: 0;
-  padding: 0;
-  cursor: pointer;
-  z-index: 2;
   border-radius: calc(10 * var(--u));
+  cursor: pointer;
 }
-.diario-frame .dr-cq:hover, .diario-frame .dr-cq:focus-visible {
+
+.diario-frame .dr-cq:hover,
+.diario-frame .dr-cq:focus-visible {
   outline: calc(3 * var(--u)) dashed #1E293B;
   outline-offset: calc(2 * var(--u));
 }
+
 .diario-frame .dr-cq-link {
-  background: none;
-  border: 0;
   padding: 0;
   color: inherit;
-  cursor: pointer;
   text-decoration: underline dotted;
   text-underline-offset: .2em;
+  background: none;
+  border: 0;
+  cursor: pointer;
 }
-.diario-frame .dr-bandeira { z-index: 1; pointer-events: none; }
-.dr-bandeira svg { width: 100%; height: 100%; display: block; }
+
+.diario-frame .dr-bandeira {
+  z-index: 1;
+  pointer-events: none;
+}
+
+.dr-bandeira svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 .dr-ilha-prog {
   height: calc(10 * var(--u));
+  overflow: hidden;
   background: color-mix(in srgb, var(--cor) 25%, #fff);
   border: calc(2 * var(--u)) solid #1E293B;
-  overflow: hidden;
 }
-.dr-ilha-prog i { display: block; height: 100%; background: var(--cor); }
-.dr-ilha-n { text-align: center; font-size: calc(17 * var(--u)); font-weight: 700; }
+
+.dr-ilha-prog i {
+  display: block;
+  height: 100%;
+  background: var(--cor);
+}
+
+.dr-ilha-n {
+  text-align: center;
+  font-size: calc(17 * var(--u));
+  font-weight: 700;
+}
+
 /* popup "Minhas Conquistas" */
-.popup.popup-cq { width: min(640px, 100%); text-align: left; }
-.popup-cq h3 { text-align: center; }
-.cq-resumo { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 8px 0 10px; }
+.popup.popup-cq {
+  width: min(640px, 100%);
+  text-align: left;
+}
+
+.popup-cq h3 {
+  text-align: center;
+}
+
+.cq-resumo {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 8px 0 10px;
+}
+
 .cq-resumo > div {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  background: var(--card);
-  border: 3px solid var(--navy);
   padding: 8px 4px;
   color: var(--navy);
+  background: var(--card);
+  border: 3px solid var(--navy);
 }
-.cq-resumo .ico-txt { width: 30px; height: 30px; margin: 0; }
-.cq-resumo b { font-size: 20px; font-weight: 900; }
-.cq-resumo small { font-size: 13px; font-weight: 700; }
+
+.cq-resumo .ico-txt {
+  width: 30px;
+  height: 30px;
+  margin: 0;
+}
+
+.cq-resumo b {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.cq-resumo small {
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .popup .cq-cert {
   display: flex;
   align-items: center;
@@ -1428,16 +2261,25 @@ fica a ~25% da altura da imagem, contando de baixo */
   font-size: 15px;
   text-align: center;
 }
-.popup .cq-cert.ok { color: var(--teal-d); }
+
+.popup .cq-cert.ok {
+  color: var(--teal-d);
+}
+
 .cq-ilha {
-  background: var(--card);
-  border: 3px solid var(--navy);
-  border-left: 10px solid var(--cor);
   padding: 10px 12px;
   margin: 0 0 10px;
   color: var(--navy);
+  background: var(--card);
+  border: 3px solid var(--navy);
+  border-left: 10px solid var(--cor);
 }
-.cq-ilha.bloq { opacity: .6; filter: grayscale(.6); }
+
+.cq-ilha.bloq {
+  opacity: .6;
+  filter: grayscale(.6);
+}
+
 .cq-ilha h4 {
   display: flex;
   align-items: center;
@@ -1446,8 +2288,19 @@ fica a ~25% da altura da imagem, contando de baixo */
   font-size: 18px;
   font-weight: 900;
 }
-.cq-band { width: 28px; height: 33px; flex-shrink: 0; }
-.cq-band svg { width: 100%; height: 100%; display: block; }
+
+.cq-band {
+  width: 28px;
+  height: 33px;
+  flex-shrink: 0;
+}
+
+.cq-band svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 .popup .cq-selo {
   display: flex;
   align-items: center;
@@ -1456,22 +2309,54 @@ fica a ~25% da altura da imagem, contando de baixo */
   font-size: 14px;
   font-weight: 700;
 }
-.cq-selo > span { flex: 1; min-width: 0; }
-.cq-ilha ul { list-style: none; margin: 0; padding: 0; }
+
+.cq-selo > span {
+  flex: 1;
+  min-width: 0;
+}
+
+.cq-ilha ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .cq-ilha li {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 5px 0;
-  border-top: 1px dashed var(--line);
   font-size: 14px;
   font-weight: 700;
+  border-top: 1px dashed var(--line);
 }
-.cq-ilha li > span { flex: 1; min-width: 0; }
-.cq-ilha li.feita > span { color: color-mix(in srgb, var(--cor) 70%, #1E293B); }
-.cq-est { display: inline-flex; align-items: center; gap: 1px; white-space: nowrap; }
-.cq-est .cq-ico { width: 16px; height: 16px; }
-.cq-est .apagada { opacity: .25; filter: grayscale(1); }
+
+.cq-ilha li > span {
+  flex: 1;
+  min-width: 0;
+}
+
+.cq-ilha li.feita > span {
+  color: color-mix(in srgb, var(--cor) 70%, #1E293B);
+}
+
+.cq-est {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  white-space: nowrap;
+}
+
+.cq-est .cq-ico {
+  width: 16px;
+  height: 16px;
+}
+
+.cq-est .apagada {
+  opacity: .25;
+  filter: grayscale(1);
+}
+
 .cq-est em {
   display: inline-flex;
   align-items: center;
@@ -1480,40 +2365,80 @@ fica a ~25% da altura da imagem, contando de baixo */
   font-size: 12px;
   color: var(--muted);
 }
+
 @media (max-width: 520px) {
-  .cq-resumo { grid-template-columns: repeat(2, 1fr); }
+  .cq-resumo {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
+
 .dr-trilho {
   left: calc(971 * var(--u));
   top: calc(486 * var(--u));
   width: calc(468 * var(--u));
   height: calc(12 * var(--u));
-  background: var(--line);
   overflow: hidden;
+  background: var(--line);
 }
-.dr-trilho i { display: block; height: 100%; background: #FFC83B; }
+
+.dr-trilho i {
+  display: block;
+  height: 100%;
+  background: #FFC83B;
+}
+
 .dr-btn {
-  border: 0;
+  z-index: 2;
   padding: 0;
   font-size: calc(22 * var(--u));
   font-weight: 700;
   color: #1E293B;
-  z-index: 2;
+  border: 0;
 }
-.dr-btn.go-y { background: #FFC83B; width: calc(138 * var(--u)); height: calc(34 * var(--u)); }
-.dr-btn.go-y:hover { background: var(--yellow-d); }
-.dr-btn.go-grey { background: var(--line); width: calc(106 * var(--u)); height: calc(30 * var(--u)); }
-.dr-btn.go-grey[aria-disabled="true"] { cursor: not-allowed; }
-.diario-frame .dr-inline { position: static; width: calc(24 * var(--u)); height: calc(24 * var(--u)); vertical-align: 0; }
+
+.dr-btn.go-y {
+  width: calc(138 * var(--u));
+  height: calc(34 * var(--u));
+  background: #FFC83B;
+}
+
+.dr-btn.go-y:hover {
+  background: var(--yellow-d);
+}
+
+.dr-btn.go-grey {
+  width: calc(106 * var(--u));
+  height: calc(30 * var(--u));
+  background: var(--line);
+}
+
+.dr-btn.go-grey[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+.diario-frame .dr-inline {
+  position: static;
+  width: calc(24 * var(--u));
+  height: calc(24 * var(--u));
+  vertical-align: 0;
+}
+
 .dr-editar {
+  padding: 0 calc(4 * var(--u));
+  vertical-align: middle;
   background: none;
   border: 0;
-  padding: 0 calc(4 * var(--u));
   cursor: pointer;
-  vertical-align: middle;
 }
+
 /* medalha é mais alta que larga: não distorcer */
-.dr-selo-nome { white-space: normal; text-align: center; font-size: calc(18 * var(--u)); font-weight: 700; }
+.dr-selo-nome {
+  white-space: normal;
+  text-align: center;
+  font-size: calc(18 * var(--u));
+  font-weight: 700;
+}
+
 .diario-acoes {
   display: flex;
   gap: 12px;
@@ -1522,26 +2447,69 @@ fica a ~25% da altura da imagem, contando de baixo */
   padding: 0 0 calc(40 * var(--u));
   background: #FFF9E6;
 }
-.diario-acoes:empty { display: none; }
-.diario-frame .dr-titulo { animation: entraCima .5s ease-out both; }
-.diario-frame .dr-azul, .diario-frame .dr-branco { animation: surge .5s .1s ease-out both; }
-/* ícone da ilha no Diário: a arte cabe inteira na caixa, apoiada embaixo */
-.diario-frame .dr-ilha { object-fit: contain; object-position: center bottom; animation: flutuaLento 4s ease-in-out infinite; }
-.diario-frame .dr-ilha:nth-of-type(2n) { animation-delay: -1.3s; }
-.diario-frame .dr-btn.go-y { animation: chama 2.2s 1s ease-in-out infinite; }
-.diario-frame .dr-medalha { cursor: pointer; object-fit: contain; animation: brilhaLeve 3s ease-in-out infinite; }
-@media (max-width: 720px) and (orientation: portrait) {
-  .scene.diario { overflow: hidden; --u: calc(100cqw / 1400); min-height: calc(100svh - 84px); }
-  .scene.diario .diario-frame { width: calc(1728 * var(--u)); margin-left: calc(-164 * var(--u)); }
-  .scene.diario .dr-titulo { font-size: 22px; }
+
+.diario-acoes:empty {
+  display: none;
 }
-.dr-avatar { display: block; }
+
+.diario-frame .dr-titulo {
+  animation: entraCima .5s ease-out both;
+}
+
+.diario-frame .dr-azul,
+.diario-frame .dr-branco {
+  animation: surge .5s .1s ease-out both;
+}
+
+/* ícone da ilha no Diário: a arte cabe inteira na caixa, apoiada embaixo */
+.diario-frame .dr-ilha {
+  object-fit: contain;
+  object-position: center bottom;
+  animation: flutuaLento 4s ease-in-out infinite;
+}
+
+.diario-frame .dr-ilha:nth-of-type(2n) {
+  animation-delay: -1.3s;
+}
+
+.diario-frame .dr-btn.go-y {
+  animation: chama 2.2s 1s ease-in-out infinite;
+}
+
+.diario-frame .dr-medalha {
+  object-fit: contain;
+  animation: brilhaLeve 3s ease-in-out infinite;
+  cursor: pointer;
+}
+
+@media (max-width: 720px) and (orientation: portrait) {
+  .scene.diario {
+    --u: calc(100cqw / 1400);
+    overflow: hidden;
+    min-height: calc(100svh - 84px);
+  }
+
+  .scene.diario .diario-frame {
+    width: calc(1728 * var(--u));
+    margin-left: calc(-164 * var(--u));
+  }
+
+  .scene.diario .dr-titulo {
+    font-size: 22px;
+  }
+}
+
+.dr-avatar {
+  display: block;
+}
+
 .dr-avatar > .foto-perfil {
   width: 100%;
   height: 100%;
   border-width: max(3px, calc(6 * var(--u)));
   box-shadow: 0 0 0 max(2px, calc(5 * var(--u))) var(--navy);
 }
+
 .diario-frame .dr-editar-av {
   position: absolute;
   z-index: 3;
@@ -1549,41 +2517,78 @@ fica a ~25% da altura da imagem, contando de baixo */
   display: grid;
   place-items: center;
 }
-.diario-frame .dr-editar-av .ico { width: 70%; height: 70%; }
-.diario-frame .dr-editar-av:hover .ico, .diario-frame .dr-editar-av:focus-visible .ico { transform: scale(1.15); }
+
+.diario-frame .dr-editar-av .ico {
+  width: 70%;
+  height: 70%;
+}
+
+.diario-frame .dr-editar-av:hover .ico,
+.diario-frame .dr-editar-av:focus-visible .ico {
+  transform: scale(1.15);
+}
 
 /* ---------- Certificado ---------- */
-.certificado { background: var(--navy-fundo); padding: 24px 18px; align-items: center; }
+
+.certificado {
+  padding: 24px 18px;
+  align-items: center;
+  background: var(--navy-fundo);
+}
+
 .certificado-card {
   width: min(460px, 88vw, calc((100vh - 200px) * 738 / 1055));
   min-width: 240px;
   aspect-ratio: 738 / 1055;
+  padding: 0;
+  border: 0;
+  background: none;
   perspective: 1200px;
   cursor: pointer;
-  border: 0;
-  padding: 0;
-  background: none;
 }
+
 .certificado-inner {
-  display: block;
   position: relative;
+  display: block;
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
   transition: transform .6s ease;
 }
-.certificado-card.virado .certificado-inner { transform: rotateY(180deg); }
-.certificado-frente, .certificado-verso {
-  display: block;
+
+.certificado-card.virado .certificado-inner {
+  transform: rotateY(180deg);
+}
+
+.certificado-frente,
+.certificado-verso {
   position: absolute;
   inset: 0;
+  display: block;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
-.certificado-verso { transform: rotateY(180deg); }
+
+.certificado-verso {
+  transform: rotateY(180deg);
+}
+
 /* compensa o giro do container: verso não fica espelhado */
-.certificado-frente .ico, .certificado-verso .ico { width: 100%; height: 100%; object-fit: contain; display: block; }
-.certificado .dica-flip { color: var(--cream); font-weight: 600; margin: 14px 0 0; font-size: 15px; }
+.certificado-frente .ico,
+.certificado-verso .ico {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.certificado .dica-flip {
+  margin: 14px 0 0;
+  color: var(--cream);
+  font-weight: 600;
+  font-size: 15px;
+}
+
 .certificado .acoes {
   margin-top: 14px;
   display: flex;
@@ -1591,23 +2596,33 @@ fica a ~25% da altura da imagem, contando de baixo */
   flex-wrap: wrap;
   justify-content: center;
 }
+
 .certificado .acoes .btn-ghost {
-  background: transparent;
   color: var(--cream);
+  background: transparent;
   box-shadow: inset 0 0 0 3px var(--cream), 0 4px 0 rgba(0, 0, 0, .25);
 }
-.certificado .acoes .btn-ghost:active { box-shadow: inset 0 0 0 3px var(--cream); }
+
+.certificado .acoes .btn-ghost:active {
+  box-shadow: inset 0 0 0 3px var(--cream);
+}
+
 @media print {
-  .certificado .acoes, .certificado .dica-flip { display: none !important; }
+  .certificado .acoes,
+  .certificado .dica-flip {
+    display: none !important;
+  }
+
   .scene.certificado {
     display: block;
     height: auto;
     min-height: 0;
     overflow: visible;
-    background: var(--card);
     padding: 0;
+    background: var(--card);
     animation: none;
   }
+
   .certificado-card {
     display: block;
     width: 100%;
@@ -1618,18 +2633,42 @@ fica a ~25% da altura da imagem, contando de baixo */
     perspective: none;
     animation: none;
   }
-  .certificado-inner { display: block; height: auto; transform: none !important; transition: none; }
-  .certificado-frente, .certificado-verso {
+
+  .certificado-inner {
     display: block;
+    height: auto;
+    transform: none !important;
+    transition: none;
+  }
+
+  .certificado-frente,
+  .certificado-verso {
     position: static;
+    display: block;
+    height: 270mm;
     transform: none;
     backface-visibility: visible;
-    height: 270mm;
     break-inside: avoid;
     page-break-inside: avoid;
   }
-  .certificado-verso { break-before: page; page-break-before: always; }
-  .certificado-frente .ico, .certificado-verso .ico { width: 100%; height: 100%; object-fit: contain; }
+
+  .certificado-verso {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  .certificado-frente .ico,
+  .certificado-verso .ico {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 }
-.certificado-card { animation: certEntra .8s cubic-bezier(.2, 1.1, .4, 1) both; }
-.certificado .dica-flip { animation: piscaLeve 2s 1s ease-in-out infinite; }
+
+.certificado-card {
+  animation: certEntra .8s cubic-bezier(.2, 1.1, .4, 1) both;
+}
+
+.certificado .dica-flip {
+  animation: piscaLeve 2s 1s ease-in-out infinite;
+}

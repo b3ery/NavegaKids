@@ -325,6 +325,36 @@ Todo o código fica dentro de **uma única variável global**, `NavegaKids`, par
 
 ---
 
+## 📐 Padrões de Código e Qualidade
+
+O código segue os princípios de **Clean Code** e foi organizado tendo como referência o modelo de qualidade de produto da **ISO/IEC 25010**.
+
+### Clean Code no projeto
+- **Uma responsabilidade por arquivo:** cada tela em `js/telas/`, conteúdo em `data.js`, regras de pontos em `pontuacao.js`, progresso em `progresso.js`; CSS dividido por assunto (base, telas, atividades, acessibilidade).
+- **Nomes que dizem o que fazem:** `concluirAtividade`, `faseLiberada`, `telaDiario`, `.fala-cap`, `.menu-app`, em português, como o resto do projeto.
+- **Funções pequenas e reaproveitadas:** os 12 tipos de atividade servem às 45 atividades; peças comuns das telas ficam em `telas/comum.js`.
+- **Conteúdo separado da lógica:** textos, fases e dicas mudam sem mexer no código das telas.
+- **Escrita padronizada:** no CSS, um seletor e uma declaração por linha, propriedades sempre na mesma ordem e seções com título (as regras estão no topo de `css/base.css`).
+- **Comentários que explicam o porquê,** não o histórico de mudanças.
+- **Sem código morto:** regras e funções que nenhuma tela usa foram retiradas.
+
+### ISO/IEC 25010: características atendidas
+
+| Característica | Como o NavegaKids atende |
+|:---|:---|
+| **Adequação funcional** | As 45 atividades, a progressão, os selos e o certificado fazem o que o escopo do projeto promete |
+| **Eficiência de desempenho** | Site estático, sem servidor e sem bibliotecas externas; a música é gerada pelo navegador, sem arquivo de áudio |
+| **Compatibilidade** | Roda em qualquer navegador moderno; todo o código fica numa única variável global (`NavegaKids`), sem conflitar com as páginas dos outros times |
+| **Capacidade de interação** (usabilidade) | Níveis por idade, voz que lê a tela, dicas, retorno educativo a cada resposta e painel de acessibilidade (texto maior, modo escuro, régua, cursor grande, parar animações), com navegação por teclado |
+| **Confiabilidade** | Erros de uma tela não derrubam o jogo (o roteador volta ao Início); se o navegador bloquear o armazenamento, o jogo continua sem salvar |
+| **Segurança** | Nenhum dado sai do aparelho; textos mostrados na tela são protegidos contra código malicioso; conteúdo infantil controlado (ECA e LGPD) |
+| **Manutenibilidade** | Arquivos pequenos e por assunto, conteúdo separado da lógica, padrão de escrita único e lista de arquivos e versão num lugar só (`index.html`) |
+| **Flexibilidade** (portabilidade) | Abre com dois cliques no `index.html`, sem instalar nada; pode ser publicado em qualquer hospedagem de site estático |
+
+<br>
+
+---
+
 ## 🛠️ Para Quem Vai Mexer no Código
 
 ### Conteúdo
