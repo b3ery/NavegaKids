@@ -2103,19 +2103,11 @@ cada um de uma cor, sem mudar o certo/errado (verde/coral) depois da resposta */
   text-align: left;
   animation: balaoEntra .35s cubic-bezier(.2, 1.4, .4, 1);
 }
-.quiz-balao::before {
-  /* rabinho apontando para o Capitão */
-  content: '';
-  position: absolute;
-  left: -15px;
-  bottom: 18px;
-  width: 24px;
-  height: 24px;
-  background: var(--card);
-  border-left: 3px solid var(--navy);
-  border-bottom: 3px solid var(--navy);
-  transform: rotate(45deg) skew(10deg, 10deg);
-}
+/* rabinho apontando para o Capitão: um triângulo azul-noite (a borda) e, por cima, um branco
+   um pouco menor que entra na borda do balão, para a emenda ficar sem falhas */
+.quiz-balao::before, .quiz-balao::after { content: ''; position: absolute; width: 0; height: 0; border-style: solid; }
+.quiz-balao::before { left: -19px; bottom: 14px; border-width: 13px 19px 13px 0; border-color: transparent var(--navy) transparent transparent; }
+.quiz-balao::after { left: -13px; bottom: 18px; border-width: 9px 14px 9px 0; border-color: transparent var(--card) transparent transparent; }
 .quiz-quem {
   display: block;
   font-size: 12px;
@@ -2219,13 +2211,9 @@ cada um de uma cor, sem mudar o certo/errado (verde/coral) depois da resposta */
   .quiz-palco { flex-direction: column; align-items: center; gap: 0; }
   .quiz-capita { width: 84px; height: 84px; }
   .quiz-balao { margin-bottom: 0; width: 100%; }
-  .quiz-balao::before {
-    left: 50%;
-    top: -15px;
-    bottom: auto;
-    margin-left: -12px;
-    transform: rotate(135deg) skew(10deg, 10deg);
-  }
+  /* no celular o Capitão fica em cima do balão: o rabinho aponta para cima */
+  .quiz-balao::before { left: 50%; top: -19px; bottom: auto; margin-left: -13px; border-width: 0 13px 19px 13px; border-color: transparent transparent var(--navy) transparent; }
+  .quiz-balao::after { left: 50%; top: -13px; bottom: auto; margin-left: -9px; border-width: 0 9px 14px 9px; border-color: transparent transparent var(--card) transparent; }
   .quiz-balao .enunciado { font-size: 18px; }
   .vm-carta p { font-size: 18px; }
   .vm-selo { font-size: 16px; right: -4px; }
@@ -2576,17 +2564,14 @@ cada um de uma cor, sem mudar o certo/errado (verde/coral) depois da resposta */
 .fala-cap.mini .quiz-capita { width: 78px; height: 78px; }
 .fala-cap.mini .quiz-balao { margin-bottom: 14px; padding: 8px 16px 10px; }
 .fala-cap.mini .quiz-balao .enunciado { font-size: 19px; margin-top: 2px; }
-.fala-cap.mini .quiz-balao::before { bottom: 14px; }
+.fala-cap.mini .quiz-balao::before { bottom: 10px; }
+.fala-cap.mini .quiz-balao::after { bottom: 14px; }
 @media (max-width: 600px) {
   .fala-cap.mini { flex-direction: row; align-items: flex-end; gap: 4px; }
   .fala-cap.mini .quiz-capita { width: 58px; height: 58px; }
   .fala-cap.mini .quiz-balao { margin-bottom: 10px; width: auto; }
-  .fala-cap.mini .quiz-balao::before {
-    left: -15px;
-    top: auto;
-    bottom: 12px;
-    margin-left: 0;
-    transform: rotate(45deg) skew(10deg, 10deg);
-  }
+  /* aqui o Capitão continua ao lado: o rabinho volta a apontar para a esquerda */
+  .fala-cap.mini .quiz-balao::before { left: -19px; top: auto; bottom: 8px; margin-left: 0; border-width: 13px 19px 13px 0; border-color: transparent var(--navy) transparent transparent; }
+  .fala-cap.mini .quiz-balao::after { left: -13px; top: auto; bottom: 12px; margin-left: 0; border-width: 9px 14px 9px 0; border-color: transparent var(--card) transparent transparent; }
   .fala-cap.mini .quiz-balao .enunciado { font-size: 16px; }
 }
