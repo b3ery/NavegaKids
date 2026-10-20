@@ -1,11 +1,13 @@
 /* ============================================================
    NavegaKids — progresso.js
-   Progresso da sessão: atividades feitas, erros, pontos, estrelas,
-   selos, nome do navegador e tempo jogado.
+   Progresso: atividades feitas, erros, pontos, estrelas, selos,
+   nome, personagem, nível e tempo jogado.
 
-   Por decisão do grupo, o progresso NÃO é salvo: fica só na memória
-   e volta ao zero ao recarregar a página (F5). Para salvar no futuro,
-   basta gravar/ler o objeto `estado` no localStorage.
+   O progresso fica salvo só neste navegador (localStorage): nada é
+   enviado para fora do aparelho. Ao voltar, o Capitão Gancho pergunta
+   se a criança quer continuar ou recomeçar (telas/jogador.js).
+   Para testar a jornada inteira do zero, abra o jogo com ?novo=1:
+   o que estava salvo é apagado e tudo começa como na primeira vez.
 
    Regras:
    - Uma fase libera a próxima quando todas as suas atividades são feitas.
@@ -19,6 +21,8 @@
   const { FASES, ILHAS, pontuacao } = NK;
 
   const DEV = /[?&]dev=1/.test(location.search);   // ?dev=1 libera tudo (teste)
+  const NOVO = /[?&]novo=1/.test(location.search); // ?novo=1 começa do zero (teste)
+  const CHAVE_SALVO = 'navegakids-progresso';
   const TAMANHO_MAX_NOME = 20;
 
   /* Modos por idade (relato de testes): o Marujo (8 anos) responde sem tempo (o quiz
@@ -44,6 +48,32 @@
   });
 
   const estado = estadoInicial();
+
+  /* ---------- salvar e carregar (só neste navegador) ---------- */
+  const salvar = () => {
+    try {
+      const { inicio, ...resto } = estado;
+      localStorage.setItem(CHAVE_SALVO, JSON.stringify({ ...resto, tempoMs: Date.now() - inicio }));
+    } catch (e) { /* navegador sem armazenamento (aba anônima, bloqueado): o jogo segue sem salvar */ }
+  };
+  const apagarSalvo = () => { try { localStorage.removeItem(CHAVE_SALVO); } catch (e) {} };
+  /** true quando o jogo abriu com um progresso salvo de outra visita */
+  let voltou = false;
+  if (NOVO) apagarSalvo();
+  else {
+    try {
+      const salvo = JSON.parse(localStorage.getItem(CHAVE_SALVO) || 'null');
+      if (salvo && typeof salvo === 'object') {
+        const { tempoMs, ...resto } = salvo;
+        Object.keys(estadoInicial()).forEach(k => { if (k in resto) estado[k] = resto[k]; });
+        estado.inicio = Date.now() - (Number(tempoMs) || 0);   // o tempo jogado continua de onde parou
+        voltou = Boolean(estado.nome || Object.keys(estado.atividades).length);
+      }
+    } catch (e) { apagarSalvo(); }
+  }
+  // o tempo jogado também é guardado quando a aba é fechada ou escondida
+  addEventListener('pagehide', salvar);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) salvar(); });
 
   /** Atividade em andamento: { fid, idx, erros } ou null. */
   let tentativa = null;
@@ -168,7 +198,11 @@
   const resetar = () => {
     Object.assign(estado, estadoInicial());
     tentativa = null;
+    voltou = false;
   };
+
+  /* toda função que muda o progresso salva logo em seguida */
+  const salvando = fn => (...args) => { const r = fn(...args); salvar(); return r; };
 
   NK.progresso = {
     DEV,
@@ -179,9 +213,14 @@
     // pontos, estrelas, selos
     resultadoDaFase, estrelasTotal, estrelasMax, pontosTotal, selos, level, tempoJogadoMs,
     // sessão
-    nome, definirNome, AVATARES, avatar, definirAvatar, MODOS, modo, modoInfo, modoEscolhido, definirModo, vozAuto, definirVozAuto, tempoDoQuiz, tempoDaAtividade, introVista, marcarIntroVista, prologoVisto, marcarPrologoVisto, faseVista, definirFaseVista,
+    nome, definirNome: salvando(definirNome), AVATARES, avatar, definirAvatar: salvando(definirAvatar),
+    MODOS, modo, modoInfo, modoEscolhido, definirModo: salvando(definirModo), vozAuto, definirVozAuto: salvando(definirVozAuto),
+    tempoDoQuiz, tempoDaAtividade, introVista, marcarIntroVista: salvando(marcarIntroVista),
+    prologoVisto, marcarPrologoVisto: salvando(marcarPrologoVisto), faseVista, definirFaseVista: salvando(definirFaseVista),
     // atividade em andamento
-    iniciarAtividade, registrarErro, concluirAtividade,
-    resetar
+    iniciarAtividade, registrarErro, concluirAtividade: salvando(concluirAtividade),
+    // salvo neste navegador
+    voltou: () => voltou,
+    resetar: salvando(resetar)
   };
 })();

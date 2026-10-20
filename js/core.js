@@ -188,6 +188,7 @@
     w.innerHTML = `<div class="popup ${o.cor ? 'cor-' + o.cor : ''} ${o.cls || ''}">
       ${o.x ? '<button class="x" aria-label="Fechar">X</button>' : ''}
       ${o.avatar ? `<div class="who">${fotoPerfil(avatarAtual(), { cls: 'av' })}<span>${esc(o.avatar.nome)}</span></div>` : ''}
+      ${o.capitao ? `<div class="who who-capitao"><span class="quiz-capita">${I('capitao', { alt: '' })}</span><span>Capitão Gancho</span></div>` : ''}
       ${o.titulo ? `<h3>${o.titulo}</h3>` : ''}
       ${o.texto ? `<p>${esc(o.texto)}</p>` : ''}
       ${o.extra || ''}

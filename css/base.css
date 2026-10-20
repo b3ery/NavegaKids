@@ -812,3 +812,8 @@ img.personagem { transform-origin: var(--ox, 50%) var(--oy, 100%); transform: tr
 
 /* ---------- Impressão: tamanho da folha ---------- */
 @page { size: A4 portrait; margin: 10mm; }
+
+/* ---------- Boas-vindas e recomeçar (o Capitão fala no popup) ---------- */
+.popup .who-capitao { flex-direction: column; gap: 2px; color: var(--coral-d); font-size: 13px; text-transform: uppercase; letter-spacing: .06em; }
+.popup .who-capitao .quiz-capita { width: 96px; height: 96px; }
+.popup .voltou-onde { display: inline-flex; align-items: center; gap: 6px; margin: -4px 0 18px; padding: 6px 14px; border-radius: 99px; background: var(--cream-2); font-size: 16px; }

@@ -6,7 +6,7 @@
   'use strict';
   const NK = (window.NavegaKids ??= {});
   const { ILHAS, FASES, progresso, $, $$, esc, go, later, I, popup, toast, montar, cadeadoIcon } = NK;
-  const { DEV, ilhaById, fasesDaIlha, nFeitas, faseCompleta, faseLiberada, ilhaCompleta, ilhaLiberada, jornadaCompleta, estrelasTotal } = progresso;
+  const { ilhaById, fasesDaIlha, nFeitas, faseCompleta, faseLiberada, ilhaCompleta, ilhaLiberada, jornadaCompleta, estrelasTotal } = progresso;
   const { iconeFase, bandeira } = NK.comum;
   const { pedirNome, pedirAvatar, pedirModo } = NK.jogador;
 
@@ -135,13 +135,13 @@
         <p class="dr-txt" style="left:${U(971)};width:${U(468)};top:${U(550)};text-align:center"><b>ILHAS:</b></p>
         ${mini}
       </div>
-      <div class="diario-acoes"><button class="btn" id="btConquistas">${I('conquistas', { cls: 'ico-txt' })} Minhas Conquistas</button><button class="btn" id="btModo">Nível: ${progresso.modoInfo().nome} (${progresso.modoInfo().idade}) · trocar</button>${jornada ? `<button class="btn" id="btVerCert">Ver Certificado</button>` : ''}${DEV ? `<button class="btn" id="btReset">Reiniciar progresso (dev)</button>` : ''}</div>
+      <div class="diario-acoes"><button class="btn" id="btConquistas">${I('conquistas', { cls: 'ico-txt' })} Minhas Conquistas</button><button class="btn" id="btModo">Nível: ${progresso.modoInfo().nome} (${progresso.modoInfo().idade}) · trocar</button>${jornada ? `<button class="btn" id="btVerCert">Ver Certificado</button>` : ''}<button class="btn" id="btReset">Recomeçar a aventura</button></div>
     </div>`, 'diario');
     document.body.classList.add('tela-figma');
     window.scrollTo(0, 0);
 
     const cert = $('#btVerCert'); if (cert) cert.onclick = () => go('#/certificado');
-    const rst = $('#btReset'); if (rst) rst.onclick = () => { progresso.resetar(); go('#/home'); };
+    $('#btReset').onclick = () => NK.jogador.confirmarRecomecar();
     $('#btEditarNome').onclick = () => pedirNome(telaDiario, { comModo: false });
     $('#btEditarAvatar').onclick = () => pedirAvatar(telaDiario);
     $('#btModo').onclick = () => pedirModo(telaDiario);

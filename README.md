@@ -181,7 +181,7 @@
 
 Erros que **não** contam: abrir as portas, os "Avançar" das telas de leitura e tocar no botão errado nas atividades de achar o botão no aplicativo (a criança está explorando a tela).
 
-> O progresso **não é salvo**: por decisão do grupo, ele volta ao zero ao recarregar a página.
+> O progresso fica **salvo só neste navegador** (nada sai do aparelho). Ao voltar, o Capitão Gancho dá as boas-vindas e pergunta se a criança quer continuar ou recomeçar; o botão "Recomeçar a aventura", no Diário, apaga tudo. Para testar a jornada inteira do zero, abra `index.html?novo=1`.
 
 <br>
 
@@ -235,7 +235,7 @@ flowchart LR
 | 👋 **Home personalizada** | ✅ | Balão do pirata com o nome, as estrelas e a próxima ilha |
 | ♿ **Acessibilidade** | ✅ | Respeita "reduzir movimento", textos alternativos e navegação por teclado |
 | **Painel de acessibilidade** | ✅ | Botão amarelo no canto da tela, com o Capitão Gancho: tamanho do texto (Normal, Grande, Maior, em todas as telas), modo escuro (noite no mar; o certificado continua claro), cores fortes, letra espaçada, parar animações, destacar botões, cursor grande, régua de leitura e ler em voz alta (ao ligar, já lê a tela). Feito no próprio jogo (`js/acessibilidade.js`), sem script de fora; as escolhas ficam salvas no aparelho |
-| 🧪 **Modo de teste** | ✅ | `?dev=1` libera todas as fases |
+| 🧪 **Modos de teste** | ✅ | `?dev=1` libera todas as fases; `?novo=1` apaga o progresso salvo e começa do zero |
 | **Modos por idade** | ✅ | Marujo (8 anos): voz ligada, quiz sem tempo e dicas óbvias (botão "Dica" sempre na barra de cima); Capitão (9 e 10 anos): desafio de 15 s, dicas sutis (o botão "Dica" aparece na barra de cima depois de um tempo pensando ou de 2 erros) e voz só se a criança ligar. Escolha ao digitar o nome; no Diário, o botão "Nível" troca |
 | **Voz que lê os textos** | ✅ | Um único botão "Voz: ligada / desligada" nas atividades, aberturas e Missões; ligado, lê a tela, os popups e os feedbacks sozinho. Vem ligado no Marujo e desligado no Capitão. Em Missões, "Trocar voz" escolhe a voz. Usa a voz do navegador (no Edge e no Chrome ela é mais natural) |
 | **Incentivo** | ✅ | Comemoração de acertos seguidos, "Fase perfeita" e recado de que errar faz parte, com botão para refazer a fase |
@@ -297,7 +297,7 @@ NavegaKids/
 │   ├── config.js         # Liga cada imagem da pasta img/ a um nome
 │   ├── data.js           # Todo o conteúdo: ilhas, fases e atividades
 │   ├── pontuacao.js      # Regras de pontos e estrelas (objeto REGRAS)
-│   ├── progresso.js      # Progresso da sessão: atividades, erros, pontos, estrelas, selos, nome
+│   ├── progresso.js      # Progresso salvo no navegador: atividades, erros, pontos, estrelas, selos, nome
 │   ├── textos-curtos.js  # Versões curtas dos textos para o Marujo
 │   ├── dicas.js          # Dicas por nível (óbvias no Marujo, sutis no Capitão)
 │   ├── core.js           # Utilitários, imagens, popups e cabeçalho

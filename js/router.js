@@ -37,11 +37,12 @@
   }
 
   function iniciar() {
-    // simulação sem progresso salvo: ao recarregar, o estado volta ao zero e as rotas que
-    // dependem de progresso voltam para o Início
+    // o jogo sempre abre pelo Início (ou Ilhas / Diário); quem já tinha progresso salvo
+    // é recebido pelo Capitão, que pergunta se quer continuar ou recomeçar
     const rota = location.hash.replace('#/', '').split('/')[0];
     if (!['home', 'ilhas', 'diario'].includes(rota)) history.replaceState(null, '', '#/home');
     renderRota();
+    if (NK.progresso.voltou()) NK.jogador.boasVindas();
   }
 
   window.addEventListener('hashchange', renderRota);

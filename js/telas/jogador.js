@@ -6,7 +6,7 @@
 (() => {
   'use strict';
   const NK = (window.NavegaKids ??= {});
-  const { progresso, $, esc, I, popup } = NK;
+  const { progresso, $, esc, later, I, popup } = NK;
 
   /* PopUP-Usuario do Figma: pede o nome (ou apelido) do navegador e o modo por idade
      (Marujo, 8 anos · Capitão, 9 e 10 anos — relato de testes).
@@ -76,5 +76,36 @@
     });
   }
 
-  NK.jogador = { pedirNome, pedirAvatar, pedirModo };
+  /** Recomeçar do zero: pede confirmação antes de apagar as estrelas. */
+  function confirmarRecomecar(seVoltar) {
+    popup({
+      capitao: true, titulo: 'Começar do zero?',
+      texto: 'As fases, as estrelas e os selos vão ser apagados. O seu nome e o personagem também.',
+      btns: [
+        { t: 'Voltar', cls: 'btn-ghost', fn: () => seVoltar?.() },
+        { t: 'Sim, recomeçar', cls: 'btn-c', fn: () => { progresso.resetar(); location.hash === '#/home' ? NK.renderRota() : (location.hash = '#/home'); } }
+      ]
+    });
+  }
+
+  /** Ao abrir o jogo com progresso salvo: o Capitão dá as boas-vindas e pergunta se continua ou recomeça. */
+  function boasVindas() {
+    const nome = progresso.nome();
+    const estrelas = progresso.estrelasTotal();
+    const fase = progresso.faseAtual();
+    const w = popup({
+      cor: 'b', capitao: true, titulo: 'Bem-vindo de volta!',
+      texto: `Olá, ${nome ? 'navegador ' + nome : 'navegador'}! Que bom ter você de volta. Quer continuar de onde parou ou recomeçar a aventura?`,
+      extra: progresso.jornadaCompleta()
+        ? `<p class="voltou-onde">${I('conquistas', { cls: 'ico-txt' })} Você já completou a jornada!</p>`
+        : `<p class="voltou-onde">${I('estrela', { cls: 'ico-txt' })} ${estrelas} ${estrelas === 1 ? 'estrela' : 'estrelas'} · Próxima: Fase ${fase.id}, ${esc(fase.titulo)}</p>`,
+      btns: [
+        { t: 'Recomeçar', cls: 'btn-ghost', fn: () => { later(() => confirmarRecomecar(boasVindas), 0); } },
+        { t: 'Continuar', cls: 'btn-t' }
+      ]
+    });
+    $('[data-b="1"]', w).focus();   // Enter continua
+  }
+
+  NK.jogador = { pedirNome, pedirAvatar, pedirModo, boasVindas, confirmarRecomecar };
 })();
