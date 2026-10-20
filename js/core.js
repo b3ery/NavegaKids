@@ -1,5 +1,5 @@
 /* ============================================================
-   NavegaKids — core.js
+   NavegaKids · core.js
    Utilitários · ligação com a pasta /img · popups · cabeçalho
    (o progresso do jogador fica em progresso.js)
    ============================================================ */
@@ -10,22 +10,54 @@
 
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
-  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const esc = s =>
+    String(s).replace(
+      /[&<>"']/g,
+      c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]
+    );
+  const shuffle = a => {
+    a = a.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
 
   /** Navega para uma rota (#/home, #/ilhas, ...). */
-  const go = hash => { location.hash = hash; };
+  const go = hash => {
+    location.hash = hash;
+  };
 
   /* ---------- timers que são limpos ao trocar de tela ---------- */
-  let _timers = [], _intervals = [], _leave = null;
-  const later = (fn, ms) => { const id = setTimeout(fn, ms); _timers.push(id); return id; };
-  const every = (fn, ms) => { const id = setInterval(fn, ms); _intervals.push(id); return id; };
+  let _timers = [],
+    _intervals = [],
+    _leave = null;
+  const later = (fn, ms) => {
+    const id = setTimeout(fn, ms);
+    _timers.push(id);
+    return id;
+  };
+  const every = (fn, ms) => {
+    const id = setInterval(fn, ms);
+    _intervals.push(id);
+    return id;
+  };
   function clearTimers() {
-    _timers.forEach(clearTimeout); _intervals.forEach(clearInterval);
-    _timers = []; _intervals = [];
-    if (_leave) { try { _leave(); } catch (e) {} _leave = null; }
+    _timers.forEach(clearTimeout);
+    _intervals.forEach(clearInterval);
+    _timers = [];
+    _intervals = [];
+    if (_leave) {
+      try {
+        _leave();
+      } catch (e) {}
+      _leave = null;
+    }
   }
-  const onLeave = fn => { _leave = fn; };
+  const onLeave = fn => {
+    _leave = fn;
+  };
 
   /* ============================================================
      IMAGENS  →  pasta img/
@@ -36,61 +68,85 @@
     if (_faltando.has(key)) return;
     _faltando.add(key);
     clearTimeout(anotaFalta.t);
-    anotaFalta.t = setTimeout(() => console.info(
-      '[NavegaKids] Não achei estes arquivos em /img: ' +
-      [..._faltando].map(k => IMG[k][0]).join(', ')), 900);
+    anotaFalta.t = setTimeout(
+      () =>
+        console.info(
+          '[NavegaKids] Não achei estes arquivos em /img: ' + [..._faltando].map(k => IMG[k][0]).join(', ')
+        ),
+      900
+    );
   }
 
   /* <img> com fallback automático: tenta as extensões e, se nada existir, some */
   /* Personagens: caixa do desenho dentro da imagem (1728 × 1683) e o centro do rosto,
      para alinhar qualquer personagem ao lugar do pirata original e recortar as fotinhas. */
   const PERSONAGENS = {
-    usuario:  { caixa: [72, 338, 1146, 1634],  rosto: [560, 330, 900] },
+    usuario: { caixa: [72, 338, 1146, 1634], rosto: [560, 330, 900] },
     usuario2: { caixa: [330, 192, 1378, 1486], rosto: [905, 192, 760] },
     usuario3: { caixa: [560, 196, 1310, 1486], rosto: [893, 196, 700] },
     usuario4: { caixa: [448, 196, 1284, 1482], rosto: [830, 196, 720] },
-    leo:      { caixa: [380, 190, 1340, 1328], rosto: [900, 190, 760] }
+    leo: { caixa: [380, 190, 1340, 1328], rosto: [900, 190, 760] }
   };
   /** Estilo que coloca o personagem k no lugar do pirata original: mesma altura, mesmos pés e cabeça na mesma linha. */
   function alinharPersonagem(k) {
     if (k === 'usuario') return '';
-    const [ux0, uy0, ux1, uy1] = PERSONAGENS.usuario.caixa, [x0, y0, x1, y1] = PERSONAGENS[k].caixa;
-    const sc = (uy1 - uy0) / (y1 - y0), cx = PERSONAGENS[k].rosto[0], ucx = PERSONAGENS.usuario.rosto[0];   // alinha pela cabeça
-    return `--ox:${(cx / 1728 * 100).toFixed(2)}%;--oy:${(y1 / 1683 * 100).toFixed(2)}%;--nx:${((ucx - cx) / 1728 * 100).toFixed(2)}%;--ny:${((uy1 - y1) / 1683 * 100).toFixed(2)}%;--ns:${sc.toFixed(3)};--centro:${((864 - ucx) / 1728 * 100).toFixed(2)}%;`;
+    const [ux0, uy0, ux1, uy1] = PERSONAGENS.usuario.caixa,
+      [x0, y0, x1, y1] = PERSONAGENS[k].caixa;
+    const sc = (uy1 - uy0) / (y1 - y0),
+      cx = PERSONAGENS[k].rosto[0],
+      ucx = PERSONAGENS.usuario.rosto[0]; // alinha pela cabeça
+    return `--ox:${((cx / 1728) * 100).toFixed(2)}%;--oy:${((y1 / 1683) * 100).toFixed(2)}%;--nx:${(((ucx - cx) / 1728) * 100).toFixed(2)}%;--ny:${(((uy1 - y1) / 1683) * 100).toFixed(2)}%;--ns:${sc.toFixed(3)};--centro:${(((864 - ucx) / 1728) * 100).toFixed(2)}%;`;
   }
   /** Fotinha redonda de perfil com o rosto do personagem k. */
   function fotoPerfil(k, o = {}) {
     const p = PERSONAGENS[k] || PERSONAGENS.usuario;
     const [cx, top, lado] = p.rosto;
     const esq = cx - lado / 2;
-    const pos = `${(esq / (1728 - lado) * 100).toFixed(2)}% ${(top / (1683 - lado) * 100).toFixed(2)}%`;
-    return `<span class="foto-perfil ${o.cls || ''}" style="background-image:url('${srcOf(k, 0)}');background-size:${(1728 / lado * 100).toFixed(1)}% auto;background-position:${pos};${o.size ? `width:${o.size}px;height:${o.size}px;` : ''}" ${o.alt ? `role="img" aria-label="${esc(o.alt)}"` : 'aria-hidden="true"'}></span>`;
+    const pos = `${((esq / (1728 - lado)) * 100).toFixed(2)}% ${((top / (1683 - lado)) * 100).toFixed(2)}%`;
+    return `<span class="foto-perfil ${o.cls || ''}" style="background-image:url('${srcOf(k, 0)}');background-size:${((1728 / lado) * 100).toFixed(1)}% auto;background-position:${pos};${o.size ? `width:${o.size}px;height:${o.size}px;` : ''}" ${o.alt ? `role="img" aria-label="${esc(o.alt)}"` : 'aria-hidden="true"'}></span>`;
   }
   const avatarAtual = () => NK.progresso?.avatar?.() || 'usuario';
 
   function I(key, o = {}) {
     // "usuario" é sempre o personagem que a criança escolheu
     let estiloExtra = '';
-    if (key === 'usuario') { const av = avatarAtual(); estiloExtra = alinharPersonagem(av); key = av; }
+    if (key === 'usuario') {
+      const av = avatarAtual();
+      estiloExtra = alinharPersonagem(av);
+      key = av;
+    }
     const d = IMG[key];
     if (!d) return '';
     const st = (o.size ? `width:${o.size}px;height:${o.size}px;` : '') + estiloExtra;
-    return `<img class="ico${o.cls ? ' ' + o.cls : ''}${estiloExtra || PERSONAGENS[key] ? ' personagem' : ''}" src="${srcOf(key, 0)}" data-k="${key}" data-i="0" ` +
+    return (
+      `<img class="ico${o.cls ? ' ' + o.cls : ''}${estiloExtra || PERSONAGENS[key] ? ' personagem' : ''}" src="${srcOf(key, 0)}" data-k="${key}" data-i="0" ` +
       (o.alt ? `alt="${esc(o.alt)}"` : 'alt="" aria-hidden="true"') +
-      (st ? ` style="${st}"` : '') + ' draggable="false" onerror="NavegaKids.imgFail(this)">';
+      (st ? ` style="${st}"` : '') +
+      ' draggable="false" onerror="NavegaKids.imgFail(this)">'
+    );
   }
 
   /* Chamado pelo onerror das imagens: tenta a próxima extensão e, por fim, usa a reserva SVG (se houver). */
   function imgFail(img) {
     const key = img.dataset.k;
-    const i = (+img.dataset.i) + 1;
-    if (i < EXTS.length) { img.dataset.i = i; img.src = srcOf(key, i); return; }
+    const i = +img.dataset.i + 1;
+    if (i < EXTS.length) {
+      img.dataset.i = i;
+      img.src = srcOf(key, i);
+      return;
+    }
     anotaFalta(key);
     const em = IMG[key][1];
-    if (!em) { img.remove(); return; }
+    if (!em) {
+      img.remove();
+      return;
+    }
     const sp = document.createElement('span');
     sp.className = ('emo ' + img.className.replace('ico', '')).trim();
-    if (img.alt) { sp.setAttribute('role', 'img'); sp.setAttribute('aria-label', img.alt); } else sp.setAttribute('aria-hidden', 'true');
+    if (img.alt) {
+      sp.setAttribute('role', 'img');
+      sp.setAttribute('aria-label', img.alt);
+    } else sp.setAttribute('aria-hidden', 'true');
     sp.style.cssText = img.style.cssText;
     const w = img.getBoundingClientRect().width;
     if (w >= 24) sp.style.fontSize = Math.round(w * 0.78) + 'px';
@@ -101,7 +157,7 @@
 
   /* Ícone de um item do conteúdo (campo "img" em data.js). Sem img, usa o
      símbolo de texto do campo "e" (ex.: ⋮ ☰ dos botões de menu). */
-  const icone = (it, o = {}) => it && it.img ? I(it.img, o) : esc(it && it.e || '');
+  const icone = (it, o = {}) => (it && it.img ? I(it.img, o) : esc((it && it.e) || ''));
 
   /* Selo das fases de estrelas em dobro (fases com `dobro: true` em data.js) */
   const seloDobro = (txt = 'Estrelas em dobro!') =>
@@ -110,7 +166,7 @@
   /* Texto com um ícone pequeno na frente (dicas e mensagens de acerto/erro). */
   const comIcone = (key, txt) => I(key, { cls: 'ico-txt' }) + ' ' + esc(txt);
 
-  /* Ícone de cadeado desenhado em SVG — não existe asset de cadeado na pasta
+  /* Ícone de cadeado desenhado em SVG: não existe asset de cadeado na pasta
      img/ (o arquivo "bloqueado" é um ícone de "usuário bloqueado", não serve
      pra indicar ilha/fase trancada), então geramos um cadeado simples aqui. */
   function cadeadoIcon(o = {}) {
@@ -126,7 +182,7 @@
 
   /* Posiciona elementos absolutos por cima de um background-image que usa
      background-size:cover (sem esticar), calculando exatamente qual pedaço
-     da imagem ficou visível — assim os botões nunca desalinham das ilhas,
+     da imagem ficou visível: assim os botões nunca desalinham das ilhas,
      mesmo a imagem sendo cortada de forma diferente em cada tela. */
   function posicionarSobreCover(container, imgKey, pontos, modo = 'cover') {
     const url = srcOf(imgKey, 0);
@@ -135,18 +191,23 @@
       if (container.isConnected) container.style.backgroundImage = `url("${url}")`;
       const aplicar = () => {
         if (!container.isConnected) return;
-        const cw = container.clientWidth, ch = container.clientHeight;
-        const iw = img.naturalWidth, ih = img.naturalHeight;
+        const cw = container.clientWidth,
+          ch = container.clientHeight;
+        const iw = img.naturalWidth,
+          ih = img.naturalHeight;
         if (!cw || !ch || !iw || !ih) return;
         const scale = modo === 'contain' ? Math.min(cw / iw, ch / ih) : Math.max(cw / iw, ch / ih);
-        const sw = iw * scale, sh = ih * scale;
-        const offX = (sw - cw) / 2, offY = (sh - ch) / 2;
+        const sw = iw * scale,
+          sh = ih * scale;
+        const offX = (sw - cw) / 2,
+          offY = (sh - ch) / 2;
         pontos.forEach(p => {
           const el = container.querySelector(`[data-pos="${p.id}"]`);
           if (!el) return;
-          const px = p.fx * sw - offX, py = p.fy * sh - offY;
-          el.style.left = (px / cw * 100) + '%';
-          el.style.top = (py / ch * 100) + '%';
+          const px = p.fx * sw - offX,
+            py = p.fy * sh - offY;
+          el.style.left = (px / cw) * 100 + '%';
+          el.style.top = (py / ch) * 100 + '%';
         });
       };
       aplicar();
@@ -158,17 +219,32 @@
   /* fundo de tela: tenta cada chave × extensão */
   const _bgCache = {};
   function setBg(el, keys) {
-    const apply = u => { el.style.backgroundImage = `url("${u}")`; el.classList.add('has-bg'); };
+    const apply = u => {
+      el.style.backgroundImage = `url("${u}")`;
+      el.classList.add('has-bg');
+    };
     const hit = keys.find(k => _bgCache[k]);
-    if (hit) { apply(_bgCache[hit]); return; }
+    if (hit) {
+      apply(_bgCache[hit]);
+      return;
+    }
     const lista = [];
-    keys.forEach(k => { if (IMG[k]) EXTS.forEach((_, i) => lista.push([k, i])); });
+    keys.forEach(k => {
+      if (IMG[k]) EXTS.forEach((_, i) => lista.push([k, i]));
+    });
     let n = 0;
     const prox = () => {
-      if (n >= lista.length) { keys.forEach(anotaFalta); return; }
+      if (n >= lista.length) {
+        keys.forEach(anotaFalta);
+        return;
+      }
       const [k, i] = lista[n++];
-      const u = srcOf(k, i), im = new Image();
-      im.onload = () => { _bgCache[k] = u; if (el.isConnected) apply(u); };
+      const u = srcOf(k, i),
+        im = new Image();
+      im.onload = () => {
+        _bgCache[k] = u;
+        if (el.isConnected) apply(u);
+      };
       im.onerror = prox;
       im.src = u;
     };
@@ -178,7 +254,9 @@
   /* ============================================================
      POPUPS e AVISOS
      ============================================================ */
-  function fecharPopups() { $$('.popup-wrap').forEach(p => p.remove()); }
+  function fecharPopups() {
+    $$('.popup-wrap').forEach(p => p.remove());
+  }
 
   /* opts: cor('' | t | c | b) · cls · avatar{nome} · titulo · texto · extra(html) · btns[{t,cls,fn}] · dim · x */
   function popup(o) {
@@ -195,13 +273,20 @@
       <div class="btns">${(o.btns || []).map((b, i) => `<button class="btn ${b.cls || ''}" data-b="${i}">${esc(b.t)}</button>`).join('')}</div>
     </div>`;
     document.body.appendChild(w);
-    $$('[data-b]', w).forEach(bt => bt.onclick = () => {
-      const b = o.btns[+bt.dataset.b];
-      const r = b.fn ? b.fn(w) : undefined;
-      if (r !== false) w.remove();
-    });
+    $$('[data-b]', w).forEach(
+      bt =>
+        (bt.onclick = () => {
+          const b = o.btns[+bt.dataset.b];
+          const r = b.fn ? b.fn(w) : undefined;
+          if (r !== false) w.remove();
+        })
+    );
     const x = $('.x', w);
-    if (x) x.onclick = () => { w.remove(); if (o.x !== true && typeof o.x === 'function') o.x(); };
+    if (x)
+      x.onclick = () => {
+        w.remove();
+        if (o.x !== true && typeof o.x === 'function') o.x();
+      };
     const primeiro = $('[data-b]', w);
     if (primeiro) primeiro.focus();
     return w;
@@ -210,7 +295,8 @@
   function toast(msg, icone) {
     $$('.toast').forEach(t => t.remove());
     const t = document.createElement('div');
-    t.className = 'toast' + (icone ? ' com-icone' : ''); t.setAttribute('role', 'status');
+    t.className = 'toast' + (icone ? ' com-icone' : '');
+    t.setAttribute('role', 'status');
     t.innerHTML = (icone ? I(icone, { cls: 'toast-ico' }) : '') + `<span>${esc(msg)}</span>`;
     document.body.appendChild(t);
     setTimeout(() => t.remove(), 2800);
@@ -221,12 +307,15 @@
      ============================================================ */
   let _destacar = false;
   /** Faz as estrelas e os pontos do cabeçalho "pularem" na próxima tela. */
-  const destacarContadores = () => { _destacar = true; };
+  const destacarContadores = () => {
+    _destacar = true;
+  };
 
   function cabecalho(ativo) {
     const estrelas = progresso.estrelasTotal();
     const pontos = progresso.pontosTotal();
-    const it = (h, id, t) => `<a href="${h}" class="${ativo === id ? 'on' : ''}" ${ativo === id ? 'aria-current="page"' : ''}>${t}</a>`;
+    const it = (h, id, t) =>
+      `<a href="${h}" class="${ativo === id ? 'on' : ''}" ${ativo === id ? 'aria-current="page"' : ''}>${t}</a>`;
     $('#topbar').innerHTML = `
       <a class="logo" href="#/home">NavegaKids</a>
       <nav class="nav" aria-label="Menu principal">${it('#/home', 'home', 'Início')}${it('#/ilhas', 'ilhas', 'Ilhas')}${it('#/missoes', 'missoes', 'Missões')}${it('#/diario', 'diario', 'Diário do Capitão')}</nav>
@@ -239,18 +328,21 @@
     _destacar = false;
     // timão: gira como se o navio virasse e então volta para o Início
     const tm = $('#timaoBtn');
-    if (tm) tm.onclick = () => {
-      if (tm.classList.contains('girando')) return;
-      tm.classList.add('girando');
-      setTimeout(() => go('#/home'), 750);
-    };
+    if (tm)
+      tm.onclick = () => {
+        if (tm.classList.contains('girando')) return;
+        tm.classList.add('girando');
+        setTimeout(() => go('#/home'), 750);
+      };
     const mb = $('#musicaBtn');
     if (mb) mb.onclick = () => NK.musica.alternar();
-    $('#starBtn').onclick = () => popup({
-      cor: 'b', titulo: 'Suas estrelas',
-      extra: `<p>Você tem ${estrelas} de ${progresso.estrelasMax()} estrelas e ${pontos} pontos. Errar faz parte de aprender: você pode refazer qualquer fase e vale sempre a sua melhor tentativa!</p>`,
-      btns: [{ t: 'Fechar', cls: 'btn-b' }]
-    });
+    $('#starBtn').onclick = () =>
+      popup({
+        cor: 'b',
+        titulo: 'Suas estrelas',
+        extra: `<p>Você tem ${estrelas} de ${progresso.estrelasMax()} estrelas e ${pontos} pontos. Errar faz parte de aprender: você pode refazer qualquer fase e vale sempre a sua melhor tentativa!</p>`,
+        btns: [{ t: 'Fechar', cls: 'btn-b' }]
+      });
   }
 
   function montar(html, ativo) {
@@ -266,10 +358,33 @@
 
   Object.assign(NK, {
     // utilitários
-    $, $$, esc, shuffle, go, later, every, clearTimers, onLeave,
+    $,
+    $$,
+    esc,
+    shuffle,
+    go,
+    later,
+    every,
+    clearTimers,
+    onLeave,
     // imagens
-    I, imgFail, icone, fotoPerfil, PERSONAGENS, alinharPersonagem, comIcone, seloDobro, cadeadoIcon, posicionarSobreCover, setBg,
+    I,
+    imgFail,
+    icone,
+    fotoPerfil,
+    PERSONAGENS,
+    alinharPersonagem,
+    comIcone,
+    seloDobro,
+    cadeadoIcon,
+    posicionarSobreCover,
+    setBg,
     // popups e tela
-    fecharPopups, popup, toast, destacarContadores, cabecalho, montar
+    fecharPopups,
+    popup,
+    toast,
+    destacarContadores,
+    cabecalho,
+    montar
   });
 })();

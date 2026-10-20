@@ -12,7 +12,7 @@
     // mostra a fase que está sendo jogada (para exibir 100% e “Próxima fase”
     // ao concluir), senão a fase atual da progressão
     const vista = progresso.faseVista();
-    const f = (vista && faseLiberada(vista)) ? faseById(vista) : faseAtual();
+    const f = vista && faseLiberada(vista) ? faseById(vista) : faseAtual();
     renderMissoesFase(f.id);
   }
 
@@ -26,25 +26,28 @@
     const done = nFeitas(fid);
     const pct = Math.round((done / total) * 100);
 
-    const passos = f.atividades.map((a, i) => {
-      const ft = feita(fid, i);
-      const lib = i === 0 || feita(fid, i - 1);
-      // trilha em zigue-zague ocupando a página toda: 1 em cima, 2 embaixo, 3 em cima
-      const posArv = [
-        { left: '4%', top: '6%' },
-        { left: 'calc(50% - 62px)', top: '54%' },
-        { left: 'calc(92% - 124px)', top: '6%' },   // longe da fita amarela do centro do painel
-      ][i] || { left: '4%', top: '6%' };
-      return `<button class="passo ${ft ? 'feita' : ''} ${!lib ? 'trancada' : ''}" data-i="${i}" ${lib ? '' : 'disabled'}
+    const passos = f.atividades
+      .map((a, i) => {
+        const ft = feita(fid, i);
+        const lib = i === 0 || feita(fid, i - 1);
+        // trilha em zigue-zague ocupando a página toda: 1 em cima, 2 embaixo, 3 em cima
+        const posArv = [
+          { left: '4%', top: '6%' },
+          { left: 'calc(50% - 62px)', top: '54%' },
+          { left: 'calc(92% - 124px)', top: '6%' } // longe da fita amarela do centro do painel
+        ][i] || { left: '4%', top: '6%' };
+        return `<button class="passo ${ft ? 'feita' : ''} ${!lib ? 'trancada' : ''}" data-i="${i}" ${lib ? '' : 'disabled'}
         style="left:${posArv.left};top:${posArv.top};--cor:${CORES_PASSO[i % CORES_PASSO.length]}">
         <span class="passo-num">${i + 1}</span>
         <span>${esc(a.titulo)}</span>
         ${lib ? (ft ? `<span class="n ok">${I('correto', { cls: 'ico-txt' })}</span>` : '<span class="n go">Começar</span>') : `<span class="cad">${cadeadoIcon({ size: 20 })}</span>`}
       </button>`;
-    }).join('');
+      })
+      .join('');
     const linhaArv = 'M 18 26 L 50 74 L 80 26';
 
-    montar(`
+    montar(
+      `
     <div class="scene missoes" style="--cor-ilha:${NK.ILHAS.find(il => il.id === f.ilha)?.cor || '#4EA8DE'}">
       <h1>Missões</h1>
       <div class="sub">${I(f.icone, { size: 30 })}<span>${esc(f.titulo)}</span></div>
@@ -75,12 +78,19 @@
         <button class="btn btn-ghost" id="btIlhas">← Voltar para Ilhas</button>
         ${done === total ? `<button class="btn btn-t" id="btAvancarFase">Próxima fase →</button>` : ''}
       </div>
-    </div>`, 'missoes');
+    </div>`,
+      'missoes'
+    );
 
     $('#btIlhas').onclick = () => go('#/ilhas');
-    const bv = $('#btVoz'); if (bv) bv.onclick = popupVoz;
+    const bv = $('#btVoz');
+    if (bv) bv.onclick = popupVoz;
     // sem ter passado pela introdução, “Começar” leva primeiro à introdução da fase
-    $$('.passo[data-i]', $('.arvore')).forEach(b => b.onclick = () => go(progresso.introVista(fid) || DEV ? `#/atividade/${fid}/${b.dataset.i}` : `#/abertura/${fid}`));
+    $$('.passo[data-i]', $('.arvore')).forEach(
+      b =>
+        (b.onclick = () =>
+          go(progresso.introVista(fid) || DEV ? `#/atividade/${fid}/${b.dataset.i}` : `#/abertura/${fid}`))
+    );
     const av = $('#btAvancarFase');
     if (av) av.onclick = () => aposFase(fid);
   }
@@ -103,29 +113,68 @@
       const vozes = NK.voz.listaVozes();
       const atual = NK.voz.escolherVoz()?.name;
       return vozes.length
-        ? vozes.map((v, i) => `<label class="voz-op"><input type="radio" name="voz" value="${esc(v.name)}" ${v.name === atual ? 'checked' : ''}>
+        ? vozes
+            .map(
+              (
+                v,
+                i
+              ) => `<label class="voz-op"><input type="radio" name="voz" value="${esc(v.name)}" ${v.name === atual ? 'checked' : ''}>
             <span><b>${esc(v.name.replace(/^Microsoft\s+|\s*-\s*Portuguese.*$/gi, ''))}</b><small>${i === 0 ? 'recomendada · ' : ''}${NK.voz.ehNatural(v) ? 'voz natural · ' : 'voz robótica · '}${esc(v.lang)}</small></span>
-            <button type="button" class="btn btn-sm btn-ghost voz-testar" data-v="${esc(v.name)}">Testar</button></label>`).join('')
+            <button type="button" class="btn btn-sm btn-ghost voz-testar" data-v="${esc(v.name)}">Testar</button></label>`
+            )
+            .join('')
         : '<p>Nenhuma voz em português foi encontrada neste aparelho. No computador, o navegador Edge ou o Chrome costumam ter vozes melhores.</p>';
     };
     const w = popup({
-      cor: 'b', cls: 'popup-voz', x: true, titulo: 'Voz do Ouvir',
+      cor: 'b',
+      cls: 'popup-voz',
+      x: true,
+      titulo: 'Voz do Ouvir',
       extra: `        <p class="voz-aviso">Escolha a voz que soa melhor. Ela fica salva neste aparelho.</p>
         ${NK.voz.temVozNatural() ? '' : `<p class="voz-dica">Este navegador só tem vozes robóticas em português. Para uma voz bem mais natural, abra o jogo no <b>Microsoft Edge</b> (vozes Thalita e Francisca) ou no <b>Google Chrome</b> (voz do Google).</p>`}
         <div class="voz-lista">${montarOpcoes()}</div>`,
       btns: [
-        { t: 'Usar a recomendada', cls: 'btn-ghost', fn: () => { NK.voz.salvarVoz(''); NK.pararVoz(); } },
-        { t: 'Salvar', cls: 'btn-t', fn: janela => { const v = $('input[name="voz"]:checked', janela); if (v) NK.voz.salvarVoz(v.value); NK.pararVoz(); } }
+        {
+          t: 'Usar a recomendada',
+          cls: 'btn-ghost',
+          fn: () => {
+            NK.voz.salvarVoz('');
+            NK.pararVoz();
+          }
+        },
+        {
+          t: 'Salvar',
+          cls: 'btn-t',
+          fn: janela => {
+            const v = $('input[name="voz"]:checked', janela);
+            if (v) NK.voz.salvarVoz(v.value);
+            NK.pararVoz();
+          }
+        }
       ]
     });
-    const ligar = () => $$('.voz-testar', w).forEach(b => b.onclick = e => {
-      e.preventDefault();
-      const voz = NK.voz.listaVozes().find(v => v.name === b.dataset.v);
-      NK.voz.falar(FRASE, null, { voz });
-    });
+    const ligar = () =>
+      $$('.voz-testar', w).forEach(
+        b =>
+          (b.onclick = e => {
+            e.preventDefault();
+            const voz = NK.voz.listaVozes().find(v => v.name === b.dataset.v);
+            NK.voz.falar(FRASE, null, { voz });
+          })
+      );
     ligar();
     // a lista de vozes pode chegar um pouco depois (Chrome): redesenha quando chegar
-    document.addEventListener('nk-vozes', () => { const l = $('.voz-lista', w); if (l && document.body.contains(w)) { l.innerHTML = montarOpcoes(); ligar(); } }, { once: true });
+    document.addEventListener(
+      'nk-vozes',
+      () => {
+        const l = $('.voz-lista', w);
+        if (l && document.body.contains(w)) {
+          l.innerHTML = montarOpcoes();
+          ligar();
+        }
+      },
+      { once: true }
+    );
   }
 
   NK.telas = Object.assign(NK.telas || {}, { missoes: telaMissoes });

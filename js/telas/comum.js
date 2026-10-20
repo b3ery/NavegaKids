@@ -29,9 +29,26 @@
     <path d="M9 9 H56 L46 24 L56 39 H9 Z" fill="${il.cor}" stroke="#1E293B" stroke-width="2" stroke-linejoin="round"/>
     <text x="29" y="32" text-anchor="middle" font-size="22" font-weight="900" fill="#fff" font-family="inherit">${il.id}</text></svg>`;
 
-  const ilhasHtml = () => ILHAS.map((il, i) => `<figure style="--i:${i};--cor:${il.cor}">${I(il.icone, { alt: '' })}<figcaption>${esc(il.nome)}</figcaption></figure>`).join('');
-  const estrelasHtml = n => Array.from({ length: Math.max(1, n) }, (_, i) => `<span style="--i:${i}">${I('estrela', { alt: '' })}</span>`).join('');   // só as estrelas ganhas
+  const ilhasHtml = () =>
+    ILHAS.map(
+      (il, i) =>
+        `<figure style="--i:${i};--cor:${il.cor}">${I(il.icone, { alt: '' })}<figcaption>${esc(il.nome)}</figcaption></figure>`
+    ).join('');
+  const estrelasHtml = n =>
+    Array.from(
+      { length: Math.max(1, n) },
+      (_, i) => `<span style="--i:${i}">${I('estrela', { alt: '' })}</span>`
+    ).join(''); // só as estrelas ganhas
   const nomeNav = () => progresso.nome() || 'navegador';
 
-  NK.comum = { FILTRO_ASPERO, CADEADO_FILL, iconeFase, ICONE_DUPLO, bandeira, nomeNav, ilhasHtml, estrelasHtml };
+  NK.comum = {
+    FILTRO_ASPERO,
+    CADEADO_FILL,
+    iconeFase,
+    ICONE_DUPLO,
+    bandeira,
+    nomeNav,
+    ilhasHtml,
+    estrelasHtml
+  };
 })();

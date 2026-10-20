@@ -1,5 +1,5 @@
 /* ============================================================
-   NavegaKids — apoio.js
+   NavegaKids · apoio.js
    Recursos de apoio pedidos no relato de testes:
    - dicas recolhidas no modo Marujo (menos texto na tela);
    - "Ouvir": leitura em voz alta dos textos (voz do navegador, pt-BR);
@@ -60,16 +60,21 @@
   }
   /* partes que só atrapalham na leitura: o nome do contato em cada balão (já foi lido no
      topo do chat), "online", os botões do rodapé (Avançar, Voltar…), contadores e o "Ouvir" */
-  const NAO_LER = '.bolha .msg small, .quiz-quem, .letra, .vm-selo, .chat-head small, .rodape, .bt-ouvir, .prog-hunt, .quiz-top, .popup .btns, .popup .x';
+  const NAO_LER =
+    '.bolha .msg small, .quiz-quem, .letra, .vm-selo, .chat-head small, .rodape, .bt-ouvir, .prog-hunt, .quiz-top, .popup .btns, .popup .x';
 
   /** Texto visível do elemento (sem as partes de NAO_LER). */
   function textoDe(el) {
     if (!el) return '';
     // esconde por um instante (sem repintar a tela) só para o innerText ignorar
     const escondidos = $$(NAO_LER, el).map(x => [x, x.style.display]);
-    escondidos.forEach(([x]) => { x.style.display = 'none'; });
+    escondidos.forEach(([x]) => {
+      x.style.display = 'none';
+    });
     const partes = [el.innerText];
-    escondidos.forEach(([x, d]) => { x.style.display = d; });
+    escondidos.forEach(([x, d]) => {
+      x.style.display = d;
+    });
     return prepararFala(partes.join('\n'));
   }
 
@@ -79,11 +84,14 @@
      Google no Chrome e as "Aprimoradas/Premium" da Apple. Também dá para escolher no Diário. */
   const CHAVE_VOZ = 'navegakids-voz';
   const RITMO = { capitao: 0.95, marujo: 0.88 };
-  const VOZES_JOVENS = /thalita|francisca|vit[oó]ria|luciana|leila|brenda|elza|manuela|yara|giovanna|let[ií]cia|camila|fernanda|maria|helo[ií]sa|raquel/i;
-  const VOZES_MASCULINAS = /daniel|ant[oô]nio|felipe|donato|f[aá]bio|humberto|j[uú]lio|nicolau|val[eé]rio|male\b|masculin/i;
+  const VOZES_JOVENS =
+    /thalita|francisca|vit[oó]ria|luciana|leila|brenda|elza|manuela|yara|giovanna|let[ií]cia|camila|fernanda|maria|helo[ií]sa|raquel/i;
+  const VOZES_MASCULINAS =
+    /daniel|ant[oô]nio|felipe|donato|f[aá]bio|humberto|j[uú]lio|nicolau|val[eé]rio|male\b|masculin/i;
 
-  const vozesPt = () => temVoz ? window.speechSynthesis.getVoices().filter(v => /^pt/i.test(v.lang)) : [];
-  const ehNatural = v => /natural|online|neural|premium|enhanced|aprimorad|wavenet/i.test(v.name) || /^google/i.test(v.name);
+  const vozesPt = () => (temVoz ? window.speechSynthesis.getVoices().filter(v => /^pt/i.test(v.lang)) : []);
+  const ehNatural = v =>
+    /natural|online|neural|premium|enhanced|aprimorad|wavenet/i.test(v.name) || /^google/i.test(v.name);
 
   /** Nota de qualidade: português do Brasil, voz natural/da nuvem, feminina/jovem; evita eSpeak e "compact". */
   function notaVoz(v) {
@@ -98,8 +106,18 @@
     return n;
   }
 
-  function vozSalva() { try { return localStorage.getItem(CHAVE_VOZ) || ''; } catch (e) { return ''; } }
-  function salvarVoz(nome) { try { nome ? localStorage.setItem(CHAVE_VOZ, nome) : localStorage.removeItem(CHAVE_VOZ); } catch (e) {} }
+  function vozSalva() {
+    try {
+      return localStorage.getItem(CHAVE_VOZ) || '';
+    } catch (e) {
+      return '';
+    }
+  }
+  function salvarVoz(nome) {
+    try {
+      nome ? localStorage.setItem(CHAVE_VOZ, nome) : localStorage.removeItem(CHAVE_VOZ);
+    } catch (e) {}
+  }
   function escolherVoz() {
     const pt = vozesPt();
     const salva = vozSalva();
@@ -109,18 +127,20 @@
   const temVozNatural = () => vozesPt().some(ehNatural);
 
   if (temVoz) {
-    window.speechSynthesis.getVoices();   // alguns navegadores só carregam a lista depois do 1º pedido
-    window.speechSynthesis.addEventListener?.('voiceschanged', () => document.dispatchEvent(new Event('nk-vozes')));
+    window.speechSynthesis.getVoices(); // alguns navegadores só carregam a lista depois do 1º pedido
+    window.speechSynthesis.addEventListener?.('voiceschanged', () =>
+      document.dispatchEvent(new Event('nk-vozes'))
+    );
   }
 
   /* ---------- tocar ---------- */
   let botaoFalando = null;
   let avisouRobotica = false;
-  let sessao = 0;          // muda a cada "parar": callbacks de falas antigas são ignorados
+  let sessao = 0; // muda a cada "parar": callbacks de falas antigas são ignorados
 
   function marcar(bt) {
     botaoFalando = bt;
-    $$('.bt-ouvir-principal').forEach(b => b.classList.toggle('falando', !!bt));   // ícone pulsa enquanto fala
+    $$('.bt-ouvir-principal').forEach(b => b.classList.toggle('falando', !!bt)); // ícone pulsa enquanto fala
   }
 
   function parar() {
@@ -131,24 +151,36 @@
 
   /** Fala um trecho na voz do navegador (em blocos curtos: o Chrome corta falas longas). */
   function sintetizar(texto, voz, depois, minha = sessao) {
-    if (!temVoz) { depois(); return; }
+    if (!temVoz) {
+      depois();
+      return;
+    }
     const blocos = [];
     (texto.match(/[^.!?…]+[.!?…]*\s*/g) || [texto]).forEach(f => {
       const ult = blocos[blocos.length - 1];
-      if (ult && (ult + f).length < 180) blocos[blocos.length - 1] = ult + f; else blocos.push(f);
+      if (ult && (ult + f).length < 180) blocos[blocos.length - 1] = ult + f;
+      else blocos.push(f);
     });
     const lista = blocos.map(b => b.trim()).filter(Boolean);
-    if (!lista.length) { depois(); return; }
+    if (!lista.length) {
+      depois();
+      return;
+    }
     lista.forEach((bloco, i) => {
       const u = new SpeechSynthesisUtterance(bloco);
       u.lang = voz?.lang || 'pt-BR';
       if (voz) u.voice = voz;
-      u.pitch = 1;   // tom original: mudar o tom deixa a voz mais robótica
+      u.pitch = 1; // tom original: mudar o tom deixa a voz mais robótica
       u.rate = RITMO[progresso.modo()] || 1;
       // se mandaram parar enquanto os pedaços esperavam na fila, cada pedaço confere antes de falar
-      u.onstart = () => { if (minha !== sessao) window.speechSynthesis.cancel(); };
-      if (i === lista.length - 1) { u.onend = depois; u.onerror = depois; }
-      window.speechSynthesis.resume();   // alguns navegadores ficam "pausados" depois de um cancelar
+      u.onstart = () => {
+        if (minha !== sessao) window.speechSynthesis.cancel();
+      };
+      if (i === lista.length - 1) {
+        u.onend = depois;
+        u.onerror = depois;
+      }
+      window.speechSynthesis.resume(); // alguns navegadores ficam "pausados" depois de um cancelar
       window.speechSynthesis.speak(u);
     });
   }
@@ -167,7 +199,14 @@
     }
     if (!temVoz) return;
     marcar(bt);
-    sintetizar(fala, voz, () => { if (minha === sessao && botaoFalando === bt) marcar(null); }, minha);
+    sintetizar(
+      fala,
+      voz,
+      () => {
+        if (minha === sessao && botaoFalando === bt) marcar(null);
+      },
+      minha
+    );
   }
 
   /* Leitura automática (progresso.vozAuto): no Marujo (8 anos) vem ligada; no Capitão
@@ -178,8 +217,10 @@
   function atualizarBotoes() {
     const on = vozLigada();
     $$('.bt-ouvir-principal').forEach(b => {
-      b.classList.toggle('ligada', on); b.setAttribute('aria-pressed', on);
-      const t = b.querySelector('b'); if (t) t.textContent = on ? 'ligada' : 'desligada';
+      b.classList.toggle('ligada', on);
+      b.setAttribute('aria-pressed', on);
+      const t = b.querySelector('b');
+      if (t) t.textContent = on ? 'ligada' : 'desligada';
     });
   }
 
@@ -187,13 +228,17 @@
   function lerTela() {
     const pop = document.querySelector('.popup-wrap .popup');
     const bt = document.querySelector('.bt-ouvir-principal');
-    falar(pop ? textoDe(pop) : bt ? textoDoBotao(bt) : textoDe(document.getElementById('stage')), pop ? null : bt);
+    falar(
+      pop ? textoDe(pop) : bt ? textoDoBotao(bt) : textoDe(document.getElementById('stage')),
+      pop ? null : bt
+    );
   }
 
   document.addEventListener('click', e => {
     const bt = e.target.closest('.bt-ouvir-principal');
     if (!bt) return;
-    e.preventDefault(); e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
     progresso.definirVozAuto(!vozLigada());
     atualizarBotoes();
     if (vozLigada()) {
@@ -211,8 +256,11 @@
     const caixa = wrap.querySelector('.popup');
     if (!caixa || caixa.dataset.lido) return;
     caixa.dataset.lido = '1';
-    const espera = +caixa.dataset.atraso || 350;   // a dica da garrafa só é lida depois de o papel abrir
-    if (vozLigada()) setTimeout(() => { if (vozLigada() && document.body.contains(caixa)) falar(textoDe(caixa), null); }, espera);
+    const espera = +caixa.dataset.atraso || 350; // a dica da garrafa só é lida depois de o papel abrir
+    if (vozLigada())
+      setTimeout(() => {
+        if (vozLigada() && document.body.contains(caixa)) falar(textoDe(caixa), null);
+      }, espera);
   }
 
   function lerFeedback(fb) {
@@ -230,15 +278,27 @@
       $$('.bt-ouvir-principal:not([data-auto])').forEach(bt => {
         bt.dataset.auto = '1';
         if (vozLigada() && !document.querySelector('.popup-wrap'))
-          setTimeout(() => { if (vozLigada() && document.body.contains(bt) && !botaoFalando) falar(textoDoBotao(bt), bt); }, 400);
+          setTimeout(() => {
+            if (vozLigada() && document.body.contains(bt) && !botaoFalando) falar(textoDoBotao(bt), bt);
+          }, 400);
       });
       $$('.popup-wrap').forEach(lerPopup);
       $$(FEEDBACK).forEach(lerFeedback);
     };
-    new MutationObserver(() => { if (!pendente) { pendente = true; requestAnimationFrame(varrer); } })
-      .observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['style'] });
+    new MutationObserver(() => {
+      if (!pendente) {
+        pendente = true;
+        requestAnimationFrame(varrer);
+      }
+    }).observe(document.body, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+      attributes: true,
+      attributeFilter: ['style']
+    });
   }
-  window.addEventListener('hashchange', parar);   // trocou de tela: para de falar
+  window.addEventListener('hashchange', parar); // trocou de tela: para de falar
 
   /* ---------- incentivo ---------- */
   let seguidos = 0;
@@ -253,23 +313,46 @@
   function reageCapitao(cls) {
     const c = document.getElementById('capitaFala');
     if (!c) return;
-    c.classList.remove('feliz', 'pensa'); void c.offsetWidth; c.classList.add(cls);
+    c.classList.remove('feliz', 'pensa');
+    void c.offsetWidth;
+    c.classList.add(cls);
   }
   const feedback = {
     acerto() {
       NK.som?.acerto();
       reageCapitao('feliz');
       seguidos++;
-      const msg = COMEMORA[seguidos] || (seguidos > 12 && seguidos % 5 === 0 ? `${seguidos} acertos seguidos! Que sequência!` : '');
-      if (msg) toast(msg, 'coracao');   // coração: carinho a cada sequência de acertos
+      const msg =
+        COMEMORA[seguidos] ||
+        (seguidos > 12 && seguidos % 5 === 0 ? `${seguidos} acertos seguidos! Que sequência!` : '');
+      if (msg) toast(msg, 'coracao'); // coração: carinho a cada sequência de acertos
     },
     erro() {
       NK.som?.erro();
       reageCapitao('pensa');
       seguidos = 0;
-      document.dispatchEvent(new Event('nk-erro'));   // activities.js: 2 erros fazem o botão de dica aparecer
+      document.dispatchEvent(new Event('nk-erro')); // activities.js: 2 erros fazem o botão de dica aparecer
     }
   };
 
-  Object.assign(NK, { dicaHtml, dicaDoNivel, botaoOuvir, pararVoz: parar, atualizarVoz: atualizarBotoes, lerTela, feedback, voz: { temVoz, listaVozes, temVozNatural, ehNatural, escolherVoz, vozSalva, salvarVoz, falar, prepararFala } });
+  Object.assign(NK, {
+    dicaHtml,
+    dicaDoNivel,
+    botaoOuvir,
+    pararVoz: parar,
+    atualizarVoz: atualizarBotoes,
+    lerTela,
+    feedback,
+    voz: {
+      temVoz,
+      listaVozes,
+      temVozNatural,
+      ehNatural,
+      escolherVoz,
+      vozSalva,
+      salvarVoz,
+      falar,
+      prepararFala
+    }
+  });
 })();

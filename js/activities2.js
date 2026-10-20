@@ -1,5 +1,5 @@
 /* ============================================================
-   NavegaKids — activities2.js
+   NavegaKids · activities2.js
    Tipos: classify · hunt · sequence · compose · quiz · match · bau
    ============================================================ */
 (() => {
@@ -8,7 +8,7 @@
   const { NPC1, progresso, $, $$, esc, later, every, shuffle, I, icone, comIcone, concluirAtividade } = NK;
 
   /* ============================================================
-     CLASSIFY — arrastar (ou tocar) para o balde certo
+     CLASSIFY: arrastar (ou tocar) para o balde certo
      ============================================================ */
   function rClassify(palco, a) {
     const itens = a.itens.map((it, i) => ({ ...it, id: i, colocado: null }));
@@ -24,12 +24,21 @@
       palco.innerHTML = `
         ${NK.falaCapitao(a.pergunta, a.dica, { mini: true, sempreExtra: true })}
         <div class="baldes">
-          ${a.baldes.map(b => `
+          ${a.baldes
+            .map(
+              b => `
             <div class="balde alvo" data-b="${b.id}">
               <h4>${b.img ? `<span>${icone(b)}</span>` : ''}${esc(b.t)}</h4>
               ${b.sub ? `<small>${esc(b.sub)}</small>` : ''}
-              <div class="dentro">${itens.filter(i => i.colocado === b.id).map(i => `<span class="item no-balde">${esc(i.t)} ${I('correto', { cls: 'ico-txt' })}</span>`).join('')}</div>
-            </div>`).join('')}
+              <div class="dentro">${itens
+                .filter(i => i.colocado === b.id)
+                .map(
+                  i => `<span class="item no-balde">${esc(i.t)} ${I('correto', { cls: 'ico-txt' })}</span>`
+                )
+                .join('')}</div>
+            </div>`
+            )
+            .join('')}
         </div>
         <div class="itens" id="itensWrap">${soltos.length ? soltos.map(itemHtml).join('') : '<span style="font-weight:800;color:var(--teal-d)">Tudo classificado!</span>'}</div>
         <div class="dica-flutua" id="fbClass"></div>`;
@@ -38,20 +47,30 @@
       $$('.item[draggable]', palco).forEach(el => {
         el.onclick = () => {
           $$('.item[draggable]', palco).forEach(x => x.classList.remove('sel'));
-          if (selecionado === +el.dataset.id) { selecionado = null; return; }
+          if (selecionado === +el.dataset.id) {
+            selecionado = null;
+            return;
+          }
           selecionado = +el.dataset.id;
           el.classList.add('sel');
         };
-        el.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', el.dataset.id); el.classList.add('drag'); });
+        el.addEventListener('dragstart', e => {
+          e.dataTransfer.setData('text/plain', el.dataset.id);
+          el.classList.add('drag');
+        });
         el.addEventListener('dragend', () => el.classList.remove('drag'));
       });
 
       $$('.balde', palco).forEach(b => {
         b.onclick = () => tentar(b.dataset.b);
-        b.addEventListener('dragover', e => { e.preventDefault(); b.classList.add('over'); });
+        b.addEventListener('dragover', e => {
+          e.preventDefault();
+          b.classList.add('over');
+        });
         b.addEventListener('dragleave', () => b.classList.remove('over'));
         b.addEventListener('drop', e => {
-          e.preventDefault(); b.classList.remove('over');
+          e.preventDefault();
+          b.classList.remove('over');
           const id = +e.dataTransfer.getData('text/plain');
           tentar(b.dataset.b, id);
         });
@@ -64,13 +83,17 @@
         const fb = $('#fbClass');
         if (it.b === baldeId) {
           it.colocado = baldeId;
-          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Isso mesmo!'); NK.feedback.acerto();
+          fb.className = 'dica-flutua boa';
+          fb.innerHTML = comIcone('correto', 'Isso mesmo!');
+          NK.feedback.acerto();
           selecionado = null;
           draw();
           if (itens.every(i => i.colocado !== null)) later(() => concluirAtividade(a.fbOk), 500);
         } else {
-          progresso.registrarErro(); NK.feedback.erro();
-          fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('falha', 'Ainda não... tente outro grupo!');
+          progresso.registrarErro();
+          NK.feedback.erro();
+          fb.className = 'dica-flutua ruim';
+          fb.innerHTML = comIcone('falha', 'Ainda não... tente outro grupo!');
           const card = $(`.item[data-id="${id}"]`, palco);
           if (card) card.classList.add('shake');
         }
@@ -80,12 +103,15 @@
   }
 
   /* ============================================================
-     HUNT — achar pistas/sinais numa cena, chat, app ou perfil
+     HUNT: achar pistas/sinais numa cena, chat, app ou perfil
      ============================================================ */
   /* Fases 8 e 13 · achar o botão: um aplicativo de mensagens dentro de um celular. Os botões
      ficam onde os apps costumam pôr: metade no cabeçalho, metade na barra de baixo. */
   function celularHtml(round) {
-    const bts = round.itens.map((it, i) => `<button class="bt-app" data-i="${i}" title="${esc(it.t)}" aria-label="${esc(it.t)}">${icone(it)}</button>`);
+    const bts = round.itens.map(
+      (it, i) =>
+        `<button class="bt-app" data-i="${i}" title="${esc(it.t)}" aria-label="${esc(it.t)}">${icone(it)}</button>`
+    );
     const meio = Math.ceil(bts.length / 2);
     return `<div class="celular">
       <div class="cel-status"><span>9:41</span><i class="cel-notch"></i><span class="cel-bateria" aria-hidden="true"><i></i></span></div>
@@ -111,7 +137,9 @@
   function perfilJogoHtml(itens) {
     const zona = (nome, html, cls = '') => {
       const i = itens.findIndex(it => it.zona === nome);
-      return i < 0 ? html : `<button class="linha-pista zona-perfil zona-${nome} ${cls}" data-i="${i}" aria-label="Investigar: ${esc(itens[i].t)}">
+      return i < 0
+        ? html
+        : `<button class="linha-pista zona-perfil zona-${nome} ${cls}" data-i="${i}" aria-label="Investigar: ${esc(itens[i].t)}">
         ${html}<span class="zona-tag" aria-hidden="true">${esc(itens[i].t)}</span></button>`;
     };
     return `<div class="perfil-jogo">
@@ -121,12 +149,18 @@
         <div class="pj-nome"><b>${esc(NPC1)}</b>
           <span class="pj-linha"><span class="pj-nivel">Nv. 2</span><span class="pj-online"><i></i>online</span></span></div>
       </div>
-      ${zona('conta', `<span class="pj-stats">
+      ${zona(
+        'conta',
+        `<span class="pj-stats">
           <span><b>3</b><small>amigos</small></span>
           <span><b>2 dias</b><small>conta criada</small></span>
-          <span><b>1</b><small>partida</small></span></span>`)}
-      ${zona('amigos', `<span class="pj-sec"><small>Amigos em comum</small><b class="pj-zero">0</b></span>
-          <span class="amigos-dele">${AMIGOS_DO_SUSPEITO.map(n => `<span>${I('anonimo', { size: 18 })}${esc(n)}</span>`).join('')}</span>`)}
+          <span><b>1</b><small>partida</small></span></span>`
+      )}
+      ${zona(
+        'amigos',
+        `<span class="pj-sec"><small>Amigos em comum</small><b class="pj-zero">0</b></span>
+          <span class="amigos-dele">${AMIGOS_DO_SUSPEITO.map(n => `<span>${I('anonimo', { size: 18 })}${esc(n)}</span>`).join('')}</span>`
+      )}
       ${zona('bio', `<span class="pj-sec"><small>Bio</small></span><span class="pj-bio">Amo jogos de pirata! Bora jogar juntos?</span>`)}
       ${zona('mensagem', `<span class="pj-sec"><small>Mensagem do pedido</small></span><span class="pj-msg">Olá, Pirata, poderia me adicionar? Quero ser seu amigo!</span>`)}
     </div>`;
@@ -140,7 +174,9 @@
       const achadas = new Set();
       const alvo = round.itens.filter(i => i.ok).length;
 
-      const cabecalhoRound = round.titulo ? `<p class="texto-cena" style="margin-bottom:8px"><b>${esc(round.titulo)}</b></p>` : '';
+      const cabecalhoRound = round.titulo
+        ? `<p class="texto-cena" style="margin-bottom:8px"><b>${esc(round.titulo)}</b></p>`
+        : '';
 
       if (a.skin === 'perfil') {
         palco.innerHTML = `
@@ -179,60 +215,110 @@
           <div class="dica-flutua" id="fbHunt"></div>`;
       }
 
-      const seletor = a.skin === 'perfil' ? '.linha-pista' : a.skin === 'chat' ? '.bolha' : a.skin === 'app' ? '.bt-app' : '.pista-btn';
+      const seletor =
+        a.skin === 'perfil'
+          ? '.linha-pista'
+          : a.skin === 'chat'
+            ? '.bolha'
+            : a.skin === 'app'
+              ? '.bt-app'
+              : '.pista-btn';
 
-      $$(seletor, palco).forEach(el => el.onclick = () => {
-        if (el.classList.contains('achada') || el.classList.contains('errada')) return;
-        const i = +el.dataset.i, it = round.itens[i];
-        const fb = $('#fbHunt');
-        // três pontinhos / menu: abre as opções do aplicativo; a criança escolhe "Denunciar"
-        if (it.ok && it.menu && !el.dataset.denunciou) {
-          $$('.menu-app', palco).forEach(m => m.remove());
-          const cel = el.closest('.celular');
-          const caixa = el.getBoundingClientRect(), base = cel.getBoundingClientRect();
-          // abre para baixo se o botão está no alto do celular, para cima se está embaixo; do lado do botão
-          const emCima = caixa.top - base.top < base.height / 2, naEsq = caixa.left + caixa.width / 2 < base.left + base.width / 2;
-          const pos = (emCima ? `top:${caixa.bottom - base.top + 6}px;` : `bottom:${base.bottom - caixa.top + 6}px;`) + (naEsq ? `left:${Math.max(12, caixa.left - base.left)}px;right:auto;` : `right:${Math.max(12, base.right - caixa.right)}px;`);
-          cel.insertAdjacentHTML('beforeend', `<div class="menu-app" role="menu" style="${pos}">
-            ${it.menu.map((op, k) => { const ic = { Denunciar: 'reportar', Bloquear: 'bloquearUsuario' }[op]; return `<button role="menuitem" data-op="${k}" class="${op === 'Denunciar' ? 'op-denunciar' : ic ? '' : 'op-sem-ico'}">${ic ? I(ic, { cls: 'ico-txt' }) : ''}<span>${esc(op)}</span></button>`; }).join('')}
-          </div>`);
-          const menu = $('.menu-app', cel);
-          menu.querySelector('button').focus();
-          $$('button', menu).forEach(b => b.onclick = ev => {
-            ev.stopPropagation();
-            const op = it.menu[+b.dataset.op];
-            if (op === 'Denunciar') { menu.remove(); el.dataset.denunciou = '1'; el.click(); }
-            else { b.classList.add('shake'); fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('nao', `"${op}" não é a opção de denunciar. Procure Denunciar.`); NK.feedback.erro(); later(() => b.classList.remove('shake'), 500); }
-          });
-          fb.className = 'dica-flutua'; fb.innerHTML = comIcone('luneta', 'Abriu o menu! Agora escolha a opção certa.');
-          return;
-        }
-        if (it.ok) {
-          el.classList.add('achada');
-          if (a.skin === 'chat') el.insertAdjacentHTML('beforeend', `<span class="stop">${I('pare')}</span>`);   // roteiro: aparece o STOP ao acertar
-          achadas.add(i);
-          $('#cntHunt').textContent = achadas.size;
-          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', it.why); NK.feedback.acerto();
-          if (achadas.size === alvo) {
-            later(() => {
-              if (rIdx + 1 < a.rounds.length) { rIdx++; drawRound(); }
-              else concluirAtividade(a.fbOk);
-            }, 700);
-          }
-        } else {
-          if (a.skin !== 'app') progresso.registrarErro();   // no "app" a criança está explorando a tela
-          NK.feedback.erro();
-          el.classList.add('errada'); el.classList.add('shake');
-          fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('nao', it.why);
-          later(() => el.classList.remove('errada', 'shake'), 700);
-        }
-      });
+      $$(seletor, palco).forEach(
+        el =>
+          (el.onclick = () => {
+            if (el.classList.contains('achada') || el.classList.contains('errada')) return;
+            const i = +el.dataset.i,
+              it = round.itens[i];
+            const fb = $('#fbHunt');
+            // três pontinhos / menu: abre as opções do aplicativo; a criança escolhe "Denunciar"
+            if (it.ok && it.menu && !el.dataset.denunciou) {
+              $$('.menu-app', palco).forEach(m => m.remove());
+              const cel = el.closest('.celular');
+              const caixa = el.getBoundingClientRect(),
+                base = cel.getBoundingClientRect();
+              // abre para baixo se o botão está no alto do celular, para cima se está embaixo; do lado do botão
+              const emCima = caixa.top - base.top < base.height / 2,
+                naEsq = caixa.left + caixa.width / 2 < base.left + base.width / 2;
+              const pos =
+                (emCima
+                  ? `top:${caixa.bottom - base.top + 6}px;`
+                  : `bottom:${base.bottom - caixa.top + 6}px;`) +
+                (naEsq
+                  ? `left:${Math.max(12, caixa.left - base.left)}px;right:auto;`
+                  : `right:${Math.max(12, base.right - caixa.right)}px;`);
+              cel.insertAdjacentHTML(
+                'beforeend',
+                `<div class="menu-app" role="menu" style="${pos}">
+            ${it.menu
+              .map((op, k) => {
+                const ic = { Denunciar: 'reportar', Bloquear: 'bloquearUsuario' }[op];
+                return `<button role="menuitem" data-op="${k}" class="${op === 'Denunciar' ? 'op-denunciar' : ic ? '' : 'op-sem-ico'}">${ic ? I(ic, { cls: 'ico-txt' }) : ''}<span>${esc(op)}</span></button>`;
+              })
+              .join('')}
+          </div>`
+              );
+              const menu = $('.menu-app', cel);
+              menu.querySelector('button').focus();
+              $$('button', menu).forEach(
+                b =>
+                  (b.onclick = ev => {
+                    ev.stopPropagation();
+                    const op = it.menu[+b.dataset.op];
+                    if (op === 'Denunciar') {
+                      menu.remove();
+                      el.dataset.denunciou = '1';
+                      el.click();
+                    } else {
+                      b.classList.add('shake');
+                      fb.className = 'dica-flutua ruim';
+                      fb.innerHTML = comIcone(
+                        'nao',
+                        `"${op}" não é a opção de denunciar. Procure Denunciar.`
+                      );
+                      NK.feedback.erro();
+                      later(() => b.classList.remove('shake'), 500);
+                    }
+                  })
+              );
+              fb.className = 'dica-flutua';
+              fb.innerHTML = comIcone('luneta', 'Abriu o menu! Agora escolha a opção certa.');
+              return;
+            }
+            if (it.ok) {
+              el.classList.add('achada');
+              if (a.skin === 'chat')
+                el.insertAdjacentHTML('beforeend', `<span class="stop">${I('pare')}</span>`); // roteiro: aparece o STOP ao acertar
+              achadas.add(i);
+              $('#cntHunt').textContent = achadas.size;
+              fb.className = 'dica-flutua boa';
+              fb.innerHTML = comIcone('correto', it.why);
+              NK.feedback.acerto();
+              if (achadas.size === alvo) {
+                later(() => {
+                  if (rIdx + 1 < a.rounds.length) {
+                    rIdx++;
+                    drawRound();
+                  } else concluirAtividade(a.fbOk);
+                }, 700);
+              }
+            } else {
+              if (a.skin !== 'app') progresso.registrarErro(); // no "app" a criança está explorando a tela
+              NK.feedback.erro();
+              el.classList.add('errada');
+              el.classList.add('shake');
+              fb.className = 'dica-flutua ruim';
+              fb.innerHTML = comIcone('nao', it.why);
+              later(() => el.classList.remove('errada', 'shake'), 700);
+            }
+          })
+      );
     };
     drawRound();
   }
 
   /* ============================================================
-     SEQUENCE — montar a sequência certa
+     SEQUENCE: montar a sequência certa
      ============================================================ */
   function rSequence(palco, a) {
     const passos = a.passos.map((p, i) => ({ ...p, id: i }));
@@ -243,46 +329,87 @@
       palco.innerHTML = `
         ${NK.falaCapitao(a.pergunta, a.dica, { mini: true, sempreExtra: true })}
         <div class="seq-slots">
-          ${slots.map((s, i) => `<div class="slot ${s !== null ? 'cheio' : ''}" data-s="${i}" ${s !== null ? 'role="button" tabindex="0" aria-label="Tirar este cartão"' : ''}>
+          ${slots
+            .map(
+              (
+                s,
+                i
+              ) => `<div class="slot ${s !== null ? 'cheio' : ''}" data-s="${i}" ${s !== null ? 'role="button" tabindex="0" aria-label="Tirar este cartão"' : ''}>
             <span class="n">${i + 1}</span>
             ${s !== null ? `<span class="e">${icone(passos[s])}</span><span>${esc(passos[s].t)}</span><span class="tirar" aria-hidden="true">×</span>` : '<span style="color:var(--muted)">toque para preencher</span>'}
-          </div>`).join('')}
+          </div>`
+            )
+            .join('')}
         </div>
         <div class="cartoes">
-          ${ordem.map(p => `<button class="cartao ${slots.includes(p.id) ? 'usado' : ''}" data-c="${p.id}">
+          ${ordem
+            .map(
+              p => `<button class="cartao ${slots.includes(p.id) ? 'usado' : ''}" data-c="${p.id}">
             <span class="e">${icone(p)}</span><span>${esc(p.t)}</span>
-          </button>`).join('')}
+          </button>`
+            )
+            .join('')}
         </div>
         <div class="dica-flutua" id="fbSeq"></div>
         <div class="rodape"><button class="btn btn-ghost" id="btLimparSeq">Limpar</button></div>`;
 
-      $$('.cartao', palco).forEach(c => c.onclick = () => {
-        if (c.classList.contains('usado')) return;
-        const livre = slots.findIndex(s => s === null);
-        if (livre === -1) return;
-        slots[livre] = +c.dataset.c;
-        checar();
-      });
-      $$('.slot', palco).forEach(s => s.onclick = () => {
-        const i = +s.dataset.s;
-        if (slots[i] !== null) { slots[i] = null; draw(); }
-      });
-      $$('.slot.cheio', palco).forEach(s => s.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); s.click(); } });
-      $('#btLimparSeq').onclick = () => { slots.fill(null); draw(); };
+      $$('.cartao', palco).forEach(
+        c =>
+          (c.onclick = () => {
+            if (c.classList.contains('usado')) return;
+            const livre = slots.findIndex(s => s === null);
+            if (livre === -1) return;
+            slots[livre] = +c.dataset.c;
+            checar();
+          })
+      );
+      $$('.slot', palco).forEach(
+        s =>
+          (s.onclick = () => {
+            const i = +s.dataset.s;
+            if (slots[i] !== null) {
+              slots[i] = null;
+              draw();
+            }
+          })
+      );
+      $$('.slot.cheio', palco).forEach(
+        s =>
+          (s.onkeydown = e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              s.click();
+            }
+          })
+      );
+      $('#btLimparSeq').onclick = () => {
+        slots.fill(null);
+        draw();
+      };
 
       function checar() {
-        if (slots.includes(null)) { draw(); return; }
+        if (slots.includes(null)) {
+          draw();
+          return;
+        }
         const certo = slots.every((id, i) => id === i);
         const fb = $('#fbSeq');
         if (certo) {
-          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Sequência perfeita!'); NK.feedback.acerto();
+          fb.className = 'dica-flutua boa';
+          fb.innerHTML = comIcone('correto', 'Sequência perfeita!');
+          NK.feedback.acerto();
           draw();
           later(() => concluirAtividade(a.fbOk), 700);
         } else {
-          progresso.registrarErro(); NK.feedback.erro();
-          fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('falha', 'Ainda não é essa ordem... tente de novo!');
+          progresso.registrarErro();
+          NK.feedback.erro();
+          fb.className = 'dica-flutua ruim';
+          fb.innerHTML = comIcone('falha', 'Ainda não é essa ordem... tente de novo!');
           draw();
-          later(() => { slots.fill(null); draw(); }, 900);
+          later(() => {
+            slots.fill(null);
+            draw();
+          }, 900);
         }
       }
     };
@@ -290,7 +417,7 @@
   }
 
   /* ============================================================
-     COMPOSE — montar frase com blocos (um de cada grupo)
+     COMPOSE: montar frase com blocos (um de cada grupo)
      ============================================================ */
   function rCompose(palco, a) {
     const escolha = new Array(a.grupos.length).fill(null);
@@ -298,20 +425,25 @@
     const draw = () => {
       palco.innerHTML = `
         ${NK.falaCapitao(a.pergunta, a.dica, { mini: true, sempreExtra: true })}
-        ${a.grupos.map((g, gi) => `
+        ${a.grupos
+          .map(
+            (g, gi) => `
           <div class="grupo">
             <h4>${esc(g.label)}</h4>
             <div class="blocos">
               ${g.blocos.map((b, bi) => `<button class="bloco ${escolha[gi] === bi ? 'on' : ''}" data-g="${gi}" data-b="${bi}">${esc(b.t)}</button>`).join('')}
             </div>
-          </div>`).join('')}
+          </div>`
+          )
+          .join('')}
         <div class="preview-msg">
           <div class="chat">
             <div class="chat-head">${NK.fotoPerfil(progresso.avatar(), { size: 30 })}<span>Sua mensagem</span></div>
             <div class="chat-body">
               <div class="bolha eu"><span class="av">${NK.fotoPerfil(progresso.avatar())}</span><span class="msg">${
-                escolha.some(e => e === null) ? '<i style="color:var(--muted)">escolha um bloco de cada grupo…</i>'
-                : esc(a.grupos.map((g, gi) => g.blocos[escolha[gi]].t).join(' '))
+                escolha.some(e => e === null)
+                  ? '<i style="color:var(--muted)">escolha um bloco de cada grupo…</i>'
+                  : esc(a.grupos.map((g, gi) => g.blocos[escolha[gi]].t).join(' '))
               }</span></div>
             </div>
           </div>
@@ -322,52 +454,73 @@
         </div>`;
 
       // tocar de novo no bloco escolhido desmarca (relato de teste: não dava para desmarcar)
-      $$('.bloco', palco).forEach(b => b.onclick = () => {
-        const g = +b.dataset.g, bi = +b.dataset.b;
-        escolha[g] = escolha[g] === bi ? null : bi;
-        draw();
-      });
+      $$('.bloco', palco).forEach(
+        b =>
+          (b.onclick = () => {
+            const g = +b.dataset.g,
+              bi = +b.dataset.b;
+            escolha[g] = escolha[g] === bi ? null : bi;
+            draw();
+          })
+      );
 
       const btEnv = $('#btEnviarFrase');
-      if (btEnv) btEnv.onclick = () => {
-        const okTudo = a.grupos.every((g, gi) => g.blocos[escolha[gi]].ok);
-        const fb = $('#fbComp');
-        // roteiro: feedback com [Avançar] no acerto e [Voltar] para tentar de novo
-        $$('.bloco', palco).forEach(b => b.disabled = true);
-        const rod = $('.rodape', palco);
-        if (okTudo) {
-          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', a.fbOk || 'Ótima mensagem!'); NK.feedback.acerto();
-          rod.innerHTML = `<button class="btn btn-t" id="btAvancarFrase">Avançar</button>`;
-          $('#btAvancarFrase').onclick = () => concluirAtividade();
-        } else {
-          progresso.registrarErro(); NK.feedback.erro();
-          fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('falha', a.fbBad || 'Vamos tentar outra combinação.');
-          rod.innerHTML = `<button class="btn btn-c" id="btVoltarFrase">Voltar</button>`;
-          $('#btVoltarFrase').onclick = () => { escolha.fill(null); draw(); };
-        }
-      };
+      if (btEnv)
+        btEnv.onclick = () => {
+          const okTudo = a.grupos.every((g, gi) => g.blocos[escolha[gi]].ok);
+          const fb = $('#fbComp');
+          // roteiro: feedback com [Avançar] no acerto e [Voltar] para tentar de novo
+          $$('.bloco', palco).forEach(b => (b.disabled = true));
+          const rod = $('.rodape', palco);
+          if (okTudo) {
+            fb.className = 'dica-flutua boa';
+            fb.innerHTML = comIcone('correto', a.fbOk || 'Ótima mensagem!');
+            NK.feedback.acerto();
+            rod.innerHTML = `<button class="btn btn-t" id="btAvancarFrase">Avançar</button>`;
+            $('#btAvancarFrase').onclick = () => concluirAtividade();
+          } else {
+            progresso.registrarErro();
+            NK.feedback.erro();
+            fb.className = 'dica-flutua ruim';
+            fb.innerHTML = comIcone('falha', a.fbBad || 'Vamos tentar outra combinação.');
+            rod.innerHTML = `<button class="btn btn-c" id="btVoltarFrase">Voltar</button>`;
+            $('#btVoltarFrase').onclick = () => {
+              escolha.fill(null);
+              draw();
+            };
+          }
+        };
     };
     draw();
   }
 
   /* ============================================================
-     QUIZ — perguntas rápidas (com cena, Verdade/Mito, cronometrado)
+     QUIZ: perguntas rápidas (com cena, Verdade/Mito, cronometrado)
      ============================================================ */
   function rQuiz(palco, a) {
     /* O Capitão Gancho apresenta cada pergunta num balão; as respostas são cartões com letra.
        Verdade ou Mito: a frase vira uma carta que recebe o carimbo depois da resposta. */
     let qi = 0;
     const total = a.perguntas.length;
-    const resultados = [];   // true / false por pergunta respondida (bolinhas do progresso)
+    const resultados = []; // true / false por pergunta respondida (bolinhas do progresso)
     const LETRAS = 'ABCD';
 
     const drawQ = () => {
       const q = a.perguntas[qi];
-      const tempo = progresso.tempoDaAtividade(a);   // Capitão: 15 s (Fase 10) e 20 s (missões); Marujo: sem relógio
+      const tempo = progresso.tempoDaAtividade(a); // Capitão: 15 s (Fase 10) e 20 s (missões); Marujo: sem relógio
       const ehVM = !!a.vm;
-      const ops = ehVM ? [{ t: 'Verdade', ok: q.vm === true }, { t: 'Mito', ok: q.vm === false }] : q.ops;
-      const bolinhas = a.perguntas.map((_, i) =>
-        `<i class="${i < resultados.length ? (resultados[i] ? 'ok' : 'ruim') : (i === qi ? 'agora' : '')}"></i>`).join('');
+      const ops = ehVM
+        ? [
+            { t: 'Verdade', ok: q.vm === true },
+            { t: 'Mito', ok: q.vm === false }
+          ]
+        : q.ops;
+      const bolinhas = a.perguntas
+        .map(
+          (_, i) =>
+            `<i class="${i < resultados.length ? (resultados[i] ? 'ok' : 'ruim') : i === qi ? 'agora' : ''}"></i>`
+        )
+        .join('');
 
       palco.innerHTML = `
         <div class="quiz-top">
@@ -379,33 +532,46 @@
           <span class="quiz-capita" id="capitaQuiz">${I('capitao')}</span>
           <div class="quiz-balao">
             <small class="quiz-quem">Capitão Gancho</small>
-            ${ehVM
-              ? `<div class="vm-carta" id="vmCarta"><p>${esc(q.q)}</p><span class="vm-selo" id="vmSelo"></span></div>`
-              : `${q.cena ? `<p class="quiz-cena">${esc(q.cena)}</p>` : ''}<p class="enunciado">${esc(q.q)}</p>`}
+            ${
+              ehVM
+                ? `<div class="vm-carta" id="vmCarta"><p>${esc(q.q)}</p><span class="vm-selo" id="vmSelo"></span></div>`
+                : `${q.cena ? `<p class="quiz-cena">${esc(q.cena)}</p>` : ''}<p class="enunciado">${esc(q.q)}</p>`
+            }
           </div>
         </div>
         ${NK.dicaHtml(a.dica)}
         <div class="opcoes ${ehVM ? 'opcoes-vm' : 'opcoes-quiz'}" id="opsQuiz">
-          ${ops.map((o, i) => `<button class="opcao" data-i="${i}">${ehVM
-            ? `${I(i === 0 ? 'correto' : 'falha', { cls: 'vm-ico' })}<span>${esc(o.t)}</span>`
-            : `<span class="letra" aria-hidden="true">${LETRAS[i]}</span><span>${esc(o.t)}</span>`}</button>`).join('')}
+          ${ops
+            .map(
+              (o, i) =>
+                `<button class="opcao" data-i="${i}">${
+                  ehVM
+                    ? `${I(i === 0 ? 'correto' : 'falha', { cls: 'vm-ico' })}<span>${esc(o.t)}</span>`
+                    : `<span class="letra" aria-hidden="true">${LETRAS[i]}</span><span>${esc(o.t)}</span>`
+                }</button>`
+            )
+            .join('')}
         </div>
         <div class="quiz-fb" id="fbQuiz" style="display:none"></div>
         <div class="rodape" id="rodQuiz"></div>`;
 
-      let travado = false, timerId = null;
+      let travado = false,
+        timerId = null;
       if (tempo) {
-        const t0 = Date.now(), limite = tempo * 1000;
+        const t0 = Date.now(),
+          limite = tempo * 1000;
         timerId = every(() => {
           const rest = Math.max(0, limite - (Date.now() - t0));
           $('#tempoTxt') && ($('#tempoTxt').textContent = Math.ceil(rest / 1000) + 's');
           const barra = $('#barraTempo');
           if (barra) {
-            barra.style.width = (rest / limite * 100) + '%';
-            barra.parentElement.classList.toggle('pouco', rest <= limite * .5 && rest > limite * .25);
-            barra.parentElement.classList.toggle('acabando', rest <= limite * .25);
+            barra.style.width = (rest / limite) * 100 + '%';
+            barra.parentElement.classList.toggle('pouco', rest <= limite * 0.5 && rest > limite * 0.25);
+            barra.parentElement.classList.toggle('acabando', rest <= limite * 0.25);
           }
-          if (rest <= 0 && !travado) { responder(-1); }
+          if (rest <= 0 && !travado) {
+            responder(-1);
+          }
         }, 100);
       }
 
@@ -434,13 +600,21 @@
         const fb = $('#fbQuiz');
         fb.style.display = 'block';
         fb.className = 'quiz-fb ' + (ok ? 'ok' : 'ruim');
-        fb.innerHTML = i < 0 ? comIcone('cronometro', 'O tempo acabou! ' + (q.fb || '')) : comIcone(ok ? 'correto' : 'falha', q.fb || '');
-        $('#rodQuiz').innerHTML = `<button class="btn btn-t" id="btProxQ">${qi + 1 < total ? 'Próxima pergunta' : 'Ver resultado'}</button>`;
-        $('#btProxQ').onclick = () => { qi++; if (qi < total) drawQ(); else fimQuiz(); };
+        fb.innerHTML =
+          i < 0
+            ? comIcone('cronometro', 'O tempo acabou! ' + (q.fb || ''))
+            : comIcone(ok ? 'correto' : 'falha', q.fb || '');
+        $('#rodQuiz').innerHTML =
+          `<button class="btn btn-t" id="btProxQ">${qi + 1 < total ? 'Próxima pergunta' : 'Ver resultado'}</button>`;
+        $('#btProxQ').onclick = () => {
+          qi++;
+          if (qi < total) drawQ();
+          else fimQuiz();
+        };
         $('#btProxQ').focus({ preventScroll: true });
-        $('#rodQuiz').scrollIntoView({ block: 'nearest', behavior: 'smooth' });   // no celular o feedback fica abaixo da dobra
+        $('#rodQuiz').scrollIntoView({ block: 'nearest', behavior: 'smooth' }); // no celular o feedback fica abaixo da dobra
       }
-      $$('.opcao', palco).forEach(b => b.onclick = () => responder(+b.dataset.i));
+      $$('.opcao', palco).forEach(b => (b.onclick = () => responder(+b.dataset.i)));
       // a barra de cima continua a mesma: rearma a leitura automática para a nova pergunta
       if (qi > 0) $('.bt-ouvir-principal')?.removeAttribute('data-auto');
     };
@@ -450,47 +624,63 @@
   }
 
   /* ============================================================
-     MATCH — associar situação → ação
+     MATCH: associar situação → ação
      ============================================================ */
-  const COR_PAR = ['#4EA8DE', '#FF7A59', '#2EC4B6', '#FFC83B'];   // cada par ligado ganha a cor da sua situação
+  const COR_PAR = ['#4EA8DE', '#FF7A59', '#2EC4B6', '#FFC83B']; // cada par ligado ganha a cor da sua situação
 
   function rMatch(palco, a) {
     const as = a.pares.map((p, i) => ({ t: p.a, id: i }));
     const bs = shuffle(a.pares.map((p, i) => ({ t: p.b, id: i })));
-    let selA = null, pares = new Set();
+    let selA = null,
+      pares = new Set();
 
     const draw = () => {
       palco.innerHTML = `
         ${NK.falaCapitao(a.pergunta, a.dica, { mini: true, sempreExtra: true })}
         <p class="prog-hunt">Ligados: <b>${pares.size}/${a.pares.length}</b></p>
         <div class="match">
-          <div class="col"><h4>Situação</h4>${as.map(x => `<button data-a="${x.id}" style="--cor:${COR_PAR[x.id % COR_PAR.length]}" class="${pares.has(x.id) ? 'par' : (selA === x.id ? 'sel' : '')}" ${pares.has(x.id) ? 'disabled' : ''}><span class="m-num">${x.id + 1}</span><span>${esc(x.t)}</span></button>`).join('')}</div>
+          <div class="col"><h4>Situação</h4>${as.map(x => `<button data-a="${x.id}" style="--cor:${COR_PAR[x.id % COR_PAR.length]}" class="${pares.has(x.id) ? 'par' : selA === x.id ? 'sel' : ''}" ${pares.has(x.id) ? 'disabled' : ''}><span class="m-num">${x.id + 1}</span><span>${esc(x.t)}</span></button>`).join('')}</div>
           <div class="col"><h4>Ação de guardião</h4>${bs.map(x => `<button data-b="${x.id}" style="--cor:${COR_PAR[x.id % COR_PAR.length]}" class="${pares.has(x.id) ? 'par' : ''}" ${pares.has(x.id) ? 'disabled' : ''}>${pares.has(x.id) ? `<span class="m-num">${x.id + 1}</span>` : ''}<span>${esc(x.t)}</span></button>`).join('')}</div>
         </div>
         <div class="dica-flutua" id="fbMatch"></div>`;
 
-      $$('[data-a]', palco).forEach(b => b.onclick = () => { selA = selA === +b.dataset.a ? null : +b.dataset.a; draw(); });   // tocar de novo desmarca
-      $$('[data-b]', palco).forEach(b => b.onclick = () => {
-        if (selA === null) return;
-        const id = +b.dataset.b;
-        const fb = $('#fbMatch');
-        if (id === selA) {
-          pares.add(id); selA = null;
-          fb.className = 'dica-flutua boa'; fb.innerHTML = comIcone('correto', 'Combinação certa!'); NK.feedback.acerto();
-          draw();
-          if (pares.size === a.pares.length) later(() => concluirAtividade(a.fbOk), 600);
-        } else {
-          progresso.registrarErro(); NK.feedback.erro();
-          fb.className = 'dica-flutua ruim'; fb.innerHTML = comIcone('falha', 'Essa combinação não é bem essa... tente outra!');
-          selA = null; draw();
-        }
-      });
+      $$('[data-a]', palco).forEach(
+        b =>
+          (b.onclick = () => {
+            selA = selA === +b.dataset.a ? null : +b.dataset.a;
+            draw();
+          })
+      ); // tocar de novo desmarca
+      $$('[data-b]', palco).forEach(
+        b =>
+          (b.onclick = () => {
+            if (selA === null) return;
+            const id = +b.dataset.b;
+            const fb = $('#fbMatch');
+            if (id === selA) {
+              pares.add(id);
+              selA = null;
+              fb.className = 'dica-flutua boa';
+              fb.innerHTML = comIcone('correto', 'Combinação certa!');
+              NK.feedback.acerto();
+              draw();
+              if (pares.size === a.pares.length) later(() => concluirAtividade(a.fbOk), 600);
+            } else {
+              progresso.registrarErro();
+              NK.feedback.erro();
+              fb.className = 'dica-flutua ruim';
+              fb.innerHTML = comIcone('falha', 'Essa combinação não é bem essa... tente outra!');
+              selA = null;
+              draw();
+            }
+          })
+      );
     };
     draw();
   }
 
   /* ============================================================
-     BAU — animação "O Peso do Segredo"
+     BAU: animação "O Peso do Segredo"
      ============================================================ */
   function rBau(palco, a) {
     /* Cena montada uma vez; ao contar o segredo só troca a classe "contou",
@@ -522,18 +712,27 @@
 
     const bt = $('#btBau', palco);
     bt.onclick = () => {
-      if (palco.querySelector('.bau-cena.contou')) { concluirAtividade(); return; }
+      if (palco.querySelector('.bau-cena.contou')) {
+        concluirAtividade();
+        return;
+      }
       $('.bau-cena', palco).classList.add('contou');
       $('.bau-cap', palco).removeAttribute('aria-hidden');
       $('.trilho', palco).setAttribute('aria-valuenow', '25');
       $('#pesoTag', palco).textContent = 'Bem mais leve!';
-      $('#bauTexto', palco).textContent = 'Ele contou! Dividir o segredo com um guardião de confiança deixou o baú bem mais leve.';
+      $('#bauTexto', palco).textContent =
+        'Ele contou! Dividir o segredo com um guardião de confiança deixou o baú bem mais leve.';
       bt.textContent = 'Continuar';
     };
   }
 
   Object.assign(NK.atividades, {
-    classify: rClassify, hunt: rHunt, sequence: rSequence, compose: rCompose,
-    quiz: rQuiz, match: rMatch, bau: rBau
+    classify: rClassify,
+    hunt: rHunt,
+    sequence: rSequence,
+    compose: rCompose,
+    quiz: rQuiz,
+    match: rMatch,
+    bau: rBau
   });
 })();

@@ -11,8 +11,12 @@
   function telaCertificado() {
     /* Um único cartão: começa pela frente; clique em qualquer ponto → flip (0.6s)
        para o verso; novo clique → volta para a frente. Artes originais intactas. */
-    if (!jornadaCompleta()) { go('#/diario'); return; }
-    montar(`
+    if (!jornadaCompleta()) {
+      go('#/diario');
+      return;
+    }
+    montar(
+      `
     <div class="scene certificado">
       <div class="certificado-card" id="certCard" role="button" tabindex="0" aria-label="Certificado: clique para virar" aria-pressed="false">
         <span class="certificado-inner">
@@ -25,7 +29,9 @@
         <button class="btn btn-t" id="btImprimir">Imprimir / Salvar PDF</button>
         <button class="btn btn-ghost" id="btVoltarDiario">← Voltar ao Diário</button>
       </div>
-    </div>`, 'diario');
+    </div>`,
+      'diario'
+    );
 
     const card = $('#certCard');
     // div (não <button>): dentro de um botão o navegador não quebra página na impressão
@@ -33,7 +39,12 @@
       const v = card.classList.toggle('virado');
       card.setAttribute('aria-pressed', v);
     };
-    card.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); } };
+    card.onkeydown = e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.click();
+      }
+    };
     $('#btImprimir').onclick = () => window.print();
     $('#btVoltarDiario').onclick = () => go('#/diario');
   }

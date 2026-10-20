@@ -29,7 +29,8 @@
         : '';
     }).join('');
 
-    montar(`
+    montar(
+      `
     <div class="scene ilhas">
       <div class="ilhas-frame" id="mapaIlhas">
         ${I('fundoIlhas', { cls: 'il-fundo', alt: '' })}
@@ -37,29 +38,39 @@
         ${controles}
         ${FILTRO_ASPERO}
       </div>
-    </div>`, 'ilhas');
+    </div>`,
+      'ilhas'
+    );
     document.body.classList.add('tela-figma');
     window.scrollTo(0, 0);
-    $$('[data-il]').forEach(b => b.onclick = () => {
-      const id = +b.dataset.il;
-      if (!ilhaLiberada(id)) return;
-      go(`#/carregando/${id}`);
-    });
+    $$('[data-il]').forEach(
+      b =>
+        (b.onclick = () => {
+          const id = +b.dataset.il;
+          if (!ilhaLiberada(id)) return;
+          go(`#/carregando/${id}`);
+        })
+    );
   }
 
   function telaCarregando(iid) {
     /* Viagem até a ilha, no estilo da introdução: o navio navega pelo mar
        até a ilha, que vai surgindo no horizonte. */
     const il = ilhaById(+iid) || ILHAS[0];
-    montar(`
+    montar(
+      `
     <div class="scene prologo viagem">
       <div class="pr-ceu" aria-hidden="true"><i class="pr-sol"></i><i class="pr-nuvem n1"></i><i class="pr-nuvem n2"></i><i class="pr-nuvem n3"></i></div>
       <figure class="vg-ilha" style="--cor:${il.cor}" aria-hidden="true">${I(il.icone, { alt: '' })}</figure>
       <div class="pr-mar" aria-hidden="true"><i class="pr-onda"></i><i class="pr-onda o2"></i><i class="pr-onda o3"></i></div>
       <span class="pr-navio vg-navio">${I('navioPirata', { alt: 'Navio navegando até a ilha' })}</span>
       <div class="vg-txt" role="status">${esc(il.carregando)}<div class="barra"><i></i></div></div>
-    </div>`, 'ilhas');
-    later(() => { go(`#/fase/${il.id}`); }, 3600);
+    </div>`,
+      'ilhas'
+    );
+    later(() => {
+      go(`#/fase/${il.id}`);
+    }, 3600);
   }
 
   NK.telas = Object.assign(NK.telas || {}, { ilhas: telaIlhas, carregando: telaCarregando });

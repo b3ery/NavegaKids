@@ -10,14 +10,15 @@
   const { FILTRO_ASPERO, iconeFase } = NK.comum;
 
   function telaAbertura(fid) {
-    /* Template de introdução — obrigatório antes das atividades de TODA fase.
+    /* Template de introdução: obrigatório antes das atividades de TODA fase.
        Composição fixa do Figma; título, ícone, texto e botão vêm da fase. */
     const f = faseById(+fid);
     if (!f) return go('#/ilhas');
     if (!faseLiberada(f.id)) return go(`#/fase/${f.ilha}`);
-    if (f.id === 1 && !progresso.prologoVisto()) return go('#/prologo');   // antes da 1ª fase, o Capitão se apresenta
+    if (f.id === 1 && !progresso.prologoVisto()) return go('#/prologo'); // antes da 1ª fase, o Capitão se apresenta
     progresso.definirFaseVista(f.id);
-    montar(`
+    montar(
+      `
     <div class="scene abertura">
       <div class="intro-frame">
         ${I('fundo', { cls: 'it-fundo', alt: '' })}
@@ -34,10 +35,15 @@
         <button class="btn-figma it-comecar" id="btComecar">${esc(f.abertura.btn)}</button>
         ${FILTRO_ASPERO}
       </div>
-    </div>`, 'ilhas');
+    </div>`,
+      'ilhas'
+    );
     document.body.classList.add('tela-figma');
     window.scrollTo(0, 0);
-    $('#btComecar').onclick = () => { progresso.marcarIntroVista(f.id); go('#/missoes'); };
+    $('#btComecar').onclick = () => {
+      progresso.marcarIntroVista(f.id);
+      go('#/missoes');
+    };
   }
 
   NK.telas = Object.assign(NK.telas || {}, { abertura: telaAbertura });

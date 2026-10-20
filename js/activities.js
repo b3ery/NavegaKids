@@ -1,14 +1,18 @@
 /* ============================================================
-   NavegaKids — activities.js
+   NavegaKids · activities.js
    Tela de atividade + renderização de cada tipo de exercício.
    ============================================================ */
 (() => {
   'use strict';
   const NK = (window.NavegaKids ??= {});
-  const meuRosto = (size) => NK.fotoPerfil(progresso.avatar(), { size });
+  const meuRosto = size => NK.fotoPerfil(progresso.avatar(), { size });
   /** foto de perfil dos amigos do jogo: os personagens que a criança não escolheu */
-  const rostoAmigo = (i, size) => { const outros = [...progresso.AVATARES.filter(a => a !== progresso.avatar()), 'leo']; return NK.fotoPerfil(outros[i % outros.length], { size }); };
-  const { NPC1, progresso, $, $$, esc, go, later, I, icone, comIcone, popup, montar, destacarContadores } = NK;
+  const rostoAmigo = (i, size) => {
+    const outros = [...progresso.AVATARES.filter(a => a !== progresso.avatar()), 'leo'];
+    return NK.fotoPerfil(outros[i % outros.length], { size });
+  };
+  const { NPC1, progresso, $, $$, esc, go, later, I, icone, comIcone, popup, montar, destacarContadores } =
+    NK;
   const { faseById, faseLiberada, feita, DEV } = progresso;
 
   let AC = null; // contexto da atividade atual: {f, idx, a}
@@ -17,16 +21,26 @@
     const [fid, idx] = path.split('/').map(Number);
     const f = faseById(fid);
     if (!f || !f.atividades[idx]) return go('#/missoes');
-    if (!faseLiberada(fid)) { go('#/ilhas'); return; }
-    if (!progresso.introVista(fid) && !DEV) { go(`#/abertura/${fid}`); return; }   // toda fase começa pela introdução
-    if (idx > 0 && !feita(fid, idx - 1) && !DEV) { go('#/missoes'); return; }
+    if (!faseLiberada(fid)) {
+      go('#/ilhas');
+      return;
+    }
+    if (!progresso.introVista(fid) && !DEV) {
+      go(`#/abertura/${fid}`);
+      return;
+    } // toda fase começa pela introdução
+    if (idx > 0 && !feita(fid, idx - 1) && !DEV) {
+      go('#/missoes');
+      return;
+    }
     progresso.definirFaseVista(fid);
     const a = f.atividades[idx];
     AC = { f, idx, a };
     progresso.iniciarAtividade(fid, idx);
 
     const ilha = NK.ILHAS.find(il => il.id === f.ilha);
-    montar(`
+    montar(
+      `
     <div class="scene atv" data-bg="fundo" style="--cor-ilha:${ilha?.cor || '#4EA8DE'}">
       <div class="topo">
         <div class="tt">
@@ -42,7 +56,9 @@
         </div>
       </div>
       <div class="palco" id="palco"></div>
-    </div>`, 'missoes');
+    </div>`,
+      'missoes'
+    );
 
     $('#btSairAtv').onclick = () => go('#/missoes');
     renderAtividade();
@@ -77,26 +93,31 @@
     let erros = 0;
     const mostrar = () => {
       const slot = $('#slotDica');
-      if (!slot || slot.firstChild) return;   // já saiu da tela ou o botão já está lá
+      if (!slot || slot.firstChild) return; // já saiu da tela ou o botão já está lá
       slot.innerHTML = `<button class="btn btn-sm bt-dica" id="btDica">${I('dica', { cls: 'ico-txt' })} Dica</button>`;
       $('#btDica').onclick = () => garrafaDica(NK.dicaDoNivel(chave));
     };
     const espera = ESPERA_DICA[progresso.modo()] ?? 30000;
-    if (!espera) { mostrar(); return; }   // Marujo: a dica sempre existe
+    if (!espera) {
+      mostrar();
+      return;
+    } // Marujo: a dica sempre existe
     later(mostrar, espera);
-    ouvinteErro = () => { if (++erros >= 2) mostrar(); };
+    ouvinteErro = () => {
+      if (++erros >= 2) mostrar();
+    };
     document.addEventListener('nk-erro', ouvinteErro);
     NK.onLeave?.(() => document.removeEventListener('nk-erro', ouvinteErro));
   }
 
   function renderAtividade() {
     const { a, f, idx } = AC;
-    NK.dicaChave = `${f.id}-${idx}`;   // dicas por nível (js/dicas.js)
+    NK.dicaChave = `${f.id}-${idx}`; // dicas por nível (js/dicas.js)
     const palco = $('#palco');
     // animação de entrada em cascata só na abertura (os redesenhos depois de um clique não piscam)
     palco.classList.add('entrando');
     later(() => palco.classList.remove('entrando'), 1200);
-    palco.dataset.tipo = a.tipo;   // Marujo: ícone do tipo de atividade ao lado do enunciado (style.css)
+    palco.dataset.tipo = a.tipo; // Marujo: ícone do tipo de atividade ao lado do enunciado (style.css)
     // os tipos se registram em NavegaKids.atividades (aqui e em activities2.js)
     (NK.atividades[a.tipo] || NK.atividades.discover)(palco, a);
   }
@@ -104,9 +125,11 @@
   /* Estrelas da fase (cheias + apagadas), mostradas quando a fase acaba de ser completada */
   function estrelasDaFaseHtml({ estrelas, maxEstrelas }, fase) {
     const mult = NK.pontuacao.multiplicador(fase);
-    const base = estrelas / mult, maxBase = maxEstrelas / mult;   // estrelas antes do dobro
+    const base = estrelas / mult,
+      maxBase = maxEstrelas / mult; // estrelas antes do dobro
     const icones = Array.from({ length: maxBase }, (_, i) =>
-      I('estrela', { size: 34, cls: i < base ? '' : 'apagada' })).join('');
+      I('estrela', { size: 34, cls: i < base ? '' : 'apagada' })
+    ).join('');
     return `<div class="fase-estrelas ${mult > 1 ? 'dobro' : ''}" role="img" aria-label="Fase concluída com ${estrelas} de ${maxEstrelas} estrelas${mult > 1 ? ' (estrelas em dobro)' : ''}">
       <span>Fase concluída!</span><span class="icones">${icones}</span>
       ${mult > 1 ? `<span class="conta-dobro">${base} × ${mult} = <b>${estrelas} estrelas!</b></span>` : ''}
@@ -118,10 +141,12 @@
   /* Relato de testes: perder estrelas frustrava. A fase sem erros é comemorada; com erros,
      o recado é que errar faz parte de aprender e que dá para refazer (vale a melhor tentativa). */
   function mensagemDaFase({ erros, estrelas, maxEstrelas }) {
-    if (erros === 0) return `<p class="fase-msg perfeita">${I('conquistas', { cls: 'ico-txt' })} Fase perfeita: nenhum erro!</p>`;
-    if (estrelas < maxEstrelas) return marujo()   // Marujo (8 anos): recado curto, menos leitura
-      ? `<p class="fase-msg">Errar faz parte de aprender! Você pode refazer a fase.</p>`
-      : `<p class="fase-msg">Errar faz parte de aprender! Cada erro te ensinou algo novo. Se quiser, refaça a fase para conquistar todas as estrelas: vale sempre a sua melhor tentativa.</p>`;
+    if (erros === 0)
+      return `<p class="fase-msg perfeita">${I('conquistas', { cls: 'ico-txt' })} Fase perfeita: nenhum erro!</p>`;
+    if (estrelas < maxEstrelas)
+      return marujo() // Marujo (8 anos): recado curto, menos leitura
+        ? `<p class="fase-msg">Errar faz parte de aprender! Você pode refazer a fase.</p>`
+        : `<p class="fase-msg">Errar faz parte de aprender! Cada erro te ensinou algo novo. Se quiser, refaça a fase para conquistar todas as estrelas: vale sempre a sua melhor tentativa.</p>`;
     return '';
   }
 
@@ -135,29 +160,49 @@
     const faseAgoraCompleta = progresso.faseCompleta(f.id);
 
     const janela = popup({
-      cor: 't', dim: true,
+      cor: 't',
+      dim: true,
       titulo: r.jaFeita ? 'Muito bem de novo!' : 'Parabéns, Pirata!',
       // Marujo (relato: muito texto para 8 anos): só o recado da atividade, sem a frase genérica
-      texto: (mensagemExtra ? mensagemExtra + ' ' : '') + (marujo() && mensagemExtra ? '' : r.jaFeita
-        ? 'Você já tinha concluído esta atividade.'
-        : 'Você desbloqueou mais uma atividade, continue navegando pirata!'),
-      extra: `<div class="estrela-mais">${I('moedas', { size: 26 })} +${r.pontos} PONTOS${f.dobro ? ' <span class="x2-pontos">x2</span>' : ''}</div>`
-        + (r.completouFase ? estrelasDaFaseHtml(r.resultadoFase, f) : '')
-        + (r.completouFase ? mensagemDaFase(r.resultadoFase) : '')
-        + (r.ilhaDoSelo ? `<p class="selo-ganho">${I(r.ilhaDoSelo.seloImg, { size: 34 })} Selo conquistado: ${esc(r.ilhaDoSelo.selo)}!</p>` : ''),
-      btns: [...(r.completouFase && r.resultadoFase.estrelas < r.resultadoFase.maxEstrelas
-        ? [{ t: 'Refazer a fase', cls: 'btn-ghost', fn: () => go(`#/atividade/${f.id}/0`) }] : []), {
-        t: faseAgoraCompleta ? 'Ver conquista da fase' : (idx + 1 < total ? 'Próxima atividade' : 'Voltar às missões'),
-        cls: 'btn-t',
-        fn: () => {
-          // fase concluída pela primeira vez: o Capitão Gancho comemora; depois, volta às missões
-          if (faseAgoraCompleta) { go(r.completouFase ? `#/capitao/fase/${f.id}` : '#/missoes'); }
-          else if (idx + 1 < total) { go(`#/atividade/${f.id}/${idx + 1}`); }
-          else { go('#/missoes'); }
+      texto:
+        (mensagemExtra ? mensagemExtra + ' ' : '') +
+        (marujo() && mensagemExtra
+          ? ''
+          : r.jaFeita
+            ? 'Você já tinha concluído esta atividade.'
+            : 'Você desbloqueou mais uma atividade, continue navegando pirata!'),
+      extra:
+        `<div class="estrela-mais">${I('moedas', { size: 26 })} +${r.pontos} PONTOS${f.dobro ? ' <span class="x2-pontos">x2</span>' : ''}</div>` +
+        (r.completouFase ? estrelasDaFaseHtml(r.resultadoFase, f) : '') +
+        (r.completouFase ? mensagemDaFase(r.resultadoFase) : '') +
+        (r.ilhaDoSelo
+          ? `<p class="selo-ganho">${I(r.ilhaDoSelo.seloImg, { size: 34 })} Selo conquistado: ${esc(r.ilhaDoSelo.selo)}!</p>`
+          : ''),
+      btns: [
+        ...(r.completouFase && r.resultadoFase.estrelas < r.resultadoFase.maxEstrelas
+          ? [{ t: 'Refazer a fase', cls: 'btn-ghost', fn: () => go(`#/atividade/${f.id}/0`) }]
+          : []),
+        {
+          t: faseAgoraCompleta
+            ? 'Ver conquista da fase'
+            : idx + 1 < total
+              ? 'Próxima atividade'
+              : 'Voltar às missões',
+          cls: 'btn-t',
+          fn: () => {
+            // fase concluída pela primeira vez: o Capitão Gancho comemora; depois, volta às missões
+            if (faseAgoraCompleta) {
+              go(r.completouFase ? `#/capitao/fase/${f.id}` : '#/missoes');
+            } else if (idx + 1 < total) {
+              go(`#/atividade/${f.id}/${idx + 1}`);
+            } else {
+              go('#/missoes');
+            }
+          }
         }
-      }]
+      ]
     });
-    $('.btns .btn-t', janela)?.focus();   // Enter segue em frente; "Refazer a fase" é opcional
+    $('.btns .btn-t', janela)?.focus(); // Enter segue em frente; "Refazer a fase" é opcional
   }
 
   /* ============================================================
@@ -167,11 +212,15 @@
     if (!cena || cena.tipo !== 'chat') return '';
     // bolha da criança leva o nome dela (ou "Você"); nunca o nick do contato
     const quem = m => m.nome || (m.de === 'eu' ? progresso.nome() || 'Você' : cena.com);
-    const msgs = cena.msgs.map(m => `
+    const msgs = cena.msgs
+      .map(
+        m => `
       <div class="bolha ${m.de === 'eu' ? 'eu' : ''}${anim ? ' espera' : ''}">
         <span class="av">${m.de === 'eu' ? meuRosto() : cena.foto ? NK.fotoPerfil(cena.foto) : cena.com === NK.NPC3 ? I('capitao') : I('anonimo')}</span>
         <span class="msg">${quem(m) ? `<small>${esc(quem(m))}</small>` : ''}${esc(m.t)}</span>
-      </div>`).join('');
+      </div>`
+      )
+      .join('');
     return `<div class="chat">
       <div class="chat-head">${cena.foto ? NK.fotoPerfil(cena.foto, { size: 34 }) : I(cena.com === NK.NPC3 ? 'capitao' : 'anonimo', { size: 34, cls: 'ico' })}<span>${esc(cena.com)}</span><small>online</small></div>
       <div class="chat-body">${msgs}</div>
@@ -182,35 +231,50 @@
   function animarChat(palco) {
     const bolhas = $$('.chat-body .bolha.espera', palco);
     if (!bolhas.length) return;
-    if (NK.semMovimento || matchMedia('(prefers-reduced-motion: reduce)').matches) { bolhas.forEach(b => b.classList.remove('espera')); return; }
-    const corpo = $('.chat-body', palco), status = $('.chat-head small', palco);
+    if (NK.semMovimento || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      bolhas.forEach(b => b.classList.remove('espera'));
+      return;
+    }
+    const corpo = $('.chat-body', palco),
+      status = $('.chat-head small', palco);
     let k = 0;
     const passo = () => {
       while (k < bolhas.length && !bolhas[k].classList.contains('espera')) k++;
       const b = bolhas[k];
       if (!b || !b.isConnected) return;
       const eu = b.classList.contains('eu');
-      b.insertAdjacentHTML('beforebegin', `<div class="bolha digitando${eu ? ' eu' : ''}" aria-hidden="true"><span class="av">${b.querySelector('.av').innerHTML}</span><span class="msg"><i></i><i></i><i></i></span></div>`);
+      b.insertAdjacentHTML(
+        'beforebegin',
+        `<div class="bolha digitando${eu ? ' eu' : ''}" aria-hidden="true"><span class="av">${b.querySelector('.av').innerHTML}</span><span class="msg"><i></i><i></i><i></i></span></div>`
+      );
       if (status && !eu) status.textContent = 'digitando…';
       corpo.scrollTop = corpo.scrollHeight;
-      later(() => {
-        b.previousElementSibling?.classList.contains('digitando') && b.previousElementSibling.remove();
-        b.classList.remove('espera'); b.classList.add('chega');
-        if (status) status.textContent = 'online';
-        corpo.scrollTop = corpo.scrollHeight;
-        k++;
-        if (k < bolhas.length) later(passo, 300);
-      }, 650 + Math.min(900, b.textContent.trim().length * 12));
+      later(
+        () => {
+          b.previousElementSibling?.classList.contains('digitando') && b.previousElementSibling.remove();
+          b.classList.remove('espera');
+          b.classList.add('chega');
+          if (status) status.textContent = 'online';
+          corpo.scrollTop = corpo.scrollHeight;
+          k++;
+          if (k < bolhas.length) later(passo, 300);
+        },
+        650 + Math.min(900, b.textContent.trim().length * 12)
+      );
     };
     later(passo, 350);
   }
-  const mostrarChatTodo = palco => { $$('.chat-body .digitando', palco).forEach(d => d.remove()); $$('.chat-body .bolha.espera', palco).forEach(b => b.classList.remove('espera')); };
+  const mostrarChatTodo = palco => {
+    $$('.chat-body .digitando', palco).forEach(d => d.remove());
+    $$('.chat-body .bolha.espera', palco).forEach(b => b.classList.remove('espera'));
+  };
 
   /* O Capitão Gancho fala num balão (mesmo visual do quiz). No Marujo fica só a frase principal. */
   function falaCapitao(principal, extra = '', { mini = false, sempreExtra = false } = {}) {
     if (!principal) return '';
     // nas atividades de mexer (mini) a dica continua como antes; nas de leitura, no Marujo fica só a frase principal
-    const mostrarExtra = extra && !NK.dicaDoNivel(NK.dicaChave) && (sempreExtra || progresso.modo() !== 'marujo');
+    const mostrarExtra =
+      extra && !NK.dicaDoNivel(NK.dicaChave) && (sempreExtra || progresso.modo() !== 'marujo');
     return `<div class="quiz-palco fala-cap${mini ? ' mini' : ''}">
       <span class="quiz-capita" id="capitaFala">${I('capitao')}</span>
       <div class="quiz-balao"><small class="quiz-quem">Capitão Gancho</small>
@@ -224,11 +288,15 @@
   /* Fase 2 · lobby da partida em grupo, no estilo do Joguinho da Fase 1 */
   function lobbyHtml(cena) {
     if (!cena || cena.tipo !== 'lobby') return '';
-    const av = cena.avatares.map((a, i) => `<div class="av-card ${a.alerta ? 'alerta' : ''}" style="--i:${i}">
+    const av = cena.avatares
+      .map(
+        (a, i) => `<div class="av-card ${a.alerta ? 'alerta' : ''}" style="--i:${i}">
       <span class="av-foto">${a.alerta ? I('anonimo', { size: 44 }) : rostoAmigo(i, 54)}</span>
       <b>${esc(a.nome)}</b>
       ${a.nota ? `<small>${esc(a.nota)}</small>` : '<em>pronto</em>'}
-    </div>`).join('');
+    </div>`
+      )
+      .join('');
     return `<div class="lobby">
       <div class="lobby-topo"><span><span class="lb-mapa lb-mapa-p">${I('mapa')}</span><b>${esc(cena.titulo)}</b></span><small>Caça ao Tesouro · ${cena.avatares.length}/6 jogadores</small></div>
       <div class="av-lista">${av}</div>
@@ -260,10 +328,13 @@
     { nome: 'Pirata2020', online: true },
     { nome: 'Pirata2130', online: true },
     { nome: 'Sereia0101', online: false },
-    { nome: 'Peixinho01', online: false },
+    { nome: 'Peixinho01', online: false }
   ];
-  const listaAmigosHtml = (comStatus = false) => `<ul class="lista-amigos">${AMIGOS_JOGO.map((a, i) => `
-    <li>${rostoAmigo(i, 30)}${a.online ? '<i class="online-dot"></i>' : ''}<span>${esc(a.nome)}${comStatus ? `<small class="${a.online ? 'on' : ''}">${STATUS_AMIGOS[a.nome]}</small>` : ''}</span></li>`).join('')}</ul>`;
+  const listaAmigosHtml = (comStatus = false) =>
+    `<ul class="lista-amigos">${AMIGOS_JOGO.map(
+      (a, i) => `
+    <li>${rostoAmigo(i, 30)}${a.online ? '<i class="online-dot"></i>' : ''}<span>${esc(a.nome)}${comStatus ? `<small class="${a.online ? 'on' : ''}">${STATUS_AMIGOS[a.nome]}</small>` : ''}</span></li>`
+    ).join('')}</ul>`;
 
   /* Fase 1 · Atividade 2 (roteiro): "mesma tela do Joguinho, agora com uma lupa ativa",
      com o perfil suspeito à esquerda e o painel Amigos à direita para comparar. */
@@ -284,7 +355,12 @@
 
   /* Tela do "Joguinho" (Fase 1 · Atividade 1): HUD de jogo no topo, lobby da partida à
      esquerda e, à direita, os amigos com status ou o pedido de amizade pendente. */
-  const STATUS_AMIGOS = { Pirata2020: 'online · jogando agora', Pirata2130: 'online · no lobby', Sereia0101: 'offline · há 2 h', Peixinho01: 'offline · ontem' };
+  const STATUS_AMIGOS = {
+    Pirata2020: 'online · jogando agora',
+    Pirata2130: 'online · no lobby',
+    Sereia0101: 'offline · há 2 h',
+    Peixinho01: 'offline · ontem'
+  };
 
   function jogoHtml(pendente) {
     return `<div class="jg jg-lobby">
@@ -311,21 +387,25 @@
           <button class="btn btn-sm btn-t" id="btInvestigar">Começar a investigar</button>
         </div>
         <div class="jg-side" id="jgSide">
-          ${pendente ? `
+          ${
+            pendente
+              ? `
           <h4>Pendentes</h4>
           <div class="pedido">
             <div class="ped-topo"><small>Pedido de amizade</small><span class="ped-novo">novo</span></div>
             <div class="l"><span class="ped-av">${I('anonimo', { size: 30 })}</span><span><b>${esc(NPC1)}</b><small>Nv. 2</small></span></div>
             <div class="ped-msg">Olá, Pirata, poderia me adicionar? Quero ser seu amigo!</div>
             <div class="bt"><button class="s" data-op="0">SIM</button><button class="n" data-op="1">NÃO</button></div>
-          </div>` : `<h4>Seus amigos</h4>${listaAmigosHtml(true)}`}
+          </div>`
+              : `<h4>Seus amigos</h4>${listaAmigosHtml(true)}`
+          }
         </div>
       </div>
     </div>`;
   }
 
   /* ============================================================
-     DISCOVER — leitura guiada de uma cena
+     DISCOVER: leitura guiada de uma cena
      ============================================================ */
   function rDiscover(palco, a) {
     // o título já está no topo; o texto e a dica viram a fala do Capitão (na tela dos guardiões ele já está na cena)
@@ -339,22 +419,28 @@
   }
 
   /* ============================================================
-     EXPLAIN — vídeo explicativo (campo "video" em data.js) + cartões com
+     EXPLAIN: vídeo explicativo (campo "video" em data.js) + cartões com
      os textos; o "Texto de apoio" do roteiro vem destacado (apoio: true)
      ============================================================ */
   function rExplain(palco, a) {
     palco.innerHTML = `
-      ${a.video
-        ? `<video class="video-fase" src="${esc(a.video)}" controls playsinline preload="metadata"></video>`
-        : `<div class="video-placeholder">
+      ${
+        a.video
+          ? `<video class="video-fase" src="${esc(a.video)}" controls playsinline preload="metadata"></video>`
+          : `<div class="video-placeholder">
         <div class="play-ic">▶</div>
         <b>Vídeo no futuro</b>
-      </div>`}
+      </div>`
+      }
       <div class="explica-cards">
-        ${(a.slides || []).map((sl, i) => `<div class="explica-card ${sl.apoio ? 'apoio' : ''}" style="--i:${i}">
+        ${(a.slides || [])
+          .map(
+            (sl, i) => `<div class="explica-card ${sl.apoio ? 'apoio' : ''}" style="--i:${i}">
           <span class="explica-ico">${I(sl.img)}</span>
           <div><b>${esc(sl.titulo)}</b><p>${esc(sl.txt)}</p></div>
-        </div>`).join('')}
+        </div>`
+          )
+          .join('')}
       </div>
       <div class="rodape">
         <button class="btn btn-t" id="btProxSl">Concluir</button>
@@ -363,7 +449,7 @@
   }
 
   /* ============================================================
-     CHOICE (tutorial) — exploração guiada da Fase 1 / Atividade 1:
+     CHOICE (tutorial): exploração guiada da Fase 1 / Atividade 1:
      toca nos ícones pra entender a tela, acha a notificação, decide.
      ============================================================ */
   function rTutorialChoice(palco, a) {
@@ -380,12 +466,16 @@
       palco.innerHTML = `
         ${falaCapitao('Toque em “Começar a investigar” para usar a lupa.', '', { mini: true })}
         ${jogoHtml(false)}`;
-      $$('.jg-chip, #jgNotif', palco).forEach(b => { b.disabled = true; });
-      $('#btInvestigar').onclick = () => popup({
-        cor: 'y', titulo: I('luneta', { cls: 'ico-txt' }) + ' ' + esc(AC.f?.titulo || 'Perfil Misterioso..?'),
-        texto: a.dica,
-        btns: [{ t: 'Avançar', cls: 'btn-t', fn: desenharExploracao }]
+      $$('.jg-chip, #jgNotif', palco).forEach(b => {
+        b.disabled = true;
       });
+      $('#btInvestigar').onclick = () =>
+        popup({
+          cor: 'y',
+          titulo: I('luneta', { cls: 'ico-txt' }) + ' ' + esc(AC.f?.titulo || 'Perfil Misterioso..?'),
+          texto: a.dica,
+          btns: [{ t: 'Avançar', cls: 'btn-t', fn: desenharExploracao }]
+        });
     }
 
     function desenharExploracao() {
@@ -393,12 +483,16 @@
         ${falaCapitao('Use a lupa: explore a tela até encontrar algo importante.', '', { mini: true })}
         ${jogoHtml(false)}`;
       $('.jg', palco).classList.add('investigando');
-      $('#btInvestigar').outerHTML = `<span class="lb-investigando">${I('misterio', { cls: 'ico-txt' })} Investigando...</span>`;
-      $$('.jg-chip', palco).forEach(chip => chip.onclick = () => {
-        const [titulo, texto] = INFO[chip.dataset.info];
-        popup({ cor: 'y', titulo, texto, btns: [{ t: 'Entendi', cls: 'btn-t', fn() {} }] });
-      });
-      $('#jgNotif').onclick = desenharPendentes;   // achou o pedido de amizade
+      $('#btInvestigar').outerHTML =
+        `<span class="lb-investigando">${I('misterio', { cls: 'ico-txt' })} Investigando...</span>`;
+      $$('.jg-chip', palco).forEach(
+        chip =>
+          (chip.onclick = () => {
+            const [titulo, texto] = INFO[chip.dataset.info];
+            popup({ cor: 'y', titulo, texto, btns: [{ t: 'Entendi', cls: 'btn-t', fn() {} }] });
+          })
+      );
+      $('#jgNotif').onclick = desenharPendentes; // achou o pedido de amizade
     }
 
     function desenharPendentes() {
@@ -408,42 +502,49 @@
         <div class="quiz-fb" id="fbChoice" style="display:none"></div>
         <div class="rodape" id="rodapeChoice"></div>`;
       $('.jg', palco).classList.add('investigando');
-      $('#btInvestigar').outerHTML = `<span class="lb-investigando">${I('misterio', { cls: 'ico-txt' })} Investigando...</span>`;
-      $$('.pedido button', palco).forEach(b => b.onclick = () => {
-        const o = a.opcoes[+b.dataset.op];
-        $$('.pedido button', palco).forEach(x => x.disabled = true);
-        const fb = $('#fbChoice');
-        fb.style.display = 'block';
-        fb.className = 'quiz-fb ' + (o.ok ? 'ok' : 'ruim');
-        NK.feedback[o.ok ? 'acerto' : 'erro']();
-        fb.textContent = o.fb;
-        if (o.ok) {
-          $('#rodapeChoice').innerHTML = `<button class="btn btn-t" id="btOkChoice">Avançar</button>`;
-          $('#btOkChoice').onclick = () => concluirAtividade();
-        } else {
-          progresso.registrarErro();
-          $('#rodapeChoice').innerHTML = `<button class="btn btn-c" id="btDeNovo">Voltar</button>`;
-          $('#btDeNovo').onclick = () => desenharPendentes();
-        }
-      });
+      $('#btInvestigar').outerHTML =
+        `<span class="lb-investigando">${I('misterio', { cls: 'ico-txt' })} Investigando...</span>`;
+      $$('.pedido button', palco).forEach(
+        b =>
+          (b.onclick = () => {
+            const o = a.opcoes[+b.dataset.op];
+            $$('.pedido button', palco).forEach(x => (x.disabled = true));
+            const fb = $('#fbChoice');
+            fb.style.display = 'block';
+            fb.className = 'quiz-fb ' + (o.ok ? 'ok' : 'ruim');
+            NK.feedback[o.ok ? 'acerto' : 'erro']();
+            fb.textContent = o.fb;
+            if (o.ok) {
+              $('#rodapeChoice').innerHTML = `<button class="btn btn-t" id="btOkChoice">Avançar</button>`;
+              $('#btOkChoice').onclick = () => concluirAtividade();
+            } else {
+              progresso.registrarErro();
+              $('#rodapeChoice').innerHTML = `<button class="btn btn-c" id="btDeNovo">Voltar</button>`;
+              $('#btDeNovo').onclick = () => desenharPendentes();
+            }
+          })
+      );
     }
 
     desenharInicio();
   }
 
   /* ============================================================
-     CHOICE — escolha simples (com ou sem cena)
+     CHOICE: escolha simples (com ou sem cena)
      ============================================================ */
   /* Nas escolhas em que a criança responde ao chat (roteiro: "o que você responde?"),
      a opção escolhida aparece enviada na conversa, como num aplicativo de verdade. */
   function enviarResposta(texto, ok) {
     const corpo = $('#palco .chat-body');
     if (!corpo) return;
-    corpo.insertAdjacentHTML('beforeend', `
+    corpo.insertAdjacentHTML(
+      'beforeend',
+      `
       <div class="bolha eu enviada ${ok ? '' : 'arriscada'}">
         <span class="av">${meuRosto()}</span>
         <span class="msg"><small>${esc(progresso.nome() || 'Você')}</small>${esc(texto)}</span>
-      </div>`);
+      </div>`
+    );
     corpo.scrollTop = corpo.scrollHeight;
   }
 
@@ -454,45 +555,53 @@
       ${cenaSuporte(a, { anim: !reabrindo })}
       ${falaCapitao(a.pergunta || '', a.dica)}
       <div class="opcoes ${cartas ? 'cartas' : ''}" id="opcoesWrap">
-        ${a.opcoes.map((o, i) => `<button class="opcao" data-i="${i}" style="--i:${i}">
+        ${a.opcoes
+          .map(
+            (o, i) => `<button class="opcao" data-i="${i}" style="--i:${i}">
           ${o.tag ? `<span class="tag">${esc(o.tag)}</span>` : ''}
           ${o.img ? `<span class="e-big${o.vira ? ' vira' : ''}">${icone(o)}</span>` : ''}
           <span>${esc(o.t)}</span>
-        </button>`).join('')}
+        </button>`
+          )
+          .join('')}
       </div>
       <div class="rodape" id="rodapeChoice"></div>`;
     animarChat(palco);
 
-    $$('.opcao', palco).forEach(b => b.onclick = () => {
-      if (b.disabled) return;
-      const o = a.opcoes[+b.dataset.i];
-      $$('.opcao', palco).forEach(x => x.disabled = true);
-      mostrarChatTodo(palco);
-      if (a.resposta) enviarResposta(o.t, o.ok);
-      // a resposta do Capitão aparece no próprio balão, no lugar da pergunta
-      const fb = $('#fbFala');
-      $('#falaTxt').style.display = 'none';
-      $('.fala-cap .fc-extra')?.remove();
-      $('#capitaFala')?.classList.add(o.ok ? 'feliz' : 'pensa');
-      fb.style.display = 'block';
-      fb.className = 'quiz-fb ' + (o.ok ? 'ok' : 'ruim');
-        NK.feedback[o.ok ? 'acerto' : 'erro']();
-      fb.textContent = o.fb;
-      if (o.ok) {
-        b.classList.add('certa');
-        $('#rodapeChoice').innerHTML = `<button class="btn btn-t" id="btOkChoice">Avançar</button>`;
-        $('#btOkChoice').onclick = () => concluirAtividade();
-      } else {
-        progresso.registrarErro();
-        b.classList.add('errada'); b.classList.add('shake');
-        $('#rodapeChoice').innerHTML = `<button class="btn btn-c" id="btDeNovo">Voltar</button>`;
-        $('#btDeNovo').onclick = () => rChoice(palco, a, true);
-      }
-    });
+    $$('.opcao', palco).forEach(
+      b =>
+        (b.onclick = () => {
+          if (b.disabled) return;
+          const o = a.opcoes[+b.dataset.i];
+          $$('.opcao', palco).forEach(x => (x.disabled = true));
+          mostrarChatTodo(palco);
+          if (a.resposta) enviarResposta(o.t, o.ok);
+          // a resposta do Capitão aparece no próprio balão, no lugar da pergunta
+          const fb = $('#fbFala');
+          $('#falaTxt').style.display = 'none';
+          $('.fala-cap .fc-extra')?.remove();
+          $('#capitaFala')?.classList.add(o.ok ? 'feliz' : 'pensa');
+          fb.style.display = 'block';
+          fb.className = 'quiz-fb ' + (o.ok ? 'ok' : 'ruim');
+          NK.feedback[o.ok ? 'acerto' : 'erro']();
+          fb.textContent = o.fb;
+          if (o.ok) {
+            b.classList.add('certa');
+            $('#rodapeChoice').innerHTML = `<button class="btn btn-t" id="btOkChoice">Avançar</button>`;
+            $('#btOkChoice').onclick = () => concluirAtividade();
+          } else {
+            progresso.registrarErro();
+            b.classList.add('errada');
+            b.classList.add('shake');
+            $('#rodapeChoice').innerHTML = `<button class="btn btn-c" id="btDeNovo">Voltar</button>`;
+            $('#btDeNovo').onclick = () => rChoice(palco, a, true);
+          }
+        })
+    );
   }
 
   /* ============================================================
-     DOORS — Porta Secreta (segura ou arriscada)
+     DOORS: Porta Secreta (segura ou arriscada)
      ============================================================ */
   function rDoors(palco, a) {
     /* Cada lugar é uma porta de madeira com placa. Ao tocar, a porta gira nas dobradiças e
@@ -503,7 +612,9 @@
       ${falaCapitao(a.pergunta, a.dica, { mini: true, sempreExtra: true })}
       <p class="prog-hunt">Portas abertas: <b id="cntPortas">0</b>/${a.portas.length}</p>
       <div class="portas">
-        ${a.portas.map((p, i) => `<button class="porta" data-i="${i}" style="--i:${i}" aria-label="Porta: ${esc(p.t)}">
+        ${a.portas
+          .map(
+            (p, i) => `<button class="porta" data-i="${i}" style="--i:${i}" aria-label="Porta: ${esc(p.t)}">
           <span class="porta-vao">
             <span class="porta-atras ${p.seguro ? 'segura' : 'arriscada'}">
               ${I(p.seguro ? 'correto' : 'atencao', { cls: 'porta-selo' })}
@@ -515,27 +626,36 @@
             </span>
           </span>
           <span class="porta-placa">${esc(p.t)}</span>
-        </button>`).join('')}
+        </button>`
+          )
+          .join('')}
       </div>
       <div class="dica-flutua" id="fbPorta"></div>`;
 
-    $$('.porta', palco).forEach(bt => bt.onclick = () => {
-      const i = +bt.dataset.i, p = a.portas[i];
-      if (abertas.has(i)) return;
-      abertas.add(i);
-      bt.classList.add('aberta');
-      bt.setAttribute('aria-label', `${p.t}: ${p.seguro ? 'segura' : 'arriscada'}`);
-      NK.som?.acerto();   // abrir a porta é descoberta, não erro (nem conta na sequência de acertos)
-      $('#cntPortas').textContent = abertas.size;
-      const fb = $('#fbPorta');
-      fb.className = 'dica-flutua ' + (p.seguro ? 'boa' : 'ruim');
-      fb.innerHTML = comIcone(p.seguro ? 'correto' : 'atencao', (p.seguro ? 'Segura! ' : 'Arriscada! ') + p.why);
-      if (abertas.size === a.portas.length) later(() => concluirAtividade(a.fbOk), 1600);
-    });
+    $$('.porta', palco).forEach(
+      bt =>
+        (bt.onclick = () => {
+          const i = +bt.dataset.i,
+            p = a.portas[i];
+          if (abertas.has(i)) return;
+          abertas.add(i);
+          bt.classList.add('aberta');
+          bt.setAttribute('aria-label', `${p.t}: ${p.seguro ? 'segura' : 'arriscada'}`);
+          NK.som?.acerto(); // abrir a porta é descoberta, não erro (nem conta na sequência de acertos)
+          $('#cntPortas').textContent = abertas.size;
+          const fb = $('#fbPorta');
+          fb.className = 'dica-flutua ' + (p.seguro ? 'boa' : 'ruim');
+          fb.innerHTML = comIcone(
+            p.seguro ? 'correto' : 'atencao',
+            (p.seguro ? 'Segura! ' : 'Arriscada! ') + p.why
+          );
+          if (abertas.size === a.portas.length) later(() => concluirAtividade(a.fbOk), 1600);
+        })
+    );
   }
 
   /* ============================================================
-     BLOCK — ativar o escudo (bloquear)
+     BLOCK: ativar o escudo (bloquear)
      ============================================================ */
   function rBlock(palco, a) {
     palco.innerHTML = `
@@ -545,7 +665,8 @@
       </div>`;
     $('#btBloquear').onclick = () => {
       NK.som?.acerto();
-      $('#palco').innerHTML = `<div class="bloqueado-selo">${I('escudo', { size: 80 })}<p>Escudo ativado!</p></div>`;
+      $('#palco').innerHTML =
+        `<div class="bloqueado-selo">${I('escudo', { size: 80 })}<p>Escudo ativado!</p></div>`;
       later(() => concluirAtividade(a.fbOk), 900);
     };
   }

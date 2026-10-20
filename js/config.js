@@ -1,5 +1,5 @@
 /* ============================================================
-   NavegaKids — config.js
+   NavegaKids · config.js
    Liga o código à pasta /img.
    Cada chave abaixo aponta para o NOME DO ARQUIVO (sem extensão)
    que está na pasta img/. Se o arquivo não existir, a imagem
@@ -7,7 +7,7 @@
    ============================================================ */
 (() => {
   'use strict';
-  // Único objeto global do projeto — todos os arquivos se registram nele.
+  // Único objeto global do projeto: todos os arquivos se registram nele.
   const NK = (window.NavegaKids ??= {});
 
   /* Extensões testadas, nessa ordem. Ajuste se as suas forem outras. */
@@ -16,94 +16,94 @@
   /* chave : [nome-do-arquivo, reserva ('svg:nome' ou null)] */
   const IMG = {
     /* ---- cenários / fundos ---- */
-    fundoHome:        ['fundohome', null],     // Início (2D)
-    fundoIlhas:       ['fundogeral', null],    // Ilhas: fundo geral + ilhas desenhadas à mão
-    fundoFases:       ['fundofases', null],    // mapa de cada ilha (céu e areia)
-    fundoCarregando:  ['fundogeral', null],    // carregamento: fundo geral + navio
-    fundo:            ['fundogeral', null],    // fundo geral das telas internas
-    mapaTesouro:      ['mapa-do-tesouro', null],
-    mapa:             ['mapa-do-tesouro', null],   // ícone de mapa (lobby da Fase 2)
-    mapaHome:         ['mapa', null],          // pergaminho do Início, desenhado à mão
+    fundoHome: ['fundohome', null], // Início (2D)
+    fundoIlhas: ['fundogeral', null], // Ilhas: fundo geral + ilhas desenhadas à mão
+    fundoFases: ['fundofases', null], // mapa de cada ilha (céu e areia)
+    fundoCarregando: ['fundogeral', null], // carregamento: fundo geral + navio
+    fundo: ['fundogeral', null], // fundo geral das telas internas
+    mapaTesouro: ['mapa-do-tesouro', null],
+    mapa: ['mapa-do-tesouro', null], // ícone de mapa (lobby da Fase 2)
+    mapaHome: ['mapa', null], // pergaminho do Início, desenhado à mão
 
     /* ---- personagens e cenário ---- */
-    pirata:           ['pirata', null],
-    capitao:          ['capitaogancho', null],
-    usuario2:         ['Usuario02', null],      // personagens para a criança escolher
-    usuario3:         ['Usuario03', null],
-    usuario4:         ['Usuario04', null],
-    leo:              ['Leo', null],            // Leo, o amigo da Fase 14
-    reportar:         ['reportar', null],       // opção Denunciar dos menus (Fase 13)   // Capitão Gancho, o papagaio guia do jogo
-    timao:            ['voltar', null],          // botão que gira e volta para o Início
-    barco:            ['Barco', null],
-    navio:            ['navio-mayflower', null],
-    navioPirata:      ['navio-pirata', null],   // card "Fase atual" do mapa da ilha
-    volante:          ['Volante', 'svg:volante'],
+    pirata: ['pirata', null],
+    capitao: ['capitaogancho', null], // Capitão Gancho, o papagaio guia do jogo
+    usuario2: ['Usuario02', null], // personagens para a criança escolher
+    usuario3: ['Usuario03', null],
+    usuario4: ['Usuario04', null],
+    leo: ['Leo', null], // Leo, o amigo da Fase 14
+    reportar: ['reportar', null], // opção Denunciar dos menus (Fase 13)
+    timao: ['voltar', null], // botão que gira e volta para o Início
+    barco: ['Barco', null],
+    navio: ['navio-mayflower', null],
+    navioPirata: ['navio-pirata', null], // card "Fase atual" do mapa da ilha
+    volante: ['Volante', 'svg:volante'],
 
     /* ---- medalha: selos conquistados e "Fase atual" ---- */
-    medalha:          ['medalha', null],
+    medalha: ['medalha', null],
 
     /* ---- ícones das ilhas no Diário do Capitão (liberada / bloqueada) ---- */
-    ilhaPraia:                ['ilha-praia', null],
-    ilhaPraiaBloqueada:       ['ilha-praia-bloqueada', null],
-    ilhaArvores:              ['ilha-arvores', null],
-    ilhaArvoresBloqueada:     ['ilha-arvores-bloqueada', null],
-    ilhaMontanhas:            ['ilha-montanhas', null],
-    ilhaMontanhasBloqueada:   ['ilha-montanhas-bloqueada', null],
-    bau:              ['treasure-chest', null],
-    policial:         ['policial', null],
+    ilhaPraia: ['ilha-praia', null],
+    ilhaPraiaBloqueada: ['ilha-praia-bloqueada', null],
+    ilhaArvores: ['ilha-arvores', null],
+    ilhaArvoresBloqueada: ['ilha-arvores-bloqueada', null],
+    ilhaMontanhas: ['ilha-montanhas', null],
+    ilhaMontanhasBloqueada: ['ilha-montanhas-bloqueada', null],
+    bau: ['treasure-chest', null],
+    policial: ['policial', null],
 
     /* ---- interface / HUD ---- */
-    estrela:          ['estrela', null],
-    levelup:          ['levelup', null],
-    moedas:           ['moedas', null],
-    diamond:          ['diamond', null],
-    conquistas:       ['conquistas', null],
-    cronometro:       ['cronometro', null],
-    config:           ['simbolo-de-interface-da-roda-dentada-de-configuracao', null],
-    editar:           ['editar', null],
-    usuario:          ['usuario', null],
-    utilizador:       ['do-utilizador', null],
-    dadosPessoais:    ['dados-pessoais', null],
-    bloqueado:        ['bloqueado', null],
+    estrela: ['estrela', null],
+    levelup: ['levelup', null],
+    moedas: ['moedas', null],
+    diamond: ['diamond', null],
+    conquistas: ['conquistas', null],
+    cronometro: ['cronometro', null],
+    config: ['simbolo-de-interface-da-roda-dentada-de-configuracao', null],
+    editar: ['editar', null],
+    usuario: ['usuario', null],
+    utilizador: ['do-utilizador', null],
+    dadosPessoais: ['dados-pessoais', null],
+    bloqueado: ['bloqueado', null],
 
     /* ---- ícones de fases / feedback ---- */
-    luneta:           ['luneta', null],
-    anonimo:          ['anonimo', null],
-    misterio:         ['misterio', null],
-    interrogacao:     ['ponto-de-interrogacao', null],
-    interrogacao2:    ['ponto-de-interrogacao (1)', null],
-    bubbleChat:       ['bubble-chat', null],
-    comunicacao:      ['comunicacao', null],
-    comunicacao2:     ['comunicacao (1)', null],
-    falando:          ['falando', null],
-    corre:            ['corre', null],
-    escudo:           ['escudo', null],
-    bloquearUsuario:  ['bloquear-usuario', null],
-    pare:             ['pare-de-intimidar', null],
-    exclamacao3:      ['3exclamacao', null],
-    alerta:           ['alerta (1)', null],
-    atencao:          ['atencao', null],
-    critico:          ['critico', null],
-    botaoVermelho:    ['botao-vermelho', null],
-    apoio:            ['apoio-suporte', null],
-    assistencia:      ['assistencia-social', null],
-    pedidoAmizade:    ['pedido-de-amizade', null],
-    correto:          ['correto', null],
-    falha:            ['falha', null],
-    nao:              ['nao', null],
-    naoGosto:         ['nao-gosto', null],
-    martelo:          ['martelo', null],
-    errado:           ['ERRADO', null],
-    dica:             ['dica', null],          // garrafa com a mensagem da dica
-    coracao:          ['coracao', null],
-    setaDir:          ['setapradireita', null],
-    setaEsq:          ['setapraesquerda', null],
-    refazer:          ['refazer', null],
-    impressora:       ['impressora', null],
+    luneta: ['luneta', null],
+    anonimo: ['anonimo', null],
+    misterio: ['misterio', null],
+    interrogacao: ['ponto-de-interrogacao', null],
+    interrogacao2: ['ponto-de-interrogacao (1)', null],
+    bubbleChat: ['bubble-chat', null],
+    comunicacao: ['comunicacao', null],
+    comunicacao2: ['comunicacao (1)', null],
+    falando: ['falando', null],
+    corre: ['corre', null],
+    escudo: ['escudo', null],
+    bloquearUsuario: ['bloquear-usuario', null],
+    pare: ['pare-de-intimidar', null],
+    exclamacao3: ['3exclamacao', null],
+    alerta: ['alerta (1)', null],
+    atencao: ['atencao', null],
+    critico: ['critico', null],
+    botaoVermelho: ['botao-vermelho', null],
+    apoio: ['apoio-suporte', null],
+    assistencia: ['assistencia-social', null],
+    pedidoAmizade: ['pedido-de-amizade', null],
+    correto: ['correto', null],
+    falha: ['falha', null],
+    nao: ['nao', null],
+    naoGosto: ['nao-gosto', null],
+    martelo: ['martelo', null],
+    errado: ['ERRADO', null],
+    dica: ['dica', null], // garrafa com a mensagem da dica
+    coracao: ['coracao', null],
+    setaDir: ['setapradireita', null],
+    setaEsq: ['setapraesquerda', null],
+    refazer: ['refazer', null],
+    impressora: ['impressora', null],
 
     /* ---- certificados ---- */
-    cert1:            ['certificado-final-1', null],
-    cert2:            ['certificado-final-2', null]
+    cert1: ['certificado-final-1', null],
+    cert2: ['certificado-final-2', null]
   };
 
   /* SVGs de reserva (usados quando o emoji é 'svg:nome') */

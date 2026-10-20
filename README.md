@@ -334,7 +334,9 @@ O código segue os princípios de **Clean Code** e foi organizado tendo como ref
 - **Nomes que dizem o que fazem:** `concluirAtividade`, `faseLiberada`, `telaDiario`, `.fala-cap`, `.menu-app`, em português, como o resto do projeto.
 - **Funções pequenas e reaproveitadas:** os 12 tipos de atividade servem às 45 atividades; peças comuns das telas ficam em `telas/comum.js`.
 - **Conteúdo separado da lógica:** textos, fases e dicas mudam sem mexer no código das telas.
-- **Escrita padronizada:** no CSS, um seletor e uma declaração por linha, propriedades sempre na mesma ordem e seções com título (as regras estão no topo de `css/base.css`).
+- **Escrita padronizada:**
+  - **CSS:** um seletor e uma declaração por linha, propriedades sempre na mesma ordem (posição, caixa e layout, texto, aparência, movimento) e seções com título; as regras estão no topo de `css/base.css`.
+  - **JavaScript:** 2 espaços de indentação, aspas simples, ponto e vírgula no fim, linhas de até 110 caracteres e objetos e listas grandes abertos um item por linha; cada arquivo começa com um cabeçalho dizendo o que ele faz.
 - **Comentários que explicam o porquê,** não o histórico de mudanças.
 - **Sem código morto:** regras e funções que nenhuma tela usa foram retiradas.
 
