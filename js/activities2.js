@@ -159,7 +159,7 @@
       ${zona(
         'amigos',
         `<span class="pj-sec"><small>Amigos em comum</small><b class="pj-zero">0</b></span>
-          <span class="amigos-dele">${AMIGOS_DO_SUSPEITO.map(n => `<span>${I('anonimo', { size: 18 })}${esc(n)}</span>`).join('')}</span>`
+          <span class="amigos-dele"><b>Amigos dele:</b>${AMIGOS_DO_SUSPEITO.map(n => `<span>${I('anonimo', { size: 18 })}${esc(n)}</span>`).join('')}</span>`
       )}
       ${zona('bio', `<span class="pj-sec"><small>Bio</small></span><span class="pj-bio">Amo jogos de pirata! Bora jogar juntos?</span>`)}
       ${zona('mensagem', `<span class="pj-sec"><small>Mensagem do pedido</small></span><span class="pj-msg">Olá, Pirata, poderia me adicionar? Quero ser seu amigo!</span>`)}

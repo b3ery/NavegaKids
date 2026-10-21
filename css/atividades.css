@@ -2007,7 +2007,10 @@
   background: radial-gradient(circle at 15% 40%, rgba(255,255,255,.35) 0 2px, transparent 3px), radial-gradient(circle at 70% 25%, rgba(255,255,255,.35) 0 2px, transparent 3px), radial-gradient(circle at 85% 70%, rgba(255,255,255,.3) 0 1.5px, transparent 2.5px), linear-gradient(120deg, var(--navy-2), var(--blue-d) 55%, var(--blue));
 }
 
+/* a foto e o nome ficam por cima da faixa azul (a faixa tem position e cobriria a foto) */
 .pj-topo {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: flex-end;
   gap: 10px;
