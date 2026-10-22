@@ -22,7 +22,7 @@
       digitando = null;
     montar(
       `
-    <div class="scene prologo" id="prologo" data-cena="${falas[0].cena || ''}">
+    <div class="scene prologo" id="prologo" data-cena="">
       <div class="pr-ceu" aria-hidden="true"><i class="pr-sol"></i><i class="pr-nuvem n1"></i><i class="pr-nuvem n2"></i><i class="pr-nuvem n3"></i></div>
       <div class="pr-titulo" aria-hidden="true"><b>${esc(titulo)}</b>${subtitulo ? `<small>${esc(subtitulo)}</small>` : ''}</div>
       <span class="pr-navio" aria-hidden="true">${I('navioPirata', { alt: '' })}</span>
@@ -114,7 +114,7 @@
     $('.pr-palco').onclick = e => {
       if (!e.target.closest('button')) seguir();
     };
-    // o título aparece primeiro; o Capitão chega voando e começa a falar
+    // o título aparece primeiro, sozinho; depois as ilhas ou prêmios surgem e o Capitão chega voando e começa a falar
     $('#prFala').textContent = falas[0].t;
     later(() => mostrar(0, true), 2700);
     later(() => $('#prSeguir')?.focus({ preventScroll: true }), 2800);
